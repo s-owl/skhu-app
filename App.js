@@ -1,23 +1,22 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import rootReducer from './src/reducers'
+import App from './src/app'
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
+import { createEpicMiddleware } from 'redux-observable'
+import fetchUserEpic from './src/epics/user'
+
+const epicMiddleware = createEpicMiddleware(fetchUserEpic)
+
+const store = createStore(rootReducer, applyMiddleware(epicMiddleware))
+
+export default class SkhuApp extends React.Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <App />
+            </Provider>
+        );
+    }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
