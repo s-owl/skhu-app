@@ -2,11 +2,11 @@ import React from 'react'
 import { TouchableHighlight, View, Text, StyleSheet } from 'react-native'
 
 import { connect } from 'react-redux'
-import { fetchData } from './actions/actions'
+import { fetchData } from '../actions/actions'
 
 let styles
 
-const App = (props) => {
+const Test = (props, navigationOptions) => {
     const {
         container,
         text,
@@ -50,6 +50,7 @@ const App = (props) => {
 
 styles = StyleSheet.create({
     container: {
+        flex: 1,
         marginTop: 100
     },
     text: {
@@ -73,19 +74,15 @@ styles = StyleSheet.create({
     }
 })
 
-function mapStateToProps (state) {
-    return {
-        appData: state.appData
-    }
-}
+const mapStateToProps = (state) => ({
+    appData: state.appData
+})
 
-function mapDispatchToProps (dispatch) {
-    return {
-        fetchData: () => dispatch(fetchData())
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+    fetchData: () => dispatch(fetchData())
+})
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(App)
+)(Test)
