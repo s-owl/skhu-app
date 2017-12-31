@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableHighlight, View, Text, StyleSheet } from 'react-native'
+import { TouchableHighlight, ScrollView, View, Text, StyleSheet } from 'react-native'
 
 import { connect } from 'react-redux'
 import { fetchData } from '../actions/actions'
@@ -17,7 +17,7 @@ const Test = (props, navigationOptions) => {
     } = styles
 
     return (
-        <View style={container}>
+        <ScrollView style={container}>
             <Text style={text}>Redux Examples</Text>
             <TouchableHighlight style={button}>
                 <Text 
@@ -44,7 +44,7 @@ const Test = (props, navigationOptions) => {
                     ) : null
                 }
             </View>
-        </View>
+        </ScrollView>
     )
 }
 

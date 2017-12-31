@@ -12,6 +12,8 @@
 - redux
 - redux-observable
 - rxjs
+- react-router-redux
+- react-router-native
 
 ## 실행
 
