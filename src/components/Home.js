@@ -11,9 +11,9 @@ const Home = ({ history }) => {
             <View style={wrapper}>
                 <Text style={item}> Wellcome Home!! </Text>
                 <Button
-                    title="Main Page"
+                    title="Home Page"
                     style={item}
-                    onPress={() => history.push('/main')}
+                    onPress={() => history.push('/home')}
                 />
                 <Button
                     title="Test Page"
@@ -21,22 +21,7 @@ const Home = ({ history }) => {
                     onPress={() => history.push('/test')} 
                 />
                 <Button
-                    title="Loading Page"
-                    style={item}
-                    onPress={() => history.push('/')} 
-                />
-                 <Button
-                    title="Login Page"
-                    style={item}
-                    onPress={() => history.push('/')} 
-                />
-                 <Button
-                    title="other.. Page"
-                    style={item}
-                    onPress={() => history.push('/')} 
-                />
-                 <Button
-                    title="other... Page"
+                    title="Splash Page"
                     style={item}
                     onPress={() => history.push('/')} 
                 />

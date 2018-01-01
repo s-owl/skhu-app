@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Button, Image } from 'react-native'
 
-import { Home, Main, Test } from './src/components'
+import { Home, Main, Test, Splash, Login } from './src/components'
 
 // Redux, react-router-redux
 import { createStore, combineReducers, applyMiddleware } from 'redux'
@@ -37,11 +37,18 @@ const App = () => (
         <Provider store={store}>
             <View style={styles.app}>
                 <Switch>
-                    <Route exact path="/" component={Home} />
+                    <Route exact path="/" component={Splash} />
+                    <Route exact path="/login" component={Login} />
                     <Route path="/">
                         <View style={styles.container}>
                             <View style={styles.header}>
                                 <View style={styles.left}>
+                                    {/* { history.location.pathname === '/' ? 
+                                        null :
+                                        <Button onPress={() => history.goBack()} title="back">
+                                            <Image />
+                                        </Button>
+                                    } */}
                                     <Button onPress={() => history.goBack()} title="back">
                                         <Image />
                                     </Button>
@@ -54,15 +61,15 @@ const App = () => (
                                 </View>
                             </View>
                             <Switch>
-                                <Route exact path="/main" component={Main} />
+                                <Route exact path="/home" component={Home} />
                                 <Route exact path="/test" component={Test} />
                             </Switch>
                             <View style={styles.tabs}>
                                 <Link to="/" style={styles.tab}> 
-                                    <Text> Home </Text>
+                                    <Text> Splash </Text>
                                 </Link>
-                                <Link to="/main" style={styles.tab}> 
-                                    <Text> Main </Text>
+                                <Link to="/home" style={styles.tab}> 
+                                    <Text> Home </Text>
                                 </Link>
                                 <Link to="/test" style={styles.tab} > 
                                     <Text> Test </Text>
