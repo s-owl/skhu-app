@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { NavigatorIOS } from 'react-native';
+import { createStackNagivator } from 'react-navigation';
 
 import Login from "./Login";
 import Main from "./Main";
 
-export default class App extends Component {
-  render() {
-    return (
-        <Login>
-          <Main />
-        </Login>
-    );
+const RootStack = createStackNavigator(
+  {
+    Home: Home,
+    Login: Login,
+  },
+  {
+    initialRouteName: 'Login',
   }
+);
+
+export default class App extends React.Component {
+  render() {
+		return <RootStack />;
+	}
 }
 
 const styles = StyleSheet.create({
