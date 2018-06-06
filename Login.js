@@ -123,11 +123,11 @@ export default class Login extends Component {
               <View style={ styles.login_container }>
               {logInContainer}
               <View style={ styles.footer }>
-                  <Text style={ styles.info }>성공회대학교 종합정보시스템 계정으로 로그인.</Text>
-                </View>
-                <Text style={ styles.copy }>(C)2018-Present Sleey OWL</Text>
+                  <Text style={ styles.info }>성공회대학교 종합정보시스템{"\n"}계정으로 로그인.</Text>
+                  <Text style={ styles.copy }>(C)2018-Present Sleey OWL</Text>
                 <Image style={ styles.sowl_logo } source={ require('./assets/login/Sowl_Logo.png') }>
                 </Image>
+                </View>
                 </View>
             </View>
           </KeyboardAvoidingView>
@@ -190,14 +190,13 @@ export default class Login extends Component {
       alignItems: 'center'
     },
     sowl_logo: {
-      marginLeft: 260,
       width: 100,
       height: 100,
     },
     info: {
       fontWeight: 'bold',
       fontSize: 14,
-      textAlign: 'left',
+      textAlign: 'center',
       marginBottom: 5
     },
     copy: {
