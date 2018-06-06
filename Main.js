@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { 
     StyleSheet, Text ,View, Image, TextInput,
-    TouchableWithoutFeedback, StatusBar, SafeAreaView,
-    Keyboard, TouchableOpacity, KeyboardAvoidingView
+    StatusBar, SafeAreaView, BackHandler,
+    Keyboard,  KeyboardAvoidingView
   } from 'react-native';
 import  {CardView}  from './components';
 
