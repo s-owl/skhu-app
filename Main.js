@@ -8,6 +8,14 @@ import { createStackNagivator } from 'react-navigation';
 import  {CardView}  from './components';
 
 export default class Main extends Component {
+    static navigationOptions = ({ navigation, navigationOptions }) => {
+        const { params } = navigation.state;
+    
+        return {
+          header: null // 헤더 비활성화
+        };
+    };
+
     render() {
         return(
             <View>
