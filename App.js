@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { createStackNagivator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 
 import Login from "./Login";
 import Main from "./Main";
 
 const RootStack = createStackNavigator(
   {
-    Home: Home,
+    Main: Main,
     Login: Login,
   },
   {
@@ -15,7 +15,7 @@ const RootStack = createStackNavigator(
   }
 );
 
-export default class App extends React.Component {
+export default class App extends Component {
   render() {
 		return <RootStack />;
 	}

@@ -4,7 +4,6 @@ import {
    StatusBar, SafeAreaView, Keyboard, KeyboardAvoidingView,
   AsyncStorage, Alert, ActivityIndicator
 } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
 import ForestApi from './apis';
 
 export default class Login extends Component {

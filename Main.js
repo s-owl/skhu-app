@@ -4,7 +4,6 @@ import {
     TouchableWithoutFeedback, StatusBar, SafeAreaView,
     Keyboard, TouchableOpacity, KeyboardAvoidingView
   } from 'react-native';
-import { createStackNagivator } from 'react-navigation';
 import  {CardView}  from './components';
 
 export default class Main extends Component {
