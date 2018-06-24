@@ -17,9 +17,11 @@ export default class Login extends Component {
     constructor(props){
       super(props);
       this.state = {
-        idInput: "",
-        pwInput: "",
         isLoading: false
+      }
+      this.textInput = {
+        idInput: "",
+        pwInput: ""
       }
     }
     async componentDidMount() {
@@ -40,19 +42,26 @@ export default class Login extends Component {
       }else{
         logInContainer = (
           <View >
-                <TextInput style={{fontSize: 20, padding: 10}} placeholder='아이디(학번) 입력' keyboardType='default'
-                returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
-                onChangeText={(text)=>{this.setState({idInput: text})}}>
+                <TextInput style={{fontSize: 20, padding: 10}} placeholder='아이디(학번) 입력' 
+                returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() } 
+                onChangeText={(text)=>{this.textInput.idInput = text}} keyboardType='default'>
                 </TextInput>
-                <TextInput style={{fontSize: 20, padding: 10}} placeholder='비밀번호 입력'
-                returnkeyType='go' ref={ 'password' } secureTextEntry={ true } autocorrect={ false }
-                onChangeText={(text)=>{this.setState({pwInput: text})}}>
+                <TextInput style={{fontSize: 20, padding: 10}} placeholder='비밀번호 입력' secureTextEntry={ true }
+                returnkeyType='go' ref={ 'password' }  autocorrect={ false }
+                onSubmitEditing={ () => {
+                  let id = this.textInput.idInput.replace(/\s/g,'');
+                  let pw = this.textInput.pwInput.replace(/\s/g,'');
+                  this.runLogInProcess(id, pw);
+                } }
+                onChangeText={(text)=>{
+                  this.textInput.pwInput = text
+                }}>
                 </TextInput>
                 <Button
                   title="Log In"
                   onPress={()=>{
-                    let id = this.state.idInput.replace(/\s/g,'');
-                    let pw = this.state.pwInput.replace(/\s/g,'');
+                    let id = this.textInput.idInput.replace(/\s/g,'');
+                    let pw = this.textInput.pwInput.replace(/\s/g,'');
                     this.runLogInProcess(id, pw);
                   }}/>
               </View>
@@ -96,8 +105,8 @@ export default class Login extends Component {
            await AsyncStorage.setItem('CredentialOld', data['credential-old']);
            await AsyncStorage.setItem('CredentialNew', data['credential-new']);
            await AsyncStorage.setItem('CredentialNewToken', data['credential-new-token']);
-           await AsyncStorage.setItem('userid', this.state.idInput);
-           await AsyncStorage.setItem('userpw', this.state.pwInput);
+           await AsyncStorage.setItem('userid', id);
+           await AsyncStorage.setItem('userpw', pw);
            this.setState({isLoading: false});
            this.props.navigation.navigate('Main');
          }else if(response.status == 400){
