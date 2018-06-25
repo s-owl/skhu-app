@@ -53,11 +53,4 @@ export default class Main extends Component {
         );
     }
 
-    componentDidMount(){
-        BackHandler.addEventListener('hardwareBackPress', ()=>{
-            // If back button pressed, exit the app.
-            // Do not move back to the login screen
-            BackHandler.exitApp();
-          });
-    }
   }

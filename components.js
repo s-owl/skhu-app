@@ -70,7 +70,7 @@ class LoadingModal extends Component{
 }
 
 export{
-    CardView, LoadingModal
+    CardView, LoadingModal, CardItem
 }
 
 const styles = StyleSheet.create({
