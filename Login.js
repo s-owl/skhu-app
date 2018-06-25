@@ -37,16 +37,16 @@ export default class Login extends Component {
       let logInContainer;
       if(this.state.isLoading){
         logInContainer = (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="#616A6B" />
         )
       }else{
         logInContainer = (
           <View >
-                <TextInput style={{fontSize: 20, padding: 10}} placeholder='아이디(학번) 입력' 
-                returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() } 
+                <TextInput style={ styles.login_input } placeholder='아이디(학번) 입력'
+                returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
                 onChangeText={(text)=>{this.textInput.idInput = text}} keyboardType='default'>
                 </TextInput>
-                <TextInput style={{fontSize: 20, padding: 10}} placeholder='비밀번호 입력' secureTextEntry={ true }
+                <TextInput style={ styles.login_input } placeholder='비밀번호 입력' secureTextEntry={ true }
                 returnkeyType='go' ref={ 'password' }  autocorrect={ false }
                 onSubmitEditing={ () => {
                   let id = this.textInput.idInput.replace(/\s/g,'');
