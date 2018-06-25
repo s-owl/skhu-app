@@ -54,15 +54,14 @@ export default class Main extends Component {
           lecture: {name: data.DAT[0].GwamogKorNm, time: data.DAT[0].Times}
         });
       }
-      let attendance = await this.forestApi.get('/user/attendance');
+      let attendance = await this.forestApi.get('/user/attendance', true);
       if(attendance.ok){
         let data = await attendance.json();
         let item = data.attendance[0];
         console.log(data);
         this.setState({
-          lecture:{
-            attendance:`출석 ${item.attend}, 지각 ${item.late}, 결석 ${item.absence}, 공결 ${item.approved},
-          생공 ${item.menstrual}, 조퇴 ${item.early}` }
+            attendance:`출석 ${item.attend}, 지각 ${item.late}, 결석 ${item.absence}, `
+                + `공결 ${item.approved}, 생공 ${item.menstrual}, 조퇴 ${item.early}` 
         });
       }
     }
@@ -98,7 +97,7 @@ export default class Main extends Component {
                         <CardView>
                             <Text style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.lecture.name}</Text>
                             <Text style={{fontSize: 20}}>{this.state.lecture.time}</Text>
-                            <Text>{this.state.lecture.attendance}</Text>
+                            <Text>{this.state.attendance}</Text>
                         </CardView>
                         <Text style={{fontSize: 20, marginTop: 16}}>학사 일정</Text>
                         <CardView>
