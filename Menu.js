@@ -28,7 +28,7 @@ export default class Menu extends Component {
                     </CardItem>
                 )}
                 renderSectionHeader={({section: {title}}) => (
-                    <Text style={{fontWeight: 'bold', padding: 8}}>{title}</Text>
+                    <Text style={{fontWeight: 'bold', padding: 8, marginTop: 8}}>{title}</Text>
                 )}
                 sections={[
                     {title: '관리', data: [
