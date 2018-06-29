@@ -25,7 +25,8 @@ export default class Login extends Component {
       }
     }
     async componentDidMount() {
-      this.forestApi = new ForestApi('http://localhost:3000');
+      // this.props.navigation.navigate('Main');
+
       let id = await AsyncStorage.getItem('userid');
       let pw = await AsyncStorage.getItem('userpw');
       if(id !== null && pw !== null){
@@ -37,16 +38,16 @@ export default class Login extends Component {
       let logInContainer;
       if(this.state.isLoading){
         logInContainer = (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="#616A6B" />
         )
       }else{
         logInContainer = (
           <View >
-                <TextInput style={{fontSize: 20, padding: 10}} placeholder='아이디(학번) 입력' 
-                returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() } 
+                <TextInput style={ styles.login_input } placeholder='아이디(학번) 입력'
+                returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
                 onChangeText={(text)=>{this.textInput.idInput = text}} keyboardType='default'>
                 </TextInput>
-                <TextInput style={{fontSize: 20, padding: 10}} placeholder='비밀번호 입력' secureTextEntry={ true }
+                <TextInput style={ styles.login_input } placeholder='비밀번호 입력' secureTextEntry={ true }
                 returnkeyType='go' ref={ 'password' }  autocorrect={ false }
                 onSubmitEditing={ () => {
                   let id = this.textInput.idInput.replace(/\s/g,'');
@@ -93,13 +94,14 @@ export default class Login extends Component {
       );
     }
     async runLogInProcess(id, pw){
+      console.log("Logging in...");
       try{
        this.setState({isLoading: true});
        if(id.length <= 0 || pw.length <= 0){
          alert("학번 또는 비밀번호가 입력되지 않았습니디.");
          this.setState({isLoading: false});
        }else{
-         let response = await this.forestApi.login(id, pw);
+         let response = await ForestApi.login(id, pw);
          if(response.ok){
            let data = await response.json();
            await AsyncStorage.setItem('CredentialOld', data['credential-old']);

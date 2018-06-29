@@ -1,50 +1,48 @@
 
 import { AsyncStorage } from 'react-native';
+import BuildConfigs from './config.js';
 export default class ForestApi{
-    constructor(url){
-        this.url = url;
-    }
-    // login(201632034, password).then((response)=>{ //things to do after login })
-    login(userid, userpw){
+    static url = BuildConfigs.API_SERVER_ADDR;
+    static login(userid, userpw){
         let loginHeaders = new Headers();
         loginHeaders.append("Content-Type", "application/json");
-        return fetch(`${this.url}/user/login`, 
+        return fetch(`${ForestApi.url}/user/login`, 
         {
             method: 'POST',
             headers: loginHeaders,
             body: JSON.stringify({
-            userid :userid.toString(),
-            userpw :userpw.toString()
+                userid :userid.toString(),
+                userpw :userpw.toString()
         })
     });
     }
 
-    async get(path, withCredential){
+    static async get(path, withCredential){
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
         if(withCredential){
             headers.append("Credential", await AsyncStorage.getItem("CredentialOld"));
         }
-        return fetch(`${this.url}${path}`, {
+        return fetch(`${ForestApi.url}${path}`, {
             method: 'GET',
             headers: headers
         });
     }
 
-    async post(path, body, withCredential){
+    static async post(path, body, withCredential){
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
         if(withCredential){
             headers.append("Credential", await AsyncStorage.getItem("CredentialOld"));
         }
-        return fetch(`${this.url}${path}`, {
+        return fetch(`${ForestApi.url}${path}`, {
             method: 'POST',
             headers: headers,
             body: body
         });
     }
 
-    async getFromSam(path){
+    static async getFromSam(path){
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Cookie", await AsyncStorage.getItem("CredentialNew"));
@@ -55,7 +53,7 @@ export default class ForestApi{
         });
     }
 
-    async postToSam(path, body){
+    static async postToSam(path, body){
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Cookie", await AsyncStorage.getItem("CredentialNew"));

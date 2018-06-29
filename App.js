@@ -3,11 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 import Login from "./Login";
-import Main from "./Main";
+import MainShell from "./MainShell";
 
 const RootStack = createStackNavigator(
   {
-    Main: Main,
+    Main: MainShell,
     Login: Login,
   },
   {
