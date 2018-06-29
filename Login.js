@@ -25,7 +25,8 @@ export default class Login extends Component {
       }
     }
     async componentDidMount() {
-      this.forestApi = new ForestApi('http://localhost:3000');
+      // this.props.navigation.navigate('Main');
+
       let id = await AsyncStorage.getItem('userid');
       let pw = await AsyncStorage.getItem('userpw');
       if(id !== null && pw !== null){
@@ -93,13 +94,14 @@ export default class Login extends Component {
       );
     }
     async runLogInProcess(id, pw){
+      console.log("Logging in...");
       try{
        this.setState({isLoading: true});
        if(id.length <= 0 || pw.length <= 0){
          alert("학번 또는 비밀번호가 입력되지 않았습니디.");
          this.setState({isLoading: false});
        }else{
-         let response = await this.forestApi.login(id, pw);
+         let response = await ForestApi.login(id, pw);
          if(response.ok){
            let data = await response.json();
            await AsyncStorage.setItem('CredentialOld', data['credential-old']);
