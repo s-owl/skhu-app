@@ -6,6 +6,7 @@ import {
 import { CardView } from './components';
 import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from './apis';
+import { SmallWeatherWidget } from './components/weather';
 
 export default class Main extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -83,8 +84,8 @@ export default class Main extends Component {
         return(
             <SafeAreaView>
                 <ScrollView>
-                    <View style={{marginTop: 100, padding: 16}}>
-                        <Text style={{fontSize: 30}}>한영빈(201632034)님,{"\n"}안녕하세요.</Text>
+                    <View style={{marginTop: 50, padding: 16}}>
+                        <SmallWeatherWidget unit="metric" appid="d4d294816ab2ac4579312c72b69a3de4"/>
                         <CardView style={{flex: 0, flexDirection: 'row'}} onPress={()=>{alert('clicked!')}}>
                             <MaterialIcons name="check-circle" size={20} style={{flex: 1}}/>
                             <Text style={{flex: 0}}>나의 출결 현황</Text>

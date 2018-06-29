@@ -69,10 +69,6 @@ class LoadingModal extends Component{
     }
 }
 
-export{
-    CardView, LoadingModal, CardItem
-}
-
 const styles = StyleSheet.create({
     container: {
         borderRadius: 5,
@@ -100,3 +96,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     }
   });
+
+export{
+    CardView, CardItem
+}
