@@ -1,15 +1,51 @@
 
 import React, { Component } from 'react';
 import { 
-    StyleSheet, View, ActivityIndicator, Modal
+    StyleSheet, View, ActivityIndicator, Modal, TouchableOpacity
   } from 'react-native';
 class CardView extends Component{
     render(){
-        return(
-            <View style={styles.container}>
-                {this.props.children}
-            </View>
-        )
+        if(this.props.onPress != undefined){
+            return(
+                <TouchableOpacity onPress={this.props.onPress}
+                    style={styles.container}>
+                    <View style={this.props.style}>
+                        {this.props.children}
+                    </View>
+                </TouchableOpacity>
+            )
+        }else{
+            return(
+                <View style={styles.container}>
+                    <View style={this.props.style}>
+                        {this.props.children}
+                    </View>
+                </View>
+            )
+        }
+    }
+}
+
+class CardItem extends Component{
+    render(){
+        if(this.props.onPress != undefined){
+            return(
+                <TouchableOpacity onPress={this.props.onPress}
+                    style={styles.cardItem}>
+                    <View style={this.props.style}>
+                        {this.props.children}
+                    </View>
+                </TouchableOpacity>
+            )
+        }else{
+            return(
+                <View style={styles.cardItem}>
+                    <View style={this.props.style}>
+                        {this.props.children}
+                    </View>
+                </View>
+            )
+        }
     }
 }
 
@@ -33,21 +69,34 @@ class LoadingModal extends Component{
     }
 }
 
-export{
-    CardView, LoadingModal
-}
-
 const styles = StyleSheet.create({
     container: {
         borderRadius: 5,
         borderColor: '#ddd',
         borderBottomWidth: 0,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.8,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
         shadowRadius: 5,
         elevation: 1,
-        padding: 8,
-        backgroundColor: 'white'
+        padding: 16,
+        marginTop: 8,
+        marginBottom: 8,
+        backgroundColor: 'white',
+    },
+    cardItem: {
+        borderColor: '#ddd',
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 1,
+        padding: 16,
+        backgroundColor: 'white',
     }
   });
+
+export{
+    CardView, CardItem
+}
