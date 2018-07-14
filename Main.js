@@ -6,6 +6,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from './apis';
 import { SmallWeatherWidget } from './components/weather';
 import BuildConfigs from './config';
+import DateTools from './tools/datetools';
+import DBHelper from './tools/dbhelper';
 
 export default class Main extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -17,6 +19,10 @@ export default class Main extends Component {
     };
     constructor(props){
       super(props);
+
+      this.db = new DBHelper();
+      this.db.fetchAttendance();
+      this.db.fetchTimeTable();
     }
 
     render() {
@@ -34,7 +40,7 @@ export default class Main extends Component {
                             <Text style={{flex: 0}}>현재 이수 학점</Text>
                         </CardView>
                         <Text style={{fontSize: 20, marginTop: 16}}>다음 강의</Text>
-                        <NextClassInfo/>
+                        <NextClassInfo dbHelper={this.db}/>
                         <Text style={{fontSize: 20, marginTop: 16}}>학사 일정</Text>
                         <MonthlySchedule/>
                     </View>
@@ -49,51 +55,30 @@ class NextClassInfo extends Component{
     super(props);
     this.state = {
       name: "",
-      time: "",
+      time: "불러오는 중...",
       attendance: ""
     }
   }
   async componentDidMount(){
-    let today = new Date();
-    let semester = this.getSemesterCode(today.getMonth()+1);
-    let timetable = await ForestApi.postToSam('/SSE/SSEAD/SSEAD03_GetList', JSON.stringify({
-      'Yy': today.getFullYear(),
-      'Haggi': semester.code,
-      'HaggiNm': semester.name
-    }), false);
-    if(timetable.ok){
-      let data = await timetable.json();
-      data.DAT[0].GwamogKorNm
-      // str += `${item.GwamogKorNm} \n ${item.Times} @ ${item.HosilCd} \n`;
-      this.setState({
-        name: data.DAT[0].GwamogKorNm,
-        time: data.DAT[0].Times
-      });
+    try{
+      const data = await this.props.dbHelper.getNextClassInfo();
+      if(data != undefined){
+        this.setState({
+          name: data.title, time: `${DateTools.dayOfWeekNumToStr(data.day)} `
+          +`${data.starts_at} ~ ${data.ends_at} @ ${data.room}`,
+            attendance:`출석 ${data.attend}, 지각 ${data.late}, 결석 ${data.absence}, `
+                + `공결 ${data.approved}, 생공 ${data.menstrual}, 조퇴 ${data.early}` 
+        });
+      }else{
+        this.setState({time: "다음 강의가 없습니다."})
+      }
+      
+    }catch(err){
+      this.setState({time: "다음 강의 정보를 조회하지 못했습니다."})
+      console.log(err);
+      
     }
-    let attendance = await ForestApi.get('/user/attendance', true);
-    if(attendance.ok){
-      let data = await attendance.json();
-      let item = data.attendance[0];
-      console.log(data);
-      this.setState({
-          attendance:`출석 ${item.attend}, 지각 ${item.late}, 결석 ${item.absence}, `
-              + `공결 ${item.approved}, 생공 ${item.menstrual}, 조퇴 ${item.early}` 
-      });
-    }
-  }
-  getSemesterCode(month){
-    if(month >=1 && month < 3){
-      return {code:"Z0104", name:"겨울학기"};
-    }
-    else if(month >=3 && month < 7){
-      return {code:"Z0101", name:"1학기"};
-    }
-    else if(month >=7 && month < 9){
-      return {code:"Z0103", name:"여름학기"};
-    }
-    else {
-      return {code:"Z0102", name:"2학기"};
-    }
+    
   }
   render(){
     return(
@@ -118,8 +103,9 @@ class MonthlySchedule extends Component{
     let today = new Date();
     let schedule = await ForestApi.post('/life/schedules', JSON.stringify({
       'year': today.getFullYear(),
-      'month': today.getMonth()+1
+      'month': today.getMonth()
     }), false);
+    console.log(schedule);
     if(schedule.ok){
         let data = await schedule.json();
         let dates = "", contents = "";
