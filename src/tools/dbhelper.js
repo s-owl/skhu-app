@@ -76,6 +76,19 @@ export default class DBHelper{
       }
     }
   }
+  queryAttendance(){
+    return new Promise((resolve, reject)=>{
+      this.db.transaction(tx =>
+        tx.executeSql('select * from attendance',[],
+          (tx, result)=>{
+            resolve(result.rows._array);
+          },
+          (err)=>{
+            reject(err);
+          })
+      );
+    });
+  }
   async fetchTimeTable(){
     try{
       const today = new Date();
