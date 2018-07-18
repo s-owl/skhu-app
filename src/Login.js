@@ -5,6 +5,7 @@ import {
   AsyncStorage, Alert, ActivityIndicator
 } from 'react-native';
 import ForestApi from './tools/apis';
+import NavUtils from './tools/navutils';
 
 export default class Login extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -110,7 +111,8 @@ export default class Login extends Component {
           await AsyncStorage.setItem('userid', id);
           await AsyncStorage.setItem('userpw', pw);
           this.setState({isLoading: false});
-          this.props.navigation.navigate('Main');
+          this.props.navigation.dispatch(NavUtils.getResetAction('Main'));
+          // this.props.navigation.navigate('Main');
         }else if(response.status == 400){
           this.setState({isLoading: false});
           setTimeout(() => {
