@@ -3,7 +3,18 @@ import { Text, View, TouchableOpacity, BackHandler } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import Main from './Main';
 import Menu from './Menu';
+import AttendanceScreen from'./screens/attendance';
 import { MaterialIcons } from '@expo/vector-icons';
+
+const HomeStack = createStackNavigator(
+  {
+    Home: Main,
+    Attendance: AttendanceScreen
+  },
+  {
+    initialRouteName: 'Home',
+  }
+);
 
 const MenuStack = createStackNavigator({
   Menu: Menu,
@@ -11,7 +22,7 @@ const MenuStack = createStackNavigator({
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: Main,
+    Home: HomeStack,
     Menu: MenuStack,
   },
   {
@@ -55,12 +66,5 @@ export default class MainShell extends Component {
     };
     render() {
       return <TabNavigator/>;
-    }
-    componentDidMount(){
-      BackHandler.addEventListener('hardwareBackPress', ()=>{
-        // If back button pressed, exit the app.
-        // Do not move back to the login screen
-        BackHandler.exitApp();
-      });
     }
 }

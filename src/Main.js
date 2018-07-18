@@ -28,7 +28,10 @@ export default class Main extends Component {
           <ScrollView>
             <View style={{marginTop: 50, padding: 16}}>
               <SmallWeatherWidget unit="metric" appid={BuildConfigs.OPENWEATHERMAP_API_KEY}/>
-              <CardView style={{flex: 0, flexDirection: 'row'}} onPress={()=>{alert('clicked!');}}>
+              <CardView style={{flex: 0, flexDirection: 'row'}} 
+                onPress={()=>{
+                  this.props.navigation.navigate('Attendance');
+                }}>
                 <MaterialIcons name="check-circle" size={20} style={{flex: 1}}/>
                 <Text style={{flex: 0}}>나의 출결 현황</Text>
               </CardView>
