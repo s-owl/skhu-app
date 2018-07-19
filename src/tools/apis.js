@@ -44,7 +44,6 @@ export default class ForestApi{
 
     static async getFromSam(path){
       let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
       headers.append('Cookie', await AsyncStorage.getItem('CredentialNew'));
       headers.append('RequestVerificationToken', await AsyncStorage.getItem('CredentialNewToken'));
       return fetch(`http://sam.skhu.ac.kr${path}`, {
@@ -53,8 +52,11 @@ export default class ForestApi{
       });
     }
 
-    static async postToSam(path, body){
+   
+
+    static async postToSam(path, body=null){
       let headers = new Headers();
+      headers.append('Accept', 'application/json');
       headers.append('Content-Type', 'application/json');
       headers.append('Cookie', await AsyncStorage.getItem('CredentialNew'));
       headers.append('RequestVerificationToken', await AsyncStorage.getItem('CredentialNewToken'));

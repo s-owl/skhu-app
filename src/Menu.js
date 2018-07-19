@@ -20,27 +20,25 @@ render() {
   return(
     <SafeAreaView>
       <SectionList
-        style={{marginTop: 16}}
         renderItem={({item, index, section}) => (
           <CardItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
             <Text>{item.label}</Text>
           </CardItem>
         )}
         renderSectionHeader={({section: {title}}) => (
-          <Text style={{fontWeight: 'bold', padding: 8, marginTop: 8}}>{title}</Text>
+          <CardItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
+            <Text style={{fontWeight: 'bold'}}>{title}</Text>
+          </CardItem>
         )}
         sections={[
-          {title: '관리', data: [
-            {label: '로그아웃', onPress: ()=>{}},
-            {label: '앱 정보', onPress: ()=>{}}
+          {title: '학교 생활', data: [
+            {label: '나의 상담 이력', onPress: ()=>{
+              this.props.navigation.navigate('Counsel');
+            }}
           ]},
           {title: '관리', data: [
-            {label: '로그아웃', onPress: ()=>{}},
-            {label: '앱 정보', onPress: ()=>{}}
-          ]},
-          {title: '관리', data: [
-            {label: '로그아웃', onPress: ()=>{ alert('Logging Out');}},
-            {label: '앱 정보', onPress: ()=>{}}
+            {label: '앱 정보', onPress: ()=>{}},
+            {label: '로그아웃', onPress: ()=>{ alert('Logging Out');}}
           ]},
         ]}
         keyExtractor={(item, index) => item + index}

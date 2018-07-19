@@ -28,10 +28,11 @@ class CardView extends Component{
 
 class CardItem extends Component{
   render(){
+    const itemStyle = this.props.isHeader ? styles.cardItemHeader : styles.cardItem;
     if(this.props.onPress != undefined){
       return(
         <TouchableOpacity onPress={this.props.onPress}
-          style={styles.cardItem}>
+          style={itemStyle}>
           <View style={this.props.style}>
             {this.props.children}
           </View>
@@ -39,7 +40,7 @@ class CardItem extends Component{
       );
     }else{
       return(
-        <View style={styles.cardItem}>
+        <View style={itemStyle}>
           <View style={this.props.style}>
             {this.props.children}
           </View>
@@ -85,14 +86,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   cardItem: {
-    borderColor: '#ddd',
-    borderBottomWidth: 0,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 1,
     padding: 16,
+    backgroundColor: 'white',
+  },
+  cardItemHeader: {
+    marginTop: 16,
+    paddingLeft: 16,
+    padding: 8,
     backgroundColor: 'white',
   }
 });
