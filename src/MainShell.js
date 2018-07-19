@@ -3,7 +3,8 @@ import { Text, View, TouchableOpacity, BackHandler } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import Main from './Main';
 import Menu from './Menu';
-import AttendanceScreen from'./screens/attendance';
+import AttendanceScreen from './screens/attendance';
+import CounselHistory from './screens/counsel';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const HomeStack = createStackNavigator(
@@ -16,9 +17,15 @@ const HomeStack = createStackNavigator(
   }
 );
 
-const MenuStack = createStackNavigator({
-  Menu: Menu,
-});
+const MenuStack = createStackNavigator(
+  {
+    Menu: Menu,
+    Counsel: CounselHistory
+  },
+  {
+    initialRouteName: 'Menu',
+  }
+);
 
 const TabNavigator = createBottomTabNavigator(
   {
