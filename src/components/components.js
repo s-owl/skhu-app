@@ -86,12 +86,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   cardItem: {
+    elevation: 1,
     padding: 16,
     backgroundColor: 'white',
   },
   cardItemHeader: {
+    elevation: 1,
     marginTop: 16,
     paddingLeft: 16,
+    paddingRight: 16,
     padding: 8,
     backgroundColor: 'white',
   }

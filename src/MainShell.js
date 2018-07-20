@@ -4,13 +4,15 @@ import { createBottomTabNavigator, createStackNavigator } from 'react-navigation
 import Main from './Main';
 import Menu from './Menu';
 import AttendanceScreen from './screens/attendance';
+import Schedules from './screens/schedules';
 import CounselHistory from './screens/counsel';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const HomeStack = createStackNavigator(
   {
     Home: Main,
-    Attendance: AttendanceScreen
+    Attendance: AttendanceScreen,
+    Schedules: Schedules
   },
   {
     initialRouteName: 'Home',
