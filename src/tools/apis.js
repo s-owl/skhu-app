@@ -1,5 +1,5 @@
 
-import { AsyncStorage } from 'react-native';
+import { SecureStore } from 'expo';
 import BuildConfigs from '../config';
 export default class ForestApi{
     static url = BuildConfigs.API_SERVER_ADDR;
@@ -21,7 +21,7 @@ export default class ForestApi{
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
       if(withCredential){
-        headers.append('Credential', await AsyncStorage.getItem('CredentialOld'));
+        headers.append('Credential', await SecureStore.getItemAsync('CredentialOld'));
       }
       return fetch(`${ForestApi.url}${path}`, {
         method: 'GET',
@@ -33,7 +33,7 @@ export default class ForestApi{
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
       if(withCredential){
-        headers.append('Credential', await AsyncStorage.getItem('CredentialOld'));
+        headers.append('Credential', await SecureStore.getItemAsync('CredentialOld'));
       }
       return fetch(`${ForestApi.url}${path}`, {
         method: 'POST',
@@ -44,8 +44,8 @@ export default class ForestApi{
 
     static async getFromSam(path){
       let headers = new Headers();
-      headers.append('Cookie', await AsyncStorage.getItem('CredentialNew'));
-      headers.append('RequestVerificationToken', await AsyncStorage.getItem('CredentialNewToken'));
+      headers.append('Cookie', await SecureStore.getItemAsync('CredentialNew'));
+      headers.append('RequestVerificationToken', await SecureStore.getItemAsync('CredentialNewToken'));
       return fetch(`http://sam.skhu.ac.kr${path}`, {
         method: 'GET',
         headers: headers
@@ -58,8 +58,8 @@ export default class ForestApi{
       let headers = new Headers();
       headers.append('Accept', 'application/json');
       headers.append('Content-Type', 'application/json');
-      headers.append('Cookie', await AsyncStorage.getItem('CredentialNew'));
-      headers.append('RequestVerificationToken', await AsyncStorage.getItem('CredentialNewToken'));
+      headers.append('Cookie', await SecureStore.getItemAsync('CredentialNew'));
+      headers.append('RequestVerificationToken', await SecureStore.getItemAsync('CredentialNewToken'));
       return fetch(`http://sam.skhu.ac.kr${path}`, {
         method: 'POST',
         headers: headers,
