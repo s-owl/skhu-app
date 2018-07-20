@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Text ,View, Image, TextInput, Button,
   StatusBar, SafeAreaView, Keyboard, KeyboardAvoidingView,
-  AsyncStorage, Alert, ActivityIndicator
+  Alert, ActivityIndicator
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavUtils from './tools/navutils';
+import {SecureStore} from 'expo';
 
 export default class Login extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -28,8 +29,8 @@ export default class Login extends Component {
   async componentDidMount() {
     // this.props.navigation.navigate('Main');
 
-    let id = await AsyncStorage.getItem('userid');
-    let pw = await AsyncStorage.getItem('userpw');
+    let id = await SecureStore.getItemAsync('userid');
+    let pw = await SecureStore.getItemAsync('userpw');
     if(id !== null && pw !== null){
       this.runLogInProcess(id, pw);
     }
@@ -105,11 +106,11 @@ export default class Login extends Component {
         let response = await ForestApi.login(id, pw);
         if(response.ok){
           let data = await response.json();
-          await AsyncStorage.setItem('CredentialOld', data['credential-old']);
-          await AsyncStorage.setItem('CredentialNew', data['credential-new']);
-          await AsyncStorage.setItem('CredentialNewToken', data['credential-new-token']);
-          await AsyncStorage.setItem('userid', id);
-          await AsyncStorage.setItem('userpw', pw);
+          await SecureStore.setItemAsync('CredentialOld', data['credential-old']);
+          await SecureStore.setItemAsync('CredentialNew', data['credential-new']);
+          await SecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
+          await SecureStore.setItemAsync('userid', id);
+          await SecureStore.setItemAsync('userpw', pw);
           this.setState({isLoading: false});
           this.props.navigation.dispatch(NavUtils.getResetAction('Main'));
           // this.props.navigation.navigate('Main');
