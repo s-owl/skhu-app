@@ -6,6 +6,7 @@ import Menu from './Menu';
 import AttendanceScreen from './screens/attendance';
 import Schedules from './screens/schedules';
 import CounselHistory from './screens/counsel';
+import Syllabus from './screens/syllabus';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const HomeStack = createStackNavigator(
@@ -22,7 +23,8 @@ const HomeStack = createStackNavigator(
 const MenuStack = createStackNavigator(
   {
     Menu: Menu,
-    Counsel: CounselHistory
+    Counsel: CounselHistory,
+    Syllabus: Syllabus,
   },
   {
     initialRouteName: 'Menu',

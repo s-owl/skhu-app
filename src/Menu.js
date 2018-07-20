@@ -36,6 +36,11 @@ render() {
               this.props.navigation.navigate('Counsel');
             }}
           ]},
+          {title: '수강 관리', data: [
+            {label: '강의계획서 조회', onPress: ()=>{
+              this.props.navigation.navigate('Syllabus');
+            }}
+          ]},
           {title: '관리', data: [
             {label: '앱 정보', onPress: ()=>{}},
             {label: '로그아웃', onPress: ()=>{ alert('Logging Out');}}
