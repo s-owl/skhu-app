@@ -47,7 +47,12 @@ export default class Syllabus extends Component{
           data={this.state.result}
           renderItem={({item})=>
             <CardItem onPress={()=>{
-              
+              this.props.navigation.navigate('SyllabusDetails', {
+                subjectCode: item.subjectCode,
+                classCode: item.classCode,
+                semesterCode: this.state.semesterCode,
+                year: this.state.year
+              });
             }}>
               <Text style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</Text>
               <Text>{item.college} {item.major} | {item.professor}({item.professorNo})</Text>
