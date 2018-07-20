@@ -13,6 +13,7 @@ export default class Main extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
       const { params } = navigation.state;
       return {
+        title: '홈',
         header: null // 헤더 비활성화
       };
     };
@@ -42,7 +43,9 @@ export default class Main extends Component {
               <Text style={{fontSize: 20, marginTop: 16}}>다음 강의</Text>
               <NextClassInfo dbHelper={this.db}/>
               <Text style={{fontSize: 20, marginTop: 16}}>학사 일정</Text>
-              <MonthlySchedule/>
+              <MonthlySchedule onPress={()=>{
+                this.props.navigation.navigate('Schedules');
+              }}/>
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -121,7 +124,7 @@ class MonthlySchedule extends Component{
   }
   render(){
     return(
-      <CardView style={{flexDirection: 'row'}}>
+      <CardView style={{flexDirection: 'row'}} onPress={this.props.onPress}>
         <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
         <Text style={{flex: 1}}>{this.state.contents}</Text>
       </CardView>
