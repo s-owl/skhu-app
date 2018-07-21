@@ -44,6 +44,11 @@ render() {
               this.props.navigation.navigate('SavedCredits');
             }}
           ]},
+          {title: '성적 및 장학 관리', data: [
+            {label: '장학 내역 조회', onPress: ()=>{
+              this.props.navigation.navigate('ScholarshipHistory');
+            }}
+          ]},
           {title: '관리', data: [
             {label: '앱 정보', onPress: ()=>{}},
             {label: '로그아웃', onPress: ()=>{ alert('Logging Out');}}
