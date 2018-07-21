@@ -32,18 +32,14 @@ class CardItem extends Component{
     if(this.props.onPress != undefined){
       return(
         <TouchableOpacity onPress={this.props.onPress}
-          style={itemStyle}>
-          <View style={this.props.style}>
-            {this.props.children}
-          </View>
+          style={[itemStyle, this.props.style]}>
+          {this.props.children}
         </TouchableOpacity>
       );
     }else{
       return(
-        <View style={itemStyle}>
-          <View style={this.props.style}>
-            {this.props.children}
-          </View>
+        <View style={[itemStyle, this.props.style]}>
+          {this.props.children}
         </View>
       );
     }
