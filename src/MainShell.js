@@ -9,6 +9,7 @@ import CounselHistory from './screens/counsel';
 import Syllabus from './screens/syllabus';
 import SyllabusDetails from './screens/syllabusDetails';
 import SavedCredits from './screens/savedCredits';
+import ScholarshipHistory from './screens/scholarshopHistory';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const HomeStack = createStackNavigator(
@@ -28,7 +29,8 @@ const MenuStack = createStackNavigator(
     Counsel: CounselHistory,
     Syllabus: Syllabus,
     SyllabusDetails: SyllabusDetails,
-    SavedCredits: SavedCredits
+    SavedCredits: SavedCredits,
+    ScholarshipHistory: ScholarshipHistory
   },
   {
     initialRouteName: 'Menu',
