@@ -64,9 +64,7 @@ export default class Syllabus extends Component{
           animationType="slide"
           transparent={true}
           visible={this.state.showSearchModal}
-          onRequestClose={() => {
-            alert('Modal has been closed.');
-          }}>
+          onRequestClose={() => this.setState({showSearchModal: false})}>
           <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}} 
             forceInset={{ vertical: 'always', horizontal: 'never' }}>
             <CardItem isHeader={true}>
