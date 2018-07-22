@@ -10,6 +10,7 @@ import Syllabus from './screens/syllabus';
 import SyllabusDetails from './screens/syllabusDetails';
 import SavedCredits from './screens/savedCredits';
 import ScholarshipHistory from './screens/scholarshopHistory';
+import GradeCert from './screens/gradeCert';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const HomeStack = createStackNavigator(
@@ -30,7 +31,8 @@ const MenuStack = createStackNavigator(
     Syllabus: Syllabus,
     SyllabusDetails: SyllabusDetails,
     SavedCredits: SavedCredits,
-    ScholarshipHistory: ScholarshipHistory
+    ScholarshipHistory: ScholarshipHistory,
+    GradeCert: GradeCert
   },
   {
     initialRouteName: 'Menu',
