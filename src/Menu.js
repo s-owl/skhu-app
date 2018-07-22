@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { 
-  StyleSheet, Text ,View,  ScrollView,
+  Alert, Text ,View,  ScrollView,
   SafeAreaView, SectionList
 } from 'react-native';
 import { CardItem } from './components/components';
-// import { CardView } from './components';
-// import { MaterialIcons } from '@expo/vector-icons';
-
+import NavigationService from './tools/NavigationService';
+import {SecureStore} from 'expo';
+import DBHelper from './tools/dbhelper';
+import SnackBar from 'rn-snackbar';
 
 export default class Menu extends Component {
 static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -54,7 +55,27 @@ render() {
           ]},
           {title: '관리', data: [
             {label: '앱 정보', onPress: ()=>{}},
-            {label: '로그아웃', onPress: ()=>{ alert('Logging Out');}}
+            {label: '로그아웃', onPress: ()=>{ 
+              Alert.alert(
+                '로그아웃',
+                '앱에서 로그아웃 하시겠습니까?',
+                [
+                  {text: '아니오', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                  {text: '예', onPress: async () => {
+                    SnackBar.show('로그아웃 중입니다...', { duration: 1000, position: 'top', style: { paddingTop: 30 } });
+                    await SecureStore.deleteItemAsync('userid');
+                    await SecureStore.deleteItemAsync('userpw');
+                    await SecureStore.deleteItemAsync('CredentialOld');
+                    await SecureStore.deleteItemAsync('CredentialNew');
+                    await SecureStore.deleteItemAsync('CredentialNewToken');
+                    const db = new DBHelper();
+                    await db.dropAllTables();
+                    NavigationService.reset('Login', {loggedOut: true});
+                  }},
+                ],
+                { cancelable: false }
+              );
+            }}
           ]},
         ]}
         keyExtractor={(item, index) => item + index}

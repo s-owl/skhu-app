@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
+import NavigationService from './src/tools/NavigationService';
 
 import Login from './src/Login';
 import MainShell from './src/MainShell';
@@ -17,7 +18,9 @@ const RootStack = createStackNavigator(
 
 export default class App extends Component {
   render() {
-    return <RootStack />;
+    return <RootStack ref={(navRef)=>{
+      NavigationService.setTopLevelNavigator(navRef);
+    }}/>;
   }
 }
 
