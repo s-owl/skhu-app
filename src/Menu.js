@@ -47,6 +47,9 @@ render() {
           {title: '성적 및 장학 관리', data: [
             {label: '장학 내역 조회', onPress: ()=>{
               this.props.navigation.navigate('ScholarshipHistory');
+            }},
+            {label: '학내 제출용 성적증명서', onPress: ()=>{
+              this.props.navigation.navigate('GradeCert');
             }}
           ]},
           {title: '관리', data: [
