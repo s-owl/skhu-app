@@ -8,6 +8,7 @@ import { SmallWeatherWidget } from './components/weather';
 import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
+import SnackBar from 'rn-snackbar';
 
 export default class Main extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -50,6 +51,15 @@ export default class Main extends Component {
           </ScrollView>
         </SafeAreaView>
       );
+    }
+
+    async componentDidMount(){
+      let res = await ForestApi.get('/user/userinfo', true);
+      if(res.ok){
+        const data = await res.json();
+        SnackBar.show(`${data.userinfo.name}(${data.userinfo.id})님, 안녕하세요.`, 
+          { position: 'top', style: { paddingTop: 30 } });
+      }
     }
 }
 
@@ -108,7 +118,6 @@ class MonthlySchedule extends Component{
       'year': today.getFullYear(),
       'month': today.getMonth()
     }), false);
-    console.log(schedule);
     if(schedule.ok){
       let data = await schedule.json();
       let dates = '', contents = '';

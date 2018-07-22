@@ -50,6 +50,25 @@ export default class DBHelper{
       );
     });
   }
+
+  dropAllTables(){
+    return new Promise((resolve, reject)=>{
+      this.db.transaction(tx => {
+        tx.executeSql(
+          'drop table if exists attendance;',[], 
+          (tx, result)=>{
+            tx.executeSql(
+              'drop table if exists timetable;',[], 
+              (tx, result)=>{resolve(result);},
+              (err)=>{reject(err);}
+            );
+          },
+          (err)=>{reject(err);}
+        );
+        
+      });
+    });
+  }
   async fetchAttendance(){
     console.log('fetching attendance');
     let attendance = await ForestApi.post('/user/attendance',

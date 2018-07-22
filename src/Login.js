@@ -5,8 +5,9 @@ import {
   Alert, ActivityIndicator
 } from 'react-native';
 import ForestApi from './tools/apis';
-import NavUtils from './tools/navutils';
+import NavigationService from './tools/NavigationService';
 import {SecureStore} from 'expo';
+import SnackBar from 'rn-snackbar';
 
 export default class Login extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -27,7 +28,10 @@ export default class Login extends Component {
     };
   }
   async componentDidMount() {
-    // this.props.navigation.navigate('Main');
+    const isLoggedOut = this.props.navigation.getParam('loggedOut', false);
+    if(isLoggedOut){
+      SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 } });
+    }
 
     let id = await SecureStore.getItemAsync('userid');
     let pw = await SecureStore.getItemAsync('userpw');
@@ -112,7 +116,7 @@ export default class Login extends Component {
           await SecureStore.setItemAsync('userid', id);
           await SecureStore.setItemAsync('userpw', pw);
           this.setState({isLoading: false});
-          this.props.navigation.dispatch(NavUtils.getResetAction('Main'));
+          NavigationService.reset('Main');
           // this.props.navigation.navigate('Main');
         }else if(response.status == 400){
           this.setState({isLoading: false});
