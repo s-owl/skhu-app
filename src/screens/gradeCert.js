@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {CardItem} from '../components/components';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Button } from 'react-native';
 import ForestApi from '../tools/apis';
-
+import Printer from '../tools/printer';
 
 export default class GradeCert extends Component{
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -10,6 +10,12 @@ export default class GradeCert extends Component{
           
       return {
         title: '학내 제출용 성적증명서',
+        headerRight: (
+          <Button
+            onPress={navigation.getParam('print')}
+            title="인쇄"
+          />
+        )
       };
     };
     constructor(props){
@@ -22,6 +28,7 @@ export default class GradeCert extends Component{
       };
     }
     async componentDidMount(){
+      this.props.navigation.setParams({ print: this.print });
       const gradeCert = await ForestApi.get('/grade/certificate', true);
       if(gradeCert.ok){
         const data = await gradeCert.json();
@@ -32,6 +39,10 @@ export default class GradeCert extends Component{
           date: data.date
         });
       }
+    }
+    print = () =>{
+      Printer.printGradeCert(this.state.userinfo, this.state.details,
+        this.state.summary, this.state.date);
     }
     render(){
       return(
