@@ -3,6 +3,9 @@ import {CardItem} from '../components/components';
 import { View, Text, FlatList, Button } from 'react-native';
 import ForestApi from '../tools/apis';
 import Printer from '../tools/printer';
+import { MaterialHeaderButtons} from '../components/headerButtons';
+
+
 
 export default class GradeCert extends Component{
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -11,10 +14,9 @@ export default class GradeCert extends Component{
       return {
         title: '학내 제출용 성적증명서',
         headerRight: (
-          <Button
-            onPress={navigation.getParam('print')}
-            title="인쇄"
-          />
+          <MaterialHeaderButtons>
+            <MaterialHeaderButtons.Item title="인쇄" iconName="print" onPress={navigation.getParam('print')} />
+          </MaterialHeaderButtons>
         )
       };
     };
