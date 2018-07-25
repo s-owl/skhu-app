@@ -41,6 +41,9 @@ render() {
             {label: '강의계획서 조회', onPress: ()=>{
               this.props.navigation.navigate('Syllabus');
             }},
+            {label: '학과/학부별 개설과목 조회', onPress: ()=>{
+              this.props.navigation.navigate('Subjects');
+            }},
             {label: '학점세이브 조회', onPress: ()=>{
               this.props.navigation.navigate('SavedCredits');
             }}
