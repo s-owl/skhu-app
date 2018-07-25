@@ -14,7 +14,7 @@ static navigationOptions = ({ navigation, navigationOptions }) => {
   const { params } = navigation.state;
 
   return {
-    title: '전체 메뉴',
+    title: '메뉴',
   };
 };
 render() {
