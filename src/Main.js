@@ -116,7 +116,7 @@ class MonthlySchedule extends Component{
     let today = new Date();
     let schedule = await ForestApi.post('/life/schedules', JSON.stringify({
       'year': today.getFullYear(),
-      'month': today.getMonth()
+      'month': today.getMonth()+1
     }), false);
     if(schedule.ok){
       let data = await schedule.json();
