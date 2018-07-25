@@ -37,7 +37,9 @@ export default class Main extends Component {
                 <MaterialIcons name="check-circle" size={20} style={{flex: 1}}/>
                 <Text style={{flex: 0}}>나의 출결 현황</Text>
               </CardView>
-              <CardView style={{flex: 0, flexDirection: 'row'}} onPress={()=>{alert('clicked!');}}>
+              <CardView style={{flex: 0, flexDirection: 'row'}} onPress={()=>{
+                this.props.navigation.navigate('Credits');
+              }}>
                 <MaterialIcons name="insert-chart" size={20} style={{flex: 1}}/>
                 <Text style={{flex: 0}}>현재 이수 학점</Text>
               </CardView>
