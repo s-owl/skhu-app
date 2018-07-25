@@ -5,6 +5,7 @@ import Main from './Main';
 import Menu from './Menu';
 import AttendanceScreen from './screens/attendance';
 import Schedules from './screens/schedules';
+import Credits from './screens/credits';
 import CounselHistory from './screens/counsel';
 import Syllabus from './screens/syllabus';
 import SyllabusDetails from './screens/syllabusDetails';
@@ -18,7 +19,8 @@ const HomeStack = createStackNavigator(
   {
     Home: Main,
     Attendance: AttendanceScreen,
-    Schedules: Schedules
+    Schedules: Schedules,
+    Credits: Credits
   },
   {
     initialRouteName: 'Home',
