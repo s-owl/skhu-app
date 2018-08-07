@@ -38,7 +38,9 @@ export default class DBHelper{
           day integer not null,
           starts_at datetime not null,
           ends_at datetime not null,
-					lecture_id varchar(12) not null);`,[], 
+          lecture_id varchar(12) not null,
+          semester_code varchar(6) not null,
+          year integer not null);`,[], 
         (tx, result)=>{
           console.log('done create timetable');
           console.log(result);
@@ -111,8 +113,8 @@ export default class DBHelper{
   async fetchTimeTable(){
     try{
       const today = new Date();
-      const semester = DateTools.getSemesterCode(today.getMonth()+1);
-      // const semester = DateTools.getSemesterCode(5);
+      // const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      const semester = DateTools.getSemesterCode(5);
             
       let timetable = await ForestApi.postToSam('/SSE/SSEAD/SSEAD03_GetList', 
         JSON.stringify({
@@ -127,9 +129,10 @@ export default class DBHelper{
           const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
           this.db.transaction(tx => 
             tx.executeSql(
-              'insert or replace into timetable values(?, ?, ?, ?, ?, time(?), time(?), ?);',
+              'insert or replace into timetable values(?, ?, ?, ?, ?, time(?), time(?), ?, ?, ?);',
               [`${item.GwamogCd}-${dayOfWeek}`, item.GwamogKorNm, item.GyosuNm, item.HosilCd,
-                Number(dayOfWeek), item.FrTm, item.ToTm, `${item.GwamogCd}-${item.Bunban}`],
+                Number(dayOfWeek), item.FrTm, item.ToTm, `${item.GwamogCd}-${item.Bunban}`,
+                semester.code, today.getFullYear()],
               (tx, result)=>{
                 console.log('done insert timetable');
                 console.log(result);
@@ -172,10 +175,34 @@ export default class DBHelper{
             reject(err);
           }
         );
-      }
-      );
+      });
     });
-		
+  }
+
+  getTimetableData(){
+    return new Promise((resolve, reject)=>{
+      const today = new Date();
+      // const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      const semester = DateTools.getSemesterCode(5);
+      this.db.transaction(tx => {
+        tx.executeSql(
+          `select * from timetable
+           where semester_code = ?
+           order by day asc, starts_at asc;`,
+          [semester.code],
+          (tx, result)=>{
+            if(result.rows.length > 0){
+              resolve(result.rows);
+            }else{
+              resolve(undefined);
+            }
+          },
+          (err)=>{
+            reject(err);
+          }
+        );
+      });
+    });
   }
 
     
