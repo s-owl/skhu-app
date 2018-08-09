@@ -79,7 +79,7 @@ export default class Subjects extends Component{
             </CardItem>
             <CardItem>
               <Picker
-                selectedValue={this.state.semesterCode}
+                selectedValue={this.state.semester.value}
                 onValueChange={(itemValue, itemIndex) => {
                   this.setState({
                     semester:{
@@ -97,7 +97,7 @@ export default class Subjects extends Component{
             </CardItem>
             <CardItem>
               <Picker
-                selectedValue={this.state.semesterCode}
+                selectedValue={this.state.major.value}
                 onValueChange={(itemValue, itemIndex) => {
                   this.setState({
                     major:{
