@@ -44,7 +44,9 @@ export default class Main extends Component {
                 <Text style={{flex: 0}}>현재 이수 학점</Text>
               </CardView>
               <Text style={{fontSize: 20, marginTop: 16}}>다음 강의</Text>
-              <NextClassInfo dbHelper={this.db}/>
+              <NextClassInfo dbHelper={this.db} onPress={()=>{
+                this.props.navigation.navigate('Timetable');
+              }}/>
               <Text style={{fontSize: 20, marginTop: 16}}>학사 일정</Text>
               <MonthlySchedule onPress={()=>{
                 this.props.navigation.navigate('Schedules');
@@ -97,7 +99,7 @@ class NextClassInfo extends Component{
   }
   render(){
     return(
-      <CardView>
+      <CardView onPress={this.props.onPress}>
         <Text style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</Text>
         <Text style={{fontSize: 20}}>{this.state.time}</Text>
         <Text>{this.state.attendance}</Text>

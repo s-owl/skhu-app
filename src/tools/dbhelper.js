@@ -73,8 +73,10 @@ export default class DBHelper{
   }
   async fetchAttendance(){
     console.log('fetching attendance');
+    const today = new Date();
+    const semester = DateTools.getSemesterCode(today.getMonth()+1);
     let attendance = await ForestApi.post('/user/attendance',
-      JSON.stringify({'semester':'Z0101'}), true);
+      JSON.stringify({'semester':semester.code}), true);
     if(attendance.ok){
       console.log('attendance');
       let data = await attendance.json();
@@ -113,8 +115,8 @@ export default class DBHelper{
   async fetchTimeTable(){
     try{
       const today = new Date();
-      // const semester = DateTools.getSemesterCode(today.getMonth()+1);
-      const semester = DateTools.getSemesterCode(5);
+      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      // const semester = DateTools.getSemesterCode(5);
             
       let timetable = await ForestApi.postToSam('/SSE/SSEAD/SSEAD03_GetList', 
         JSON.stringify({
@@ -182,8 +184,8 @@ export default class DBHelper{
   getTimetableData(){
     return new Promise((resolve, reject)=>{
       const today = new Date();
-      // const semester = DateTools.getSemesterCode(today.getMonth()+1);
-      const semester = DateTools.getSemesterCode(5);
+      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      // const semester = DateTools.getSemesterCode(5);
       this.db.transaction(tx => {
         tx.executeSql(
           `select * from timetable

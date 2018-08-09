@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, ScrollView, Text, TouchableHighlight} from 'react-native';
 import DBHelper from '../tools/dbhelper';
 import moment from 'moment';
+import DateTools from '../tools/datetools';
 
 export default class Timetable extends Component{
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -30,8 +31,11 @@ export default class Timetable extends Component{
           {this.state.timetable.map((item, i)=>{
             return(
               <View style={{flex: 1}}>
+                <View style={{height: item.height, backgroundColor: 'white', padding: 2}}>
+                  <Text style={{color: 'black'}}>{DateTools.dayOfWeekNumToStr(i)}</Text>
+                </View>
                 {this.state.timetable[i].map((item, j)=>{
-                  let bgColor = item.isEmptyCell ? 'white' : 'silver';
+                  let bgColor = item.isEmptyCell ? 'rgba(0, 0, 0, 0)' : 'silver';
                   if(item.isEmptyCell){
                     return(
                       <View style={{height: item.height, backgroundColor: bgColor, padding: 2}}
