@@ -21,6 +21,7 @@ export default class Main extends Component {
     constructor(props){
       super(props);
       this.db = new DBHelper();
+      // this.db.removeUnnecessaryData();
       this.db.fetchAttendance();
       this.db.fetchTimeTable();
     }

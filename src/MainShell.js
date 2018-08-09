@@ -28,6 +28,13 @@ const HomeStack = createStackNavigator(
   },
   {
     initialRouteName: 'Home',
+    navigationOptions: {
+      headerTintColor: '#569f59',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        color: 'black'
+      },
+    },
   }
 );
 
@@ -45,6 +52,13 @@ const MenuStack = createStackNavigator(
   },
   {
     initialRouteName: 'Menu',
+    navigationOptions: {
+      headerTintColor: '#569f59',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        color: 'black'
+      },
+    },
   }
 );
 
@@ -78,7 +92,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     }),
     tabBarOptions: {
-      activeTintColor: 'tomato',
+      activeTintColor: '#569f59',
       inactiveTintColor: 'gray',
     },
   }

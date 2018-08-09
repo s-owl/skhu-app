@@ -16,7 +16,9 @@ export default class DBHelper{
           absence integer not null,
           approved integer not null,
           menstrual integer not null,
-          early integer not null);`,[],
+          early integer not null,
+          semester_code varchar(6) not null,
+          year integer not null);`,[],
         (tx, result)=>{
           console.log('done create attendance');
           console.log(result);
@@ -52,7 +54,23 @@ export default class DBHelper{
       );
     });
   }
-
+  removeUnnecessaryData(){
+    return new Promise((resolve, reject)=>{
+      const today = new Date();
+      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      this.db.transaction(tx => {
+        tx.executeSql(
+          'delete * from attendance, timetable where semester_code is not ? and year is not ?;',
+          [semester.code, today.getFullYear()], 
+          (tx, result)=>{
+            resolve(result);
+          },
+          (err)=>{reject(err);}
+        );
+        
+      });
+    });
+  }
   dropAllTables(){
     return new Promise((resolve, reject)=>{
       this.db.transaction(tx => {
@@ -75,6 +93,7 @@ export default class DBHelper{
     console.log('fetching attendance');
     const today = new Date();
     const semester = DateTools.getSemesterCode(today.getMonth()+1);
+    // const semester = DateTools.getSemesterCode(5);
     let attendance = await ForestApi.post('/user/attendance',
       JSON.stringify({'semester':semester.code}), true);
     if(attendance.ok){
@@ -83,9 +102,10 @@ export default class DBHelper{
       for(let item of data.attendance){
         this.db.transaction(tx => 
           tx.executeSql(
-            'insert or replace into attendance values(?, ?, ?, ?, ?, ?, ?, ?);',
+            'insert or replace into attendance values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
             [item.subject_code, item.subject, Number(item.attend), Number(item.late), 
-              Number(item.absence), Number(item.approved), Number(item.menstrual), Number(item.early)],
+              Number(item.absence), Number(item.approved), Number(item.menstrual), Number(item.early),
+              semester.code, today.getFullYear()],
             (tx, result)=>{
               console.log('done insert attendance');
               console.log(result);
@@ -101,8 +121,12 @@ export default class DBHelper{
   }
   queryAttendance(){
     return new Promise((resolve, reject)=>{
+      const today = new Date();
+      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      // const semester = DateTools.getSemesterCode(5);
       this.db.transaction(tx =>
-        tx.executeSql('select * from attendance',[],
+        tx.executeSql('select * from attendance where semester_code = ? and year = ?',
+          [semester.code, today.getFullYear()],
           (tx, result)=>{
             resolve(result.rows._array);
           },
@@ -157,14 +181,18 @@ export default class DBHelper{
   getNextClassInfo(){
     return new Promise((resolve, reject)=>{
       const today = new Date();
+      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      // const semester = DateTools.getSemesterCode(5);
       this.db.transaction(tx => {
         tx.executeSql(
           `select t.title, t.room, t.day, t.starts_at, t.ends_at, 
 			         a.attend, a.late, a.absence, a.approved, a.menstrual, a.early
 			         from timetable as t, attendance as a
-					 where t.lecture_id = a.id and t.day = ? and t.starts_at > ?
+           where t.lecture_id = a.id and t.day = ? and t.starts_at > ?
+           and t.semester_code = ? and t.year = ?
 					 order by t.starts_at limit 1;`,
-          [today.getDay(), `${today.getHours()}:${today.getMinutes()}`],
+          [today.getDay(), `${today.getHours()}:${today.getMinutes()}`,
+            semester.code, today.getFullYear()],
           // [1, `${'09'}:${today.getMinutes()}`],
           (tx, result)=>{
             if(result.rows.length > 0){
@@ -189,9 +217,9 @@ export default class DBHelper{
       this.db.transaction(tx => {
         tx.executeSql(
           `select * from timetable
-           where semester_code = ?
+           where semester_code = ? and year = ?
            order by day asc, starts_at asc;`,
-          [semester.code],
+          [semester.code, today.getFullYear()],
           (tx, result)=>{
             if(result.rows.length > 0){
               resolve(result.rows);
