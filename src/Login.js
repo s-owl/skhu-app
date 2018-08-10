@@ -54,6 +54,7 @@ export default class Login extends Component {
     }else{
       logInContainer = (
         <View>
+          <Text style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</Text>
           <TextInput style={ styles.login_input } placeholder='아이디(학번) 입력'
             underlineColorAndroid="transparent"
             returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
@@ -78,26 +79,23 @@ export default class Login extends Component {
           }} style={{backgroundColor: '#569f59', alignItems: 'center'}}>
             <Text style={{color: 'white'}}>Log In</Text>
           </CardView>
-          <Text style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인.</Text>
+          
         </View>
       );
     }
 
     return (
       <SafeAreaView style={ styles.container }>
-        <KeyboardAvoidingView behavior='padding' style={ styles.container }>
+        <KeyboardAvoidingView  style={ styles.container }>
           <View style={ styles.container }>
             <View style={ styles.title_container }>
-              <Image style={ styles.skhu_logo }
-                source={ require('../assets/icon.png') }>
-              </Image>
+              <Image source={ require('../assets/icon.png') } width={100} height={100}/>
             </View>
             <View style={ styles.login_container }>
               {logInContainer}
               <View style={ styles.footer }>
                 <Text style={ styles.copy }>(C)2018-Present Sleepy OWL</Text>
-                <Image style={ styles.sowl_logo } source={ require('../assets/login/Sowl_Logo.png') }>
-                </Image>
+                <Image width={100} height={100} source={ require('../assets/login/Sowl_Logo.png') }/>
               </View>
             </View>
           </View>
@@ -175,13 +173,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    flexDirection: 'column',
+    // flexDirection: 'column',
   },
   title_container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 40
+    marginBottom: 20
   },
   title_text: {
     fontWeight: 'bold',
@@ -189,16 +187,12 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center'
   },
-  skhu_logo: {
-    width: 100,
-    height: 100
-  },
   login_container: {
     flex: 1,
     backgroundColor: 'white',
-    marginBottom: 140,
     marginLeft: 20,
     marginRight: 20,
+    paddingBottom: 140
   },
   login_input: {
     height: 50,
@@ -213,29 +207,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(60, 60, 60, 0.8)',
     paddingVertical: 20
   },
-  button_text: {
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16
-  },
   footer: {
-    marginHorizontal: 40,
-    marginTop: 40,
+    marginTop: 20,
     alignItems: 'center'
   },
-  sowl_logo: {
-    width: 100,
-    height: 100,
-  },
   info: {
-    fontWeight: 'bold',
-    fontSize: 14,
     textAlign: 'center',
-    marginBottom: 5
+    padding: 5
   },
   copy: {
-    fontWeight: '200',
-    marginTop: 30
+    marginTop: 20
   }
 });
