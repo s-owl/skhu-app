@@ -89,13 +89,13 @@ export default class Login extends Component {
         <KeyboardAvoidingView  style={ styles.container }>
           <View style={ styles.container }>
             <View style={ styles.title_container }>
-              <Image source={ require('../assets/icon.png') } width={100} height={100}/>
+              <Image source={ require('../assets/imgs/icon.png') } style={{width: 150, height: 150}}/>
             </View>
             <View style={ styles.login_container }>
               {logInContainer}
               <View style={ styles.footer }>
                 <Text style={ styles.copy }>(C)2018-Present Sleepy OWL</Text>
-                <Image width={100} height={100} source={ require('../assets/login/Sowl_Logo.png') }/>
+                <Image style={{width: 100, height: 100}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
               </View>
             </View>
           </View>

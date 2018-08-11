@@ -1,29 +1,33 @@
 {
   "expo": {
     "name": "SKHU's",
-    "description": "This project is really great.",
+    "description": "The Essential App for Sungkonghoe University students.",
     "slug": "skhus-app",
     "privacy": "public",
     "sdkVersion": "29.0.0",
     "platforms": ["ios", "android"],
     "version": "0.1.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/imgs/icon.png",
     "primaryColor": "#ffffff",
+    "assetBundlePatterns": [
+      "assets/imgs/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
-      "icon": "./assets/ios.png",
+      "buildNumber": "0.1.1",
+      "icon": "./assets/imgs/ios.png",
       "supportsTablet": true
     },
     "android": {
       "versionCode": 1,
       "package": "com.sowl.skhus",
       "adaptiveIcon":{
-        "foregroundImage":"./assets/androidAdaptive.png"
+        "foregroundImage":"./assets/imgs/androidAdaptive.png"
       }
     },
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/imgs/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
