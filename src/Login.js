@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text ,View, Image, TextInput, Button,
-  StatusBar, SafeAreaView, Keyboard, KeyboardAvoidingView,
+  StyleSheet, Text ,View, Image, TextInput,
+  StatusBar, SafeAreaView, KeyboardAvoidingView,
   Alert, ActivityIndicator, NetInfo
 } from 'react-native';
 import ForestApi from './tools/apis';
@@ -29,9 +29,10 @@ export default class Login extends Component {
     };
   }
   async componentDidMount() {
+    StatusBar.setBarStyle({barStyle: 'light-content'});
     const isLoggedOut = this.props.navigation.getParam('loggedOut', false);
     if(isLoggedOut){
-      SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 }, duration: 1000 });
+      SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 }, duration: 2000 });
     }
     const connInfo = await NetInfo.getConnectionInfo();
     if(connInfo.type == 'none'){
