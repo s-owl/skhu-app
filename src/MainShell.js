@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, BackHandler } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import Main from './Main';
 import Menu from './Menu';
@@ -105,5 +105,8 @@ export default class MainShell extends Component {
     };
     render() {
       return <TabNavigator/>;
+    }
+    componentDidMount(){
+      StatusBar.setBarStyle({barStyle: 'light-content'});
     }
 }

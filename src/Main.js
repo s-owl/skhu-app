@@ -63,7 +63,7 @@ export default class Main extends Component {
       if(res.ok){
         const data = await res.json();
         SnackBar.show(`${data.userinfo.name}(${data.userinfo.id})님, 안녕하세요.`, 
-          { position: 'top', style: { paddingTop: 30 }, duration: 1000  });
+          { position: 'top', style: { paddingTop: 30 }, duration: 2000  });
       }
     }
 }
