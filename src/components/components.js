@@ -8,18 +8,14 @@ class CardView extends Component{
     if(this.props.onPress != undefined){
       return(
         <TouchableOpacity onPress={this.props.onPress}
-          style={styles.container}>
-          <View style={this.props.style}>
-            {this.props.children}
-          </View>
+          style={[styles.container, this.props.style]}>
+          {this.props.children}
         </TouchableOpacity>
       );
     }else{
       return(
-        <View style={styles.container}>
-          <View style={this.props.style}>
-            {this.props.children}
-          </View>
+        <View style={[styles.container, this.props.style]}>
+          {this.props.children}
         </View>
       );
     }

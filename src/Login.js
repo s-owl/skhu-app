@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Text ,View, Image, TextInput, Button,
   StatusBar, SafeAreaView, Keyboard, KeyboardAvoidingView,
-  Alert, ActivityIndicator
+  Alert, ActivityIndicator, NetInfo
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
-import {SecureStore} from 'expo';
+import {SecureStore, Constants} from 'expo';
 import SnackBar from 'rn-snackbar';
+import {CardView} from './components/components';
 
 export default class Login extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -32,11 +33,15 @@ export default class Login extends Component {
     if(isLoggedOut){
       SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 } });
     }
-
-    let id = await SecureStore.getItemAsync('userid');
-    let pw = await SecureStore.getItemAsync('userpw');
-    if(id !== null && pw !== null){
-      this.runLogInProcess(id, pw);
+    const connInfo = await NetInfo.getConnectionInfo();
+    if(connInfo.type == 'none'){
+      alert('본 앱을 사용하려면 네트워크 연결이 필요합니다. 네트워크 연결 상태 확인 후, 앱을 다시 샐행하세요.');
+    }else{
+      let id = await SecureStore.getItemAsync('userid');
+      let pw = await SecureStore.getItemAsync('userpw');
+      if(id !== null && pw !== null){
+        this.runLogInProcess(id, pw);
+      }
     }
   }
 
@@ -48,12 +53,15 @@ export default class Login extends Component {
       );
     }else{
       logInContainer = (
-        <View >
+        <View>
+          <Text style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</Text>
           <TextInput style={ styles.login_input } placeholder='아이디(학번) 입력'
+            underlineColorAndroid="transparent"
             returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
             onChangeText={(text)=>{this.textInput.idInput = text;}} keyboardType='default'>
           </TextInput>
           <TextInput style={ styles.login_input } placeholder='비밀번호 입력' secureTextEntry={ true }
+            underlineColorAndroid="transparent"
             returnkeyType='go' ref={ 'password' }  autocorrect={ false }
             onSubmitEditing={ () => {
               let id = this.textInput.idInput.replace(/\s/g,'');
@@ -64,34 +72,30 @@ export default class Login extends Component {
               this.textInput.pwInput = text;
             }}>
           </TextInput>
-          <Button
-            title="Log In"
-            onPress={()=>{
-              let id = this.textInput.idInput.replace(/\s/g,'');
-              let pw = this.textInput.pwInput.replace(/\s/g,'');
-              this.runLogInProcess(id, pw);
-            }}/>
+          <CardView onPress={()=>{
+            let id = this.textInput.idInput.replace(/\s/g,'');
+            let pw = this.textInput.pwInput.replace(/\s/g,'');
+            this.runLogInProcess(id, pw);
+          }} style={{backgroundColor: '#569f59', alignItems: 'center'}}>
+            <Text style={{color: 'white'}}>Log In</Text>
+          </CardView>
+          
         </View>
       );
     }
 
     return (
       <SafeAreaView style={ styles.container }>
-        <KeyboardAvoidingView behavior='padding' style={ styles.container }>
+        <KeyboardAvoidingView  style={ styles.container }>
           <View style={ styles.container }>
             <View style={ styles.title_container }>
-              <Image style={ styles.skhu_logo }
-                source={ require('../assets/login/skhu_logo.png') }>
-              </Image>
-              <Text style={ styles.title_text }>App Title</Text>
+              <Image source={ require('../assets/imgs/icon.png') } style={{width: 150, height: 150}}/>
             </View>
             <View style={ styles.login_container }>
               {logInContainer}
               <View style={ styles.footer }>
-                <Text style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인.</Text>
                 <Text style={ styles.copy }>(C)2018-Present Sleepy OWL</Text>
-                <Image style={ styles.sowl_logo } source={ require('../assets/login/Sowl_Logo.png') }>
-                </Image>
+                <Image style={{width: 100, height: 100}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
               </View>
             </View>
           </View>
@@ -132,8 +136,7 @@ export default class Login extends Component {
           }, 10);
 
         }else if(response.status == 401){
-          this.setState({isLoading: false})
-          ;
+          this.setState({isLoading: false});
           setTimeout(()=>{
             Alert.alert(
               '로그인 실패',
@@ -154,13 +157,13 @@ export default class Login extends Component {
       setTimeout(()=>{
         Alert.alert(
           '로그인 오류',
-          err,
+          '서버에 문제가 있거나 네트워크 상태에 문제가 있을 수 있습니다.\n'+err,
           [
-            {text: '확인', onPress: () => console.log('OK Pressed')},
+            {text: '확인', onPress: () => console.log('OK Pressed'), style: 'cancel'},
           ],
           { cancelable: false }
         );
-      }, 10);
+      }, 100);
 
     }
   }
@@ -170,13 +173,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    flexDirection: 'column',
+    // flexDirection: 'column',
   },
   title_container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 40
+    marginBottom: 20
   },
   title_text: {
     fontWeight: 'bold',
@@ -184,16 +187,12 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center'
   },
-  skhu_logo: {
-    width: 100,
-    height: 100
-  },
   login_container: {
     flex: 1,
     backgroundColor: 'white',
-    marginBottom: 140,
     marginLeft: 20,
     marginRight: 20,
+    paddingBottom: 140
   },
   login_input: {
     height: 50,
@@ -208,29 +207,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(60, 60, 60, 0.8)',
     paddingVertical: 20
   },
-  button_text: {
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16
-  },
   footer: {
-    marginHorizontal: 40,
-    marginTop: 40,
+    marginTop: 20,
     alignItems: 'center'
   },
-  sowl_logo: {
-    width: 100,
-    height: 100,
-  },
   info: {
-    fontWeight: 'bold',
-    fontSize: 14,
     textAlign: 'center',
-    marginBottom: 5
+    padding: 5
   },
   copy: {
-    fontWeight: '200',
-    marginTop: 30
+    marginTop: 20
   }
 });

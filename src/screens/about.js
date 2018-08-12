@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Constants, Linking} from 'expo';
 import {ScrollView, View, Text, Image, FlatList} from 'react-native';
 import {CardItem} from '../components/components';
+import LegalInfo from '../legal';
 
 export default class About extends Component{
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -24,7 +25,7 @@ export default class About extends Component{
       return(
         <ScrollView>
           <View style={{padding: 32, alignItems: 'center'}}>
-            <Image style={{marginBottom: 16}} source={ require('../../assets/icon.png') }/>
+            <Image style={{marginBottom: 16, width:200, height:200}} source={ require('../../assets/imgs/icon.png') }/>
             <Text style={{fontWeight: 'bold', fontSize: 36}}>{Constants.manifest.name}</Text>
             <Text>{Constants.manifest.version}</Text>
           </View>
@@ -44,11 +45,11 @@ export default class About extends Component{
           {this.state.showDevs? (
             <CardItem>
               <Text style={{fontWeight: 'bold', marginTop: 8}}>현재 개발팀 구성원</Text>
-              {Constants.manifest.currentDevelopers.map((item, index)=>(
+              {LegalInfo.currentDevelopers.map((item, index)=>(
                 <Text style={{padding: 2}}>* {item}</Text>
               ))}
               <Text style={{fontWeight: 'bold', marginTop: 8}}>이전 개발팀 구성원</Text>
-              {Constants.manifest.formerDevelopers.map((item, index)=>(
+              {LegalInfo.formerDevelopers.map((item, index)=>(
                 <Text style={{padding: 2}}>* {item}</Text>
               ))}
             </CardItem>
@@ -101,7 +102,7 @@ export default class About extends Component{
           </CardItem>
           {this.state.showOss? (
             <FlatList
-              data={Constants.manifest.oss}
+              data={LegalInfo.oss}
               renderItem={({item})=>(
                 <View key={item.index}>
                   <CardItem>

@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { CardItem } from './components/components';
 import NavigationService from './tools/NavigationService';
-import {SecureStore} from 'expo';
+import {SecureStore, Linking} from 'expo';
 import DBHelper from './tools/dbhelper';
 import SnackBar from 'rn-snackbar';
 
@@ -46,6 +46,9 @@ render() {
             }},
             {label: '학점세이브 조회', onPress: ()=>{
               this.props.navigation.navigate('SavedCredits');
+            }},
+            {label: '수강신청(외부링크 - sugang.skhu.ac.kr)', onPress: ()=>{
+              Linking.openURL('http://sugang.skhu.ac.kr/');
             }}
           ]},
           {title: '성적 및 장학 관리', data: [
