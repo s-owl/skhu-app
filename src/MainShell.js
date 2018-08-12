@@ -72,28 +72,25 @@ const TabNavigator = createBottomTabNavigator(
       tabBarButtonComponent: TouchableOpacity,
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
-        let iconName;
+        let iconName, label;
         switch(routeName){
-        case 'Home': iconName = 'home'; break;
-        case 'Menu': iconName = 'menu'; break;
+        case 'Home': iconName = 'home'; label = '홈'; break;
+        case 'Menu': iconName = 'menu'; label = '메뉴'; break;
         }
         // You can return any component that you like here! We usually use an
         // icon component from react-native-vector-icons
-        return <MaterialIcons name={iconName} size={25} color={tintColor} />;
+        return (
+          <View>
+            <MaterialIcons name={iconName} size={25} color={tintColor} />
+            <Text style={{color: tintColor, textAlign: 'center'}}>{label}</Text>
+          </View>
+        );
       },
-      tabBarLabel: ({ focused, tintColor}) => {
-        const { routeName } = navigation.state;
-        let label;
-        switch(routeName){
-        case 'Home': label = '홈'; break; 
-        case 'Menu': label = '메뉴'; break; 
-        }
-        return <Text style={{color: tintColor, textAlign: 'center'}}>{label}</Text>;
-      }
     }),
     tabBarOptions: {
       activeTintColor: '#569f59',
       inactiveTintColor: 'gray',
+      showLabel: false
     },
   }
 );

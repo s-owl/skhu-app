@@ -31,7 +31,7 @@ export default class Login extends Component {
   async componentDidMount() {
     const isLoggedOut = this.props.navigation.getParam('loggedOut', false);
     if(isLoggedOut){
-      SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 } });
+      SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 }, duration: 1000 });
     }
     const connInfo = await NetInfo.getConnectionInfo();
     if(connInfo.type == 'none'){
@@ -86,7 +86,7 @@ export default class Login extends Component {
 
     return (
       <SafeAreaView style={ styles.container }>
-        <KeyboardAvoidingView  style={ styles.container }>
+        <KeyboardAvoidingView  style={ styles.container } behavior="padding" enabled>
           <View style={ styles.container }>
             <View style={ styles.title_container }>
               <Image source={ require('../assets/imgs/icon.png') } style={{width: 150, height: 150}}/>
@@ -95,7 +95,7 @@ export default class Login extends Component {
               {logInContainer}
               <View style={ styles.footer }>
                 <Text style={ styles.copy }>(C)2018-Present Sleepy OWL</Text>
-                <Image style={{width: 100, height: 100}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
+                <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
               </View>
             </View>
           </View>
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20
   },
   footer: {
-    marginTop: 20,
+    marginTop: 10,
     alignItems: 'center'
   },
   info: {
