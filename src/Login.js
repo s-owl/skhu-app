@@ -31,7 +31,7 @@ export default class Login extends Component {
   async componentDidMount() {
     const isLoggedOut = this.props.navigation.getParam('loggedOut', false);
     if(isLoggedOut){
-      SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 } });
+      SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 }, duration: 1000 });
     }
     const connInfo = await NetInfo.getConnectionInfo();
     if(connInfo.type == 'none'){
