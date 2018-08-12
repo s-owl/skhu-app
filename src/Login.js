@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Text ,View, Image, TextInput,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
-  Alert, ActivityIndicator, NetInfo
+  Alert, ActivityIndicator, NetInfo, Platform
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
-import {SecureStore, Constants} from 'expo';
+import {SecureStore} from 'expo';
 import SnackBar from 'rn-snackbar';
 import {CardView} from './components/components';
 
@@ -29,7 +29,7 @@ export default class Login extends Component {
     };
   }
   async componentDidMount() {
-    StatusBar.setBarStyle({barStyle: 'light-content'});
+    if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
     const isLoggedOut = this.props.navigation.getParam('loggedOut', false);
     if(isLoggedOut){
       SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 }, duration: 2000 });
