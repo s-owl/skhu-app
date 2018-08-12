@@ -17,7 +17,18 @@
       "bundleIdentifier": "com.sowl.skhus",
       "buildNumber": "0.1.1",
       "icon": "./assets/imgs/ios.png",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist":{
+        "NSAppTransportSecurity":{
+          "NSAllowsArbitraryLoads":false,
+          "NSExceptionDomains":{
+            "sam.skhu.ac.kr":{
+              "NSIncludesSubdomains": false,
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        }
+      }
     },
     "android": {
       "versionCode": 1,
