@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {CardItem} from '../components/components';
-import { View, Text, FlatList, Button } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import ForestApi from '../tools/apis';
 import Printer from '../tools/printer';
 import { MaterialHeaderButtons} from '../components/headerButtons';
+import BuildConfigs from '../config';
 
 
 
@@ -26,10 +27,12 @@ export default class GradeCert extends Component{
         userinfo: [],
         details: [],
         summary: [],
-        date: ''
+        date: '',
+        isLoading: false
       };
     }
     async componentDidMount(){
+      this.setState({isLoading: true});
       this.props.navigation.setParams({ print: this.print });
       const gradeCert = await ForestApi.get('/grade/certificate', true);
       if(gradeCert.ok){
@@ -38,7 +41,8 @@ export default class GradeCert extends Component{
           userinfo: data.userinfo,
           details: data.details,
           summary: data.summary,
-          date: data.date
+          date: data.date,
+          isLoading: false
         });
       }
     }
@@ -47,61 +51,69 @@ export default class GradeCert extends Component{
         this.state.summary, this.state.date);
     }
     render(){
-      return(
-        <FlatList
-          ListHeaderComponent={()=>(
-            <View>
-              <CardItem isHeader={true}>
-                <Text style={{fontWeight: 'bold'}}>학생 정보</Text>
-              </CardItem>
-              <CardItem>
-                {this.state.userinfo.map(((item, index)=>{
-                  return(
-                    <Text key={`info${index}`}>{item.name}: {item.value}</Text>
-                  );
-                }))}
-              </CardItem>
-              <CardItem isHeader={true}>
-                <Text style={{fontWeight: 'bold'}}>성적 내역 상세</Text>
-              </CardItem>
-            </View>
-          )}
-        
-          data={this.state.details}
-          renderItem={({item}, index)=>(
-            <CardItem style={{flex:0, flexDirection: 'row'}} key={`details${index}`}>
-              <Text style={{flex: 2}}>{item.year}{'\n'}{item.semester}</Text>
-              <View style={{flex: 4}}>
-                <Text style={{fontWeight: 'bold'}}>{item.subject}</Text>
-                <Text>{item.code}</Text>
+      if(this.state.isLoading){
+        return(
+          <View style={{justifyContent: 'center', padding: 32}}>
+            <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+          </View>
+        );
+      }else{
+        return(
+          <FlatList
+            ListHeaderComponent={()=>(
+              <View>
+                <CardItem isHeader={true}>
+                  <Text style={{fontWeight: 'bold'}}>학생 정보</Text>
+                </CardItem>
+                <CardItem>
+                  {this.state.userinfo.map(((item, index)=>{
+                    return(
+                      <Text key={`info${index}`}>{item.name}: {item.value}</Text>
+                    );
+                  }))}
+                </CardItem>
+                <CardItem isHeader={true}>
+                  <Text style={{fontWeight: 'bold'}}>성적 내역 상세</Text>
+                </CardItem>
               </View>
-              <Text style={{flex: 1}}>{item.type}</Text>
-              <Text style={{flex: 1}}>{item.credit}</Text>
-              <Text style={{flex: 1}}>{item.grade}</Text>
-            </CardItem>
-          )}
-          ListFooterComponent={()=>(
-            <View>
-              <CardItem isHeader={true}>
-                <Text style={{fontWeight: 'bold'}}>요약</Text>
+            )}
+        
+            data={this.state.details}
+            renderItem={({item}, index)=>(
+              <CardItem style={{flex:0, flexDirection: 'row'}} key={`details${index}`}>
+                <Text style={{flex: 2}}>{item.year}{'\n'}{item.semester}</Text>
+                <View style={{flex: 4}}>
+                  <Text style={{fontWeight: 'bold'}}>{item.subject}</Text>
+                  <Text>{item.code}</Text>
+                </View>
+                <Text style={{flex: 1}}>{item.type}</Text>
+                <Text style={{flex: 1}}>{item.credit}</Text>
+                <Text style={{flex: 1}}>{item.grade}</Text>
               </CardItem>
-              <CardItem style={{flex:0, flexDirection: 'row', flexWrap: 'wrap'}}>
-                {this.state.summary.map(((item, index)=>{
-                  return(
-                    <View style={{padding: 2}} key={`summ${index}`}>
-                      <Text style={{fontWeight: 'bold'}}>{item.type}</Text>
-                      <Text>{item.credit}</Text>
-                    </View>
-                  );
-                }))}
-              </CardItem>
-              <CardItem>
-                <Text style={{fontWeight: 'bold'}}>{this.state.date}</Text>
-              </CardItem>
-            </View>
-          )}
-        />
-      );
+            )}
+            ListFooterComponent={()=>(
+              <View>
+                <CardItem isHeader={true}>
+                  <Text style={{fontWeight: 'bold'}}>요약</Text>
+                </CardItem>
+                <CardItem style={{flex:0, flexDirection: 'row', flexWrap: 'wrap'}}>
+                  {this.state.summary.map(((item, index)=>{
+                    return(
+                      <View style={{padding: 2}} key={`summ${index}`}>
+                        <Text style={{fontWeight: 'bold'}}>{item.type}</Text>
+                        <Text>{item.credit}</Text>
+                      </View>
+                    );
+                  }))}
+                </CardItem>
+                <CardItem>
+                  <Text style={{fontWeight: 'bold'}}>{this.state.date}</Text>
+                </CardItem>
+              </View>
+            )}
+          />
+        );
+      }
     }
 }
 

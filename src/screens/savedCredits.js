@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {CardItem} from '../components/components';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import ForestApi from '../tools/apis';
+import BuildConfigs from '../config';
 
 
 export default class SavedCredits extends Component{
@@ -22,65 +23,76 @@ export default class SavedCredits extends Component{
           used_criteria: '',
           available: ''
         },
-        details: []
+        details: [],
+        isLoading: false
       };
     }
     async componentDidMount(){
+      this.setState({isLoading: true});
       const savedCredits = await ForestApi.get('/enroll/saved_credits', true);
       if(savedCredits.ok){
         const data = await savedCredits.json();
         this.setState({
           status: data.status,
-          details: data.details
+          details: data.details,
+          isLoading: false
         });
       }
     }
     render(){
-      return(
-        <FlatList
-          ListHeaderComponent={()=>(
-            <View>
-              <CardItem isHeader={true}>
-                <Text>학점세이브 상태</Text>
+      if(this.state.isLoading){
+        return(
+          <View style={{justifyContent: 'center', padding: 32}}>
+            <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+          </View>
+        );
+      }else{
+        return(
+          <FlatList
+            ListHeaderComponent={()=>(
+              <View>
+                <CardItem isHeader={true}>
+                  <Text>학점세이브 상태</Text>
+                </CardItem>
+                <CardItem style={{flex:1, flexDirection: 'row'}}>
+                  <View style={{flex: 1}}>
+                    <Text style={{fontWeight: 'bold'}}>누적학점</Text>
+                    <Text>{this.state.status.accrued}</Text>
+                  </View>
+                  <View style={{flex: 1}}>
+                    <Text style={{fontWeight: 'bold'}}>누적학점 기준(누적시기)</Text>
+                    <Text>{this.state.status.accrued_criteria}</Text>
+                  </View>
+                </CardItem>
+                <CardItem style={{flex:1, flexDirection: 'row'}}>
+                  <View style={{flex: 1}}>
+                    <Text style={{fontWeight: 'bold'}}>사용학점</Text>
+                    <Text>{this.state.status.used}</Text>
+                  </View>
+                  <View style={{flex: 2}}>
+                    <Text style={{fontWeight: 'bold'}}>사용학점 기준(사용시기)</Text>
+                    <Text>{this.state.status.used_criteria}</Text>
+                  </View>
+                  <View style={{flex: 1}}>
+                    <Text style={{fontWeight: 'bold'}}>사용 가능 학점</Text>
+                    <Text>{this.state.status.available}</Text>
+                  </View>
+                </CardItem>
+                <CardItem isHeader={true}>
+                  <Text>학점 세이브 상세사항</Text>
+                </CardItem>
+              </View>
+            )}
+            data={this.state.details}
+            renderItem={({item})=>(
+              <CardItem>
+                <Text style={{fontWeight: 'bold'}}>{item.year}년 {item.semester}</Text>
+                <Text>세이브 학점: {item.saved}, 사용 학점: {item.used}</Text>
               </CardItem>
-              <CardItem style={{flex:1, flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
-                  <Text style={{fontWeight: 'bold'}}>누적학점</Text>
-                  <Text>{this.state.status.accrued}</Text>
-                </View>
-                <View style={{flex: 1}}>
-                  <Text style={{fontWeight: 'bold'}}>누적학점 기준(누적시기)</Text>
-                  <Text>{this.state.status.accrued_criteria}</Text>
-                </View>
-              </CardItem>
-              <CardItem style={{flex:1, flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
-                  <Text style={{fontWeight: 'bold'}}>사용학점</Text>
-                  <Text>{this.state.status.used}</Text>
-                </View>
-                <View style={{flex: 2}}>
-                  <Text style={{fontWeight: 'bold'}}>사용학점 기준(사용시기)</Text>
-                  <Text>{this.state.status.used_criteria}</Text>
-                </View>
-                <View style={{flex: 1}}>
-                  <Text style={{fontWeight: 'bold'}}>사용 가능 학점</Text>
-                  <Text>{this.state.status.available}</Text>
-                </View>
-              </CardItem>
-              <CardItem isHeader={true}>
-                <Text>학점 세이브 상세사항</Text>
-              </CardItem>
-            </View>
-          )}
-          data={this.state.details}
-          renderItem={({item})=>(
-            <CardItem>
-              <Text style={{fontWeight: 'bold'}}>{item.year}년 {item.semester}</Text>
-              <Text>세이브 학점: {item.saved}, 사용 학점: {item.used}</Text>
-            </CardItem>
-          )}
-        />
-      );
+            )}
+          />
+        );
+      }
     }
 }
 
