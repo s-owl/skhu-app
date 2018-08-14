@@ -104,6 +104,10 @@ class NextClassInfo extends Component{
         <Text style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</Text>
         <Text style={{fontSize: 20}}>{this.state.time}</Text>
         <Text>{this.state.attendance}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{color: 'grey'}}>이번 학기 시간표 보기</Text>
+          <MaterialIcons name="chevron-right" size={16}/>
+        </View>
       </CardView>
     );
   }
@@ -138,9 +142,15 @@ class MonthlySchedule extends Component{
   }
   render(){
     return(
-      <CardView style={{flexDirection: 'row'}} onPress={this.props.onPress}>
-        <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
-        <Text style={{flex: 1}}>{this.state.contents}</Text>
+      <CardView onPress={this.props.onPress}>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
+          <Text style={{flex: 1}}>{this.state.contents}</Text>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{color: 'grey'}}>학사 일정 더 보기</Text>
+          <MaterialIcons name="chevron-right" size={16}/>
+        </View>
       </CardView>
     );
   }

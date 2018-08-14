@@ -6,6 +6,9 @@ import NavigationService from './src/tools/NavigationService';
 import Login from './src/Login';
 import MainShell from './src/MainShell';
 
+import { Asset } from 'expo';
+Asset;
+
 const RootStack = createStackNavigator(
   {
     Main: MainShell,

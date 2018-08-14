@@ -7,6 +7,7 @@ import {
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
 import {SecureStore} from 'expo';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'rn-snackbar';
 import {CardView} from './components/components';
 
@@ -77,7 +78,8 @@ export default class Login extends Component {
             let id = this.textInput.idInput.replace(/\s/g,'');
             let pw = this.textInput.pwInput.replace(/\s/g,'');
             this.runLogInProcess(id, pw);
-          }} style={{backgroundColor: '#569f59', alignItems: 'center'}}>
+          }} style={{backgroundColor: '#569f59', justifyContent: 'center', flexDirection: 'row'}}>
+            <MaterialCommunityIcons name={'login'} size={16} color={'white'} style={{marginRight: 8}}/>
             <Text style={{color: 'white'}}>Log In</Text>
           </CardView>
           
