@@ -63,9 +63,9 @@ export default class About extends Component{
             <Text>Facebook Page</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            Linking.openURL('https://s-owl.github.io/foressst/');
+            Linking.openURL('https://skhus.sleepy-owl.com/');
           }}>
-            <Text>홈페이지(준비중)</Text>
+            <Text>홈페이지</Text>
           </CardItem>
           <CardItem onPress={()=>{
             Linking.openURL('https://sleepy-owl.com/');
