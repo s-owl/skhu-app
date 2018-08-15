@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text ,View, 
-  ScrollView, SafeAreaView } from 'react-native';
+  ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
 import { CardView } from './components/components';
 import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from './tools/apis';
@@ -73,37 +73,58 @@ class NextClassInfo extends Component{
     super(props);
     this.state = {
       name: '',
-      time: '불러오는 중...',
-      attendance: ''
+      time: '',
+      attendance: '',
+      isLoading: false
     };
   }
   async componentDidMount(){
     try{
+      this.setState({isLoading: true});
       const data = await this.props.dbHelper.getNextClassInfo();
       if(data != undefined){
         this.setState({
           name: data.title, time: `${DateTools.dayOfWeekNumToStr(data.day)} `
           +`${data.starts_at} ~ ${data.ends_at} @ ${data.room}`,
           attendance:`출석 ${data.attend}, 지각 ${data.late}, 결석 ${data.absence}, `
-                + `공결 ${data.approved}, 생공 ${data.menstrual}, 조퇴 ${data.early}` 
+                + `공결 ${data.approved}, 생공 ${data.menstrual}, 조퇴 ${data.early}`,
+          isLoading: false 
         });
       }else{
-        this.setState({time: '다음 강의가 없습니다.'});
+        this.setState({time: '다음 강의가 없습니다.', isLoading: false});
       }
       
     }catch(err){
-      this.setState({time: '다음 강의 정보를 조회하지 못했습니다.'});
+      this.setState({time: '다음 강의 정보를 조회하지 못했습니다.', isLoading: false});
       console.log(err);
       
     }
     
   }
   render(){
+    let content;
+    if(this.state.isLoading){
+      content = (
+        <View style={{justifyContent: 'center', padding: 32}}>
+          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+        </View>
+      );
+    }else{
+      content = (
+        <View>
+          <Text style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</Text>
+          <Text style={{fontSize: 20}}>{this.state.time}</Text>
+          <Text>{this.state.attendance}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{color: 'grey'}}>이번 학기 시간표 보기</Text>
+            <MaterialIcons name="chevron-right" size={16}/>
+          </View>
+        </View>
+      );
+    }
     return(
       <CardView onPress={this.props.onPress}>
-        <Text style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</Text>
-        <Text style={{fontSize: 20}}>{this.state.time}</Text>
-        <Text>{this.state.attendance}</Text>
+        {content}
       </CardView>
     );
   }
@@ -114,10 +135,12 @@ class MonthlySchedule extends Component{
     super(props);
     this.state = {
       dates: '',
-      contents: ''
+      contents: '',
+      isLoading: false
     };
   }
   async componentDidMount(){
+    this.setState({isLoading: true});
     let today = new Date();
     let schedule = await ForestApi.post('/life/schedules', JSON.stringify({
       'year': today.getFullYear(),
@@ -132,15 +155,36 @@ class MonthlySchedule extends Component{
       }
       this.setState({
         dates: dates,
-        contents: contents
+        contents: contents,
+        isLoading: false
       });
     }
   }
   render(){
+    let content;
+    if(this.state.isLoading){
+      content = (
+        <View style={{justifyContent: 'center', padding: 32}}>
+          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+        </View>
+      );
+    }else{
+      content = (
+        <View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
+            <Text style={{flex: 1}}>{this.state.contents}</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{color: 'grey'}}>학사 일정 더 보기</Text>
+            <MaterialIcons name="chevron-right" size={16}/>
+          </View>
+        </View>
+      );
+    }
     return(
-      <CardView style={{flexDirection: 'row'}} onPress={this.props.onPress}>
-        <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
-        <Text style={{flex: 1}}>{this.state.contents}</Text>
+      <CardView onPress={this.props.onPress}>
+        {content}
       </CardView>
     );
   }
