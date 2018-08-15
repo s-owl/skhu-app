@@ -31,7 +31,6 @@ export default class Subjects extends Component{
       refreshing: false,
       firstLoad: true
     };
-    this.firstLoad = true;
   }
   componentDidMount(){
     this.loadSearchResults();
@@ -96,12 +95,12 @@ export default class Subjects extends Component{
               </CardItem>
               <CardItem>
                 <Picker
-                  selectedValue={this.state.semester.value}
+                  selectedValue={this.state.semester.code}
                   onValueChange={(itemValue, itemIndex) => {
                     this.setState({
                       semester:{
                         title: this.state.semesterOptions[itemIndex].title,
-                        value: itemValue
+                        code: itemValue
                       }
                     });
                   }}>
@@ -114,12 +113,12 @@ export default class Subjects extends Component{
               </CardItem>
               <CardItem>
                 <Picker
-                  selectedValue={this.state.major.value}
+                  selectedValue={this.state.major.code}
                   onValueChange={(itemValue, itemIndex) => {
                     this.setState({
                       major:{
                         title: this.state.majorOptions[itemIndex].title,
-                        value: itemValue
+                        code: itemValue
                       }
                     });
                   }}>
@@ -161,7 +160,7 @@ export default class Subjects extends Component{
     try{
       this.setState({refreshing: true});
       let results;
-      if(this.firstLoad){
+      if(this.state.firstLoad){
         results = await ForestApi.get('/enroll/subjects', true);
       }else{
         results = await ForestApi.post('/enroll/subjects',
@@ -193,13 +192,28 @@ export default class Subjects extends Component{
           });
         }
         console.log(arr);
-        this.setState({
-          result: arr,
-          semesterOptions: data.options.semester,
-          majorOptions: data.options.major,
-          refreshing: false,
-          firstLoad: false
-        });
+        if(this.state.firstLoad){
+          this.setState({
+            result: arr,
+            semesterOptions: data.options.semester,
+            majorOptions: data.options.major,
+            refreshing: false,
+            firstLoad: false,
+            major: {
+              title: data.options.major_current.title,
+              code: data.options.major_current.value
+            }
+          });
+        }else{
+          this.setState({
+            result: arr,
+            semesterOptions: data.options.semester,
+            majorOptions: data.options.major,
+            refreshing: false,
+            firstLoad: false
+          });
+        }
+        
       }
     }catch(err){
       console.log(err);
