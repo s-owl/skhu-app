@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import {View, FlatList, Text} from 'react-native';
+import {View, FlatList, Text, ActivityIndicator} from 'react-native';
 import {CardItem} from '../components/components';
 import ForestApi from '../tools/apis';
+import BuildConfigs from '../config';
+
 export default class Credits extends Component{
     static navigationOptions = ({ navigation, navigationOptions }) => {
       const { params } = navigation.state;
@@ -14,10 +16,12 @@ export default class Credits extends Component{
       super(props);
       this.state = {
         data: [],
-        summary: ''
+        summary: '',
+        isLoading: false
       };
     }
     async componentDidMount(){
+      this.setState({isLoading: true});
       const credits = await ForestApi.get('/user/credits', true);
       if(credits.ok){
         let finalArr = [];
@@ -29,36 +33,46 @@ export default class Credits extends Component{
         }
         this.setState({
           data: finalArr,
-          summary: data.summary
+          summary: data.summary,
+          isLoading: false
         });
       }
     }
     render(){
-      return(
-        <View>
-          <FlatList
-            data={this.state.data}
-            keyExtractor={(item, index) => index}
-            ListFooterComponent={()=>(
-              <CardItem>
-                <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
-                  {this.state.summary}
-                </Text>
-              </CardItem>
-            )}
-            renderItem={({item})=>
-              <CardItem style={{flex:1, flexDirection: 'row'}}>
-                {item.map((subItem, index)=>{
-                  return(
-                    <View style={{flex: 1}}>
-                      <Text style={{fontWeight: 'bold',  textAlign: 'center'}}>{subItem.type}</Text>
-                      <Text style={{ textAlign: 'center'}}>{subItem.earned}</Text>
-                    </View>
-                  );
-                })}
-              </CardItem>
-            }/>
-        </View>
-      );
+      if(this.state.isLoading){
+        return(
+          <View style={{justifyContent: 'center', padding: 32}}>
+            <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+          </View>
+        );
+      }else{
+        return(
+          <View>
+            <FlatList
+              data={this.state.data}
+              keyExtractor={(item, index) => index}
+              ListFooterComponent={()=>(
+                <CardItem>
+                  <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
+                    {this.state.summary}
+                  </Text>
+                </CardItem>
+              )}
+              renderItem={({item})=>
+                <CardItem style={{flex:1, flexDirection: 'row'}}>
+                  {item.map((subItem, index)=>{
+                    return(
+                      <View style={{flex: 1}}>
+                        <Text style={{fontWeight: 'bold',  textAlign: 'center'}}>{subItem.type}</Text>
+                        <Text style={{ textAlign: 'center'}}>{subItem.earned}</Text>
+                      </View>
+                    );
+                  })}
+                </CardItem>
+              }/>
+          </View>
+        );
+      }
+      
     }
 }

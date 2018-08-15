@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {CardItem} from '../components/components';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
 import ForestApi from '../tools/apis';
+import BuildConfigs from '../config';
 
 
 export default class Schedules extends Component{
@@ -32,10 +33,12 @@ class ScheduleComponent extends Component{
     super(props);
     this.state = {
       dates: '',
-      contents: ''
+      contents: '',
+      isLoading: false
     };
   }
   async componentDidMount(){
+    this.setState({isLoading: true});
     let schedule = await ForestApi.post('/life/schedules', JSON.stringify({
       'year': this.props.year,
       'month': this.props.month
@@ -50,19 +53,34 @@ class ScheduleComponent extends Component{
       }
       this.setState({
         dates: dates,
-        contents: contents
+        contents: contents,
+        isLoading: false
       });
     }
   }
   render(){
+    let content;
+    if(this.state.isLoading){
+      content = (
+        <View style={{justifyContent: 'center'}}>
+          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+        </View>
+      );
+    }else{
+      content = (
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
+          <Text style={{flex: 1}}>{this.state.contents}</Text>
+        </View>
+      );
+    }
     return(
       <View>
         <CardItem isHeader={true}>
           <Text>{this.props.year}{'.'}{this.props.month}</Text>
         </CardItem>
-        <CardItem style={{flexDirection: 'row'}}>
-          <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
-          <Text style={{flex: 1}}>{this.state.contents}</Text>
+        <CardItem>
+          {content}
         </CardItem>
       </View>
     );

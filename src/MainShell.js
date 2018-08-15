@@ -16,6 +16,7 @@ import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
 import { MaterialIcons } from '@expo/vector-icons';
+import BuildConfigs from './config';
 
 const HomeStack = createStackNavigator(
   {
@@ -53,7 +54,7 @@ const MenuStack = createStackNavigator(
   {
     initialRouteName: 'Menu',
     navigationOptions: {
-      headerTintColor: '#569f59',
+      headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
         color: 'black'

@@ -10,6 +10,7 @@ import {SecureStore} from 'expo';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'rn-snackbar';
 import {CardView} from './components/components';
+import BuildConfigs from './config';
 
 export default class Login extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -51,7 +52,7 @@ export default class Login extends Component {
     let logInContainer;
     if(this.state.isLoading){
       logInContainer = (
-        <ActivityIndicator size="large" color="#616A6B" />
+        <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
       );
     }else{
       logInContainer = (

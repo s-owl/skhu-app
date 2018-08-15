@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import {SectionList, Text} from 'react-native';
+import {SectionList, Text, ActivityIndicator, View} from 'react-native';
 import {CardItem} from '../components/components';
 import ForestApi from '../tools/apis';
+import BuildConfigs from '../config';
+
 export default class CounselHistory extends Component{
     static navigationOptions = ({ navigation, navigationOptions }) => {
       const { params } = navigation.state;
@@ -14,10 +16,12 @@ export default class CounselHistory extends Component{
       super(props);
       this.state = {
         professors:[],
-        history:[]
+        history:[],
+        isLoading: false
       };
     }
     async componentDidMount(){
+      this.setState({isLoading: true});
       const professors = await ForestApi.postToSam('/ACS/ACSAD/ACSAD01_GetList');
       let professorsList = [];
       professorsList.push({
@@ -56,30 +60,40 @@ export default class CounselHistory extends Component{
 
       this.setState({
         professors: professorsList,
-        history: historyList
+        history: historyList,
+        isLoading: false
       });
     }
     render(){
-      return(
-        <SectionList
-          renderItem={({item, index, section}) => (
-            <CardItem key={index} style={{flex: 0, flexDirection: 'row'}}>
-              <Text style={{flex: 2, textAlign: 'center'}}>{item.timestamp}</Text>
-              <Text style={{flex: 1, textAlign: 'center'}}>{item.counselor}</Text>
-              <Text style={{flex: 1, textAlign: 'center'}}>{item.countOrType}</Text>
-            </CardItem>
-          )}
-          renderSectionHeader={({section: {title}}) => (
-            <CardItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
-              <Text style={{fontWeight: 'bold'}}>{title}</Text>
-            </CardItem>
-          )}
-          sections={[
-            {title: '지도교수 목록', data: this.state.professors},
-            {title: '상담 내역', data: this.state.history}
-          ]}
-          keyExtractor={(item, index) => item + index}
-        />
-      );
+      if(this.state.isLoading){
+        return(
+          <View style={{justifyContent: 'center', padding: 32}}>
+            <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+          </View>
+        );
+      }else{
+        return(
+          <SectionList
+            renderItem={({item, index, section}) => (
+              <CardItem key={index} style={{flex: 0, flexDirection: 'row'}}>
+                <Text style={{flex: 2, textAlign: 'center'}}>{item.timestamp}</Text>
+                <Text style={{flex: 1, textAlign: 'center'}}>{item.counselor}</Text>
+                <Text style={{flex: 1, textAlign: 'center'}}>{item.countOrType}</Text>
+              </CardItem>
+            )}
+            renderSectionHeader={({section: {title}}) => (
+              <CardItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
+                <Text style={{fontWeight: 'bold'}}>{title}</Text>
+              </CardItem>
+            )}
+            sections={[
+              {title: '지도교수 목록', data: this.state.professors},
+              {title: '상담 내역', data: this.state.history}
+            ]}
+            keyExtractor={(item, index) => item + index}
+          />
+        );
+      }
+      
     }
 } 
