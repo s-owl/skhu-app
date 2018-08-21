@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Text ,View, Image, TextInput,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
-  Alert, ActivityIndicator, NetInfo, Platform
+  Alert, ActivityIndicator, NetInfo, Platform, TouchableOpacity
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
-import {SecureStore} from 'expo';
+import {SecureStore, Linking} from 'expo';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'rn-snackbar';
-import {CardView} from './components/components';
+import {CardView, CardItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
 
 export default class Login extends Component {
@@ -23,7 +23,8 @@ export default class Login extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isLoading: false
+      isLoading: false,
+      showHelp: false
     };
     this.textInput = {
       idInput: '',
@@ -83,7 +84,6 @@ export default class Login extends Component {
             <MaterialCommunityIcons name={'login'} size={16} color={'white'} style={{marginRight: 8}}/>
             <Text style={{color: 'white'}}>Log In</Text>
           </CardView>
-          
         </View>
       );
     }
@@ -97,12 +97,43 @@ export default class Login extends Component {
             </View>
             <View style={ styles.login_container }>
               {logInContainer}
-              <View style={ styles.footer }>
-                <Text style={ styles.copy }>(C)2018-Present Sleepy OWL</Text>
-                <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
-              </View>
+              <TouchableOpacity onPress={()=>{this.setState({showHelp: true});}}>
+                <View style={ styles.footer }>
+                  <Text>여기를 눌러 도움 얻기</Text>
+                  <Text>(C)2018-Present Sleepy OWL</Text>
+                  <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
+          <BottomModal
+            title="도움 얻기" visible={this.state.showHelp}
+            onRequestClose={()=>{
+              this.setState({showHelp: false});
+            }}
+            buttons={[{
+              label: '닫기',
+              onPress: ()=>{this.setState({showHelp: false});}
+            }]}>
+            <CardItem onPress={()=>{
+              Linking.openURL('http://sid.skhu.ac.kr/SID03/SID0301');
+              this.setState({showHelp: false});
+            }}>
+              <Text>계정 찾기</Text>
+            </CardItem>
+            <CardItem onPress={()=>{
+              Linking.openURL('http://sid.skhu.ac.kr/SID02/SID0201');
+              this.setState({showHelp: false});
+            }}>
+              <Text>비밀번호 복구</Text>
+            </CardItem>
+            <CardItem onPress={()=>{
+              NavigationService.navigate('About');
+              this.setState({showHelp: false});
+            }}>
+              <Text>앱 정보</Text>
+            </CardItem>
+          </BottomModal>
         </KeyboardAvoidingView>
       </SafeAreaView>
     );
@@ -222,7 +253,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 5
   },
-  copy: {
-    marginTop: 20
-  }
 });

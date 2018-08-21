@@ -13,6 +13,15 @@ export default class NavigationService{
       );
     }
 
+    static navigate(routeName, params) {
+      NavigationService._navigator.dispatch(
+        NavigationActions.navigate({
+          routeName,
+          params,
+        })
+      );
+    }
+
     static setTopLevelNavigator(navigatorRef) {
       NavigationService._navigator = navigatorRef;
     }
