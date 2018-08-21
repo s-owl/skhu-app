@@ -57,7 +57,9 @@ class BottomModal extends Component{
             <CardItem isHeader={true}>
               <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
             </CardItem>
-            {this.props.children}            
+            <View style={[{backgroundColor: 'white'}, this.props.style]}>
+              {this.props.children}  
+            </View>          
             <View style={{flex:0, flexDirection: 'row', backgroundColor: 'white',
               height:50, width:'100%'}}>
               {this.props.buttons.map((item, index)=>{
