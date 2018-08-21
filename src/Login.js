@@ -114,6 +114,9 @@ export default class Login extends Component {
       if(id.length <= 0 || pw.length <= 0){
         alert('학번 또는 비밀번호가 입력되지 않았습니디.');
         this.setState({isLoading: false});
+      }else if(pw.length < 8){
+        alert('비밀번호가 너무 짧습니다. 비밀번호는 8자리 이상입니다.');
+        this.setState({isLoading: false});
       }else{
         let response = await ForestApi.login(id, pw);
         if(response.ok){
