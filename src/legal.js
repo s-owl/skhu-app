@@ -2,7 +2,8 @@ const LegalInfo = {
   currentDevelopers: [
     '한영빈(201632034, sukso96100@gmail.com)\n앱, 서버 개발 및 총괄(2016~2018)',
     '김유진(201732008, yujin7621@me.com)\n앱 개발(2018~)',
-    '김문수(201732004, s201732004@gmail.com)\n서버 개발(2018~)'
+    '김문수(201732004, s201732004@gmail.com)\n서버 개발(2018~)',
+    '한나라(201633036, nr970810@gmail.com)\n기획, 앱 화면 설계(2018~)'
   ],
   formerDevelopers: [
     '김희수(201632007, hisu138@gmail.com)\n서버 개발(2018)',
