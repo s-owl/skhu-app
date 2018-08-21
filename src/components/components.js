@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
 import { 
-  StyleSheet, View, TouchableOpacity, Modal, SafeAreaView, Text
+  StyleSheet, View, TouchableOpacity, Modal,
+  SafeAreaView, Text, ScrollView
 } from 'react-native';
 class CardView extends Component{
   render(){
@@ -50,26 +51,26 @@ class BottomModal extends Component{
         transparent={true}
         visible={this.props.visible}
         onRequestClose={this.props.onRequestClose}>
-        <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}} 
-          forceInset={{ vertical: 'always', horizontal: 'never' }}>
-          <CardItem isHeader={true}>
-            <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
-          </CardItem>
-          <View style={[{backgroundColor: 'white'}, this.props.style]}>
-            {this.props.children}
-          </View>
-          <View style={{flex:0, flexDirection: 'row', backgroundColor: 'white',
-            height:50, width:'100%'}}>
-            {this.props.buttons.map((item, index)=>{
-              return(
-                <CardItem style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
-                  <Text>{item.label}</Text>
-                </CardItem>
-              );
-            })}
-          </View>
-          <CardItem/>
-        </SafeAreaView>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}} 
+            forceInset={{ vertical: 'always', horizontal: 'never' }}>
+            <CardItem isHeader={true}>
+              <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
+            </CardItem>
+            {this.props.children}            
+            <View style={{flex:0, flexDirection: 'row', backgroundColor: 'white',
+              height:50, width:'100%'}}>
+              {this.props.buttons.map((item, index)=>{
+                return(
+                  <CardItem style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
+                    <Text>{item.label}</Text>
+                  </CardItem>
+                );
+              })}
+            </View>
+            <CardItem/>
+          </SafeAreaView>
+        </ScrollView>
       </Modal>
     );
   }

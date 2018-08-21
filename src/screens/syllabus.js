@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {RefreshControl, Modal, Text, View, FlatList,
-  TextInput, Picker, SafeAreaView, ActivityIndicator} from 'react-native';
-import {CardItem} from '../components/components';
+import {RefreshControl, Text, View, FlatList,
+  TextInput, Picker, ActivityIndicator} from 'react-native';
+import {CardItem, BottomModal} from '../components/components';
 import DateTools from '../tools/datetools';
 import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from '../tools/apis';
@@ -77,67 +77,54 @@ export default class Syllabus extends Component{
               </CardItem>
             }
           />
-          <Modal
-            animationType="slide"
-            transparent={true}
+          <BottomModal
+            title='강의계획서 검색'
             visible={this.state.showSearchModal}
-            onRequestClose={() => this.setState({showSearchModal: false})}>
-            <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}} 
-              forceInset={{ vertical: 'always', horizontal: 'never' }}>
-              <CardItem isHeader={true}>
-                <Text style={{fontWeight: 'bold'}}>강의계획서 검색</Text>
-              </CardItem>
-              <CardItem>
-                <TextInput placeholder={'년도(필수)'} defaultValue={this.state.year} style={{fontSize: 16, padding: 8}}
-                  onChangeText={(text)=>this.setState({year: text})}/>
-              </CardItem>
-              <CardItem>
-                <Picker
-                  selectedValue={this.state.semesterCode}
-                  onValueChange={(itemValue, itemIndex) => {
-                    this.setState({
-                      semesterCode: itemValue,
-                      semester: ['1학기', '2학기', '여름학기', '겨울학기'][itemIndex]
-                    });
-                  }}>
-                  <Picker.Item label="1학기" value="Z0101" />
-                  <Picker.Item label="2학기" value="Z0102" />
-                  <Picker.Item label="여름학기" value="Z0103" />
-                  <Picker.Item label="겨울학기" value="Z0104" />
-                </Picker>
-              </CardItem>
-              <CardItem>
-                <TextInput placeholder={'강의 이름(선택)'} style={{fontSize: 16, padding: 8}}
-                  defaultValue={this.state.subject}
-                  onChangeText={(text)=>this.setState({subject: text})}/>
-              </CardItem>
-              <CardItem>
-                <TextInput placeholder={'개설 소속(선택)'} style={{fontSize: 16, padding: 8}}
-                  defaultValue={this.state.major}
-                  onChangeText={(text)=>this.setState({major: text})}/>
-              </CardItem>
-              <CardItem>
-                <TextInput placeholder={'교수 이름(선택)'} style={{fontSize: 16, padding: 8}}
-                  defaultValue={this.state.professor}
-                  onChangeText={(text)=>this.setState({professor: text})}/>
-              </CardItem>
-              <View style={{flex:0, flexDirection: 'row', backgroundColor: 'white',
-                height:50, width:'100%'}}>
-                <CardItem style={{flex:1, alignItems:'center'}} onPress={()=>{
-                  this.setState({showSearchModal: false});
+            onRequestClose={() => this.setState({showSearchModal: false})}
+            buttons={[
+              {label: '취소', onPress: ()=>{
+                this.setState({showSearchModal: false});
+              }},
+              {label: '검색', onPress: ()=>{
+                this.setState({showSearchModal: false});
+                this.loadSearchResults();              
+              }}
+            ]}>
+            <CardItem>
+              <TextInput placeholder={'년도(필수)'} defaultValue={this.state.year} style={{fontSize: 16, padding: 8}}
+                onChangeText={(text)=>this.setState({year: text})}/>
+            </CardItem>
+            <CardItem>
+              <Picker
+                selectedValue={this.state.semesterCode}
+                onValueChange={(itemValue, itemIndex) => {
+                  this.setState({
+                    semesterCode: itemValue,
+                    semester: ['1학기', '2학기', '여름학기', '겨울학기'][itemIndex]
+                  });
                 }}>
-                  <Text>취소</Text>
-                </CardItem>
-                <CardItem style={{flex:1, alignItems:'center'}} onPress={()=>{
-                  this.setState({showSearchModal: false});
-                  this.loadSearchResults();
-                }}>
-                  <Text>검색</Text>
-                </CardItem>
-              </View>
-              <CardItem/>
-            </SafeAreaView>
-          </Modal>
+                <Picker.Item label="1학기" value="Z0101" />
+                <Picker.Item label="2학기" value="Z0102" />
+                <Picker.Item label="여름학기" value="Z0103" />
+                <Picker.Item label="겨울학기" value="Z0104" />
+              </Picker>
+            </CardItem>
+            <CardItem>
+              <TextInput placeholder={'강의 이름(선택)'} style={{fontSize: 16, padding: 8}}
+                defaultValue={this.state.subject}
+                onChangeText={(text)=>this.setState({subject: text})}/>
+            </CardItem>
+            <CardItem>
+              <TextInput placeholder={'개설 소속(선택)'} style={{fontSize: 16, padding: 8}}
+                defaultValue={this.state.major}
+                onChangeText={(text)=>this.setState({major: text})}/>
+            </CardItem>
+            <CardItem>
+              <TextInput placeholder={'교수 이름(선택)'} style={{fontSize: 16, padding: 8}}
+                defaultValue={this.state.professor}
+                onChangeText={(text)=>this.setState({professor: text})}/>
+            </CardItem>
+          </BottomModal>
         </View>
       );
     }
