@@ -97,7 +97,11 @@ export default class Login extends Component {
             </View>
             <View style={ styles.login_container }>
               {logInContainer}
-              <TouchableOpacity onPress={()=>{this.setState({showHelp: true});}}>
+              <TouchableOpacity onPress={()=>{
+                if(!this.state.isLoading){
+                  this.setState({showHelp: true});
+                }
+              }}>
                 <View style={ styles.footer }>
                   <Text>여기를 눌러 도움 얻기</Text>
                   <Text>(C)2018-Present Sleepy OWL</Text>
