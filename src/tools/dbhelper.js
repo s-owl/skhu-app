@@ -101,20 +101,27 @@ export default class DBHelper{
       let data = await attendance.json();
       for(let item of data.attendance){
         this.db.transaction(tx => 
-          tx.executeSql(
-            'insert or replace into attendance values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-            [item.subject_code, item.subject, Number(item.attend), Number(item.late), 
-              Number(item.absence), Number(item.approved), Number(item.menstrual), Number(item.early),
-              semester.code, today.getFullYear()],
+          tx.executeSql('delete * from attendance where semester_code = ? and year = ?',
+            [semester.code, today.getFullYear()],
             (tx, result)=>{
-              console.log('done insert attendance');
-              console.log(result);
+              tx.executeSql(
+                'insert or replace into attendance values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+                [item.subject_code, item.subject, Number(item.attend), Number(item.late), 
+                  Number(item.absence), Number(item.approved), Number(item.menstrual), Number(item.early),
+                  semester.code, today.getFullYear()],
+                (tx, result)=>{
+                  console.log('done insert attendance');
+                  console.log(result);
+                },
+                (err)=>{
+                  console.log('error insert attendance');
+                  console.log(err);
+                }
+              );
             },
             (err)=>{
-              console.log('error insert attendance');
               console.log(err);
-            }
-          )
+            })
         );
       }
     }
@@ -132,8 +139,10 @@ export default class DBHelper{
           },
           (err)=>{
             reject(err);
-          })
+          }
+        )
       );
+        
     });
   }
   async fetchTimeTable(){
@@ -155,18 +164,27 @@ export default class DBHelper{
           const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
           this.db.transaction(tx => 
             tx.executeSql(
-              'insert or replace into timetable values(?, ?, ?, ?, ?, time(?), time(?), ?, ?, ?);',
-              [`${item.GwamogCd}-${dayOfWeek}`, item.GwamogKorNm, item.GyosuNm, item.HosilCd,
-                Number(dayOfWeek), item.FrTm, item.ToTm, `${item.GwamogCd}-${item.Bunban}`,
-                semester.code, today.getFullYear()],
+              'delete * from timetable where where semester_code = ? and year = ?',
+              [semester.code, today.getFullYear()],
               (tx, result)=>{
-                console.log('done insert timetable');
-                console.log(result);
+                tx.executeSql(
+                  'insert or replace into timetable values(?, ?, ?, ?, ?, time(?), time(?), ?, ?, ?);',
+                  [`${item.GwamogCd}-${dayOfWeek}`, item.GwamogKorNm, item.GyosuNm, item.HosilCd,
+                    Number(dayOfWeek), item.FrTm, item.ToTm, `${item.GwamogCd}-${item.Bunban}`,
+                    semester.code, today.getFullYear()],
+                  (tx, result)=>{
+                    console.log('done insert timetable');
+                    console.log(result);
+                  },
+                  (err)=>{
+                    console.log('Error while insert timetable');
+                    console.log(err);
+                  });
               },
               (err)=>{
-                console.log('Error while insert timetable');
                 console.log(err);
-              })
+              }
+            )
           );
         }
       }
