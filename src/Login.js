@@ -24,7 +24,8 @@ export default class Login extends Component {
     super(props);
     this.state = {
       isLoading: false,
-      showHelp: false
+      showHelp: false,
+      enableHelp: true
     };
     this.textInput = {
       idInput: '',
@@ -88,6 +89,30 @@ export default class Login extends Component {
       );
     }
 
+    let helpButton;
+    if(this.state.enableHelp){
+      helpButton = (
+        <TouchableOpacity onPress={()=>{
+          if(!this.state.isLoading){
+            this.setState({showHelp: true});
+          }
+        }}>
+          <View style={ styles.footer }>
+            <Text>여기를 눌러 도움 얻기</Text>
+            <Text>(C)2018-Present Sleepy OWL</Text>
+            <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
+          </View>
+        </TouchableOpacity>
+      );
+    }else{
+      helpButton = (
+        <View style={ styles.footer }>
+          <Text>(C)2018-Present Sleepy OWL</Text>
+          <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
+        </View>
+      );
+    }
+
     return (
       <SafeAreaView style={ styles.container }>
         <KeyboardAvoidingView  style={ styles.container } behavior="padding" enabled>
@@ -97,17 +122,7 @@ export default class Login extends Component {
             </View>
             <View style={ styles.login_container }>
               {logInContainer}
-              <TouchableOpacity onPress={()=>{
-                if(!this.state.isLoading){
-                  this.setState({showHelp: true});
-                }
-              }}>
-                <View style={ styles.footer }>
-                  <Text>여기를 눌러 도움 얻기</Text>
-                  <Text>(C)2018-Present Sleepy OWL</Text>
-                  <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
-                </View>
-              </TouchableOpacity>
+              {helpButton}
             </View>
           </View>
           <BottomModal
@@ -145,13 +160,13 @@ export default class Login extends Component {
   async runLogInProcess(id, pw){
     console.log('Logging in...');
     try{
-      this.setState({isLoading: true});
+      this.setState({isLoading: true, enableHelp: false});
       if(id.length <= 0 || pw.length <= 0){
         alert('학번 또는 비밀번호가 입력되지 않았습니디.');
-        this.setState({isLoading: false});
+        this.setState({isLoading: false, enableHelp: true});
       }else if(pw.length < 8){
         alert('비밀번호가 너무 짧습니다. 비밀번호는 8자리 이상입니다.');
-        this.setState({isLoading: false});
+        this.setState({isLoading: false, enableHelp: true});
       }else{
         let response = await ForestApi.login(id, pw);
         if(response.ok){
@@ -165,7 +180,7 @@ export default class Login extends Component {
           NavigationService.reset('Main');
           // this.props.navigation.navigate('Main');
         }else if(response.status == 400){
-          this.setState({isLoading: false});
+          this.setState({isLoading: false, enableHelp: true});
           setTimeout(() => {
             Alert.alert(
               '로그인 오류',
@@ -178,7 +193,7 @@ export default class Login extends Component {
           }, 10);
 
         }else if(response.status == 401){
-          this.setState({isLoading: false});
+          this.setState({isLoading: false, enableHelp: true});
           setTimeout(()=>{
             Alert.alert(
               '로그인 실패',
@@ -190,11 +205,11 @@ export default class Login extends Component {
             );
           }, 10);
         }else{
-          this.setState({isLoading: false});
+          this.setState({isLoading: false, enableHelp: true});
         }
       }
     }catch(err){
-      this.setState({isLoading: false});
+      this.setState({isLoading: false, enableHelp: true});
       console.log(err);
       setTimeout(()=>{
         Alert.alert(
