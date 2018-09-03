@@ -60,7 +60,7 @@ export default class DBHelper{
       const semester = DateTools.getSemesterCode(today.getMonth()+1);
       this.db.transaction(tx => {
         tx.executeSql(
-          'delete * from attendance, timetable where semester_code is not ? and year is not ?;',
+          'delete from attendance, timetable where semester_code is not ? and year is not ?;',
           [semester.code, today.getFullYear()], 
           (tx, result)=>{
             resolve(result);
@@ -99,31 +99,48 @@ export default class DBHelper{
     if(attendance.ok){
       console.log('attendance');
       let data = await attendance.json();
-      for(let item of data.attendance){
-        this.db.transaction(tx => 
-          tx.executeSql('delete * from attendance where semester_code = ? and year = ?',
-            [semester.code, today.getFullYear()],
+
+      let aCurrent = await this.queryAttendance();
+      if(aCurrent){
+        for(let item of data.attendance){
+          let toRemoveIndex = aCurrent.findIndex(x => x.id == item.subject_code);
+          aCurrent.splice(toRemoveIndex, 1);
+        }
+      }
+      this.db.transaction(tx =>{
+        for(let item of data.attendance){
+          tx.executeSql(
+            'insert or replace into attendance values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+            [item.subject_code, item.subject, Number(item.attend), Number(item.late), 
+              Number(item.absence), Number(item.approved), Number(item.menstrual), Number(item.early),
+              semester.code, today.getFullYear()],
             (tx, result)=>{
-              tx.executeSql(
-                'insert or replace into attendance values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-                [item.subject_code, item.subject, Number(item.attend), Number(item.late), 
-                  Number(item.absence), Number(item.approved), Number(item.menstrual), Number(item.early),
-                  semester.code, today.getFullYear()],
-                (tx, result)=>{
-                  console.log('done insert attendance');
-                  console.log(result);
-                },
-                (err)=>{
-                  console.log('error insert attendance');
-                  console.log(err);
-                }
-              );
+              console.log('done insert attendance');
+              console.log(result);
             },
             (err)=>{
+              console.log('error insert attendance');
               console.log(err);
-            })
-        );
-      }
+            }
+          );
+        }
+      });
+      this.db.transaction(tx =>{
+        for(let item of aCurrent){
+          tx.executeSql(
+            'delete from attendance where id = ? and semester_code = ? and year = ?;',
+            [item.id, semester.code, today.getFullYear()],
+            (tx, result)=>{
+              console.log('removed outdated attendance item');
+              console.log(result);
+            },
+            (err)=>{
+              console.log('error delete attendance');
+              console.log(err);
+            }
+          );
+        }
+      });
     }
   }
   queryAttendance(){
@@ -160,33 +177,53 @@ export default class DBHelper{
       if(timetable.ok){
         console.log('timetable');
         let data = await timetable.json();
-        for(let item of data.DAT){
-          const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
-          this.db.transaction(tx => 
+
+        let tCurrent = (await this.getTimetableData())._array;
+        if(tCurrent != undefined){
+          for(let item of data.DAT){
+            const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
+            let toRemoveIndex = tCurrent.findIndex(x => x.id == `${item.GwamogCd}-${dayOfWeek}`);
+            tCurrent.splice(toRemoveIndex, 1);
+          }
+        }
+
+        this.db.transaction(tx => {          
+          console.log('inserting new timetable data');
+          for(let item of data.DAT){
+            const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
+            console.log('inserting new timetable data');
             tx.executeSql(
-              'delete * from timetable where where semester_code = ? and year = ?',
-              [semester.code, today.getFullYear()],
+              'insert or replace into timetable values(?, ?, ?, ?, ?, time(?), time(?), ?, ?, ?);',
+              [`${item.GwamogCd}-${dayOfWeek}`, item.GwamogKorNm, item.GyosuNm, item.HosilCd,
+                Number(dayOfWeek), item.FrTm, item.ToTm, `${item.GwamogCd}-${item.Bunban}`,
+                semester.code, today.getFullYear()],
               (tx, result)=>{
-                tx.executeSql(
-                  'insert or replace into timetable values(?, ?, ?, ?, ?, time(?), time(?), ?, ?, ?);',
-                  [`${item.GwamogCd}-${dayOfWeek}`, item.GwamogKorNm, item.GyosuNm, item.HosilCd,
-                    Number(dayOfWeek), item.FrTm, item.ToTm, `${item.GwamogCd}-${item.Bunban}`,
-                    semester.code, today.getFullYear()],
-                  (tx, result)=>{
-                    console.log('done insert timetable');
-                    console.log(result);
-                  },
-                  (err)=>{
-                    console.log('Error while insert timetable');
-                    console.log(err);
-                  });
+                console.log('done insert timetable');
+                console.log(result);
               },
               (err)=>{
+                console.log('Error while insert timetable');
+                console.log(err);
+              });
+          }
+        });
+
+        this.db.transaction(tx =>{
+          for(let item of tCurrent){
+            tx.executeSql(
+              'delete from timetable where id = ? and semester_code = ? and year = ?;',
+              [item.id, semester.code, today.getFullYear()],
+              (tx, result)=>{
+                console.log('removed outdated timetable item');
+                console.log(result);
+              },
+              (err)=>{
+                console.log('error delete timetable');
                 console.log(err);
               }
-            )
-          );
-        }
+            );
+          }
+        });
       }
       console.log('done');
     }catch(err){
@@ -251,7 +288,5 @@ export default class DBHelper{
         );
       });
     });
-  }
-
-    
+  }   
 }
