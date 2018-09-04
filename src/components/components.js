@@ -1,17 +1,19 @@
 
 import React, { Component } from 'react';
 import { 
-  StyleSheet, View, TouchableOpacity, Modal,
+  StyleSheet, View, Modal,
   SafeAreaView, Text, ScrollView
 } from 'react-native';
+import Touchable from './touchable';
+
 class CardView extends Component{
   render(){
     if(this.props.onPress != undefined){
       return(
-        <TouchableOpacity onPress={this.props.onPress}
+        <Touchable onPress={this.props.onPress}
           style={[styles.container, this.props.style]}>
           {this.props.children}
-        </TouchableOpacity>
+        </Touchable>
       );
     }else{
       return(
@@ -28,10 +30,10 @@ class CardItem extends Component{
     const itemStyle = this.props.isHeader ? styles.cardItemHeader : styles.cardItem;
     if(this.props.onPress != undefined){
       return(
-        <TouchableOpacity onPress={this.props.onPress}
+        <Touchable onPress={this.props.onPress}
           style={[itemStyle, this.props.style]}>
           {this.props.children}
-        </TouchableOpacity>
+        </Touchable>
       );
     }else{
       return(
