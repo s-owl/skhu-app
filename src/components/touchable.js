@@ -5,7 +5,7 @@ export default class Touchable extends Component{
   render(){
     if(Platform.OS === 'android' && Platform.Version >= 21){
       return(
-        <TouchableNativeFeedback onPressOut={this.props.onPress} 
+        <TouchableNativeFeedback onPress={this.props.onPress} 
           delayPressIn={1} delayPressOut={10}
           background={TouchableNativeFeedback.SelectableBackground()}>
           <View style={this.props.style}>{this.props.children}</View>

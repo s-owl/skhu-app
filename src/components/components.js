@@ -49,11 +49,12 @@ class BottomModal extends Component{
   render(){
     return(
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={this.props.visible}
         onRequestClose={this.props.onRequestClose}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}
+          style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
           <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}} 
             forceInset={{ vertical: 'always', horizontal: 'never' }}>
             <CardItem isHeader={true}>
@@ -97,12 +98,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   cardItem: {
-    elevation: 1,
+    // elevation: 1,
     padding: 16,
     backgroundColor: 'white',
   },
   cardItemHeader: {
-    elevation: 1,
+    // elevation: 1,
     marginTop: 16,
     paddingLeft: 16,
     paddingRight: 16,
