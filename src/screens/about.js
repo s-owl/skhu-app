@@ -66,7 +66,7 @@ export default class About extends Component{
             <Text style={{fontWeight: 'bold'}}>웹사이트</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            Linking.openURL('https://www.facebook.com/skhuforessst/');
+            Linking.openURL('https://www.facebook.com/SKHUsMobileApp/');
           }}>
             <Text>Facebook Page</Text>
           </CardItem>
@@ -85,12 +85,12 @@ export default class About extends Component{
             <Text style={{fontWeight: 'bold'}}>오류 보고/기능 제안/문의</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            Linking.openURL('https://github.com/s-owl/foressst/issues/new');
+            Linking.openURL('https://github.com/s-owl/skhus/issues/new');
           }}>
             <Text>새 의견 제출하기(GitHub 계정 필요)</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            Linking.openURL('https://github.com/s-owl/foressst/issues');
+            Linking.openURL('https://github.com/s-owl/skhus/issues');
           }}>
             <Text>오류 보고/기능 제안 목록 보기</Text>
           </CardItem>
