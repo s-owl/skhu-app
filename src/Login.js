@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Text ,View, Image, TextInput,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
-  Alert, ActivityIndicator, NetInfo, Platform, TouchableOpacity
+  Alert, ActivityIndicator, NetInfo, Platform
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
@@ -11,6 +11,8 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'rn-snackbar';
 import {CardView, CardItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
+import Touchable from './components/touchable';
+
 
 export default class Login extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -92,7 +94,7 @@ export default class Login extends Component {
     let helpButton;
     if(this.state.enableHelp){
       helpButton = (
-        <TouchableOpacity onPress={()=>{
+        <Touchable onPress={()=>{
           if(!this.state.isLoading){
             this.setState({showHelp: true});
           }
@@ -102,7 +104,7 @@ export default class Login extends Component {
             <Text>(C)2018-Present Sleepy OWL</Text>
             <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
           </View>
-        </TouchableOpacity>
+        </Touchable>
       );
     }else{
       helpButton = (
