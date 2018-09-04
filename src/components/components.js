@@ -11,13 +11,13 @@ class CardView extends Component{
     if(this.props.onPress != undefined){
       return(
         <Touchable onPress={this.props.onPress}
-          style={[styles.container, this.props.style]}>
+          style={[styles.container, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
           {this.props.children}
         </Touchable>
       );
     }else{
       return(
-        <View style={[styles.container, this.props.style]}>
+        <View style={[styles.container, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
           {this.props.children}
         </View>
       );
@@ -31,13 +31,13 @@ class CardItem extends Component{
     if(this.props.onPress != undefined){
       return(
         <Touchable onPress={this.props.onPress}
-          style={[itemStyle, this.props.style]}>
+          style={[itemStyle, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
           {this.props.children}
         </Touchable>
       );
     }else{
       return(
-        <View style={[itemStyle, this.props.style]}>
+        <View style={[itemStyle, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
           {this.props.children}
         </View>
       );

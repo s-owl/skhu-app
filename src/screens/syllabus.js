@@ -46,7 +46,7 @@ export default class Syllabus extends Component{
       return(
         <View>
           <CardItem onPress={()=>this.setState({showSearchModal: true})}
-            style={{flex:0, flexDirection: 'row'}}>
+            style={{flex:0, flexDirection: 'row'}} elevate={true}>
             <Text style={{flex:1}}>
               {this.state.year}-{this.state.semester}, {this.state.subject}, {this.state.major}, {this.state.professor}
             </Text>

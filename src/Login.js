@@ -79,7 +79,7 @@ export default class Login extends Component {
               this.textInput.pwInput = text;
             }}>
           </TextInput>
-          <CardView onPress={()=>{
+          <CardView elevate={true} onPress={()=>{
             let id = this.textInput.idInput.replace(/\s/g,'');
             let pw = this.textInput.pwInput.replace(/\s/g,'');
             this.runLogInProcess(id, pw);
