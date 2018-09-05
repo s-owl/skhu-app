@@ -166,8 +166,11 @@ export default class Login extends Component {
       if(id.length <= 0 || pw.length <= 0){
         alert('학번 또는 비밀번호가 입력되지 않았습니디.');
         this.setState({isLoading: false, enableHelp: true});
-      }else if(pw.length < 8){
-        alert('비밀번호가 너무 짧습니다. 비밀번호는 8자리 이상입니다.');
+      }else if(pw.length < 9){
+        alert(`비밀번호가 너무 짧습니다. 비밀번호는 9자리 이상입니다.
+        9자리 미만 비밀번호 사용 시(예: 종합정보시스템에서 신규 계정에 부여하는 7~8자리 비밀번호),
+        종합정보시스템(forest.skhu.ac.kr) 에서 변경 후 로그인 해 주세요.
+        비밀번호 변경에 문제가 있는 경우 성공회대학교 전자계산소에 문의하시기 바랍니다.`);
         this.setState({isLoading: false, enableHelp: true});
       }else{
         let response = await ForestApi.login(id, pw);
