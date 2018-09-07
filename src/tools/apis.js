@@ -1,9 +1,12 @@
 
 import { SecureStore } from 'expo';
 import BuildConfigs from '../config';
+import 'abortcontroller-polyfill';
+
 export default class ForestApi{
     static url = BuildConfigs.API_SERVER_ADDR;
     static login(userid, userpw){
+      const AbortController = window.AbortController;
       const controller = new AbortController();
       const signal = controller.signal;
       let loginHeaders = new Headers();
