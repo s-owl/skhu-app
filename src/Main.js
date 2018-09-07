@@ -4,7 +4,7 @@ import { StyleSheet, Text ,View,
 import { CardView } from './components/components';
 import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from './tools/apis';
-import { SmallWeatherWidget } from './components/weather';
+import { TopWidget } from './components/weather';
 import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
@@ -30,7 +30,7 @@ export default class Main extends Component {
         <SafeAreaView>
           <ScrollView>
             <View style={{marginTop: 50, padding: 16}}>
-              <SmallWeatherWidget unit="metric" appid={BuildConfigs.OPENWEATHERMAP_API_KEY}/>
+              <TopWidget/>
               <CardView style={{flex: 0, flexDirection: 'row'}} 
                 onPress={()=>{
                   this.props.navigation.navigate('Attendance');
