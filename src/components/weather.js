@@ -3,7 +3,7 @@ import {
   StyleSheet, View, ActivityIndicator, Modal, TouchableOpacity, Text
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { DangerZone } from 'expo';
+import BuildConfigs from '../config';
 
 
 class WeatherUtils{
@@ -23,6 +23,17 @@ class WeatherUtils{
     });
   }
 
+  static whereAmI(){
+    return new Promise((resolve, reject)=>{
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position)=>{
+          resolve(position.coords);
+        });
+      } else {
+        reject('GeoLocation not available');
+      }
+    });
+  }
   static getGeoName(lat, lon){
     return new Promise(async (resolve, reject)=>{
       const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
@@ -75,12 +86,7 @@ class SmallWeatherWidget extends Component{
     this.state = {
       today: new Date(),
       current: {
-        name: '-',
-        conditionCode: 0,
-        temp: 0,
-        icon: (<MaterialCommunityIcons size={50} name="weather-snowy"/>)
-      },
-      skhu: {
+        name: '...',
         conditionCode: 0,
         temp: 0,
         icon: (<MaterialCommunityIcons size={50} name="weather-snowy"/>)
@@ -88,34 +94,72 @@ class SmallWeatherWidget extends Component{
     };
   }
 
-  async componentDidMount(){
-    navigator.geolocation.getCurrentPosition((async (position)=>{
-      try{
-        let name = await WeatherUtils.getGeoName(position.coords.latitude, position.coords.longitude);
-        let weather = await WeatherUtils.fetchWeatherData(position.coords.latitude, position.coords.longitude,
-          this.props.unit, this.props.appid);
-        let skhuWeather = await WeatherUtils.fetchWeatherData('37.48750', '126.82564',
-          this.props.unit, this.props.appid);
-        this.setState({
-          current:{
-            name: name,
-            conditionCode: weather.conditionCode,
-            temp: weather.temp,
-            icon: WeatherUtils.getIconForCode(weather.conditionCode, 50)
-          },
-          skhu:{
-            conditionCode: skhuWeather.conditionCode,
-            temp: skhuWeather.temp,
-            icon : WeatherUtils.getIconForCode(skhuWeather.conditionCode, 50)
-          }
-        });
-                
-      }catch(err){
-        console.log(err);
-      }
-            
-    }));
+  componentDidMount(){
+    //position.coords.longitude
+    //'37.48750', '126.82564'
+    this.updateData();
   }
+
+  componentWillReceiveProps(){
+    this.updateData();
+  }
+
+  async updateData(){
+    try{
+      let pos = (this.props.position) ? this.props.position : await WeatherUtils.whereAmI();
+      let name = await WeatherUtils.getGeoName(pos.latitude, pos.longitude);
+      let weather = await WeatherUtils.fetchWeatherData(pos.latitude, pos.longitude,
+        this.props.unit, this.props.appid);
+      this.setState({
+        current:{
+          name: (this.props.name)? this.props.name : name,
+          conditionCode: weather.conditionCode,
+          temp: weather.temp,
+          icon: WeatherUtils.getIconForCode(weather.conditionCode, 50)
+        }
+      });    
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  render(){
+    return(
+      <View style={{flexDirection: 'column', flex: 0, alignItems: 'center'}}>
+        {this.state.current.icon}
+        <Text style={{fontSize: 10}}>{this.state.current.temp}°</Text>
+        <Text style={{fontSize: 10}}>{this.state.current.name}</Text>
+      </View>
+    );
+  }
+
+}
+
+class TopWidget extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      today: new Date(),
+      currentPosition: {}
+    };
+  }
+
+  // async componentDidMount(){
+  //   navigator.geolocation.getCurrentPosition((position)=>{
+  //     try{
+  //       this.setState({
+  //         currentPosition:{
+  //           latitude: position.coords.latitude,
+  //           longitude: position.coords.longitude
+  //         }
+  //       });
+                
+  //     }catch(err){
+  //       console.log(err);
+  //     }
+            
+  //   });
+  // }
 
   render(){
     return(
@@ -123,16 +167,11 @@ class SmallWeatherWidget extends Component{
         <View style={{flexDirection: 'column', flex: 1, justifyContent: 'center'}}>
           <Text style={{fontSize: 30}}>{this.state.today.getFullYear()}. {this.state.today.getMonth()+1}. {this.state.today.getDate()}.</Text>
         </View>
-        <View style={{flexDirection: 'column', flex: 0, alignItems: 'center'}}>
-          {this.state.current.icon}
-          <Text style={{fontSize: 10}}>{this.state.current.temp}°</Text>
-          <Text style={{fontSize: 10}}>{this.state.current.name}</Text>
-        </View>
-        <View style={{flexDirection: 'column', flex: 0, alignItems: 'center'}}>
-          {this.state.skhu.icon}
-          <Text style={{fontSize: 10}}>{this.state.skhu.temp}°</Text>
-          <Text style={{fontSize: 10}}>성공회대학교</Text>
-        </View>
+        <SmallWeatherWidget
+          unit='metric' appid={BuildConfigs.OPENWEATHERMAP_API_KEY}/>
+        <SmallWeatherWidget
+          unit='metric' appid={BuildConfigs.OPENWEATHERMAP_API_KEY}
+          name='성공회대' position={{latitude:'37.48750', longitude:'126.82564'}}/>
       </View>
     );
   }
@@ -140,5 +179,5 @@ class SmallWeatherWidget extends Component{
 }
 
 export{
-  SmallWeatherWidget
+  SmallWeatherWidget, TopWidget
 };

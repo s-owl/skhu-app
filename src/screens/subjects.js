@@ -46,7 +46,7 @@ export default class Subjects extends Component{
       return(
         <View>
           <CardItem onPress={()=>this.setState({showSearchModal: true})}
-            style={{flex:0, flexDirection: 'row'}}>
+            style={{flex:0, flexDirection: 'row'}} elevate={true}>
             <Text style={{flex:1}}>
               {this.state.year}-{this.state.semester.title}, {this.state.major.title}, {this.state.professor}
             </Text>
@@ -54,6 +54,9 @@ export default class Subjects extends Component{
           </CardItem>
           <FlatList
             data={this.state.result}
+            ListFooterComponent={()=>(
+              <CardItem style={{height: 50}}/>
+            )}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
