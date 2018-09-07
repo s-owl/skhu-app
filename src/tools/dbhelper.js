@@ -183,7 +183,7 @@ export default class DBHelper{
         if(tCurrent.length > 0){
           for(let item of data.DAT){
             const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
-            let toRemoveIndex = tcArr.findIndex(x => x.id == `${item.GwamogCd}-${dayOfWeek}`);
+            let toRemoveIndex = tcArr.findIndex(x => x.id.includes(`${item.GwamogCd}-${dayOfWeek}`));
             tcArr.splice(toRemoveIndex, 1);
           }
         }

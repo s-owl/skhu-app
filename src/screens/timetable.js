@@ -69,8 +69,9 @@ export default class Timetable extends Component{
                             });
                           }}>
                           <View style={{height: item.height, backgroundColor: bgColor, padding: 2}}>
-                            <Text style={{color: 'black'}}>{item.name}</Text>
+                            <Text style={{color: 'black', fontSize: 12}}>{item.name}</Text>
                             <Text style={{color: 'black', fontSize: 8}}>{item.time}</Text>
+                            <Text style={{color: 'black', fontSize: 8}}>{item.room}</Text>
                           </View>
                         </TouchableHighlight>
                       );
@@ -110,6 +111,7 @@ export default class Timetable extends Component{
             time: `08:00:00 ~ ${item.starts_at}`,
             endsAt: startsAtDatetime,
             name:'',
+            room:'',
             height: (((startsAtDatetime.hour - sevenMorning.hour)*60)
                 + (startsAtDatetime.mins - sevenMorning.mins))
           });
@@ -121,6 +123,7 @@ export default class Timetable extends Component{
             time: `${prevEndsAt.hour}:${prevEndsAt.mins} ~ ${item.starts_at}`,
             endsAt: startsAtDatetime,
             name:'',
+            room:'',
             height: (((startsAtDatetime.hour - prevEndsAt.hour)*60)
                 + (startsAtDatetime.mins - prevEndsAt.mins))
           });
@@ -130,6 +133,7 @@ export default class Timetable extends Component{
           time: `${item.starts_at} ~ ${item.ends_at}`,
           endsAt: endsAtDatetime,
           name: item.title,
+          room: item.room,
           height: (((endsAtDatetime.hour - startsAtDatetime.hour)*60) 
               + (endsAtDatetime.mins - startsAtDatetime.mins)),
           syllabus:{
