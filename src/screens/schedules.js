@@ -3,6 +3,7 @@ import {CardItem} from '../components/components';
 import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
+import moment from 'moment';
 
 
 export default class Schedules extends Component{
@@ -17,12 +18,11 @@ export default class Schedules extends Component{
       super(props);
     }
     render(){
-      const today = new Date();
       return(
         <ScrollView>
-          <ScheduleComponent year={today.getFullYear()} month={today.getMonth()+1}/>
-          <ScheduleComponent year={today.getFullYear()} month={today.getMonth()+2}/>
-          <ScheduleComponent year={today.getFullYear()} month={today.getMonth()+3}/>
+          <ScheduleComponent year={moment().year()} month={moment().month()+1}/>
+          <ScheduleComponent year={moment().add(1, 'months').year()} month={moment().add(1, 'months').month()+1}/>
+          <ScheduleComponent year={moment().add(2, 'months').year()} month={moment().add(2, 'months').month()+1}/>
         </ScrollView>
       );
     }
