@@ -1,17 +1,21 @@
 
 import React, { Component } from 'react';
 import { 
-  StyleSheet, View, TouchableOpacity, Modal,
+  StyleSheet, View, Modal, KeyboardAvoidingView,
   SafeAreaView, Text, ScrollView
 } from 'react-native';
+import Touchable from './touchable';
+import { LinearGradient } from 'expo';
+
+
 class CardView extends Component{
   render(){
     if(this.props.onPress != undefined){
       return(
-        <TouchableOpacity onPress={this.props.onPress}
+        <Touchable onPress={this.props.onPress}
           style={[styles.container, this.props.style]}>
           {this.props.children}
-        </TouchableOpacity>
+        </Touchable>
       );
     }else{
       return(
@@ -28,14 +32,14 @@ class CardItem extends Component{
     const itemStyle = this.props.isHeader ? styles.cardItemHeader : styles.cardItem;
     if(this.props.onPress != undefined){
       return(
-        <TouchableOpacity onPress={this.props.onPress}
-          style={[itemStyle, this.props.style]}>
+        <Touchable onPress={this.props.onPress}
+          style={[itemStyle, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
           {this.props.children}
-        </TouchableOpacity>
+        </Touchable>
       );
     }else{
       return(
-        <View style={[itemStyle, this.props.style]}>
+        <View style={[itemStyle, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
           {this.props.children}
         </View>
       );
@@ -54,23 +58,35 @@ class BottomModal extends Component{
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}} 
             forceInset={{ vertical: 'always', horizontal: 'never' }}>
-            <CardItem isHeader={true}>
-              <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
-            </CardItem>
-            <View style={[{backgroundColor: 'white'}, this.props.style]}>
-              {this.props.children}  
-            </View>          
-            <View style={{flex:0, flexDirection: 'row', backgroundColor: 'white',
-              height:50, width:'100%'}}>
-              {this.props.buttons.map((item, index)=>{
-                return(
-                  <CardItem style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
-                    <Text>{item.label}</Text>
-                  </CardItem>
-                );
-              })}
-            </View>
-            <CardItem/>
+            
+            <LinearGradient
+              colors={['transparent', 'rgba(0,0,0,0.8)']}
+              style={{
+                height: '100%',
+                justifyContent:'flex-end'
+              }}>
+              <KeyboardAvoidingView behavior="padding" enabled>
+                <CardItem isHeader={true}>
+                  <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
+                </CardItem>
+                <View style={[{backgroundColor: 'white'}, this.props.style]}>
+                  {this.props.children}  
+                </View>          
+                <View style={{flex:0, flexDirection: 'row', backgroundColor: 'white',
+                  height:50, width:'100%'}}>
+                  {this.props.buttons.map((item, index)=>{
+                    return(
+                      <CardItem style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
+                        <Text>{item.label}</Text>
+                      </CardItem>
+                    );
+                  })}
+                </View>
+                <CardItem/>
+              </KeyboardAvoidingView>
+            </LinearGradient>
+              
+            
           </SafeAreaView>
         </ScrollView>
       </Modal>
@@ -95,12 +111,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   cardItem: {
-    elevation: 1,
+    // elevation: 1,
     padding: 16,
     backgroundColor: 'white',
   },
   cardItemHeader: {
-    elevation: 1,
+    // elevation: 1,
     marginTop: 16,
     paddingLeft: 16,
     paddingRight: 16,

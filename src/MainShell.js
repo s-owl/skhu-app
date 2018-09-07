@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StatusBar, Platform } from 'react-native';
+import { Text, View, StatusBar, Platform } from 'react-native';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import Touchable from './components/touchable';
 import Main from './Main';
 import Menu from './Menu';
 import AttendanceScreen from './screens/attendance';
@@ -70,7 +71,7 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     navigationOptions: ({ navigation }) => ({
-      tabBarButtonComponent: TouchableOpacity,
+      tabBarButtonComponent: Touchable,
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName, label;

@@ -4,7 +4,7 @@ import { StyleSheet, Text ,View,
 import { CardView } from './components/components';
 import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from './tools/apis';
-import { SmallWeatherWidget } from './components/weather';
+import { TopWidget } from './components/weather';
 import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
@@ -30,17 +30,17 @@ export default class Main extends Component {
         <SafeAreaView>
           <ScrollView>
             <View style={{marginTop: 50, padding: 16}}>
-              <SmallWeatherWidget unit="metric" appid={BuildConfigs.OPENWEATHERMAP_API_KEY}/>
+              <TopWidget/>
               <CardView style={{flex: 0, flexDirection: 'row'}} 
                 onPress={()=>{
                   this.props.navigation.navigate('Attendance');
-                }}>
+                }} elevate={true}>
                 <MaterialIcons name="check-circle" size={20} style={{flex: 1}}/>
                 <Text style={{flex: 0}}>나의 출결 현황</Text>
               </CardView>
               <CardView style={{flex: 0, flexDirection: 'row'}} onPress={()=>{
                 this.props.navigation.navigate('Credits');
-              }}>
+              }} elevate={true}>
                 <MaterialIcons name="insert-chart" size={20} style={{flex: 1}}/>
                 <Text style={{flex: 0}}>현재 이수 학점</Text>
               </CardView>
@@ -123,7 +123,7 @@ class NextClassInfo extends Component{
       );
     }
     return(
-      <CardView onPress={this.props.onPress}>
+      <CardView onPress={this.props.onPress} elevate={true}>
         {content}
       </CardView>
     );
@@ -183,7 +183,7 @@ class MonthlySchedule extends Component{
       );
     }
     return(
-      <CardView onPress={this.props.onPress}>
+      <CardView onPress={this.props.onPress} elevate={true}>
         {content}
       </CardView>
     );

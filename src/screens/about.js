@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Constants, Linking} from 'expo';
 import {ScrollView, View, Text, Image, FlatList} from 'react-native';
-import {CardItem} from '../components/components';
+import {CardItem, BottomModal} from '../components/components';
 import LegalInfo from '../legal';
 
 export default class About extends Component{
@@ -39,10 +39,18 @@ export default class About extends Component{
           }}>
             <Text>
             성공회대학교 S.OWL {Constants.manifest.name} 개발팀{'\n'}
-            (눌러서 팀원 목록 보거나 숨기기)
+            (눌러서 팀원 목록 보기)
             </Text>
           </CardItem>
-          {this.state.showDevs? (
+          <BottomModal
+            title={`성공회대학교 S.OWL ${Constants.manifest.name} 개발팀`} visible={this.state.showDevs}
+            onRequestClose={()=>{
+              this.setState({showDevs: false});
+            }}
+            buttons={[{
+              label: '닫기',
+              onPress: ()=>{this.setState({showDevs: false});}
+            }]}>
             <CardItem>
               <Text style={{fontWeight: 'bold', marginTop: 8}}>현재 개발팀 구성원</Text>
               {LegalInfo.currentDevelopers.map((item, index)=>(
@@ -53,12 +61,12 @@ export default class About extends Component{
                 <Text style={{padding: 2}}>* {item}</Text>
               ))}
             </CardItem>
-          ):(<View></View>)}
+          </BottomModal>
           <CardItem isHeader={true}>
             <Text style={{fontWeight: 'bold'}}>웹사이트</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            Linking.openURL('https://www.facebook.com/skhuforessst/');
+            Linking.openURL('https://www.facebook.com/SKHUsMobileApp/');
           }}>
             <Text>Facebook Page</Text>
           </CardItem>
@@ -77,12 +85,12 @@ export default class About extends Component{
             <Text style={{fontWeight: 'bold'}}>오류 보고/기능 제안/문의</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            Linking.openURL('https://github.com/s-owl/foressst/issues/new');
+            Linking.openURL('https://github.com/s-owl/skhus/issues/new');
           }}>
             <Text>새 의견 제출하기(GitHub 계정 필요)</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            Linking.openURL('https://github.com/s-owl/foressst/issues');
+            Linking.openURL('https://github.com/s-owl/skhus/issues');
           }}>
             <Text>오류 보고/기능 제안 목록 보기</Text>
           </CardItem>
@@ -102,10 +110,18 @@ export default class About extends Component{
           }}>
             <Text>
             개발에 사용된 오픈소스 라이브러리/프레임워크 정보{'\n'}
-            (눌러서 정보 목록 보거나 숨기기)
+            (눌러서 목록 보기)
             </Text>
           </CardItem>
-          {this.state.showOss? (
+          <BottomModal
+            title="개발에 사용된 오픈소스 라이브러리/프레임워크 정보" visible={this.state.showOss}
+            onRequestClose={()=>{
+              this.setState({showOss: false});
+            }}
+            buttons={[{
+              label: '닫기',
+              onPress: ()=>{this.setState({showOss: false});}
+            }]}>
             <FlatList
               data={LegalInfo.oss}
               renderItem={({item})=>(
@@ -129,7 +145,7 @@ export default class About extends Component{
                   </View>
                 </View>
               )}/>
-          ):(<View></View>)}
+          </BottomModal>
           <CardItem onPress={()=>{
             this.setState({
               showLegal: !this.state.showLegal
@@ -138,13 +154,21 @@ export default class About extends Component{
             <Text>면책사항{'\n'}(눌러서 보거나 숨기기)
             </Text>
           </CardItem>
-          {this.state.showLegal? (
+          <BottomModal
+            title="면책사항" visible={this.state.showLegal}
+            onRequestClose={()=>{
+              this.setState({showLegal: false});
+            }}
+            buttons={[{
+              label: '닫기',
+              onPress: ()=>{this.setState({showLegal: false});}
+            }]}>
             <CardItem>
               <Text>
                 본 앱은 성공회대학교 공식 인증 앱이 아니며, 사용 중 발생하는 모든 책임은 사용자 본인에게 있습니다.
               </Text>
             </CardItem>
-          ):(<View></View>)}
+          </BottomModal>
         </ScrollView>
       );
     }
