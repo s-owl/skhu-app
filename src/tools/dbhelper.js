@@ -178,23 +178,29 @@ export default class DBHelper{
         console.log('timetable');
         let data = await timetable.json();
 
-        let tCurrent = (await this.getTimetableData())._array;
-        if(tCurrent != undefined){
+        let tCurrent = (await this.getTimetableData());
+        let tcArr = tCurrent._array;
+        if(tCurrent.length > 0){
           for(let item of data.DAT){
             const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
-            let toRemoveIndex = tCurrent.findIndex(x => x.id == `${item.GwamogCd}-${dayOfWeek}`);
-            tCurrent.splice(toRemoveIndex, 1);
+            let toRemoveIndex = tcArr.findIndex(x => x.id == `${item.GwamogCd}-${dayOfWeek}`);
+            tcArr.splice(toRemoveIndex, 1);
           }
         }
-
+        let dupCheck = {};
         this.db.transaction(tx => {          
           console.log('inserting new timetable data');
           for(let item of data.DAT){
             const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
             console.log('inserting new timetable data');
+            if(dupCheck[`${item.GwamogCd}-${dayOfWeek}`]==undefined){
+              dupCheck[`${item.GwamogCd}-${dayOfWeek}`] = 0;
+            }else{
+              dupCheck[`${item.GwamogCd}-${dayOfWeek}`] += 1;
+            }
             tx.executeSql(
               'insert or replace into timetable values(?, ?, ?, ?, ?, time(?), time(?), ?, ?, ?);',
-              [`${item.GwamogCd}-${dayOfWeek}`, item.GwamogKorNm, item.GyosuNm, item.HosilCd,
+              [`${item.GwamogCd}-${dayOfWeek}-${dupCheck[`${item.GwamogCd}-${dayOfWeek}`]}`, item.GwamogKorNm, item.GyosuNm, item.HosilCd,
                 Number(dayOfWeek), item.FrTm, item.ToTm, `${item.GwamogCd}-${item.Bunban}`,
                 semester.code, today.getFullYear()],
               (tx, result)=>{
@@ -209,7 +215,7 @@ export default class DBHelper{
         });
 
         this.db.transaction(tx =>{
-          for(let item of tCurrent){
+          for(let item of tcArr){
             tx.executeSql(
               'delete from timetable where id = ? and semester_code = ? and year = ?;',
               [item.id, semester.code, today.getFullYear()],
@@ -276,11 +282,7 @@ export default class DBHelper{
            order by day asc, starts_at asc;`,
           [semester.code, today.getFullYear()],
           (tx, result)=>{
-            if(result.rows.length > 0){
-              resolve(result.rows);
-            }else{
-              resolve(undefined);
-            }
+            resolve(result.rows);
           },
           (err)=>{
             reject(err);
