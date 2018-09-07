@@ -166,10 +166,11 @@ export default class Login extends Component {
       if(id.length <= 0 || pw.length <= 0){
         alert('학번 또는 비밀번호가 입력되지 않았습니디.');
         this.setState({isLoading: false, enableHelp: true});
-      }else if(pw.length < 9){
-        alert(`비밀번호가 너무 짧습니다. 비밀번호는 9자리 이상입니다.
-        9자리 미만 비밀번호 사용 시(예: 종합정보시스템에서 신규 계정에 부여하는 7~8자리 비밀번호),
-        종합정보시스템(forest.skhu.ac.kr) 에서 변경 후 로그인 해 주세요.
+      }else if(pw.length < 8){
+        alert(`비밀번호가 너무 짧습니다. 비밀번호는 8자리 이상입니다.
+        신/편입생 신규 계정에 종합정보시스템이 부여하는 초기 비밀번호는 s + (주민번호 뒤 7자리)로
+        총 8자리 이며, 비밀번호 변경시 9자리 이상을 요구합니다.
+        8자리 미만 비밀번호 사용 시 PC 에서 종합정보시스템에 접속하여 비밀번호 변경 후 사용해 주세요.
         비밀번호 변경에 문제가 있는 경우 성공회대학교 전자계산소에 문의하시기 바랍니다.`);
         this.setState({isLoading: false, enableHelp: true});
       }else{
@@ -199,10 +200,16 @@ export default class Login extends Component {
 
         }else if(response.status == 401){
           this.setState({isLoading: false, enableHelp: true});
+          let msg = await response.text();
           setTimeout(()=>{
             Alert.alert(
               '로그인 실패',
-              '입력된 학번(아이디) 또는 비밀번호를 다시한번 확인하세요.',
+              `입력된 학번(아이디) 또는 비밀번호를 다시한번 확인하세요.
+              forest.skhu.ac.kr 그리고 sam.skhu.ac.kr 양쪽 모두 로그인 가능해야 앱에서 로그인이 가능합니다.
+              sam.skhu.ac.kr 쪽에서 로그인이 불가능한 경우, 성공회대학교 전자계산소에 문의하세요.
+              
+              추가정보:
+              ${msg}`,
               [
                 {text: '확인', onPress: () => console.log('OK Pressed')},
               ],
