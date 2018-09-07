@@ -62,6 +62,9 @@ export default class Syllabus extends Component{
                 colors={[BuildConfigs.primaryColor]}
               />
             }
+            ListFooterComponent={()=>(
+              <CardItem style={{height: 50}}/>
+            )}
             renderItem={({item})=>
               <CardItem onPress={()=>{
                 this.props.navigation.navigate('SyllabusDetails', {

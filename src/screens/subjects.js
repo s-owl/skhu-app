@@ -54,6 +54,9 @@ export default class Subjects extends Component{
           </CardItem>
           <FlatList
             data={this.state.result}
+            ListFooterComponent={()=>(
+              <CardItem style={{height: 50}}/>
+            )}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
