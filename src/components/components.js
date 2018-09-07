@@ -65,7 +65,7 @@ class BottomModal extends Component{
                 height: '100%',
                 justifyContent:'flex-end'
               }}>
-              <KeyboardAvoidingView>
+              <KeyboardAvoidingView behavior="padding" enabled>
                 <CardItem isHeader={true}>
                   <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
                 </CardItem>
