@@ -85,6 +85,11 @@ export default class About extends Component{
             <Text style={{fontWeight: 'bold'}}>오류 보고/기능 제안/문의</Text>
           </CardItem>
           <CardItem onPress={()=>{
+            Linking.openURL('https://github.com/s-owl/skhus/wiki/FAQs');
+          }}>
+            <Text>자주 묻는 질문</Text>
+          </CardItem>
+          <CardItem onPress={()=>{
             Linking.openURL('https://github.com/s-owl/skhus/issues/new');
           }}>
             <Text>새 의견 제출하기(GitHub 계정 필요)</Text>
@@ -102,6 +107,11 @@ export default class About extends Component{
 
           <CardItem isHeader={true}>
             <Text style={{fontWeight: 'bold'}}>법적 고지사항</Text>
+          </CardItem>
+          <CardItem onPress={()=>{
+            Linking.openURL('https://github.com/s-owl/skhus/wiki/PrivacyAndPermissions');
+          }}>
+            <Text>개인정보취급방침, 사용되는 시스템 권한 안내</Text>
           </CardItem>
           <CardItem onPress={()=>{
             this.setState({
