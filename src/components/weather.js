@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { 
+import {
   StyleSheet, View, ActivityIndicator, Modal, TouchableOpacity, Text
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -23,30 +23,30 @@ class WeatherUtils{
     });
   }
 
-  static whereAmI(){
-    return new Promise((resolve, reject)=>{
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((position)=>{
-          resolve(position.coords);
-        });
-      } else {
-        reject('GeoLocation not available');
-      }
-    });
-  }
-  static getGeoName(lat, lon){
-    return new Promise(async (resolve, reject)=>{
-      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
-      let response = await fetch(url);
-      if(response.ok){
-        let data = await response.json();
-        resolve(data.address.village);
-      }else{
-        reject(response);
-      }
-    });
-        
-  }
+  // static whereAmI(){
+  //   return new Promise((resolve, reject)=>{
+  //     if ('geolocation' in navigator) {
+  //       navigator.geolocation.getCurrentPosition((position)=>{
+  //         resolve(position.coords);
+  //       });
+  //     } else {
+  //       reject('GeoLocation not available');
+  //     }
+  //   });
+  // }
+  // static getGeoName(lat, lon){
+  //   return new Promise(async (resolve, reject)=>{
+  //     const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+  //     let response = await fetch(url);
+  //     if(response.ok){
+  //       let data = await response.json();
+  //       resolve(data.address.village);
+  //     }else{
+  //       reject(response);
+  //     }
+  //   });
+  //
+  // }
 
   static getIconForCode(code, size=10){
     if(code>=200 && code<300){
@@ -117,7 +117,7 @@ class SmallWeatherWidget extends Component{
           temp: weather.temp,
           icon: WeatherUtils.getIconForCode(weather.conditionCode, 50)
         }
-      });    
+      });
     }catch(err){
       console.log(err);
     }
@@ -153,11 +153,11 @@ class TopWidget extends Component{
   //           longitude: position.coords.longitude
   //         }
   //       });
-                
+
   //     }catch(err){
   //       console.log(err);
   //     }
-            
+
   //   });
   // }
 

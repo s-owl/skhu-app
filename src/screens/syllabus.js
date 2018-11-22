@@ -10,7 +10,7 @@ import BuildConfigs from '../config';
 export default class Syllabus extends Component{
   static navigationOptions = ({ navigation, navigationOptions }) => {
     const { params } = navigation.state;
-      
+
     return {
       title: '강의계획서 조회',
     };
@@ -90,7 +90,7 @@ export default class Syllabus extends Component{
               }},
               {label: '검색', onPress: ()=>{
                 this.setState({showSearchModal: false});
-                this.loadSearchResults();              
+                this.loadSearchResults();
               }}
             ]}>
             <CardItem>
@@ -159,7 +159,7 @@ export default class Syllabus extends Component{
             major: item.GaeseolSosogNm,
             professor: item.ProfKorNm,
             professorNo: item.ProfNo,
-            availablity: item.SueobGyehoegYn 
+            availablity: item.SueobGyehoegYn
           });
         }
         console.log(arr);

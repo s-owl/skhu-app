@@ -1,3 +1,5 @@
+//해야해요
+
 import { SQLite } from 'expo';
 import ForestApi from './apis';
 import DateTools from './datetools';
@@ -33,7 +35,7 @@ export default class DBHelper{
     this.db.transaction(tx => {
       tx.executeSql(
         `create table if not exists timetable(
-          id varchar(12) primary key not null, 
+          id varchar(12) primary key not null,
           title varchar(20) not null,
           professor varchar(20) not null,
           room varchar(10) not null,
@@ -42,7 +44,7 @@ export default class DBHelper{
           ends_at datetime not null,
           lecture_id varchar(12) not null,
           semester_code varchar(6) not null,
-          year integer not null);`,[], 
+          year integer not null);`,[],
         (tx, result)=>{
           console.log('done create timetable');
           console.log(result);
@@ -61,13 +63,13 @@ export default class DBHelper{
       this.db.transaction(tx => {
         tx.executeSql(
           'delete from attendance, timetable where semester_code is not ? and year is not ?;',
-          [semester.code, today.getFullYear()], 
+          [semester.code, today.getFullYear()],
           (tx, result)=>{
             resolve(result);
           },
           (err)=>{reject(err);}
         );
-        
+
       });
     });
   }
@@ -75,17 +77,17 @@ export default class DBHelper{
     return new Promise((resolve, reject)=>{
       this.db.transaction(tx => {
         tx.executeSql(
-          'drop table if exists attendance;',[], 
+          'drop table if exists attendance;',[],
           (tx, result)=>{
             tx.executeSql(
-              'drop table if exists timetable;',[], 
+              'drop table if exists timetable;',[],
               (tx, result)=>{resolve(result);},
               (err)=>{reject(err);}
             );
           },
           (err)=>{reject(err);}
         );
-        
+
       });
     });
   }
@@ -111,7 +113,7 @@ export default class DBHelper{
         for(let item of data.attendance){
           tx.executeSql(
             'insert or replace into attendance values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-            [item.subject_code, item.subject, Number(item.attend), Number(item.late), 
+            [item.subject_code, item.subject, Number(item.attend), Number(item.late),
               Number(item.absence), Number(item.approved), Number(item.menstrual), Number(item.early),
               semester.code, today.getFullYear()],
             (tx, result)=>{
@@ -159,7 +161,7 @@ export default class DBHelper{
           }
         )
       );
-        
+
     });
   }
   async fetchTimeTable(){
@@ -167,8 +169,8 @@ export default class DBHelper{
       const today = new Date();
       const semester = DateTools.getSemesterCode(today.getMonth()+1);
       // const semester = DateTools.getSemesterCode(5);
-            
-      let timetable = await ForestApi.postToSam('/SSE/SSEAD/SSEAD03_GetList', 
+
+      let timetable = await ForestApi.postToSam('/SSE/SSEAD/SSEAD03_GetList',
         JSON.stringify({
           'Yy': today.getFullYear(),
           'Haggi': semester.code,
@@ -188,7 +190,7 @@ export default class DBHelper{
           }
         }
         let dupCheck = {};
-        this.db.transaction(tx => {          
+        this.db.transaction(tx => {
           console.log('inserting new timetable data');
           for(let item of data.DAT){
             const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
@@ -236,7 +238,7 @@ export default class DBHelper{
       console.log('Error while fetching timetable');
       console.log(err);
     }
-        
+
   }
 
   getNextClassInfo(){
@@ -246,7 +248,7 @@ export default class DBHelper{
       // const semester = DateTools.getSemesterCode(5);
       this.db.transaction(tx => {
         tx.executeSql(
-          `select t.title, t.room, t.day, t.starts_at, t.ends_at, 
+          `select t.title, t.room, t.day, t.starts_at, t.ends_at,
 			         a.attend, a.late, a.absence, a.approved, a.menstrual, a.early
 			         from timetable as t, attendance as a
            where t.lecture_id = a.id and t.day = ? and t.starts_at > ?
@@ -290,5 +292,5 @@ export default class DBHelper{
         );
       });
     });
-  }   
+  }
 }

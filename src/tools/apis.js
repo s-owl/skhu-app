@@ -16,7 +16,7 @@ export default class ForestApi{
       }, 30000);
 
       loginHeaders.append('Content-Type', 'application/json');
-      return fetch(`${ForestApi.url}/user/login`, 
+      return fetch(`${ForestApi.url}/user/login`,
         {
           method: 'POST',
           headers: loginHeaders,
@@ -62,8 +62,6 @@ export default class ForestApi{
         headers: headers
       });
     }
-
-   
 
     static async postToSam(path, body=null){
       let headers = new Headers();

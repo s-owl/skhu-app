@@ -5,13 +5,18 @@
 
 ## 개발자/기여자(Developers/Contributors)
 ### 현재(Current)
+- 한나라(201633036, nr970810@gmail.com)
+    - 기획, 앱 화면 설계 및 개발, 총괄(2018.03~)
+- 조준서(201635039, coogys@naver.com)
+    - 백엔드 개발, 앱 개발(2018.09 ~ )'
+- 김남수(201435003, are34@naver.com)
+    - 백엔드 개발,앱 개발(2018.10 ~ )'
+
+### 이전(Former)
 - 한영빈(201632034, sukso96100@gmail.com)
     - 앱 개발, 백엔드 개발, 서버 관리, 프로젝트 총괄(2016.08 ~ 2018.09)
 - 김유진(201732008, yujin7621@me.com)
-    - 앱 개발(2018.03~)
-- 한나라(201633036, nr970810@gmail.com)
-    - 기획, 앱 화면 설계 및 개발(2018.03~)
-### 이전(Former)
+    - 앱 개발(2018.03 ~ 2018.08)
 - 추건우(201534028, geonwoo.chu@gmail.com)
     - 앱 및 백엔드 개발(2016.08 ~ 2018.03)
 - 배다슬(201232016, ektmf1993@gmail.com)
@@ -29,6 +34,7 @@
     - `yarn install`
 - iOS 에서 테스트 하려면 [Xcode](https://itunes.apple.com/app/xcode/id497799835) 를, Android 에서 테스트 하려면 [Android Studio](https://developer.android.com/studio/)를 설치할 것.
 - `expo start` 명령을 실행하여, Expo 개발자 도구 실행. 웹 브라우저 새 탭에서 켜짐.
+  `npm start` 명령을 실행하면 console 창에서 실행
     - Android 기기나 에뮬레이터로 실행해 보려면, *Run on Android device/emulator* 클릭
     - iOS 시뮬레이터로 실행해 보려면, *Run on iOS simulator* 클릭
     - 프로덕션 환경으로 테스트 하려면, *PRODUCTION MODE* 를 켜면 됨.
@@ -45,6 +51,6 @@
     - `expo build:ios -t simulator`
 
 # 저작권 안내(Copyrights Notice)
-본 소프트웨어는 자유 소프트웨어 또는 오픈소스 소프트웨어가 아닙니다. 본 소프트웨어의 저작권은 프로젝트 개발자와 기여자 분들꼐 있습니다. 본 프로젝트의 소스코드가 GitHub 에 공개 되어 있는 것은, 개발자와 기여자 분들께서 본 프로젝트를 포트폴리오로 활용하실 수 있도록 하게 하기 위함입니다. 소스코드가 공개 되어 있으므로 이를 자유롭게 열람하는 것은 문제가 없습니다. 그러나 프로젝트의 저작물 일부를 본인의 저작물에 사용하고자 하거나, 본 프로젝트를 기반으로 2차 저작물을 생산하여 배포 하고자 하는 경우 본 프로젝트의 개발자 및 기여자와의 사전 협의가 필요합니다. 
+본 소프트웨어는 자유 소프트웨어 또는 오픈소스 소프트웨어가 아닙니다. 본 소프트웨어의 저작권은 프로젝트 개발자와 기여자 분들꼐 있습니다. 본 프로젝트의 소스코드가 GitHub 에 공개 되어 있는 것은, 개발자와 기여자 분들께서 본 프로젝트를 포트폴리오로 활용하실 수 있도록 하게 하기 위함입니다. 소스코드가 공개 되어 있으므로 이를 자유롭게 열람하는 것은 문제가 없습니다. 그러나 프로젝트의 저작물 일부를 본인의 저작물에 사용하고자 하거나, 본 프로젝트를 기반으로 2차 저작물을 생산하여 배포 하고자 하는 경우 본 프로젝트의 개발자 및 기여자와의 사전 협의가 필요합니다.
 
 This software IS NOT A FREE SOFTWARE OR OPEN SOURCE SOFTWARE. All copyrights are reserved to developers and contributors of this project. The reason why source code of the project is public on GitHub is to let our developers and contributors to use this project on their portfolio. You can browse the source code freely since it's public on GitHub. But if you want to use some part of our works on your works or you want to produce and redistribute your own derivative work based on this project, You have to discuss it with developers and contributors of this project before doing that.

@@ -1,15 +1,15 @@
 
-import React, { Component } from 'react';
-import { 
+import React, { Component } from 'react'; //default
+import {
   StyleSheet, View, Modal, KeyboardAvoidingView,
-  SafeAreaView, Text, ScrollView
+  SafeAreaView, Text, ScrollView //사용되는 친구들
 } from 'react-native';
 import Touchable from './touchable';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo'; //라이브러리
 
 
-class CardView extends Component{
-  render(){
+class CardView extends Component{ //table View
+  render(){     //객체 업데이트 maybe callback, touch처리 메소드
     if(this.props.onPress != undefined){
       return(
         <Touchable onPress={this.props.onPress}
@@ -56,9 +56,9 @@ class BottomModal extends Component{
         visible={this.props.visible}
         onRequestClose={this.props.onRequestClose}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}} 
+          <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}}
             forceInset={{ vertical: 'always', horizontal: 'never' }}>
-            
+
             <LinearGradient
               colors={['transparent', 'rgba(0,0,0,0.8)']}
               style={{
@@ -70,8 +70,8 @@ class BottomModal extends Component{
                   <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
                 </CardItem>
                 <View style={[{backgroundColor: 'white'}, this.props.style]}>
-                  {this.props.children}  
-                </View>          
+                  {this.props.children}
+                </View>
                 <View style={{flex:0, flexDirection: 'row', backgroundColor: 'white',
                   height:50, width:'100%'}}>
                   {this.props.buttons.map((item, index)=>{
@@ -85,8 +85,8 @@ class BottomModal extends Component{
                 <CardItem/>
               </KeyboardAvoidingView>
             </LinearGradient>
-              
-            
+
+
           </SafeAreaView>
         </ScrollView>
       </Modal>
