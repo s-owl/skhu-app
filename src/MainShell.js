@@ -18,6 +18,7 @@ import Subjects from './screens/subjects';
 import About from './screens/about';
 import { MaterialIcons } from '@expo/vector-icons';
 import BuildConfigs from './config';
+import NoticeScreen from './screens/notice';
 
 const HomeStack = createStackNavigator(
   {
@@ -26,7 +27,8 @@ const HomeStack = createStackNavigator(
     Schedules: Schedules,
     Credits: Credits,
     Timetable: Timetable,
-    SyllabusDetails: SyllabusDetails
+    SyllabusDetails: SyllabusDetails,
+    NoticeScreen :NoticeScreen,
   },
   {
     initialRouteName: 'Home',

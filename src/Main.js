@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text ,View, 
+import { StyleSheet, Text ,View,
   ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
 import { CardView } from './components/components';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -9,6 +9,8 @@ import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
 import SnackBar from 'rn-snackbar';
+import { MaterialCommunityIcons } from '@expo/vector-icons';  //추가임포트
+
 
 export default class Main extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -31,7 +33,7 @@ export default class Main extends Component {
           <ScrollView>
             <View style={{marginTop: 50, padding: 16}}>
               <TopWidget/>
-              <CardView style={{flex: 0, flexDirection: 'row'}} 
+              <CardView style={{flex: 0, flexDirection: 'row'}}
                 onPress={()=>{
                   this.props.navigation.navigate('Attendance');
                 }} elevate={true}>
@@ -52,6 +54,10 @@ export default class Main extends Component {
               <MonthlySchedule onPress={()=>{
                 this.props.navigation.navigate('Schedules');
               }}/>
+            <Text style={{ fontSize: 20, marginTop: 16 }}>공지사항</Text>
+            <NoticeSchedule onPress={() => {
+              this.props.navigation.navigate('NoticeScreen');
+            }} />
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -62,7 +68,7 @@ export default class Main extends Component {
       let res = await ForestApi.get('/user/userinfo', true);
       if(res.ok){
         const data = await res.json();
-        SnackBar.show(`${data.userinfo.name}(${data.userinfo.id})님, 안녕하세요.`, 
+        SnackBar.show(`${data.userinfo.name}(${data.userinfo.id})님, 안녕하세요.`,
           { position: 'top', style: { paddingTop: 30 }, duration: 2000  });
       }
     }
@@ -88,18 +94,18 @@ class NextClassInfo extends Component{
           +`${data.starts_at} ~ ${data.ends_at} @ ${data.room}`,
           attendance:`출석 ${data.attend}, 지각 ${data.late}, 결석 ${data.absence}, `
                 + `공결 ${data.approved}, 생공 ${data.menstrual}, 조퇴 ${data.early}`,
-          isLoading: false 
+          isLoading: false
         });
       }else{
         this.setState({time: '다음 강의가 없습니다.', isLoading: false});
       }
-      
+
     }catch(err){
       this.setState({time: '다음 강의 정보를 조회하지 못했습니다.', isLoading: false});
       console.log(err);
-      
+
     }
-    
+
   }
   render(){
     let content;
@@ -183,6 +189,65 @@ class MonthlySchedule extends Component{
       );
     }
     return(
+      <CardView onPress={this.props.onPress} elevate={true}>
+        {content}
+      </CardView>
+    );
+  }
+}
+
+class NoticeSchedule extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dates: '',
+      isLoading: false
+    };
+  }
+  async componentDidMount() {
+    this.setState({ isLoading: true });
+    let today = new Date();
+    let schedule = await ForestApi.post('/life/schedules', JSON.stringify({
+      'year': today.getFullYear(),
+      'month': today.getMonth() + 1
+    }), false);
+    if (schedule.ok) {
+      let data = await schedule.json();
+      let dates = '', contents = '';
+      for (let item of data.schedules) {
+        dates += `${item.period}\n`;
+        contents += ` | ${item.content}\n`;
+      }
+      this.setState({
+        dates: dates,
+        contents: contents,
+        isLoading: false
+      });
+    }
+  }
+  render() {
+    let content;
+    if (this.state.isLoading) {
+      content = (
+        <View style={{ justifyContent: 'center', padding: 32 }}>
+          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+        </View>
+      );
+    } else {
+      content = (
+        <View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ flex: 0, fontWeight: 'bold' }}>{this.state.dates}</Text>
+            <Text style={{ flex: 1 }}>{this.state.contents}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ color: 'grey' }}>공지사항 더 보기</Text>
+            <MaterialIcons name="chevron-right" size={16} />
+          </View>
+        </View>
+      );
+    }
+    return (
       <CardView onPress={this.props.onPress} elevate={true}>
         {content}
       </CardView>
