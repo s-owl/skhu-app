@@ -1,7 +1,7 @@
 const LegalInfo = {
   currentDevelopers: [
     '한나라(201633036, nr970810@gmail.com)\n기획, 앱 화면 설계 및 개발, 총괄(2018.03 ~)',
-    '조준서(201635039, coogys@naver.com)\n백엔드 개발, 앱 개발(2018.09 ~)'
+    '조준서(201635039, coogys@naver.com)\n백엔드 개발, 앱 개발(2018.09 ~)',
     '김남수(201435003, are34@naver.com)\n백엔드 개발,앱 개발(2018.10 ~)'
   ],
   formerDevelopers: [

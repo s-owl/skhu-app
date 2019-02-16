@@ -16,8 +16,10 @@ import ScholarshipHistory from './screens/scholarshopHistory';
 import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
+import Meal from './screens/meal';
 import { MaterialIcons } from '@expo/vector-icons';
 import BuildConfigs from './config';
+import NoticeScreen from './screens/notice';
 
 const HomeStack = createStackNavigator(
   {
@@ -26,7 +28,9 @@ const HomeStack = createStackNavigator(
     Schedules: Schedules,
     Credits: Credits,
     Timetable: Timetable,
-    SyllabusDetails: SyllabusDetails
+    SyllabusDetails: SyllabusDetails,
+    Meal: Meal,
+    NoticeScreen :NoticeScreen,
   },
   {
     initialRouteName: 'Home',
