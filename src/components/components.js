@@ -76,7 +76,7 @@ class BottomModal extends Component{
                   height:50, width:'100%'}}>
                   {this.props.buttons.map((item, index)=>{
                     return(
-                      <CardItem style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
+                      <CardItem key={index} style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
                         <Text>{item.label}</Text>
                       </CardItem>
                     );

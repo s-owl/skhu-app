@@ -16,6 +16,7 @@ import ScholarshipHistory from './screens/scholarshopHistory';
 import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
+import Meal from './screens/meal';
 import { MaterialIcons } from '@expo/vector-icons';
 import BuildConfigs from './config';
 
@@ -26,7 +27,8 @@ const HomeStack = createStackNavigator(
     Schedules: Schedules,
     Credits: Credits,
     Timetable: Timetable,
-    SyllabusDetails: SyllabusDetails
+    SyllabusDetails: SyllabusDetails,
+    Meal: Meal
   },
   {
     initialRouteName: 'Home',
@@ -50,7 +52,8 @@ const MenuStack = createStackNavigator(
     ScholarshipHistory: ScholarshipHistory,
     GradeCert: GradeCert,
     Subjects: Subjects,
-    About: About
+    About: About,
+    Meal: Meal
   },
   {
     initialRouteName: 'Menu',
@@ -100,7 +103,7 @@ const TabNavigator = createBottomTabNavigator(
 export default class MainShell extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
       const { params } = navigation.state;
-    
+
       return {
         header: null // 헤더 비활성화
       };
