@@ -1,15 +1,17 @@
-import React, {Component} from 'react';
-import {CardItem, CardView} from '../components/components';
-import {ScrollView, View, Text, ActivityIndicator, FlatList} from 'react-native';
+import React, { Component } from 'react';
+import { CardItem, CardView } from '../components/components';
+import { ScrollView, SafeAreaView, View, Text, ActivityIndicator, FlatList } from 'react-native';
 import FetchHelper from '../tools/fetchHelper';
 import BuildConfigs from '../config';
+import { MaterialCommunityIcons } from '@expo/vector-icons';  //아이콘임포트
 
-export default class Meal extends Component{
+
+export default class Meal extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
     const { params } = navigation.state;
 
     return {
-      title: '학생 식단',
+      title: '주간 식단',
     };
   };
 
@@ -20,7 +22,7 @@ export default class Meal extends Component{
       meals: [],
       isLoading: true
     };
-    FetchHelper.fetchMealsUrl().then(url => this.setState({url}));
+    FetchHelper.fetchMealsUrl().then(url => this.setState({ url }));
   }
 
   componentDidMount() {
@@ -33,31 +35,50 @@ export default class Meal extends Component{
   }
 
   render() {
-    const {meals, isLoading} = this.state;
+    const { meals, isLoading } = this.state;
 
     if (isLoading) {
       return (
-        <View style={{justifyContent: 'center', padding: 32}}>
+        <View style={{ justifyContent: 'center', padding: 32 }}>
           <ActivityIndicator size='large' color={BuildConfigs.primaryColor} />
         </View>
       );
     }
     else {
       return (
-        <FlatList
-          data={meals}
-          renderItem={({item})=>(
-            <CardView>
-              <Text style={{marginBottom:10, fontWeight: 'bold', fontSize: 20}}>[{item.day} 식단입니다]</Text>
-              <Text style={{fontWeight: 'bold'}}>점심A</Text>
-              <Text style={{marginBottom: 10}}>{item.lunch.a.diet}</Text>
-              <Text style={{fontWeight: 'bold'}}>점심B</Text>
-              <Text style={{marginBottom: 10}}>{item.lunch.b.diet}</Text>
-              <Text style={{fontWeight: 'bold'}}>저녁</Text>
-              <Text style={{marginBottom: 10}}>{item.dinner.a.diet}</Text>
-            </CardView>
-          )}
-        />
+        <View>
+          <FlatList
+            data={meals}
+            renderItem={({ item }) => (
+              <SafeAreaView>
+                <ScrollView>
+                  <View>
+                    <View style={{ flexDirection: 'column' }} >
+                      <View style={{ flexDirection: 'row' }}>
+                        <MaterialCommunityIcons name="rice" size={20} />
+                        <Text style={{ fontWeight: 'bold', fontSize: 20, marginBottom: 5 }}>{item.day} 식단</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <CardView style={{ backgroundColor: 'whitesmoke', margin: 5, flex: 1 }}>
+                          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>학식</Text>
+                          <Text style={{ marginBottom: 10 }}>{item.lunch.a.diet}</Text>
+                        </CardView>
+                        <CardView style={{ backgroundColor: 'whitesmoke', margin: 5, flex: 1 }}>
+                          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>일품</Text>
+                          <Text style={{ marginBottom: 10 }}>{item.lunch.b.diet}</Text>
+                        </CardView>
+                        <CardView style={{ backgroundColor: 'whitesmoke', margin: 5, flex: 1 }}>
+                          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>석식</Text>
+                          <Text style={{ marginBottom: 5 }}>{item.dinner.a.diet}</Text>
+                        </CardView>
+                      </View>
+                    </View>
+                  </View>
+                </ScrollView>
+              </SafeAreaView>)}
+          />
+        </View>
+
       );
     }
   }
