@@ -200,19 +200,16 @@ class Meal extends Component {
 
   componentDidMount() {
     FetchHelper.fetchMealsData(this.props.url).then(meals => {
+      
       // TODO: 오늘 구하는 공식 들어가야함 일단은 첫번째 인덱스 배열 값 가져옴...
 
       let day = new Date().getDay(); //0 : 일요일,  1: 월요일...
-
-      if (day == 0 || day == 5) //토욜이욜제외
-        day = 4;
-      else
-        day -= 1;
+      day = (day == 0 || day == 6) ? 4 : day - 1;
 
       let meal = meals[day]; //0:월요일 1:화요일...
-
+      console.log(meals.length);
       this.setState({
-        meal,
+        meal: meal,
         isLoading: false
       });
     });
@@ -221,7 +218,7 @@ class Meal extends Component {
   render() {
     let content;
     const { isLoading, meal } = this.state;
-    if (isLoading) {
+    if (isLoading || !meal) {
       content = (
         <View style={{ justifyContent: 'center', padding: 32 }}>
           <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
@@ -232,23 +229,23 @@ class Meal extends Component {
       content = (
         <View>
           <View style={{ flexDirection: 'row' }}>
-            <MaterialCommunityIcons name="rice" size={20} />
-            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{meal.day} 식단</Text>
+            <MaterialCommunityIcons name="rice" size={20}/>
+            <Text style={{ marginStart: 5 }}>{meal.day} 식단</Text>
           </View>
-          <View style={{ flexDirection: 'column'}}>
+          <View style={{ flexDirection: 'column', marginTop: 10 }}>
             <View style={{ flexDirection: 'row' }}>
-              <CardView style={{backgroundColor: 'whitesmoke', margin: 5, flex: 1}}>
+              <View style={{margin: 5, flex: 1}}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>학식</Text>
-                <Text style={{ marginBottom: 10 }}>{meal.lunch.a.diet}</Text>
-              </CardView>
-              <CardView style={{backgroundColor: 'whitesmoke', margin: 5, flex: 1}}>
+                <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.lunch.a.diet}</Text>
+              </View>
+              <View style={{margin: 5, flex: 1}}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>일품</Text>
-                <Text style={{ marginBottom: 10 }}>{meal.lunch.b.diet}</Text>
-              </CardView>
-              <CardView style={{backgroundColor: 'whitesmoke', margin: 5, flex: 1}}>
+                <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.lunch.b.diet}</Text>
+              </View>
+              <View style={{margin: 5, flex: 1}}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>석식</Text>
-                <Text style={{ marginBottom: 10 }}>{meal.dinner.a.diet}</Text>
-              </CardView>
+                <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.dinner.a.diet}</Text>
+              </View>
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ color: 'grey' }}>주간 식단 보기</Text>
