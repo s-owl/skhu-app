@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StatusBar, Platform } from 'react-native';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import Touchable from './components/touchable';
 import Main from './Main';
 import Menu from './Menu';
@@ -32,8 +32,8 @@ const HomeStack = createStackNavigator(
   },
   {
     initialRouteName: 'Home',
-    navigationOptions: {
-      headerTintColor: '#569f59',
+    defaultNavigationOptions: {
+      headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
         color: 'black'
@@ -57,7 +57,7 @@ const MenuStack = createStackNavigator(
   },
   {
     initialRouteName: 'Menu',
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
@@ -73,7 +73,7 @@ const TabNavigator = createBottomTabNavigator(
     Menu: MenuStack,
   },
   {
-    navigationOptions: ({ navigation }) => ({
+    defaultNavigationOptions: ({ navigation }) => ({
       tabBarButtonComponent: Touchable,
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
@@ -100,6 +100,8 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
+const AppContainer = createAppContainer(TabNavigator);
+
 export default class MainShell extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
       const { params } = navigation.state;
@@ -109,7 +111,7 @@ export default class MainShell extends Component {
       };
     };
     render() {
-      return <TabNavigator/>;
+      return <AppContainer/>;
     }
     componentDidMount(){
       if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});

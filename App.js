@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 import NavigationService from './src/tools/NavigationService';
 
 import Login from './src/Login';
@@ -21,11 +21,16 @@ const RootStack = createStackNavigator(
   }
 );
 
+const AppContainer = createAppContainer(RootStack);
+
+
 export default class App extends Component {
   render() {
-    return <RootStack ref={(navRef)=>{
-      NavigationService.setTopLevelNavigator(navRef);
-    }}/>;
+    return (
+      <AppContainer ref={(navRef)=>{
+        NavigationService.setTopLevelNavigator(navRef);
+      }}/>
+    );
   }
 }
 
