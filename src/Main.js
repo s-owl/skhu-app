@@ -11,7 +11,6 @@ import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
 import FetchHelper from './tools/fetchHelper';
-import SnackBar from 'rn-snackbar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';  //아이콘임포트
 
 
