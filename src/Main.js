@@ -32,7 +32,7 @@ export default class Main extends Component {
   }
   render() {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{backgroundColor: 'whitesmoke'}}>
         <ScrollView>
           <View style={{ marginTop: 50, padding: 16 }}>
             <TopWidget />

@@ -73,7 +73,7 @@ export default class CounselHistory extends Component{
         );
       }else{
         return(
-          <SectionList
+          <SectionList style={{height:'100%', backgroundColor: 'whitesmoke'}}
             renderItem={({item, index, section}) => (
               <CardItem key={index} style={{flex: 0, flexDirection: 'row'}}>
                 <Text style={{flex: 2, textAlign: 'center'}}>{item.timestamp}</Text>

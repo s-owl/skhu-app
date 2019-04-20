@@ -40,7 +40,7 @@ export default class ScholarshipHistory extends Component{
         );
       }else{
         return(
-          <FlatList
+          <FlatList style={{backgroundColor: 'whitesmoke'}}
             data={this.state.history}
             renderItem={({item})=>(
               <CardItem>

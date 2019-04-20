@@ -30,7 +30,7 @@ showSnackbar(msg){
 render() {
   return(
     <SafeAreaView>
-      <SectionList
+      <SectionList style={{height:'100%', backgroundColor: 'whitesmoke'}}
         renderItem={({item, index, section}) => (
           <CardItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
             <MaterialCommunityIcons name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>

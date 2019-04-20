@@ -47,7 +47,7 @@ export default class AttendanceScreen extends Component{
       }else{
         return(
           <View>
-            <FlatList
+            <FlatList style={{height:'100%', backgroundColor: 'whitesmoke'}}
               data={this.state.data}
               keyExtractor={(item, index) => index}
               renderItem={({item})=>

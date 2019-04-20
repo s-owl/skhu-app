@@ -44,7 +44,7 @@ export default class Syllabus extends Component{
       );
     }else{
       return(
-        <View>
+        <View style={{backgroundColor: 'whitesmoke'}}>
           <CardItem onPress={()=>this.setState({showSearchModal: true})}
             style={{flex:0, flexDirection: 'row'}} elevate={true}>
             <Text style={{flex:1}}>
@@ -52,7 +52,7 @@ export default class Syllabus extends Component{
             </Text>
             <MaterialIcons name="search" size={20} style={{flex: 0}}/>
           </CardItem>
-          <FlatList
+          <FlatList style={{backgroundColor: 'whitesmoke'}}
             data={this.state.result}
             refreshControl={
               <RefreshControl

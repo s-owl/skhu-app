@@ -19,7 +19,7 @@ export default class Schedules extends Component{
     }
     render(){
       return(
-        <ScrollView>
+        <ScrollView style={{height:'100%', backgroundColor: 'whitesmoke'}}>
           <ScheduleComponent year={moment().year()} month={moment().month()+1}/>
           <ScheduleComponent year={moment().add(1, 'months').year()} month={moment().add(1, 'months').month()+1}/>
           <ScheduleComponent year={moment().add(2, 'months').year()} month={moment().add(2, 'months').month()+1}/>
