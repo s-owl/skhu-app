@@ -48,7 +48,7 @@ export default class SavedCredits extends Component{
         );
       }else{
         return(
-          <FlatList
+          <FlatList style={{backgroundColor: 'whitesmoke'}}
             ListHeaderComponent={()=>(
               <View>
                 <CardItem isHeader={true}>

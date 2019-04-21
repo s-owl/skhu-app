@@ -59,7 +59,7 @@ export default class GradeCert extends Component{
         );
       }else{
         return(
-          <FlatList
+          <FlatList style={{height:'100%', backgroundColor: 'whitesmoke'}}
             ListHeaderComponent={()=>(
               <View>
                 <CardItem isHeader={true}>

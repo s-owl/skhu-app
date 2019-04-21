@@ -8,7 +8,7 @@ import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
 import {SecureStore, Linking} from 'expo';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import SnackBar from 'rn-snackbar';
+import SnackBar from 'react-native-snackbar-component'
 import {CardView, CardItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
@@ -27,18 +27,26 @@ export default class Login extends Component {
     this.state = {
       isLoading: false,
       showHelp: false,
-      enableHelp: true
+      enableHelp: true,
+      msg: "",
+      snackbar: false
     };
     this.textInput = {
       idInput: '',
       pwInput: ''
     };
   }
+  showSnackbar(msg){
+    this.setState({msg: msg, snackbar: true});
+    setTimeout(()=>{
+      this.setState({msg: "", snackbar: false});
+    },3000);
+  }
   async componentDidMount() {
     if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
     const isLoggedOut = this.props.navigation.getParam('loggedOut', false);
     if(isLoggedOut){
-      SnackBar.show('로그아웃 되었습니다.', { position: 'top', style: { paddingTop: 30 }, duration: 2000 });
+      this.showSnackbar('로그아웃 되었습니다.');
     }
     const connInfo = await NetInfo.getConnectionInfo();
     if(connInfo.type == 'none'){
@@ -155,6 +163,7 @@ export default class Login extends Component {
               <Text>앱 정보</Text>
             </CardItem>
           </BottomModal>
+          <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
         </KeyboardAvoidingView>
       </SafeAreaView>
     );

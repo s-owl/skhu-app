@@ -48,7 +48,7 @@ export default class SyllabusDetails extends Component{
         let evalMethod = JSON.parse(details['평가방법'])!=null && JSON.parse(details['평가방법'])!=undefined? 
           JSON.parse(details['평가방법']) : [];
         return(
-          <ScrollView>
+          <ScrollView style={{backgroundColor: 'whitesmoke'}}>
             <CardItem isHeader={true}>
               <Text style={{fontWeight: 'bold'}}>강의 정보</Text>
             </CardItem>

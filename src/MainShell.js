@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StatusBar, Platform } from 'react-native';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import Touchable from './components/touchable';
 import Main from './Main';
 import Menu from './Menu';
@@ -16,6 +16,7 @@ import ScholarshipHistory from './screens/scholarshopHistory';
 import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
+import Meal from './screens/meal';
 import { MaterialIcons } from '@expo/vector-icons';
 import BuildConfigs from './config';
 import NoticeScreen from './screens/notice';
@@ -29,11 +30,12 @@ const HomeStack = createStackNavigator(
     Timetable: Timetable,
     SyllabusDetails: SyllabusDetails,
     NoticeScreen :NoticeScreen,
+    Meal: Meal
   },
   {
     initialRouteName: 'Home',
-    navigationOptions: {
-      headerTintColor: '#569f59',
+    defaultNavigationOptions: {
+      headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
         color: 'black'
@@ -52,11 +54,12 @@ const MenuStack = createStackNavigator(
     ScholarshipHistory: ScholarshipHistory,
     GradeCert: GradeCert,
     Subjects: Subjects,
-    About: About
+    About: About,
+    Meal: Meal
   },
   {
     initialRouteName: 'Menu',
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
@@ -72,7 +75,7 @@ const TabNavigator = createBottomTabNavigator(
     Menu: MenuStack,
   },
   {
-    navigationOptions: ({ navigation }) => ({
+    defaultNavigationOptions: ({ navigation }) => ({
       tabBarButtonComponent: Touchable,
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
@@ -99,16 +102,18 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
+const AppContainer = createAppContainer(TabNavigator);
+
 export default class MainShell extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
       const { params } = navigation.state;
-    
+
       return {
         header: null // 헤더 비활성화
       };
     };
     render() {
-      return <TabNavigator/>;
+      return <AppContainer/>;
     }
     componentDidMount(){
       if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});

@@ -1,8 +1,11 @@
 const LegalInfo = {
   currentDevelopers: [
     '한나라(201633036, nr970810@gmail.com)\n기획, 앱 화면 설계 및 개발, 총괄(2018.03 ~)',
-    '조준서(201635039, coogys@naver.com)\n백엔드 개발, 앱 개발(2018.09 ~)',
-    '김남수(201435003, are34@naver.com)\n백엔드 개발,앱 개발(2018.10 ~)'
+    '조준서(201635039, coogys@naver.com)\n백엔드 개발, 앱 개발, 웹 백엔드개발(2018.09 ~)',
+    '김남수(201435003, are34@naver.com)\n백엔드 개발,앱 개발(2018.10 ~)',
+    '박웅기(201535018, sbe03005@naver.com)\n백엔드 개발, 앱 개발(2018.12 ~ )',
+    '김동욱(201433005, aron0725@gmail.com)\n백엔드 개발, api 개발, 서버 관리 (2018.12 ~ )',
+    '최호준(201533034, chlghwns23@gmail.com)\n백엔드 개발, 앱 개발, 웹 프론트개발(2018.12 ~)'
   ],
   formerDevelopers: [
     '한영빈(201632034, sukso96100@gmail.com)\n앱, 백엔드 개발, 서버 관리 및 총괄(2016.08 ~ 2018.09)',
@@ -49,11 +52,11 @@ const LegalInfo = {
       licenseUrl: 'https://github.com/vonovak/react-navigation-header-buttons/blob/master/LICENSE'
     },
     {
-      name: 'react-snackbar (Fork of react-native-snackbar-dialog)',
-      author: 'Christian Mitchell(Forked Version), 9gag Inc(Original Version)',
-      url: 'https://github.com/UrbanChrisy/rn-snackbar',
+      name: 'react-native-snackbar-component',
+      author: 'SiDevesh',
+      url: 'https://github.com/SiDevesh/React-Native-SnackBar-Component',
       license: 'MIT License',
-      licenseUrl: 'https://github.com/UrbanChrisy/rn-snackbar/blob/master/LICENSE'
+      licenseUrl: 'https://github.com/SiDevesh/React-Native-SnackBar-Component/blob/master/LICENSE'
     },
     {
       name: 'Moment',

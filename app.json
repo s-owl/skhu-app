@@ -4,9 +4,9 @@
     "description": "The Essential App for Sungkonghoe University students.",
     "slug": "skhus-app",
     "privacy": "public",
-    "sdkVersion": "29.0.0",
+    "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.1.6",
+    "version": "0.1.7",
     "orientation": "portrait",
     "icon": "./assets/imgs/icon.png",
     "primaryColor": "#ffffff",
@@ -15,11 +15,11 @@
     ],
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
-      "buildNumber": "0.1.6",
+      "buildNumber": "0.1.7",
       "icon": "./assets/imgs/ios.png",
       "supportsTablet": true,
       "infoPlist":{
-        "NSLocationWhenInUseUsageDescription": 
+        "NSLocationWhenInUseUsageDescription":
         "현재 위치 정보를 얻어 해당 위치의 날씨 정보를 표시하기 위해 사용됩나다.\n To provide weather informations for your current location.",
         "NSAppTransportSecurity":{
           "NSAllowsArbitraryLoads":false,
@@ -33,7 +33,7 @@
       }
     },
     "android": {
-      "versionCode": 7,
+      "versionCode": 8,
       "package": "com.sowl.skhus",
       "adaptiveIcon":{
         "foregroundImage":"./assets/imgs/androidAdaptive.png"
@@ -51,11 +51,11 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "enabled": false
+      "enabled": true
     },
     "assetBundlePatterns": [
       "**/*"
     ]
-    
+
   }
 }
