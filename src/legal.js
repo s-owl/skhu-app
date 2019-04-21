@@ -52,11 +52,11 @@ const LegalInfo = {
       licenseUrl: 'https://github.com/vonovak/react-navigation-header-buttons/blob/master/LICENSE'
     },
     {
-      name: 'react-snackbar (Fork of react-native-snackbar-dialog)',
-      author: 'Christian Mitchell(Forked Version), 9gag Inc(Original Version)',
-      url: 'https://github.com/UrbanChrisy/rn-snackbar',
+      name: 'react-native-snackbar-component',
+      author: 'SiDevesh',
+      url: 'https://github.com/SiDevesh/React-Native-SnackBar-Component',
       license: 'MIT License',
-      licenseUrl: 'https://github.com/UrbanChrisy/rn-snackbar/blob/master/LICENSE'
+      licenseUrl: 'https://github.com/SiDevesh/React-Native-SnackBar-Component/blob/master/LICENSE'
     },
     {
       name: 'Moment',

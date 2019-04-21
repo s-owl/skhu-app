@@ -41,7 +41,7 @@ export default class Timetable extends Component{
       );
     }else{
       return(
-        <ScrollView>
+        <ScrollView style={{backgroundColor: 'whitesmoke'}}>
           <View style={{flex:1, flexDirection: 'row'}}>
             {this.state.timetable.map((item, i)=>{
               return(

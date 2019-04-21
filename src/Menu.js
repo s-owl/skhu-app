@@ -7,7 +7,7 @@ import NavigationService from './tools/NavigationService';
 import {SecureStore, Linking} from 'expo';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import DBHelper from './tools/dbhelper';
-import SnackBar from 'rn-snackbar';
+import SnackBar from 'react-native-snackbar-component'
 
 export default class Menu extends Component {
 static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -17,10 +17,20 @@ static navigationOptions = ({ navigation, navigationOptions }) => {
     title: '메뉴',
   };
 };
+constructor(props){
+  super(props);
+  this.state = {msg: "", snackbar: false};
+}
+showSnackbar(msg){
+  this.setState({msg: msg, snackbar: true});
+  setTimeout(()=>{
+    this.setState({msg: "", snackbar: false});
+  },3000);
+}
 render() {
   return(
     <SafeAreaView>
-      <SectionList
+      <SectionList style={{height:'100%', backgroundColor: 'whitesmoke'}}
         renderItem={({item, index, section}) => (
           <CardItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
             <MaterialCommunityIcons name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
@@ -71,7 +81,7 @@ render() {
                 [
                   {text: '아니오', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                   {text: '예', onPress: async () => {
-                    SnackBar.show('로그아웃 중입니다...', { duration: 1000, position: 'top', style: { paddingTop: 30 } });
+                    this.showSnackbar('로그아웃 중입니다...');
                     await SecureStore.deleteItemAsync('userid');
                     await SecureStore.deleteItemAsync('userpw');
                     await SecureStore.deleteItemAsync('CredentialOld');
@@ -89,6 +99,7 @@ render() {
         ]}
         keyExtractor={(item, index) => item + index}
       />
+      <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
     </SafeAreaView>
   );
 }
