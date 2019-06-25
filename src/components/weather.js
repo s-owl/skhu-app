@@ -14,7 +14,7 @@ class WeatherUtils{
       if(response.ok){
         let data = await response.json();
         resolve({
-          conditionCode: data.weather.id,
+          conditionCode: data.weather[0].id,
           temp: data.main.temp
         });
       }else{
