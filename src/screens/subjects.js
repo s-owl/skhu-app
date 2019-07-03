@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
 import {RefreshControl, Modal, Text, View, FlatList,
-  TextInput, Picker, SafeAreaView, ActivityIndicator} from 'react-native';
+  TextInput, Picker, SafeAreaView, ActivityIndicator, Alert} from 'react-native';
 import { Map } from 'immutable';
 import {CardItem} from '../components/components';
 import SearchBar, {createSearchCondition} from '../components/searchBar';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
+
+function errorMessage() {
+  Alert.alert("조회 실패", "기간에 따른 제한 일 수 있으며 혹은 네트워크나 서버의 문제일 수 있습니다.");
+}
 
 function getTypesInSearchData(searchData) {
   majorCodes = Map({});
@@ -122,8 +126,8 @@ export default class Subjects extends Component{
       res = await this.loadSearchData();
       if (res.ok) {
         const searchData = await res.json();
-        this.dataType = getTypesInSearchData(searchData);
-        this.initParam = getParamInSearchData(searchData);
+        this.dataType = Map(getTypesInSearchData(searchData));
+        this.initParam = Map(getParamInSearchData(searchData));
         this.setCondition(createSearchCondition(this.dataType, this.initParam));
         this.setDisplay(this.getDisplay()
           .set('firstLoad', false)
@@ -132,6 +136,7 @@ export default class Subjects extends Component{
       }
     } catch (e) {
       console.log(e);
+      errorMessage();
     }
   }
 
@@ -152,6 +157,7 @@ export default class Subjects extends Component{
       }
     } catch (e) {
       console.log(e);
+      errorMessage();
     }
   }
 
@@ -159,6 +165,13 @@ export default class Subjects extends Component{
     this.setCondition(condition);
     this.runSearch();
     this.refs.itemList.scrollToOffset({animated: true, x: 0, y: 0});
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.getDisplay() == nextState.display)
+      return true;
+    else 
+      return false;
   }
 
   componentDidMount(){

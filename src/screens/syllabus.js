@@ -5,7 +5,6 @@ import { Map } from 'immutable';
 import {CardItem} from '../components/components';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
-import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
@@ -76,14 +75,15 @@ export default class Syllabus extends Component{
     this.refs.itemList.scrollToOffset({animated: true, x: 0, y: 0});
   }
 
-  shouldUpdateComponent(nextProps, nextState) {
-    if (this.getDisplay().get("refreshing") != nextState.display("refreshing"))
-      return true;
-    return false;
-  }
-
   componentDidMount(){
     this.loadSearchResults();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.getDisplay() == nextState.display)
+      return true;
+    else 
+      return false;
   }
 
   render(){
