@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {RefreshControl, Text, View, FlatList,
-  TextInput, Picker, ActivityIndicator} from 'react-native';
-import {CardItem, BottomModal} from '../components/components';
-import DateTools from '../tools/datetools';
+  TextInput, Picker, Alert} from 'react-native';
+import { Map } from 'immutable';
+import {CardItem} from '../components/components';
+import SearchBar, {createSearchCondition} from '../components/searchBar.js';
+import DateTools, {SemesterCodes} from '../tools/datetools';
 import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
@@ -15,136 +17,128 @@ export default class Syllabus extends Component{
       title: '강의계획서 조회',
     };
   };
+
   constructor(props){
     super(props);
     const today = new Date();
     const semester = DateTools.getSemesterCode(today.getMonth()+1);
-    this.state = {
-      showSearchModal: false,
+    
+    this.dataType = Map({
+      year: "년도(필수)",
+      semester: {
+        name: "학기",
+        values: SemesterCodes
+      },
+      subject: "강의 이름(선택)",
+      major: "개설 소속(선택)",
+      professor: "교수 이름(선택)"
+    });
+
+    this.initParam = Map({
       year: today.getFullYear().toString(),
-      semester: semester.name,
-      semesterCode: semester.code,
-      subject: '',
-      major: '',
-      professor:'',
-      result: [],
-      refreshing: false,
-      firstLoad: true
+      semester: semester.code
+    });
+
+    this.state = {
+      condition: createSearchCondition(this.dataType, this.initParam),
+      display: Map({
+        result: [],
+        refreshing: true,
+      })
     };
+
+    this.itemList = undefined;
   }
+
+  getCondition() {
+    return this.state.condition;
+  }
+
+  getDisplay() {
+    return this.state.display;
+  }
+
+  setCondition(condition) {
+    state = this.state;
+    state.condition = condition;
+    this.setState(state);
+  }
+
+  setDisplay(display) {
+    state = this.state;
+    state.display = display;
+    this.setState(state);
+  }
+
+  handleCondition(condition) {
+    this.setCondition(condition);
+    this.loadSearchResults();
+    this.refs.itemList.scrollToOffset({animated: true, x: 0, y: 0});
+  }
+
+  shouldUpdateComponent(nextProps, nextState) {
+    if (this.getDisplay().get("refreshing") != nextState.display("refreshing"))
+      return true;
+    return false;
+  }
+
   componentDidMount(){
     this.loadSearchResults();
   }
+
   render(){
-    if(this.state.firstLoad){
-      return(
-        <View style={{justifyContent: 'center', padding: 32}}>
-          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
-        </View>
-      );
-    }else{
-      return(
-        <View style={{backgroundColor: 'whitesmoke'}}>
-          <CardItem onPress={()=>this.setState({showSearchModal: true})}
-            style={{flex:0, flexDirection: 'row'}} elevate={true}>
-            <Text style={{flex:1}}>
-              {this.state.year}-{this.state.semester}, {this.state.subject}, {this.state.major}, {this.state.professor}
-            </Text>
-            <MaterialIcons name="search" size={20} style={{flex: 0}}/>
-          </CardItem>
-          <FlatList style={{backgroundColor: 'whitesmoke'}}
-            data={this.state.result}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this.loadSearchResults}
-                tintColor={BuildConfigs.primaryColor}
-                colors={[BuildConfigs.primaryColor]}
-              />
-            }
-            ListFooterComponent={()=>(
-              <CardItem style={{height: 50}}/>
-            )}
-            renderItem={({item})=>
-              <CardItem onPress={()=>{
-                this.props.navigation.navigate('SyllabusDetails', {
-                  subjectCode: item.subjectCode,
-                  classCode: item.classCode,
-                  semesterCode: this.state.semesterCode,
-                  year: this.state.year
-                });
-              }}>
-                <Text style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</Text>
-                <Text>{item.college} {item.major} | {item.professor}({item.professorNo})</Text>
-                <Text>작성여부: {item.availablity}</Text>
-              </CardItem>
-            }
-          />
-          <BottomModal
-            title='강의계획서 검색'
-            visible={this.state.showSearchModal}
-            onRequestClose={() => this.setState({showSearchModal: false})}
-            buttons={[
-              {label: '취소', onPress: ()=>{
-                this.setState({showSearchModal: false});
-              }},
-              {label: '검색', onPress: ()=>{
-                this.setState({showSearchModal: false});
-                this.loadSearchResults();
-              }}
-            ]}>
-            <CardItem>
-              <TextInput placeholder={'년도(필수)'} defaultValue={this.state.year} style={{fontSize: 16, padding: 8}}
-                onChangeText={(text)=>this.setState({year: text})}/>
+    const display = this.getDisplay();
+    const condition = this.getCondition();
+    return(
+      <View style={{backgroundColor: 'whitesmoke'}}>
+        <SearchBar dataType={this.dataType}
+                   initParam={this.initParam}
+                   onChange={this.handleCondition.bind(this)} />
+        <FlatList style={{backgroundColor: 'whitesmoke'}}
+          ref='itemList'
+          data={display.get('result')}
+          refreshControl={
+            <RefreshControl
+              refreshing={display.get('refreshing')}
+              onRefresh={this.loadSearchResults.bind(this)}
+              tintColor={BuildConfigs.primaryColor}
+              colors={[BuildConfigs.primaryColor]}
+            />
+          }
+          ListFooterComponent={()=>(
+            <CardItem style={{height: 50}}/>
+          )}
+          renderItem={({item})=>
+            <CardItem onPress={()=>{
+              this.props.navigation.navigate('SyllabusDetails', {
+                subjectCode: item.subjectCode,
+                classCode: item.classCode,
+                semesterCode: condition.get('semester'),
+                year: condition.get('year')
+              });
+            }}>
+              <Text style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</Text>
+              <Text>{item.college} {item.major} | {item.professor}({item.professorNo})</Text>
+              <Text>작성여부: {item.availablity}</Text>
             </CardItem>
-            <CardItem>
-              <Picker
-                selectedValue={this.state.semesterCode}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({
-                    semesterCode: itemValue,
-                    semester: ['1학기', '2학기', '여름학기', '겨울학기'][itemIndex]
-                  });
-                }}>
-                <Picker.Item label="1학기" value="Z0101" />
-                <Picker.Item label="2학기" value="Z0102" />
-                <Picker.Item label="여름학기" value="Z0103" />
-                <Picker.Item label="겨울학기" value="Z0104" />
-              </Picker>
-            </CardItem>
-            <CardItem>
-              <TextInput placeholder={'강의 이름(선택)'} style={{fontSize: 16, padding: 8}}
-                defaultValue={this.state.subject}
-                onChangeText={(text)=>this.setState({subject: text})}/>
-            </CardItem>
-            <CardItem>
-              <TextInput placeholder={'개설 소속(선택)'} style={{fontSize: 16, padding: 8}}
-                defaultValue={this.state.major}
-                onChangeText={(text)=>this.setState({major: text})}/>
-            </CardItem>
-            <CardItem>
-              <TextInput placeholder={'교수 이름(선택)'} style={{fontSize: 16, padding: 8}}
-                defaultValue={this.state.professor}
-                onChangeText={(text)=>this.setState({professor: text})}/>
-            </CardItem>
-          </BottomModal>
-        </View>
-      );
-    }
+          }
+        />
+      </View>
+    );
   }
 
   async loadSearchResults(){
     try{
-      this.setState({refreshing: true});
-      const results = await ForestApi.postToSam('/SSE/SSEA1/SSEA104_GetList',
-        JSON.stringify({
-          'Haggi': this.state.semesterCode,
-          'HaggiNm': this.state.semester,
-          'Yy': this.state.year,
-          'GwamogParam': this.state.subject,
-          'ProfParam': this.state.professor,
-          'SosogParam': this.state.major
-        }));
+      this.setDisplay(this.getDisplay().set("refreshing", true));
+      const condition = this.getCondition();
+      const req = JSON.stringify({
+        'Haggi': condition.get("semester"),
+        'Yy': condition.get("year"),
+        'GwamogParam': condition.get("subject"),
+        'ProfParam': condition.get("professor"),
+        'SosogParam': condition.get("major")
+      });
+      const results = await ForestApi.postToSam('/SSE/SSEA1/SSEA104_GetList', req);
       let arr = [];
       if(results.ok){
         const data = await results.json();
@@ -162,15 +156,14 @@ export default class Syllabus extends Component{
             availablity: item.SueobGyehoegYn
           });
         }
-        console.log(arr);
-        this.setState({
-          result: arr,
-          refreshing: false,
-          firstLoad: false
-        });
+        this.setDisplay(
+          this.getDisplay()
+            .set('result',arr)
+            .set('refreshing',false));
       }
     }catch(err){
       console.log(err);
+      Alert.alert('조회 실패', '기간에 따른 제한 일 수 있으며 혹은 네트워크 문제일 수도 있습니다.');
     }
   }
 }
