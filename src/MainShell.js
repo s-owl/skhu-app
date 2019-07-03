@@ -17,6 +17,7 @@ import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
 import Meal from './screens/meal';
+import searchCondition from './screens/searchCondition';
 import { MaterialIcons } from '@expo/vector-icons';
 import BuildConfigs from './config';
 
@@ -53,7 +54,8 @@ const MenuStack = createStackNavigator(
     GradeCert: GradeCert,
     Subjects: Subjects,
     About: About,
-    Meal: Meal
+    Meal: Meal,
+    searchCondition: searchCondition
   },
   {
     initialRouteName: 'Menu',
