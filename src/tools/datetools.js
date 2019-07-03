@@ -32,3 +32,10 @@ export default class DateTools{
     return days[num];
   }
 }
+
+export const SemesterCodes = {
+    "1학기":"Z0101",
+    "2학기":"Z0102",
+    "여름학기":"Z0103",
+    "겨울학기":"Z0104"
+};
