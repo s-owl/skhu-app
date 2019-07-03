@@ -1,11 +1,64 @@
 import React, {Component} from 'react';
 import {RefreshControl, Modal, Text, View, FlatList,
   TextInput, Picker, SafeAreaView, ActivityIndicator} from 'react-native';
-import {CardItem, BottomModal} from '../components/components';
-import DateTools from '../tools/datetools';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Map } from 'immutable';
+import {CardItem} from '../components/components';
+import SearchBar, {createSearchCondition} from '../components/searchBar';
+import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
+
+function getTypesInSearchData(searchData) {
+  majorCodes = Map({});
+  searchData.options.major.forEach(
+    (major)=>{
+      majorCodes = majorCodes.set(major.title, major.value);});
+  return {
+    year: "년도(필수)",
+    semester: {
+      name: "학년(필수)",
+      values: SemesterCodes
+    },
+    major: {
+      name: "개설 소속(필수)",
+      values: majorCodes.toJS()
+    },
+    professor: "교수 이름(선택)" 
+  };
+}
+
+function getParamInSearchData(searchData) {
+  const today = new Date();
+  const year = today.getFullYear().toString();
+  const semester = DateTools.getSemesterCode(today.getMonth()+1).code;
+  const major = searchData.options.major_current.value;
+  return {
+    year: year,
+    semester: semester,
+    major: major
+  };
+}
+
+function getResultInSearchData(searchData) {
+  let arr = searchData.list.map((item)=>{
+    return {
+      key: `${item.code}-${item.class}`,
+      subjectCode: item.code,
+      classCode: item.class,
+      subject: item.subject,
+      professor: item.professor,
+      available: item.available,
+      type: item.type,
+      grade: item.grade,
+      score: item.score,
+      grade_limit: item.grade_limit,
+      major_limit: item.major_limit,
+      time: item.time,
+      note: item.note
+    }
+  });
+  return arr;
+}
 
 export default class Subjects extends Component{
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -17,26 +70,106 @@ export default class Subjects extends Component{
   };
   constructor(props){
     super(props);
-    const today = new Date();
-    const semester = DateTools.getSemesterCode(today.getMonth()+1);
     this.state = {
-      showSearchModal: false,
-      year: today.getFullYear().toString(),
-      semester: {title: semester.name, code: semester.code},
-      major: {title:'', code:''},
-      professor:'',
-      majorOptions: [],
-      semesterOptions: [],
-      result: [],
-      refreshing: false,
-      firstLoad: true
+      condition: Map({}),
+      display: Map({
+        result: [],
+        refreshing: false,
+        firstLoad: true
+      })
     };
   }
-  componentDidMount(){
-    this.loadSearchResults();
+
+  getCondition() {
+    return this.state.condition;
   }
+
+  getDisplay() {
+    return this.state.display;
+  }
+
+  setCondition(condition) {
+    state = this.state;
+    state.condition = condition;
+    this.setState(state);
+  }
+
+  setDisplay(display) {
+    state = this.state;
+    state.display = display;
+    this.setState(state);
+  }
+
+  async loadSearchData() {
+    const condition = this.getCondition();
+    const display = this.getDisplay();
+
+    if(display.get('firstLoad')) {
+      return await ForestApi.get('/enroll/subjects', true);
+    }
+  
+    return await ForestApi.post('/enroll/subjects',
+      JSON.stringify({
+        'year': condition.get('year'),
+        'semester': condition.get('semester'),
+        'major': condition.get('major'),
+        'professor': condition.get('professor')
+    }), true);
+  }
+
+  async initSearch() {
+    try {
+      res = await this.loadSearchData();
+      if (res.ok) {
+        const searchData = await res.json();
+        this.dataType = getTypesInSearchData(searchData);
+        this.initParam = getParamInSearchData(searchData);
+        this.setCondition(createSearchCondition(this.dataType, this.initParam));
+        this.setDisplay(this.getDisplay()
+          .set('firstLoad', false)
+          .set('refreshing', false)
+          .set('result', getResultInSearchData(searchData)));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async runSearch() {
+    try {
+      const condition = this.getDisplay();
+      this.setDisplay(
+        condition
+          .set('refreshing', true));
+      res = await this.loadSearchData();
+
+      if (res.ok) {
+        const searchData = await res.json();
+        this.setDisplay(
+          condition
+            .set('refreshing', false)
+            .set('result', getResultInSearchData(searchData)));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  handleCondition(condition) {
+    this.setCondition(condition);
+    this.runSearch();
+    this.refs.itemList.scrollToOffset({animated: true, x: 0, y: 0});
+  }
+
+  componentDidMount(){
+    this.initSearch();
+  }
+
   render(){
-    if(this.state.firstLoad){
+    const display = this.getDisplay();
+    const condition = this.getCondition();
+
+    if(display.get('firstLoad')){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
           <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
@@ -45,22 +178,21 @@ export default class Subjects extends Component{
     }else{
       return(
         <View style={{backgroundColor: 'whitesmoke'}}>
-          <CardItem onPress={()=>this.setState({showSearchModal: true})}
-            style={{flex:0, flexDirection: 'row'}} elevate={true}>
-            <Text style={{flex:1}}>
-              {this.state.year}-{this.state.semester.title}, {this.state.major.title}, {this.state.professor}
-            </Text>
-            <MaterialIcons name="search" size={20} style={{flex: 0}}/>
-          </CardItem>
+          <SearchBar
+            dataType={this.dataType}
+            initParam={this.initParam}
+            onChange={this.handleCondition.bind(this)}
+          />
           <FlatList style={{backgroundColor: 'whitesmoke'}}
-            data={this.state.result}
+            ref="itemList"
+            data={display.get('result')}
             ListFooterComponent={()=>(
               <CardItem style={{height: 50}}/>
             )}
             refreshControl={
               <RefreshControl
-                refreshing={this.state.refreshing}
-                onRefresh={this.loadSearchResults}
+                refreshing={display.get('refreshing')}
+                onRefresh={this.runSearch.bind(this)}
                 tintColor={BuildConfigs.primaryColor}
                 colors={[BuildConfigs.primaryColor]}
               />
@@ -70,8 +202,8 @@ export default class Subjects extends Component{
                 this.props.navigation.navigate('SyllabusDetails', {
                   subjectCode: item.subjectCode,
                   classCode: item.classCode,
-                  semesterCode: this.state.semester.code,
-                  year: this.state.year
+                  semesterCode: condition.get('semester'),
+                  year: condition.get('year')
                 });
               }}>
                 <Text style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</Text>
@@ -82,130 +214,8 @@ export default class Subjects extends Component{
               </CardItem>
             }
           />
-          <BottomModal
-            title='학과/학부별 개설과목 검색'
-            visible={this.state.showSearchModal}
-            onRequestClose={() => this.setState({showSearchModal: false})}
-            buttons={[
-              {label: '취소', onPress: ()=>{this.setState({showSearchModal: false});}},
-              {label: '검색', onPress: ()=>{
-                this.setState({showSearchModal: false});
-                this.loadSearchResults();
-              }}
-            ]}>
-
-            <CardItem>
-              <TextInput placeholder={'년도(필수)'} defaultValue={this.state.year} style={{fontSize: 16, padding: 8}}
-                onChangeText={(text)=>this.setState({year: text})}/>
-            </CardItem>
-            <CardItem>
-              <Picker
-                selectedValue={this.state.semester.code}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({
-                    semester:{
-                      title: this.state.semesterOptions[itemIndex].title,
-                      code: itemValue
-                    }
-                  });
-                }}>
-                {this.state.semesterOptions.map((item, index)=>{
-                  return(
-                    <Picker.Item label={item.title} value={item.value} />
-                  );
-                })}
-              </Picker>
-            </CardItem>
-            <CardItem>
-              <Picker
-                selectedValue={this.state.major.code}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({
-                    major:{
-                      title: this.state.majorOptions[itemIndex].title,
-                      code: itemValue
-                    }
-                  });
-                }}>
-                {this.state.majorOptions.map((item, index)=>{
-                  return(
-                    <Picker.Item label={item.title} value={item.value} />
-                  );
-                })}
-              </Picker>
-            </CardItem>
-            <CardItem>
-              <TextInput placeholder={'교수 이름(선택)'} style={{fontSize: 16, padding: 8}}
-                defaultValue={this.state.professor}
-                onChangeText={(text)=>this.setState({professor: text})}/>
-            </CardItem>
-          </BottomModal>
         </View>
       );
-    }
-  }
-
-  async loadSearchResults(){
-    try{
-      this.setState({refreshing: true});
-      let results;
-      if(this.state.firstLoad){
-        results = await ForestApi.get('/enroll/subjects', true);
-      }else{
-        results = await ForestApi.post('/enroll/subjects',
-          JSON.stringify({
-            'year': this.state.year,
-            'semester': this.state.semester.code,
-            'major': this.state.major.code,
-            'professor': this.state.professor
-          }), true);
-      }
-      let arr = [];
-      if(results.ok){
-        const data = await results.json();
-        for(let item of data.list){
-          arr.push({
-            key: `${item.code}-${item.class}`,
-            subjectCode: item.code,
-            classCode: item.class,
-            subject: item.subject,
-            professor: item.professor,
-            available: item.available,
-            type: item.type,
-            grade: item.grade,
-            score: item.score,
-            grade_limit: item.grade_limit,
-            major_limit: item.major_limit,
-            time: item.time,
-            note: item.note
-          });
-        }
-        console.log(arr);
-        if(this.state.firstLoad){
-          this.setState({
-            result: arr,
-            semesterOptions: data.options.semester,
-            majorOptions: data.options.major,
-            refreshing: false,
-            firstLoad: false,
-            major: {
-              title: data.options.major_current.title,
-              code: data.options.major_current.value
-            }
-          });
-        }else{
-          this.setState({
-            result: arr,
-            semesterOptions: data.options.semester,
-            majorOptions: data.options.major,
-            refreshing: false,
-            firstLoad: false
-          });
-        }
-        
-      }
-    }catch(err){
-      console.log(err);
     }
   }
 }
