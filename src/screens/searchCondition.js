@@ -5,6 +5,7 @@ import {
 import { Map, List } from "immutable";
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { SortByCodes } from '../components/searchBar';
 import { CardItem } from '../components/components';
 import { primaryColor } from '../config.js';
 
@@ -86,7 +87,7 @@ export default class searchCondition extends Component {
                            selectedValue={this.state.condition.get(itemKey)}
                            style={styles.picker}
                            itemStyle={styles.item}>
-                            {List(Map(itemType.values).keys())
+                            {List(SortByCodes(itemType.values).keys())
                               .toJS()
                               .map((value, index)=>{
                                 return(

@@ -8,7 +8,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import {CardItem} from './components'
 
-export function initCondition(dataType, initParam) {
+export function SortByCodes(pickerValues) {
+  return Map(pickerValues).sortBy((v,k)=> v);
+}
+
+function initCondition(dataType, initParam) {
   init = dataType.map(value=>{
     if (typeof value == 'string') {
       return '';
@@ -27,26 +31,28 @@ export function initCondition(dataType, initParam) {
         init =
           init.set(
             k,
-            Map(dataType.getIn([k,"values"]))
+            SortByCodes(dataType.getIn([k,"values"]))
               .toList().findEntry((value)=> v == value)[0]);
     });
   }
   return init;
 }
 
-function translatePickerCondition(condition, dataType) {
-  return dataType.map((type, key)=>{
-    if (typeof type == 'string')
-      return condition.get(key);
-    else if (typeof type == 'object')
-      return Map(type.values).toList().get(condition.get(key));
-  });
-}
-
 export function createSearchCondition(dataType, initParam) {
   return translatePickerCondition(
     initCondition(dataType, initParam),
     dataType);
+}
+
+function translatePickerCondition(condition, dataType) {
+  return dataType.map((type, key)=>{
+    if (typeof type == 'string')
+      return condition.get(key);
+    else if (typeof type == 'object') {
+      res = SortByCodes(type.values).toList().get(condition.get(key));
+      return res;
+    }
+  });
 }
 
 class searchBar extends Component {
@@ -91,8 +97,8 @@ class searchBar extends Component {
                    if (typeof value == "string") {
                      return value;
                    } else if (typeof value == "number") {
-                     return List(Map(this.dataType.getIn([key,"values"])).keys())
-                                .get(value);
+                     return List(SortByCodes(this.dataType.getIn([key,"values"])).keys())
+                       .get(value);
                    }
                    return ''
                  })
