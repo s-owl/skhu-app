@@ -96,7 +96,6 @@ export default class searchCondition extends Component {
                            selectedValue={this.state.condition.get(itemKey)}
                            style={styles.picker}
                            itemStyle={styles.item}>
-                            // 순서 일치를 위한 SortByCodes
                             {List(SortByCodes(itemType.values).keys())
                               .toJS()
                               .map((value, index)=>{
