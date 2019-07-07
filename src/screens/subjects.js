@@ -8,10 +8,12 @@ import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
+// 에러 표시
 function errorMessage() {
   Alert.alert("조회 실패", "기간에 따른 제한 일 수 있으며 혹은 네트워크나 서버의 문제일 수 있습니다.");
 }
 
+// 검색 데이터에서 조건의 형태를 생성한다.
 function getTypesInSearchData(searchData) {
   majorCodes = Map({});
   searchData.options.major.forEach(
@@ -31,10 +33,12 @@ function getTypesInSearchData(searchData) {
   };
 }
 
+// 검색 데이터에서 초기 검색 조건을 얻는다.
 function getParamInSearchData(searchData) {
   const today = new Date();
   const year = today.getFullYear().toString();
   const semester = DateTools.getSemesterCode(today.getMonth()+1).code;
+  console.log(searchData.options.major_current);
   const major = searchData.options.major_current.value;
   return {
     year: year,
@@ -43,6 +47,7 @@ function getParamInSearchData(searchData) {
   };
 }
 
+// 검색 데이터에서 결과를 얻는다.
 function getResultInSearchData(searchData) {
   let arr = searchData.list.map((item)=>{
     return {
@@ -72,10 +77,14 @@ export default class Subjects extends Component{
       title: '학과/학부별 개설과목 조회',
     };
   };
+
+  // 초기화
   constructor(props){
     super(props);
     this.state = {
+      // 서버와 통신하기 전에는 조건을 알 수 없다.
       condition: Map({}),
+      // 출력 상태를 초기화한다.
       display: Map({
         result: [],
         refreshing: false,
@@ -84,34 +93,41 @@ export default class Subjects extends Component{
     };
   }
 
+  // 검색 조건의 getter
   getCondition() {
     return this.state.condition;
   }
 
+  // 출력 조건의 getter
   getDisplay() {
     return this.state.display;
   }
 
+  // 검색 조건의 setter
   setCondition(condition) {
     state = this.state;
     state.condition = condition;
     this.setState(state);
   }
 
+  // 출력 조건의 setter
   setDisplay(display) {
     state = this.state;
     state.display = display;
     this.setState(state);
   }
 
+  // 검색 데이터를 가져온다.
   async loadSearchData() {
     const condition = this.getCondition();
     const display = this.getDisplay();
 
+    // 초기화 후 처음이라면 GET으로 가져온다.
     if(display.get('firstLoad')) {
       return await ForestApi.get('/enroll/subjects', true);
     }
   
+    // POST로 검색 조건을 전달하고 결과를 받아온다.
     return await ForestApi.post('/enroll/subjects',
       JSON.stringify({
         'year': condition.get('year'),
@@ -123,15 +139,18 @@ export default class Subjects extends Component{
 
   async initSearch() {
     try {
+      // 검색 데이터 가져오기
       res = await this.loadSearchData();
       if (res.ok) {
+        // json 으로 파싱
         const searchData = await res.json();
+        // 검색 조건 초기화 및 searchBar 초기화
         this.dataType = Map(getTypesInSearchData(searchData));
         this.initParam = Map(getParamInSearchData(searchData));
         this.setCondition(createSearchCondition(this.dataType, this.initParam));
+        // 검색 결과 표시
         this.setDisplay(this.getDisplay()
           .set('firstLoad', false)
-          .set('refreshing', false)
           .set('result', getResultInSearchData(searchData)));
       }
     } catch (e) {
@@ -142,14 +161,19 @@ export default class Subjects extends Component{
 
   async runSearch() {
     try {
+      // 화면 표시 조건 가져오기
       const condition = this.getDisplay();
+      // 검색 중 표시
       this.setDisplay(
         condition
           .set('refreshing', true));
+      // 검색 데이터 가져오기
       res = await this.loadSearchData();
 
       if (res.ok) {
+        //json 으로 파싱
         const searchData = await res.json();
+        // 검색 결과표시
         this.setDisplay(
           condition
             .set('refreshing', false)
@@ -161,12 +185,16 @@ export default class Subjects extends Component{
     }
   }
 
+  // 검색 조건 변경 시 동작 설정
   handleCondition(condition) {
+    // 스크룰을 맨 위까지 올린다.
+    this.refs.itemList.scrollToOffset({animated: true, x: 0, y: 0});
+    // 검색 조건 설정 후 검색 시작
     this.setCondition(condition);
     this.runSearch();
-    this.refs.itemList.scrollToOffset({animated: true, x: 0, y: 0});
   }
 
+  // 출력 조건 변경 시 업데이트 강제
   shouldComponentUpdate(nextProps, nextState) {
     if (this.getDisplay() == nextState.display)
       return true;
@@ -174,6 +202,7 @@ export default class Subjects extends Component{
       return false;
   }
 
+  // 초기화 후 검색 및 검색바 초기화
   componentDidMount(){
     this.initSearch();
   }
@@ -182,6 +211,7 @@ export default class Subjects extends Component{
     const display = this.getDisplay();
     const condition = this.getCondition();
 
+    // 맨 처음에는 검색바가 초기화가 돠지 않아 검색 중 표시를 출력한다.
     if(display.get('firstLoad')){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
@@ -191,11 +221,13 @@ export default class Subjects extends Component{
     }else{
       return(
         <View style={{backgroundColor: 'whitesmoke'}}>
+          // 검색바를 설정
           <SearchBar
             dataType={this.dataType}
             initParam={this.initParam}
             onChange={this.handleCondition.bind(this)}
           />
+          // 검색 결과를 출력할 리스트
           <FlatList style={{backgroundColor: 'whitesmoke'}}
             ref="itemList"
             data={display.get('result')}
