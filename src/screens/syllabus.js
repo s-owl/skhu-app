@@ -110,11 +110,9 @@ export default class Syllabus extends Component{
 
     return(
       <View style={{backgroundColor: 'whitesmoke'}}>
-        // 검색바를 설정한다.
         <SearchBar dataType={this.dataType}
                    initParam={this.initParam}
                    onChange={this.handleCondition.bind(this)} />
-        // 결과를 출력할 리스트를 설정한다.
         <FlatList style={{backgroundColor: 'whitesmoke'}}
           ref='itemList'
           data={display.get('result')}

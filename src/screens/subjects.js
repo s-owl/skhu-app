@@ -221,13 +221,11 @@ export default class Subjects extends Component{
     }else{
       return(
         <View style={{backgroundColor: 'whitesmoke'}}>
-          // 검색바를 설정
           <SearchBar
             dataType={this.dataType}
             initParam={this.initParam}
             onChange={this.handleCondition.bind(this)}
           />
-          // 검색 결과를 출력할 리스트
           <FlatList style={{backgroundColor: 'whitesmoke'}}
             ref="itemList"
             data={display.get('result')}
