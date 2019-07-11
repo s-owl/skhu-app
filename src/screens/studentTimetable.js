@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView, Text, TouchableHighlight, ActivityIndicator} from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import Timetable, {convertForTimetable} from '../components/Timetable'
 import DBHelper from '../tools/dbhelper';
 import DateTools from '../tools/datetools';

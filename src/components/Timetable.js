@@ -64,7 +64,7 @@ class Timetable extends Component {
     super(props);
   }
 
-  render = ()=>(
+  render() {
     <ScrollView style={{backgroundColor: 'whitesmoke'}}>
       <View style={{flex:1, flexDirection: 'row'}}>
         {this.props.timetable.map((item, i)=>{
@@ -105,7 +105,8 @@ class Timetable extends Component {
           );
         })}
       </View>
-    </ScrollView>)
+    </ScrollView>
+  }
 }
 
 export default withNavigation(Timetable);
