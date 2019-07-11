@@ -62,7 +62,7 @@ function translatePickerCondition(condition, dataType) {
   });
 }
 
-class searchBar extends Component {
+class SearchBar extends Component {
   // 조건 getter
   getCondition() {
     return this.state.condition;
@@ -121,4 +121,4 @@ class searchBar extends Component {
   }
 }
 
-export default withNavigation(searchBar);
+export default withNavigation(SearchBar);
