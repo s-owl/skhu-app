@@ -27,7 +27,7 @@ export default class Main extends Component {
     this.state = { url: '' };
     this.db = new DBHelper();
     this.db.fetchAttendance();
-    this.db.fetchTimeTable();
+    this.db.fetchTimetable();
     FetchHelper.fetchMealsUrl().then(url => this.setState({ url }));
   }
   render() {
