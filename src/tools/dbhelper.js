@@ -164,7 +164,7 @@ export default class DBHelper{
 
     });
   }
-  async fetchTimeTable(){
+  async fetchTimetable(){
     try{
       const today = new Date();
       const semester = DateTools.getSemesterCode(today.getMonth()+1);
