@@ -49,15 +49,8 @@ export default class StudentTimetable extends Component{
   loadTimetable(){
     this.setState({isLoading: true});
     this.db.getTimetableData().then((query)=>{
-      let result = [];
-      if(query) {
-        for (i = 0; i < query.length; i++) {
-          result[i] = query.item(i);
-        }
-      }
-      let displayData = convertForTimetable(result);
       this.setState({
-        timetable: displayData,
+        timetable: convertForTimetable(query._array),
         isLoading: false
       });
     });

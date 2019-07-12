@@ -4,29 +4,64 @@ import { withNavigation } from 'react-navigation';
 import DateTools from '../tools/datetools';
 import moment from 'moment';
 
+export function extractFromData(Data, professorNameCol) {
+  // 가끔씩 교수이름 칸만 이름이  다른 경우가 있다.
+  if (professorNameCol != undefined) {
+    professorNameCol = "GyosuNm";
+  }
+
+  Data.map((item) => {
+    return {
+      title: item.GwamogKorNm,
+      professor: item[professorNameCol],
+      room: item.HosilCd,
+      day: DateTools.dayOfWeekStrToNum(item.YoilNm),
+      starts_at: item.FrTm,
+      ends_at: item.ToTm,
+      lecture_id: '${item.GwamogCd}-${item.Bunban}',
+    }});
+}
+
 export function convertForTimetable(arr) {
   let displayData = [];
+  let calcHeight = (start, end)=>(((end.hour - start.hour) * 60)
+                                    + (end.mins - start.mins));
+
   for(let i=0; i<arr.length; i++){
     let item = arr[i];
     console.log(item);
+
+    let timeTemplate = 'HH:mm:ss';
+    let minTemplate;
+    if (item.starts_at.length == 8 && item.ends_at.length == 8) {
+      minTemplate = '08:00:00';
+    }
+    else {
+      minTemplate = '08:00';
+    }
+
+    let startsAt = moment(item.starts_at, timeTemplate);
     let startsAtDatetime = {
-      hour: moment(item.starts_at, 'HH:mm:ss').hours(),
-      mins: moment(item.starts_at, 'HH:mm:ss').minutes()};
+      hour: startsAt.hours(),
+      mins: startsAt.minutes()};
+
+    let endsAt = moment(item.ends_at, timeTemplate);
     let endsAtDatetime = {
-      hour: moment(item.ends_at, 'HH:mm:ss').hours(),
-      mins: moment(item.ends_at, 'HH:mm:ss').minutes()};
+      hour: endsAt.hours(),
+      mins: endsAt.minutes()};
+
     let sevenMorning = {hour: 8, mins: 0};
+
     if(displayData[item.day]==undefined){
       console.log(`init ${item.day}`);
       displayData[item.day] = [];
       displayData[item.day].push({
         isEmptyCell: true,
-        time: `08:00:00 ~ ${item.starts_at}`,
+        time: `${minTemplate} ~ ${item.starts_at}`,
         endsAt: startsAtDatetime,
         name:'',
         room:'',
-        height: (((startsAtDatetime.hour - sevenMorning.hour)*60)
-            + (startsAtDatetime.mins - sevenMorning.mins))
+        height: calcHeight(sevenMorning, startsAtDatetime)
       });
     }else{
       console.log(`add to ${item.day}`);
@@ -37,8 +72,7 @@ export function convertForTimetable(arr) {
         endsAt: startsAtDatetime,
         name:'',
         room:'',
-        height: (((startsAtDatetime.hour - prevEndsAt.hour)*60)
-            + (startsAtDatetime.mins - prevEndsAt.mins))
+        height: calcHeight(prevEndsAt, startsAtDatetime)
       });
     }
     displayData[item.day].push({
@@ -47,8 +81,7 @@ export function convertForTimetable(arr) {
       endsAt: endsAtDatetime,
       name: item.title,
       room: item.room,
-      height: (((endsAtDatetime.hour - startsAtDatetime.hour)*60) 
-          + (endsAtDatetime.mins - startsAtDatetime.mins)),
+      height: calcHeight(startsAtDatetime, endsAtDatetime),
       syllabus:{
         code: item.lecture_id,
         semester: item.semester_code,
@@ -65,47 +98,48 @@ class Timetable extends Component {
   }
 
   render() {
-    <ScrollView style={{backgroundColor: 'whitesmoke'}}>
-      <View style={{flex:1, flexDirection: 'row'}}>
-        {this.props.timetable.map((item, i)=>{
-          return(
-            <View style={{flex: 1}}>
-              <View style={{height: item.height, backgroundColor: 'white', padding: 2}}>
-                <Text style={{color: 'black'}}>{DateTools.dayOfWeekNumToStr(i)}</Text>
-              </View>
-              {item.map((subject, j)=>{
-                let bgColor = subject.isEmptyCell ? 'rgba(0, 0, 0, 0)' : 'silver';
-                if(subject.isEmptyCell){
-                  return(
-                    <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}
-                      key={`subject_${i}_${j}`}>
-                    </View>
-                  );
-                }else{
-                  return(
-                    <TouchableHighlight style={{}}
-                      key={`subject_${i}_${j}`} onPress={()=>{
-                        this.props.navigation.navigate('SyllabusDetails', {
-                          subjectCode: subject.syllabus.code.split('-')[0],
-                          classCode: subject.syllabus.code.split('-')[1],
-                          semesterCode: subject.syllabus.semester,
-                          year: subject.syllabus.year
-                        });
-                      }}>
-                      <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}>
-                        <Text style={{color: 'black', fontSize: 12}}>{subject.name}</Text>
-                        <Text style={{color: 'black', fontSize: 8}}>{subject.time}</Text>
-                        <Text style={{color: 'black', fontSize: 8}}>{subject.room}</Text>
+    return (
+      <ScrollView style={{backgroundColor: 'whitesmoke'}}>
+        <View style={{flex:1, flexDirection: 'row'}}>
+          {this.props.timetable.map((item, i)=>{
+            return(
+              <View style={{flex: 1}}>
+                <View style={{height: item.height, backgroundColor: 'white', padding: 2}}>
+                  <Text style={{color: 'black'}}>{DateTools.dayOfWeekNumToStr(i)}</Text>
+                </View>
+                {item.map((subject, j)=>{
+                  let bgColor = subject.isEmptyCell ? 'rgba(0, 0, 0, 0)' : 'silver';
+                  if(subject.isEmptyCell){
+                    return(
+                      <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}
+                        key={`subject_${i}_${j}`}>
                       </View>
-                    </TouchableHighlight>
-                  );
-                }
-              })}
-            </View>
-          );
-        })}
-      </View>
-    </ScrollView>
+                    );
+                  }else{
+                    return(
+                      <TouchableHighlight style={{}}
+                        key={`subject_${i}_${j}`} onPress={()=>{
+                          this.props.navigation.navigate('SyllabusDetails', {
+                            subjectCode: subject.syllabus.code.split('-')[0],
+                            classCode: subject.syllabus.code.split('-')[1],
+                            semesterCode: subject.syllabus.semester,
+                            year: subject.syllabus.year
+                          });
+                        }}>
+                        <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}>
+                          <Text style={{color: 'black', fontSize: 12}}>{subject.name}</Text>
+                          <Text style={{color: 'black', fontSize: 8}}>{subject.time}</Text>
+                          <Text style={{color: 'black', fontSize: 8}}>{subject.room}</Text>
+                        </View>
+                      </TouchableHighlight>
+                    );
+                  }
+                })}
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>);
   }
 }
 
