@@ -10,7 +10,7 @@ export function extractFromData(Data, professorNameCol) {
     professorNameCol = "GyosuNm";
   }
 
-  Data.map((item) => {
+  return Data.map((item) => {
     return {
       title: item.GwamogKorNm,
       professor: item[professorNameCol],
