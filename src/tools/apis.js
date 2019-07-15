@@ -1,5 +1,5 @@
 
-import { SecureStore } from 'expo';
+import * as SecureStore from 'expo-secure-store';
 import BuildConfigs from '../config';
 import 'abortcontroller-polyfill';
 

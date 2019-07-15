@@ -5,7 +5,7 @@ import {
   SafeAreaView, Text, ScrollView //사용되는 친구들
 } from 'react-native';
 import Touchable from './touchable';
-import { LinearGradient } from 'expo'; //라이브러리
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 class CardView extends Component{ //table View

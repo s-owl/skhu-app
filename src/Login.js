@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text ,View, Image, TextInput,
+  StyleSheet, Text ,View, Image, TextInput, Linking,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
   Alert, ActivityIndicator, NetInfo, Platform
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
-import {SecureStore, Linking} from 'expo';
+import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import SnackBar from 'react-native-snackbar-component'
+import SnackBar from 'react-native-snackbar-component';
 import {CardView, CardItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
@@ -28,7 +28,7 @@ export default class Login extends Component {
       isLoading: false,
       showHelp: false,
       enableHelp: true,
-      msg: "",
+      msg: '',
       snackbar: false
     };
     this.textInput = {
@@ -39,7 +39,7 @@ export default class Login extends Component {
   showSnackbar(msg){
     this.setState({msg: msg, snackbar: true});
     setTimeout(()=>{
-      this.setState({msg: "", snackbar: false});
+      this.setState({msg: '', snackbar: false});
     },3000);
   }
   async componentDidMount() {

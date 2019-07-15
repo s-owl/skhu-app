@@ -1,5 +1,5 @@
 
-import {Print} from 'expo';
+import * as Print from 'expo-print';
 export default class Printer{
   static printGradeCert(userinfo, details, summary, date){
     let printTemplate = `
