@@ -15,7 +15,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
-      "buildNumber": "0.2.0",
+      "buildNumber": "0.2.1",
       "icon": "./assets/imgs/ios.png",
       "supportsTablet": true,
       "infoPlist":{
