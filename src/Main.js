@@ -58,9 +58,9 @@ export default class Main extends Component {
               this.props.navigation.navigate('Schedules');
             }} />
             <Text style={{ fontSize: 20, marginTop: 16 }}>공지사항</Text>
-            <NoticeSchedule onPress={() => {
+            {/* <NoticeSchedule onPress={() => {
               this.props.navigation.navigate('NoticeScreen');
-            }} />
+            }} /> */}
             <Text style={{ fontSize: 20, marginTop: 16 }}>학식</Text>
             <Meal url={this.state.url} onPress={() => {
               this.props.navigation.navigate('Meal');
