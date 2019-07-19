@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { 
-  Alert, Text, SafeAreaView, SectionList
+  Alert, Text, SafeAreaView, SectionList, Linking
 } from 'react-native';
 import { CardItem } from './components/components';
 import NavigationService from './tools/NavigationService';
-import {SecureStore, Linking} from 'expo';
+import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import DBHelper from './tools/dbhelper';
-import SnackBar from 'react-native-snackbar-component'
+import SnackBar from 'react-native-snackbar-component';
 
 export default class Menu extends Component {
 static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -19,12 +19,12 @@ static navigationOptions = ({ navigation, navigationOptions }) => {
 };
 constructor(props){
   super(props);
-  this.state = {msg: "", snackbar: false};
+  this.state = {msg: '', snackbar: false};
 }
 showSnackbar(msg){
   this.setState({msg: msg, snackbar: true});
   setTimeout(()=>{
-    this.setState({msg: "", snackbar: false});
+    this.setState({msg: '', snackbar: false});
   },3000);
 }
 render() {

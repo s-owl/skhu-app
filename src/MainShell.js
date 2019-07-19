@@ -7,7 +7,7 @@ import Menu from './Menu';
 import AttendanceScreen from './screens/attendance';
 import Schedules from './screens/schedules';
 import Credits from './screens/credits';
-import Timetable from './screens/timetable';
+import StudentTimetable from './screens/studentTimetable';
 import CounselHistory from './screens/counsel';
 import Syllabus from './screens/syllabus';
 import SyllabusDetails from './screens/syllabusDetails';
@@ -17,8 +17,10 @@ import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
 import Meal from './screens/meal';
+import searchCondition from './screens/searchCondition';
 import { MaterialIcons } from '@expo/vector-icons';
 import BuildConfigs from './config';
+import NoticeScreen from './screens/notice';
 
 const HomeStack = createStackNavigator(
   {
@@ -26,8 +28,9 @@ const HomeStack = createStackNavigator(
     Attendance: AttendanceScreen,
     Schedules: Schedules,
     Credits: Credits,
-    Timetable: Timetable,
+    Timetable: StudentTimetable,
     SyllabusDetails: SyllabusDetails,
+    NoticeScreen :NoticeScreen,
     Meal: Meal
   },
   {
@@ -53,7 +56,8 @@ const MenuStack = createStackNavigator(
     GradeCert: GradeCert,
     Subjects: Subjects,
     About: About,
-    Meal: Meal
+    Meal: Meal,
+    searchCondition: searchCondition
   },
   {
     initialRouteName: 'Menu',

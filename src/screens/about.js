@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Constants, Linking} from 'expo';
-import {ScrollView, View, Text, Image, FlatList} from 'react-native';
+import Constants from 'expo-constants';
+import {ScrollView, View, Text, Image, FlatList, Linking} from 'react-native';
 import {CardItem, BottomModal} from '../components/components';
 import LegalInfo from '../legal';
 

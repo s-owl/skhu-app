@@ -27,7 +27,7 @@ export default class Main extends Component {
     this.state = { url: '' };
     this.db = new DBHelper();
     this.db.fetchAttendance();
-    this.db.fetchTimeTable();
+    this.db.fetchTimetable();
     FetchHelper.fetchMealsUrl().then(url => this.setState({ url }));
   }
   render() {
@@ -57,6 +57,10 @@ export default class Main extends Component {
             <MonthlySchedule onPress={() => {
               this.props.navigation.navigate('Schedules');
             }} />
+            <Text style={{ fontSize: 20, marginTop: 16 }}>공지사항</Text>
+            {/* <NoticeSchedule onPress={() => {
+              this.props.navigation.navigate('NoticeScreen');
+            }} /> */}
             <Text style={{ fontSize: 20, marginTop: 16 }}>학식</Text>
             <Meal url={this.state.url} onPress={() => {
               this.props.navigation.navigate('Meal');
@@ -94,6 +98,7 @@ class NextClassInfo extends Component {
       } else {
         this.setState({ time: '다음 강의가 없습니다.', isLoading: false });
       }
+
 
     } catch (err) {
       this.setState({ time: '다음 강의 정보를 조회하지 못했습니다.', isLoading: false });
@@ -177,6 +182,65 @@ class MonthlySchedule extends Component {
           </View>
           <View style={{ flexDirection: 'row' }}>
             <Text style={{ color: 'grey' }}>학사 일정 더 보기</Text>
+            <MaterialIcons name="chevron-right" size={16} />
+          </View>
+        </View>
+      );
+    }
+    return (
+      <CardView onPress={this.props.onPress} elevate={true}>
+        {content}
+      </CardView>
+    );
+  }
+}
+
+class NoticeSchedule extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dates: '',
+      isLoading: false
+    };
+  }
+  async componentDidMount() {
+    this.setState({ isLoading: true });
+    let today = new Date();
+    let schedule = await ForestApi.post('/life/schedules', JSON.stringify({
+      'year': today.getFullYear(),
+      'month': today.getMonth() + 1
+    }), false);
+    if (schedule.ok) {
+      let data = await schedule.json();
+      let dates = '', contents = '';
+      for (let item of data.schedules) {
+        dates += `${item.period}\n`;
+        contents += ` | ${item.content}\n`;
+      }
+      this.setState({
+        dates: dates,
+        contents: contents,
+        isLoading: false
+      });
+    }
+  }
+  render() {
+    let content;
+    if (this.state.isLoading) {
+      content = (
+        <View style={{ justifyContent: 'center', padding: 32 }}>
+          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+        </View>
+      );
+    } else {
+      content = (
+        <View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ flex: 0, fontWeight: 'bold' }}>{this.state.dates}</Text>
+            <Text style={{ flex: 1 }}>{this.state.contents}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ color: 'grey' }}>공지사항 더 보기</Text>
             <MaterialIcons name="chevron-right" size={16} />
           </View>
         </View>

@@ -7,7 +7,7 @@ import Login from './src/Login';
 import MainShell from './src/MainShell';
 import About from './src/screens/about';
 
-import { Asset } from 'expo';
+import { Asset } from 'expo-asset';
 Asset;
 
 const RootStack = createStackNavigator(
