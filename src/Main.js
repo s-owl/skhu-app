@@ -57,8 +57,8 @@ export default class Main extends Component {
             <MonthlySchedule onPress={() => {
               this.props.navigation.navigate('Schedules');
             }} />
-            <Text style={{ fontSize: 20, marginTop: 16 }}>공지사항</Text>
-            {/* <NoticeSchedule onPress={() => {
+            {/* <Text style={{ fontSize: 20, marginTop: 16 }}>공지사항</Text>
+            <NoticeSchedule onPress={() => {
               this.props.navigation.navigate('NoticeScreen');
             }} /> */}
             <Text style={{ fontSize: 20, marginTop: 16 }}>학식</Text>
