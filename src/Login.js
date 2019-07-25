@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Text ,View, Image, TextInput, Linking,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
-  Alert, ActivityIndicator, NetInfo, Platform, AsyncStorage
+  Alert, ActivityIndicator, NetInfo, Platform
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
@@ -172,10 +172,14 @@ export default class Login extends Component {
   async runLogInProcess(id, pw){
     console.log('Logging in...');
     try{
-      const sessionUpdatedAt = moment.utc(await AsyncStorage.getItem('sessionUpdatedAt'));
-      const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('85', 'minutes'));
-      if(!loginRequired){
-        NavigationService.reset('Main');
+      sessionUpdatedAt = await SecureStore.getItemAsync('sessionUpdatedAt');
+      if (sessionUpdatedAt != null) {
+        sessionUpdatedAt = moment.utc(sessionUpdatedAt);
+        const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('85', 'minutes'));
+        if(!loginRequired){
+          NavigationService.reset('Main');
+          return;
+        }
       }
     }catch(err){
       console.error(err);
@@ -200,7 +204,7 @@ export default class Login extends Component {
           await SecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
           await SecureStore.setItemAsync('userid', id);
           await SecureStore.setItemAsync('userpw', pw);
-          await AsyncStorage.setItem('sessionUpdatedAt', moment().utc().format());
+          await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
           this.setState({isLoading: false});
           NavigationService.reset('Main');
         }else if(response.status == 400){

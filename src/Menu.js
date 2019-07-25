@@ -87,6 +87,7 @@ render() {
                     await SecureStore.deleteItemAsync('CredentialOld');
                     await SecureStore.deleteItemAsync('CredentialNew');
                     await SecureStore.deleteItemAsync('CredentialNewToken');
+                    await SecureStore.deleteItemAsync('sessionUpdatedAt');
                     const db = new DBHelper();
                     await db.dropAllTables();
                     NavigationService.reset('Login', {loggedOut: true});
