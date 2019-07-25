@@ -12,6 +12,7 @@ import SnackBar from 'react-native-snackbar-component';
 import {CardView, CardItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
+import moment from 'moment';
 
 
 export default class Login extends Component {
@@ -171,6 +172,19 @@ export default class Login extends Component {
   async runLogInProcess(id, pw){
     console.log('Logging in...');
     try{
+      sessionUpdatedAt = await SecureStore.getItemAsync('sessionUpdatedAt');
+      if (sessionUpdatedAt != null) {
+        sessionUpdatedAt = moment.utc(sessionUpdatedAt);
+        const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('85', 'minutes'));
+        if(!loginRequired){
+          NavigationService.reset('Main');
+          return;
+        }
+      }
+    }catch(err){
+      console.error(err);
+    }
+    try{
       this.setState({isLoading: true, enableHelp: false});
       if(id.length <= 0 || pw.length <= 0){
         alert('학번 또는 비밀번호가 입력되지 않았습니디.');
@@ -190,9 +204,9 @@ export default class Login extends Component {
           await SecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
           await SecureStore.setItemAsync('userid', id);
           await SecureStore.setItemAsync('userpw', pw);
+          await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
           this.setState({isLoading: false});
           NavigationService.reset('Main');
-          // this.props.navigation.navigate('Main');
         }else if(response.status == 400){
           this.setState({isLoading: false, enableHelp: true});
           setTimeout(() => {
