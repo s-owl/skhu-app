@@ -12,6 +12,7 @@ import SnackBar from 'react-native-snackbar-component';
 import {CardView, CardItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
+import {ErrorModal} from './components/errorModal';
 import moment from 'moment';
 
 
@@ -36,6 +37,7 @@ export default class Login extends Component {
       idInput: '',
       pwInput: ''
     };
+    this.errorModal = React.createRef();
   }
   showSnackbar(msg){
     this.setState({msg: msg, snackbar: true});
@@ -51,7 +53,7 @@ export default class Login extends Component {
     }
     const connInfo = await NetInfo.getConnectionInfo();
     if(connInfo.type == 'none'){
-      alert('본 앱을 사용하려면 네트워크 연결이 필요합니다. 네트워크 연결 상태 확인 후, 앱을 다시 샐행하세요.');
+      this.errorModal.current.showError(this.errorModal.current.CommonErrors.noNetwork);
     }else{
       let id = await SecureStore.getItemAsync('userid');
       let pw = await SecureStore.getItemAsync('userpw');
@@ -165,6 +167,7 @@ export default class Login extends Component {
             </CardItem>
           </BottomModal>
           <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
+          <ErrorModal ref={this.errorModal}/>
         </KeyboardAvoidingView>
       </SafeAreaView>
     );
@@ -187,7 +190,7 @@ export default class Login extends Component {
     try{
       this.setState({isLoading: true, enableHelp: false});
       if(id.length <= 0 || pw.length <= 0){
-        alert('학번 또는 비밀번호가 입력되지 않았습니디.');
+        alert('학번 또는 비밀번호가 입력되지 않았습니다.');
         this.setState({isLoading: false, enableHelp: true});
       }else if(pw.length < 8){
         alert('비밀번호가 너무 짧습니다. 비밀번호는 8자리 이상입니다.\n\n'
