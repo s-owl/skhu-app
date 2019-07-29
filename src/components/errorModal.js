@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {CardItem} from './components';
 import {HelpModal} from './helpModal';
 import NavigationService from '../tools/NavigationService';
-
+import {InfoModal} from './infoModal';
 
 export class ErrorModal extends Component{
   CommonErrors = {
@@ -81,8 +81,6 @@ export class ErrorModal extends Component{
     }
   };
   
-  
-
   constructor(props){
     super(props);
     this.state = {
@@ -94,50 +92,34 @@ export class ErrorModal extends Component{
         {label: '확인', onPress: ()=>{this.close();}}
       ]
     };
+    this.infoModal = React.createRef();
     this.helpModal = React.createRef();
   }
 
   showError(errorObj, errorMsg=''){
     console.log(errorObj);
     this.setState({
-      visible: true,
       icon: errorObj.icon,
       title: errorObj.title,
       desc: errorObj.desc + errorMsg,
       buttons: errorObj.buttons
     });
+    this.infoModal.current.open();
   }
 
   close(){
-    this.setState({visible: false});
+    this.infoModal.current.close();
   }
 
   render(){
     return(
       <View>
-        <Modal
-          animationType="slide"
-          visible={this.state.visible}>
-          <View style={{paddingTop: 40, padding: 16}}>
-            <View style={{padding: 32, alignItems: 'center'}}>
-              <MaterialCommunityIcons name={this.state.icon} size={40} style={{padding: 8}}/>
-              <Text style={{fontWeight: 'bold', padding: 8, fontSize: 20}}>{this.state.title}</Text>
-            </View>
-            <ScrollView style={{padding: 8, height: '70%'}}>
-              <Text>{this.state.desc}</Text>
-            </ScrollView>
-            <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
-              height:50, width:'100%'}}>
-              {this.state.buttons.map((item, index)=>{
-                return(
-                  <CardItem key={index} style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
-                    <Text>{item.label}</Text>
-                  </CardItem>
-                );
-              })}
-            </View>
-          </View>
-        </Modal>
+        <InfoModal ref={this.infoModal}
+          title={this.state.title}
+          icon={this.state.icon}
+          buttons={this.state.buttons}>
+          <Text>{this.state.desc}</Text>
+        </InfoModal>
         <HelpModal ref={this.helpModal}/>
       </View>
         
