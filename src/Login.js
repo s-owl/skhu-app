@@ -192,7 +192,8 @@ export default class Login extends Component {
       }
     }catch(err){
       this.setState({isLoading: false, enableHelp: true});
-      this.errorModal.current.showError(this.errorModal.current.CommonErrors.netError, err.message);
+      this.errorModal.current.showError(this.errorModal.current.CommonErrors.netError, 
+        `${err}\n${err.message}\n${err.stack}`);
       console.log(err);
     }
   }
