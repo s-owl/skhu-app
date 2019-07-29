@@ -3,6 +3,7 @@ import {Text, SectionList, Linking} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {CardItem} from './components';
 import {InfoModal} from './infoModal';
+import * as WebBrowser from 'expo-web-browser';
 
 export class HelpModal extends Component{
   constructor(props){
@@ -32,8 +33,8 @@ export class HelpModal extends Component{
         {label: '공지사항 확인(페이스북 페이지)', icon: 'facebook-box', onPress: ()=>{
           Linking.openURL('https://fb.me/SKHUsMobileApp');
         }},
-        {label: '자주 묻는 질문', icon: 'help-circle-outline', onPress: ()=>{
-          Linking.openURL('https://github.com/s-owl/skhus/wiki/FAQs');
+        {label: '자주 묻는 질문', icon: 'help-circle-outline', onPress: async()=>{
+          await WebBrowser.openBrowserAsync('https://github.com/s-owl/skhus/wiki/FAQs');
         }}
       ]},
       {title: '문의하거나 오류 보고하기', data: [
@@ -43,8 +44,8 @@ export class HelpModal extends Component{
         {label: '이메일로 문의', icon: 'email-outline' ,onPress: ()=>{
           Linking.openURL(`mailto:s.owl.contact@gmail.com?body=${this.state.errorMsg}`);
         }},
-        {label: 'GitHub에 이슈 등록', icon: 'github-circle', onPress: ()=>{
-          Linking.openURL('https://github.com/s-owl/skhus/issues');
+        {label: 'GitHub에 이슈 등록', icon: 'github-circle', onPress: async()=>{
+          await WebBrowser.openBrowserAsync('https://github.com/s-owl/skhus/issues');
         }}
       ]}
     ];
@@ -52,11 +53,11 @@ export class HelpModal extends Component{
       sections = [
         ...sections,
         {title: '계정 복구', data: [
-          {label: '계정 찾기', icon: 'account-search' ,onPress: ()=>{
-            Linking.openURL('http://sid.skhu.ac.kr/SID03/SID0301');
+          {label: '계정 찾기', icon: 'account-search', onPress: async ()=>{
+            await WebBrowser.openBrowserAsync('http://sid.skhu.ac.kr/SID03/SID0301');
           }},
-          {label: '비밀번호 복구', icon: 'textbox-password', onPress: ()=>{
-            Linking.openURL('http://sid.skhu.ac.kr/SID02/SID0201');
+          {label: '비밀번호 복구', icon: 'textbox-password', onPress: async ()=>{
+            await WebBrowser.openBrowserAsync('http://sid.skhu.ac.kr/SID02/SID0201');
           }}
         ]
         }

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import Constants from 'expo-constants';
 import {ScrollView, View, Text, Image, FlatList, Linking, SectionList} from 'react-native';
-import {CardItem, BottomModal} from '../components/components';
+import {CardItem} from '../components/components';
 import {InfoModal} from '../components/infoModal';
+import * as WebBrowser from 'expo-web-browser';
 import LegalInfo from '../legal';
 
 export default class About extends Component{
@@ -61,8 +62,8 @@ export default class About extends Component{
           <CardItem isHeader={true}>
             <Text style={{fontWeight: 'bold'}}>법적 고지사항</Text>
           </CardItem>
-          <CardItem onPress={()=>{
-            Linking.openURL('https://github.com/s-owl/skhus/wiki/PrivacyAndPermissions');
+          <CardItem onPress={async()=>{
+            await WebBrowser.openBrowserAsync('https://github.com/s-owl/skhus/wiki/PrivacyAndPermissions');
           }}>
             <Text>개인정보취급방침, 사용되는 시스템 권한 안내</Text>
           </CardItem>
