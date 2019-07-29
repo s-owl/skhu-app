@@ -15,12 +15,9 @@ export default class About extends Component{
     };
     constructor(props){
       super(props);
-      this.state={
-        showDevs: false,
-        showOss: false,
-        showLegal: false
-      };
       this.teamInfoModal = React.createRef();
+      this.ossModal = React.createRef();
+      this.legalModal = React.createRef();
     }
 
     render(){
@@ -70,24 +67,42 @@ export default class About extends Component{
             <Text>개인정보취급방침, 사용되는 시스템 권한 안내</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            this.setState({
-              showOss: !this.state.showOss
-            });
+            this.ossModal.current.open();
           }}>
             <Text>
-            개발에 사용된 오픈소스 라이브러리/프레임워크 정보{'\n'}
+            개발에 사용된 오픈소스 소프트웨어 정보{'\n'}
             (눌러서 목록 보기)
             </Text>
           </CardItem>
-          <BottomModal
-            title="개발에 사용된 오픈소스 라이브러리/프레임워크 정보" visible={this.state.showOss}
-            onRequestClose={()=>{
-              this.setState({showOss: false});
-            }}
-            buttons={[{
-              label: '닫기',
-              onPress: ()=>{this.setState({showOss: false});}
-            }]}>
+          <CardItem onPress={()=>{
+            this.legalModal.current.open();
+          }}>
+            <Text>면책사항{'\n'}(눌러서 보거나 숨기기)
+            </Text>
+          </CardItem>
+          <InfoModal ref={this.teamInfoModal}
+            icon='account-group'
+            title={`성공회대학교 S.OWL ${Constants.manifest.name} 개발팀`}
+            buttons={[{label: '닫기', onPress: ()=>this.teamInfoModal.current.close()}]}>
+            <SectionList style={{height:'100%'}}
+              renderItem={({item, index, section}) => (
+                <CardItem key={index} >
+                  <Text>{item}</Text>
+                </CardItem>
+              )}
+              renderSectionHeader={({section: {period}}) => (
+                <CardItem style={{flex: 0, flexDirection: 'row'}}>
+                  <Text style={{fontWeight: 'bold'}}>{period}</Text>
+                </CardItem>
+              )}
+              sections={LegalInfo.devlopers}
+              keyExtractor={(item, index) => item + index}
+            />
+          </InfoModal>
+          <InfoModal ref={this.ossModal}
+            icon='apps'
+            title='개발에 사용된 오픈소스 소프트웨어 정보'
+            buttons={[{label: '닫기', onPress: ()=>this.ossModal.current.close()}]}>
             <FlatList
               data={LegalInfo.oss}
               renderItem={({item})=>(
@@ -111,48 +126,14 @@ export default class About extends Component{
                   </View>
                 </View>
               )}/>
-          </BottomModal>
-          <CardItem onPress={()=>{
-            this.setState({
-              showLegal: !this.state.showLegal
-            });
-          }}>
-            <Text>면책사항{'\n'}(눌러서 보거나 숨기기)
-            </Text>
-          </CardItem>
-          <BottomModal
-            title="면책사항" visible={this.state.showLegal}
-            onRequestClose={()=>{
-              this.setState({showLegal: false});
-            }}
-            buttons={[{
-              label: '닫기',
-              onPress: ()=>{this.setState({showLegal: false});}
-            }]}>
-            <CardItem>
-              <Text>
+          </InfoModal>
+          <InfoModal ref={this.legalModal}
+            icon='library-books'
+            title='면책사항'
+            buttons={[{label: '닫기', onPress: ()=>this.legalModal.current.close()}]}>
+            <Text>
                 본 앱은 성공회대학교 공식 인증 앱이 아니며, 사용 중 발생하는 모든 책임은 사용자 본인에게 있습니다.
-              </Text>
-            </CardItem>
-          </BottomModal>
-          <InfoModal ref={this.teamInfoModal}
-            icon='account-group'
-            title={`성공회대학교 S.OWL ${Constants.manifest.name} 개발팀`}
-            buttons={[{label: '닫기', onPress: ()=>this.teamInfoModal.current.close()}]}>
-            <SectionList style={{height:'100%'}}
-              renderItem={({item, index, section}) => (
-                <CardItem key={index} >
-                  <Text>{item}</Text>
-                </CardItem>
-              )}
-              renderSectionHeader={({section: {period}}) => (
-                <CardItem style={{flex: 0, flexDirection: 'row'}}>
-                  <Text style={{fontWeight: 'bold'}}>{period}</Text>
-                </CardItem>
-              )}
-              sections={LegalInfo.devlopers}
-              keyExtractor={(item, index) => item + index}
-            />
+            </Text>
           </InfoModal>
         </ScrollView>
       );
