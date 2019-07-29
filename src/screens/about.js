@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import Constants from 'expo-constants';
-import {ScrollView, View, Text, Image, FlatList, Linking} from 'react-native';
+import {ScrollView, View, Text, Image, FlatList, Linking, SectionList} from 'react-native';
 import {CardItem, BottomModal} from '../components/components';
+import {InfoModal} from '../components/infoModal';
 import LegalInfo from '../legal';
 
 export default class About extends Component{
@@ -19,6 +20,7 @@ export default class About extends Component{
         showOss: false,
         showLegal: false
       };
+      this.teamInfoModal = React.createRef();
     }
 
     render(){
@@ -33,35 +35,13 @@ export default class About extends Component{
             <Text style={{fontWeight: 'bold'}}>개발자 정보</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            this.setState({
-              showDevs: !this.state.showDevs
-            });
+            this.teamInfoModal.current.open();
           }}>
             <Text>
             성공회대학교 S.OWL {Constants.manifest.name} 개발팀{'\n'}
             (눌러서 팀원 목록 보기)
             </Text>
           </CardItem>
-          <BottomModal
-            title={`성공회대학교 S.OWL ${Constants.manifest.name} 개발팀`} visible={this.state.showDevs}
-            onRequestClose={()=>{
-              this.setState({showDevs: false});
-            }}
-            buttons={[{
-              label: '닫기',
-              onPress: ()=>{this.setState({showDevs: false});}
-            }]}>
-            <CardItem>
-              <Text style={{fontWeight: 'bold', marginTop: 8}}>현재 개발팀 구성원</Text>
-              {LegalInfo.currentDevelopers.map((item, index)=>(
-                <Text style={{padding: 2}}>* {item}</Text>
-              ))}
-              <Text style={{fontWeight: 'bold', marginTop: 8}}>이전 개발팀 구성원</Text>
-              {LegalInfo.formerDevelopers.map((item, index)=>(
-                <Text style={{padding: 2}}>* {item}</Text>
-              ))}
-            </CardItem>
-          </BottomModal>
           <CardItem isHeader={true}>
             <Text style={{fontWeight: 'bold'}}>웹사이트</Text>
           </CardItem>
@@ -155,6 +135,25 @@ export default class About extends Component{
               </Text>
             </CardItem>
           </BottomModal>
+          <InfoModal ref={this.teamInfoModal}
+            icon='account-group'
+            title={`성공회대학교 S.OWL ${Constants.manifest.name} 개발팀`}
+            buttons={[{label: '닫기', onPress: ()=>this.teamInfoModal.current.close()}]}>
+            <SectionList style={{height:'100%'}}
+              renderItem={({item, index, section}) => (
+                <CardItem key={index} >
+                  <Text>{item}</Text>
+                </CardItem>
+              )}
+              renderSectionHeader={({section: {period}}) => (
+                <CardItem style={{flex: 0, flexDirection: 'row'}}>
+                  <Text style={{fontWeight: 'bold'}}>{period}</Text>
+                </CardItem>
+              )}
+              sections={LegalInfo.devlopers}
+              keyExtractor={(item, index) => item + index}
+            />
+          </InfoModal>
         </ScrollView>
       );
     }
