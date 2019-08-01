@@ -7,10 +7,18 @@ import NavigationService from '../tools/NavigationService';
 
 
 export class ErrorModal extends Component{
-  beforeOpenHelp() {
+  setVisible(visible) {
     var state = this.state;
-    state.visible = false;
+    state.visible = visible;
     this.setState(state);
+  }
+
+  beforeOpenHelp() {
+    this.setVisible(false);
+  }
+
+  afterCloseHelp() {
+    this.setVisible(true)
   }
 
   CommonErrors = {
@@ -148,7 +156,7 @@ export class ErrorModal extends Component{
             </View>
           </View>
         </Modal>
-        <HelpModal ref={this.helpModal}/>
+        <HelpModal onClose={this.afterCloseHelp.bind(this)} ref={this.helpModal}/>
       </View>
         
     );

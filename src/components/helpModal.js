@@ -6,6 +6,7 @@ import {CardItem} from './components';
 export class HelpModal extends Component{
   constructor(props){
     super(props);
+    this.onClose = this.props.onClose;
     this.state = {
       visible: false,
       errorMsg: '',
@@ -23,6 +24,7 @@ export class HelpModal extends Component{
 
   close(){
     this.setState({visible: false});
+    this.props.onClose();
   }
 
   render(){
