@@ -7,6 +7,12 @@ import NavigationService from '../tools/NavigationService';
 
 
 export class ErrorModal extends Component{
+  beforeOpenHelp() {
+    var state = this.state;
+    state.visible = false;
+    this.setState(state);
+  }
+
   CommonErrors = {
     noNetwork: {
       icon: 'lan-disconnect',
@@ -17,6 +23,7 @@ export class ErrorModal extends Component{
           NavigationService.reset('Login');
         }},
         {label: '도움 받기', onPress:()=>{
+          this.beforeOpenHelp();
           this.helpModal.current.open(undefined, true);
         }}
       ]
@@ -34,6 +41,7 @@ export class ErrorModal extends Component{
           NavigationService.reset('Login');
         }},
         {label: '도움 받기', onPress:()=>{
+          this.beforeOpenHelp();
           this.helpModal.current.open(undefined, true);
         }}
       ]
@@ -54,6 +62,7 @@ export class ErrorModal extends Component{
           Clipboard.setString(this.state.desc);
         }},
         {label: '도움 받기', onPress:()=>{
+          this.beforeOpenHelp();
           this.helpModal.current.open(this.state.desc, true);
         }}
       ]
@@ -75,6 +84,7 @@ export class ErrorModal extends Component{
           Clipboard.setString(this.state.desc);
         }},
         {label: '도움 받기', onPress:()=>{
+          this.beforeOpenHelp();
           this.helpModal.current.open(this.state.desc, true);
         }}
       ]
