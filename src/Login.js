@@ -12,6 +12,7 @@ import SnackBar from 'react-native-snackbar-component';
 import {CardView, CardItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
+import {ErrorModal} from './components/errorModal';
 import moment from 'moment';
 
 
@@ -36,6 +37,7 @@ export default class Login extends Component {
       idInput: '',
       pwInput: ''
     };
+    this.errorModal = React.createRef();
   }
   showSnackbar(msg){
     this.setState({msg: msg, snackbar: true});
@@ -51,7 +53,7 @@ export default class Login extends Component {
     }
     const connInfo = await NetInfo.getConnectionInfo();
     if(connInfo.type == 'none'){
-      alert('본 앱을 사용하려면 네트워크 연결이 필요합니다. 네트워크 연결 상태 확인 후, 앱을 다시 샐행하세요.');
+      this.errorModal.current.showError(this.errorModal.current.CommonErrors.noNetwork);
     }else{
       let id = await SecureStore.getItemAsync('userid');
       let pw = await SecureStore.getItemAsync('userpw');
@@ -105,7 +107,7 @@ export default class Login extends Component {
       helpButton = (
         <Touchable onPress={()=>{
           if(!this.state.isLoading){
-            this.setState({showHelp: true});
+            this.errorModal.current.helpModal.current.open(undefined, true);
           }
         }}>
           <View style={ styles.footer }>
@@ -136,35 +138,8 @@ export default class Login extends Component {
               {helpButton}
             </View>
           </View>
-          <BottomModal
-            title="도움 얻기" visible={this.state.showHelp}
-            onRequestClose={()=>{
-              this.setState({showHelp: false});
-            }}
-            buttons={[{
-              label: '닫기',
-              onPress: ()=>{this.setState({showHelp: false});}
-            }]}>
-            <CardItem onPress={()=>{
-              Linking.openURL('http://sid.skhu.ac.kr/SID03/SID0301');
-              this.setState({showHelp: false});
-            }}>
-              <Text>계정 찾기</Text>
-            </CardItem>
-            <CardItem onPress={()=>{
-              Linking.openURL('http://sid.skhu.ac.kr/SID02/SID0201');
-              this.setState({showHelp: false});
-            }}>
-              <Text>비밀번호 복구</Text>
-            </CardItem>
-            <CardItem onPress={()=>{
-              NavigationService.navigate('About');
-              this.setState({showHelp: false});
-            }}>
-              <Text>앱 정보</Text>
-            </CardItem>
-          </BottomModal>
           <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
+          <ErrorModal ref={this.errorModal}/>
         </KeyboardAvoidingView>
       </SafeAreaView>
     );
@@ -172,7 +147,7 @@ export default class Login extends Component {
   async runLogInProcess(id, pw){
     console.log('Logging in...');
     try{
-      sessionUpdatedAt = await SecureStore.getItemAsync('sessionUpdatedAt');
+      let sessionUpdatedAt = await SecureStore.getItemAsync('sessionUpdatedAt');
       if (sessionUpdatedAt != null) {
         sessionUpdatedAt = moment.utc(sessionUpdatedAt);
         const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('85', 'minutes'));
@@ -187,13 +162,10 @@ export default class Login extends Component {
     try{
       this.setState({isLoading: true, enableHelp: false});
       if(id.length <= 0 || pw.length <= 0){
-        alert('학번 또는 비밀번호가 입력되지 않았습니디.');
+        this.showSnackbar('학번 또는 비밀번호가 입력되지 않았습니다.');
         this.setState({isLoading: false, enableHelp: true});
       }else if(pw.length < 8){
-        alert('비밀번호가 너무 짧습니다. 비밀번호는 8자리 이상입니다.\n\n'
-        +'신/편입생 신규 계정에 종합정보시스템이 부여하는 초기 비밀번호는 s + (주민번호 뒤 7자리)로, 총 8자리 이며, 비밀번호 변경시 9자리 이상을 요구합니다.\n\n'
-        +'8자리 미만 비밀번호 사용 시 PC 에서 종합정보시스템에 접속하여 비밀번호 변경 후 사용해 주세요.\n\n'
-        +'비밀번호 변경에 문제가 있는 경우 성공회대학교 전자계산소에 문의하시기 바랍니다.');
+        this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
         this.setState({isLoading: false, enableHelp: true});
       }else{
         let response = await ForestApi.login(id, pw);
@@ -209,51 +181,20 @@ export default class Login extends Component {
           NavigationService.reset('Main');
         }else if(response.status == 400){
           this.setState({isLoading: false, enableHelp: true});
-          setTimeout(() => {
-            Alert.alert(
-              '로그인 오류',
-              '입력된 학번(아이디) 또는 비밀번호가 올바르지 않습니다.',
-              [
-                {text: '확인', onPress: () => console.log('OK Pressed')},
-              ],
-              { cancelable: false }
-            );
-          }, 10);
-
+          this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
         }else if(response.status == 401){
           this.setState({isLoading: false, enableHelp: true});
           let msg = await response.text();
-          setTimeout(()=>{
-            Alert.alert(
-              '로그인 실패',
-              '입력된 학번(아이디) 또는 비밀번호를 다시한번 확인하세요.\n\n'
-              +'forest.skhu.ac.kr 그리고 sam.skhu.ac.kr 양쪽 모두 로그인 가능해야 앱에서 로그인이 가능합니다.\n\n'
-              +'sam.skhu.ac.kr 쪽에서 로그인이 불가능한 경우, 성공회대학교 전자계산소에 문의하세요.\n\n'
-              +`추가정보:\n${msg}`,
-              [
-                {text: '확인', onPress: () => console.log('OK Pressed')},
-              ],
-              { cancelable: false }
-            );
-          }, 10);
+          this.errorModal.current.showError(this.errorModal.current.CommonErrors.loginError, msg);
         }else{
           this.setState({isLoading: false, enableHelp: true});
         }
       }
     }catch(err){
       this.setState({isLoading: false, enableHelp: true});
+      this.errorModal.current.showError(this.errorModal.current.CommonErrors.netError, 
+        `${err}\n${err.message}\n${err.stack}`);
       console.log(err);
-      setTimeout(()=>{
-        Alert.alert(
-          '로그인 오류',
-          '서버에 문제가 있거나 네트워크 상태에 문제가 있을 수 있습니다.\n'+err,
-          [
-            {text: '확인', onPress: () => console.log('OK Pressed'), style: 'cancel'},
-          ],
-          { cancelable: false }
-        );
-      }, 100);
-
     }
   }
 }
