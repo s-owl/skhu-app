@@ -8,6 +8,7 @@ import * as WebBrowser from 'expo-web-browser';
 export class HelpModal extends Component{
   constructor(props){
     super(props);
+    this.onClose = this.props.onClose;
     this.state = {
       errorMsg: '',
       isDuringLogin: false
@@ -25,6 +26,7 @@ export class HelpModal extends Component{
 
   close(){
     this.infoModal.current.close();
+    this.props.onClose();
   }
 
   render(){

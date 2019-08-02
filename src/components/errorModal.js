@@ -7,6 +7,20 @@ import NavigationService from '../tools/NavigationService';
 import {InfoModal} from './infoModal';
 
 export class ErrorModal extends Component{
+  setVisible(visible) {
+    var state = this.state;
+    state.visible = visible;
+    this.setState(state);
+  }
+
+  beforeOpenHelp() {
+    this.setVisible(false);
+  }
+
+  afterCloseHelp() {
+    this.setVisible(true)
+  }
+
   CommonErrors = {
     noNetwork: {
       icon: 'lan-disconnect',
@@ -17,6 +31,7 @@ export class ErrorModal extends Component{
           NavigationService.reset('Login');
         }},
         {label: '도움 받기', onPress:()=>{
+          this.beforeOpenHelp();
           this.helpModal.current.open(undefined, true);
         }}
       ]
@@ -34,6 +49,7 @@ export class ErrorModal extends Component{
           NavigationService.reset('Login');
         }},
         {label: '도움 받기', onPress:()=>{
+          this.beforeOpenHelp();
           this.helpModal.current.open(undefined, true);
         }}
       ]
@@ -54,6 +70,7 @@ export class ErrorModal extends Component{
           Clipboard.setString(this.state.desc);
         }},
         {label: '도움 받기', onPress:()=>{
+          this.beforeOpenHelp();
           this.helpModal.current.open(this.state.desc, true);
         }}
       ]
@@ -75,6 +92,7 @@ export class ErrorModal extends Component{
           Clipboard.setString(this.state.desc);
         }},
         {label: '도움 받기', onPress:()=>{
+          this.beforeOpenHelp();
           this.helpModal.current.open(this.state.desc, true);
         }}
       ]
@@ -120,9 +138,8 @@ export class ErrorModal extends Component{
           buttons={this.state.buttons}>
           <Text>{this.state.desc}</Text>
         </InfoModal>
-        <HelpModal ref={this.helpModal}/>
+        <HelpModal onClose={this.afterCloseHelp.bind(this)} ref={this.helpModal}/>
       </View>
-        
     );
   }
 }
