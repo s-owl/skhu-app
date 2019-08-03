@@ -13,6 +13,7 @@ import {CardView, CardItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
 import {ErrorModal} from './components/errorModal';
+import {HelpModal} from './components/helpModal';
 import moment from 'moment';
 
 
@@ -38,6 +39,7 @@ export default class Login extends Component {
       pwInput: ''
     };
     this.errorModal = React.createRef();
+    this.helpModal = React.createRef();
   }
   showSnackbar(msg){
     this.setState({msg: msg, snackbar: true});
@@ -107,7 +109,7 @@ export default class Login extends Component {
       helpButton = (
         <Touchable onPress={()=>{
           if(!this.state.isLoading){
-            this.errorModal.current.helpModal.current.open(undefined, true);
+            this.helpModal.current.open(undefined, true);
           }
         }}>
           <View style={ styles.footer }>
@@ -140,6 +142,7 @@ export default class Login extends Component {
           </View>
           <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
           <ErrorModal ref={this.errorModal}/>
+          <HelpModal ref={this.helpModal}/>
         </KeyboardAvoidingView>
       </SafeAreaView>
     );
