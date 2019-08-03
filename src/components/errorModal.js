@@ -110,7 +110,6 @@ export class ErrorModal extends Component{
         {label: '확인', onPress: ()=>{this.close();}}
       ]
     };
-    this.infoModal = React.createRef();
     this.helpModal = React.createRef();
   }
 
@@ -122,17 +121,18 @@ export class ErrorModal extends Component{
       desc: errorObj.desc + errorMsg,
       buttons: errorObj.buttons
     });
-    this.infoModal.current.open();
+    this.setVisible(true);
   }
 
   close(){
-    this.infoModal.current.close();
+    this.setVisible(false);
   }
 
   render(){
     return(
       <View>
-        <InfoModal ref={this.infoModal}
+        <InfoModal
+          visible={this.state.visible}
           title={this.state.title}
           icon={this.state.icon}
           buttons={this.state.buttons}>

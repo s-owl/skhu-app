@@ -6,14 +6,19 @@ import {InfoModal} from './infoModal';
 import * as WebBrowser from 'expo-web-browser';
 
 export class HelpModal extends Component{
+  setVisible(visible) {
+    state = this.state;
+    state.visible = visible;
+    this.setState(state);
+  }
+
   constructor(props){
     super(props);
-    this.onClose = this.props.onClose;
     this.state = {
+      visible: false,
       errorMsg: '',
       isDuringLogin: false
     };
-    this.infoModal = React.createRef();
   }
 
   open(errorMsg='', isDuringLogin=false){
@@ -21,11 +26,15 @@ export class HelpModal extends Component{
       errorMsg: errorMsg,
       isDuringLogin: isDuringLogin
     });
-    this.infoModal.current.open();
+    this.setVisible(true);
   }
 
   close(){
-    this.infoModal.current.close();
+    this.setVisible(false);
+    if (this.props.onClose == undefined ||
+        this.props.onClose == null) {
+      return
+    }
     this.props.onClose();
   }
 
@@ -67,7 +76,7 @@ export class HelpModal extends Component{
     }
     return(
       <InfoModal
-        ref={this.infoModal}
+        visible={this.state.visible}
         icon='help-circle-outline'
         title='앱 사용에 어려움이 있나요?'
         buttons={[
