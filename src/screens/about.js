@@ -3,6 +3,7 @@ import Constants from 'expo-constants';
 import {ScrollView, View, Text, Image, FlatList, Linking, SectionList} from 'react-native';
 import {CardItem} from '../components/components';
 import {InfoModal} from '../components/infoModal';
+import {Map} from 'immutable';
 import * as WebBrowser from 'expo-web-browser';
 import LegalInfo from '../legal';
 
@@ -14,14 +15,27 @@ export default class About extends Component{
         title: '앱 정보',
       };
     };
+
     constructor(props){
       super(props);
-      this.teamInfoModal = React.createRef();
-      this.ossModal = React.createRef();
-      this.legalModal = React.createRef();
+      this.state = {
+        modal: Map({
+          teamInfo: false,
+          oss: false,
+          legal: false,
+        })
+      };
+    }
+
+    setModal(name, visible) {
+      state = this.state.modal.set(name, visible);
+      this.setState({
+        modal: state
+      });
     }
 
     render(){
+      modal = this.state.modal;
       return(
         <ScrollView style={{backgroundColor: 'whitesmoke'}}>
           <View style={{padding: 32, alignItems: 'center'}}>
@@ -33,7 +47,7 @@ export default class About extends Component{
             <Text style={{fontWeight: 'bold'}}>개발자 정보</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            this.teamInfoModal.current.open();
+            this.setModal("teamInfo", true);
           }}>
             <Text>
             성공회대학교 S.OWL {Constants.manifest.name} 개발팀{'\n'}
@@ -68,7 +82,7 @@ export default class About extends Component{
             <Text>개인정보취급방침, 사용되는 시스템 권한 안내</Text>
           </CardItem>
           <CardItem onPress={()=>{
-            this.ossModal.current.open();
+            this.setModal("oss", true);
           }}>
             <Text>
             개발에 사용된 오픈소스 소프트웨어 정보{'\n'}
@@ -76,15 +90,15 @@ export default class About extends Component{
             </Text>
           </CardItem>
           <CardItem onPress={()=>{
-            this.legalModal.current.open();
+            this.setModal("legal", true);
           }}>
             <Text>면책사항{'\n'}(눌러서 보거나 숨기기)
             </Text>
           </CardItem>
-          <InfoModal ref={this.teamInfoModal}
+          <InfoModal visible={modal.get('teamInfo')}
             icon='account-group'
             title={`성공회대학교 S.OWL ${Constants.manifest.name} 개발팀`}
-            buttons={[{label: '닫기', onPress: ()=>this.teamInfoModal.current.close()}]}>
+            buttons={[{label: '닫기', onPress: ()=>{this.setModal("teamInfo", false);}}]}>
             <SectionList style={{height:'100%'}}
               renderItem={({item, index, section}) => (
                 <CardItem key={index} >
@@ -100,10 +114,10 @@ export default class About extends Component{
               keyExtractor={(item, index) => item + index}
             />
           </InfoModal>
-          <InfoModal ref={this.ossModal}
+          <InfoModal visible={modal.get('oss')}
             icon='apps'
             title='개발에 사용된 오픈소스 소프트웨어 정보'
-            buttons={[{label: '닫기', onPress: ()=>this.ossModal.current.close()}]}>
+            buttons={[{label: '닫기', onPress: ()=>{this.setModal("oss", false);}}]}>
             <FlatList
               data={LegalInfo.oss}
               renderItem={({item})=>(
@@ -128,10 +142,10 @@ export default class About extends Component{
                 </View>
               )}/>
           </InfoModal>
-          <InfoModal ref={this.legalModal}
+          <InfoModal visible={modal.get('legal')}
             icon='library-books'
             title='면책사항'
-            buttons={[{label: '닫기', onPress: ()=>this.legalModal.current.close()}]}>
+            buttons={[{label: '닫기', onPress: ()=>{this.setModal("legal", false);}}]}>
             <Text>
                 본 앱은 성공회대학교 공식 인증 앱이 아니며, 사용 중 발생하는 모든 책임은 사용자 본인에게 있습니다.
             </Text>
