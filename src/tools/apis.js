@@ -1,5 +1,6 @@
 
 import * as SecureStore from 'expo-secure-store';
+import {AsyncStorage} from 'react-native';
 import BuildConfigs from '../config';
 import 'abortcontroller-polyfill';
 
@@ -56,7 +57,7 @@ export default class ForestApi{
     static async getFromSam(path){
       let headers = new Headers();
       headers.append('Cookie', await SecureStore.getItemAsync('CredentialNew'));
-      headers.append('RequestVerificationToken', await SecureStore.getItemAsync('CredentialNewToken'));
+      headers.append('RequestVerificationToken', await AsyncStorage.getItemAsync('CredentialNewToken'));
       return fetch(`http://sam.skhu.ac.kr${path}`, {
         method: 'GET',
         headers: headers
@@ -68,7 +69,7 @@ export default class ForestApi{
       headers.append('Accept', 'application/json');
       headers.append('Content-Type', 'application/json');
       headers.append('Cookie', await SecureStore.getItemAsync('CredentialNew'));
-      headers.append('RequestVerificationToken', await SecureStore.getItemAsync('CredentialNewToken'));
+      headers.append('RequestVerificationToken', await AsyncStorage.getItemAsync('CredentialNewToken'));
       return fetch(`http://sam.skhu.ac.kr${path}`, {
         method: 'POST',
         headers: headers,

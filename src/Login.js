@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet, Text ,View, Image, TextInput, Linking,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
-  Alert, ActivityIndicator, NetInfo, Platform
+  AsyncStorage, ActivityIndicator, NetInfo, Platform
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
@@ -174,9 +174,11 @@ export default class Login extends Component {
         let response = await ForestApi.login(id, pw);
         if(response.ok){
           let data = await response.json();
+          console.log(data['credential-new-token']);
+          console.log(data['credential-new-token'].length);
           await SecureStore.setItemAsync('CredentialOld', data['credential-old']);
           await SecureStore.setItemAsync('CredentialNew', data['credential-new']);
-          await SecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
+          await AsyncStorage.setItemAsync('CredentialNewToken', data['credential-new-token']);
           await SecureStore.setItemAsync('userid', id);
           await SecureStore.setItemAsync('userpw', pw);
           await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
