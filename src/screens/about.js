@@ -28,9 +28,9 @@ export default class About extends Component{
     }
 
     setModal(name, visible) {
-      state = this.state.modal.set(name, visible);
+      modal = this.state.modal.set(name, visible);
       this.setState({
-        modal: state
+        modal: modal
       });
     }
 
