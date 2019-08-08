@@ -116,12 +116,12 @@ export class ErrorModal extends Component{
   showError(errorObj, errorMsg=''){
     console.log(errorObj);
     this.setState({
+      visible: true,
       icon: errorObj.icon,
       title: errorObj.title,
       desc: errorObj.desc + errorMsg,
       buttons: errorObj.buttons
     });
-    this.setVisible(true);
   }
 
   close(){

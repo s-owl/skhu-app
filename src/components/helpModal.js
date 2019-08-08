@@ -23,10 +23,10 @@ export class HelpModal extends Component{
 
   open(errorMsg='', isDuringLogin=false){
     this.setState({
+      visible: true,
       errorMsg: errorMsg,
       isDuringLogin: isDuringLogin
     });
-    this.setVisible(true);
   }
 
   close(){
