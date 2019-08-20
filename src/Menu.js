@@ -8,6 +8,7 @@ import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import DBHelper from './tools/dbhelper';
 import SnackBar from 'react-native-snackbar-component';
+import {HelpModal} from './components/helpModal';
 
 export default class Menu extends Component {
 static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -20,6 +21,7 @@ static navigationOptions = ({ navigation, navigationOptions }) => {
 constructor(props){
   super(props);
   this.state = {msg: '', snackbar: false};
+  this.helpModal = React.createRef();
 }
 showSnackbar(msg){
   this.setState({msg: msg, snackbar: true});
@@ -74,6 +76,9 @@ render() {
             {label: '앱 정보', icon: 'information', onPress: ()=>{
               this.props.navigation.navigate('About');
             }},
+            {label: '도움 받기', icon: 'help-circle-outline', onPress: ()=>{
+              this.helpModal.current.open();
+            }},
             {label: '로그아웃', icon:'logout', onPress: ()=>{ 
               Alert.alert(
                 '로그아웃',
@@ -87,6 +92,7 @@ render() {
                     await SecureStore.deleteItemAsync('CredentialOld');
                     await SecureStore.deleteItemAsync('CredentialNew');
                     await SecureStore.deleteItemAsync('CredentialNewToken');
+                    await SecureStore.deleteItemAsync('sessionUpdatedAt');
                     const db = new DBHelper();
                     await db.dropAllTables();
                     NavigationService.reset('Login', {loggedOut: true});
@@ -100,6 +106,7 @@ render() {
         keyExtractor={(item, index) => item + index}
       />
       <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
+      <HelpModal ref={this.helpModal}/>
     </SafeAreaView>
   );
 }
