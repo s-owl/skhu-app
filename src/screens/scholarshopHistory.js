@@ -44,7 +44,7 @@ export default class ScholarshipHistory extends Component{
             data={this.state.history}
             renderItem={({item})=>(
               <CardItem>
-                <Text>{item.year}년 {item.semester} {item.grade}학년</Text>
+                <Text>{item.year}년 {item.grade}학년 {item.semester}</Text>
                 <Text style={{fontWeight: 'bold'}}>{item.scholarship_name} - {item.order}</Text>
                 <Text>입학장학 {item.amount_entrance}원, 수업장학 {item.amount_class}원 {item.benefit_type}</Text>
                 <Text>{item.note}</Text>
