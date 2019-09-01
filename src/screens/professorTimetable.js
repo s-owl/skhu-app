@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import { View, Text, ActivityIndicator, Alert} from 'react-native';
+import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
+import { CardItem } from '../components/components';
 import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
 import BuildConfigs from '../config';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
+import { Map } from 'immutable';
+
 
 export class ProfessorTimetable extends Component{
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -27,6 +30,7 @@ export class ProfessorTimetable extends Component{
   }
 
   componentDidMount(){
+    this.loadTimetable();
   }
 
   render(){
@@ -120,7 +124,7 @@ export class SearchProfessors extends Component{
       // 출력에 관한 상태 초기화
       display: Map({
         result: [],
-        refreshing: true,
+        refreshing: false,
       })
     };
   }
@@ -150,33 +154,13 @@ export class SearchProfessors extends Component{
     this.setState(state);
   }
 
-  // 검색 데이터를 가져온다.
-  async loadSearchData() {
-    const condition = this.getCondition();
-    const display = this.getDisplay();
-
-    // 초기화 후 처음이라면 GET으로 가져온다.
-    if(display.get('firstLoad')) {
-      return await ForestApi.get('/enroll/subjects', true);
-    }
-  
-    // POST로 검색 조건을 전달하고 결과를 받아온다.
-    return await ForestApi.post('/enroll/subjects',
-      JSON.stringify({
-        'year': condition.get('year'),
-        'semester': condition.get('semester'),
-        'major': condition.get('major'),
-        'professor': condition.get('professor')
-      }), true);
-  }
-
   // 검색 조건 변경 시 동작 설정
   handleCondition(condition) {
     // 스크룰을 맨 위까지 올린다.
     this.refs.itemList.scrollToOffset({animated: true, x: 0, y: 0});
     // 검색 조건 설정 후 검색 시작
     this.setCondition(condition);
-    this.runSearch();
+    this.loadSearchResults();
   }
 
   // 출력 조건 변경 시 업데이트 강제
@@ -199,7 +183,6 @@ export class SearchProfessors extends Component{
       // api 규격에 맞춰
       const req = JSON.stringify({
         'Haggi': condition.get('semester'),
-        'HaggiNm':'',
         'Yy': condition.get('year'),
       });
       // 전송한다.
@@ -221,7 +204,7 @@ export class SearchProfessors extends Component{
           });
         }
 
-        let filtered = arr.filter((item) =>
+        let filtered = arr.filter(item =>
           item.professorName.includes(condition.get('professor')));
         // 검색 중 표시 해제 및 결과 출력
         this.setDisplay(
@@ -254,7 +237,7 @@ export class SearchProfessors extends Component{
         <SearchBar
           dataType={this.dataType}
           initParam={this.initParam}
-          onChange={this.loadSearchResults.bind(this)}
+          onChange={this.handleCondition.bind(this)} 
         />
         <FlatList style={{backgroundColor: 'whitesmoke'}}
           ref="itemList"
