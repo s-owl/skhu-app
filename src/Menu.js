@@ -64,6 +64,11 @@ render() {
               Linking.openURL('http://sugang.skhu.ac.kr/');
             }}
           ]},
+          {title: '시간표 조회', data: [
+            {label: '교원별 시간표', icon: 'clipboard-text', onPress: ()=>{
+              this.props.navigation.navigate('SearchProfessors');
+            }}
+          ]},
           {title: '성적 및 장학 관리', data: [
             {label: '장학 내역 조회', icon: 'school' ,onPress: ()=>{
               this.props.navigation.navigate('ScholarshipHistory');
