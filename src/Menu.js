@@ -65,7 +65,7 @@ render() {
             }}
           ]},
           {title: '시간표 조회', data: [
-            {label: '교원별 시간표', icon: 'clipboard-text', onPress: ()=>{
+            {label: '교원별 시간표', icon: 'face', onPress: ()=>{
               this.props.navigation.navigate('SearchProfessors');
             }}
           ]},
