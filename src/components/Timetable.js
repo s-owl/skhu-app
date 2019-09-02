@@ -19,9 +19,29 @@ export function extractFromData(Data, professorNameCol='GyosuNm') {
       lecture_id: `${item.GwamogCd}-${item.Bunban}`,
       semester_code: item.Haggi,
       year: item.Yy
-    };});
+    };
+  });
 }
 
+export function mergeClassesInSametime(arr){
+  for(let i=1; i<arr.length; i++){
+    let prev = arr[i-1];
+    let current = arr[i];
+    if(current.starts_at == prev.start_at && current.ends_at == prev.ends_at &&
+        current.day == prev.day){
+      if(Array.isArray(prev.professor) && Array.isArray(prev.room) && Array.isArray(prev.lecture_id)){
+        arr[i-1].professor = [...prev.professor, current.professor];
+        arr[i-1].room = [...prev.room, current.room];
+        arr[i-1].lecture_id = [...prev.lecture_id, current.lecture_id];
+      }else{
+        arr[i-1].professor = [prev.professor, current.professor];
+        arr[i-1].room = [prev.room, current.room];
+        arr[i-1].lecture_id = [prev.lecture_id, current.lecture_id]; 
+      }
+      arr.splice(i, 1);
+    }
+  }
+}
 export function convertForTimetable(arr) {
   let displayData = [];
   let calcHeight = (start, end)=>(((end.hour - start.hour) * 60)
