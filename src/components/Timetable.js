@@ -4,11 +4,9 @@ import { withNavigation } from 'react-navigation';
 import DateTools from '../tools/datetools';
 import moment from 'moment';
 
-export function extractFromData(Data, professorNameCol) {
-  // 가끔씩 교수이름 칸만 이름이  다른 경우가 있다.
-  if (professorNameCol != undefined) {
-    professorNameCol = "GyosuNm";
-  }
+// professorNameCol: 가끔씩 교수이름 칸만 이름이  다른 경우가 있다.
+
+export function extractFromData(Data, professorNameCol='GyosuNm') {
 
   return Data.map((item) => {
     return {
@@ -18,8 +16,10 @@ export function extractFromData(Data, professorNameCol) {
       day: DateTools.dayOfWeekStrToNum(item.YoilNm),
       starts_at: item.FrTm,
       ends_at: item.ToTm,
-      lecture_id: '${item.GwamogCd}-${item.Bunban}',
-    }});
+      lecture_id: `${item.GwamogCd}-${item.Bunban}`,
+      semester_code: item.Haggi,
+      year: item.Yy
+    };});
 }
 
 export function convertForTimetable(arr) {
