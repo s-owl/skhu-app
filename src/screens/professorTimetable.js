@@ -66,7 +66,7 @@ export class ProfessorTimetable extends Component{
         }));
       if(timetable.ok){
         const data = await timetable.json();
-        const extracted = extractFromData(data.DAT);
+        const extracted = extractFromData(data.DAT, 'ProfStaffName');
         this.setState({
           timetable: convertForTimetable(extracted),
           isLoading: false
@@ -155,11 +155,16 @@ export class SearchProfessors extends Component{
   }
 
   // 검색 조건 변경 시 동작 설정
-  handleCondition(condition) {
+  async handleCondition(condition) {
     // 스크룰을 맨 위까지 올린다.
     this.refs.itemList.scrollToOffset({animated: true, x: 0, y: 0});
     // 검색 조건 설정 후 검색 시작
     this.setCondition(condition);
+    console.log(condition);
+    await this.loadSearchResults();
+  }
+
+  componentDidMount(){
     this.loadSearchResults();
   }
 
@@ -193,23 +198,28 @@ export class SearchProfessors extends Component{
       if(results.ok){
         // json으로 파싱해서 배열에 원하는 형태로 변형해서 배열에 추가한다.
         const data = await results.json();
+        const professorName = condition.get('professorName');
+        const professorId = condition.get('professorId');
+        console.log('professorName:'+ professorName);
         for(let item of data.DAT){
-          arr.push({
-            key: `${item.StaffNo}-${item.StaffName}`,
-            professorName: item.StaffName,
-            professorId: item.StaffNo,
-            department: item.OrgNm,
-            state: item.StaffStateNm,
-            position: item.JikGubCodeNm
-          });
+          if(!professorName || (professorName != undefined && item.StaffName.includes(professorName))){
+            if(!professorId || (professorId != undefined && item.StaffNo.includes(professorId))){
+              arr.push({
+                key: `${item.StaffNo}-${item.StaffName}`,
+                professorName: item.StaffName,
+                professorId: item.StaffNo,
+                department: item.OrgNm,
+                state: item.StaffStateNm,
+                position: item.JikGubCodeNm
+              });
+            }
+          }
         }
-
-        let filtered = arr.filter(item =>
-          item.professorName.includes(condition.get('professor')));
+        console.log(arr);
         // 검색 중 표시 해제 및 결과 출력
         this.setDisplay(
           this.getDisplay()
-            .set('result', filtered)
+            .set('result', arr)
             .set('refreshing', false));
       }
     // 예외 처리
