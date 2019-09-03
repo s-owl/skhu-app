@@ -81,16 +81,25 @@ export function convertForTimetable(arr) {
       });
     }
     
-    let lastItemIndex = displayData[item.day].length -1;
-    let lastItem = displayData[item.day][lastItemIndex];
-    if(lastItem.isEmptyCell) lastItem = displayData[item.day][lastItemIndex -1];
+    let lastItem;
+    displayData[item.day].forEach((item)=>{
+      if(!item.isEmptyCell){
+        lastItem = item;
+      }
+    });
     console.log('lastitem: ' + JSON.stringify(lastItem));
     console.log('current: '+ JSON.stringify(item));
     if(lastItem != undefined && lastItem.time == `${item.starts_at} ~ ${item.ends_at}`){
       console.log('merging duplicates');
-      lastItem.name = [lastItem.name, item.title];
-      lastItem.room = [lastItem.room, item.room];
-      lastItem.syllabus.code = [lastItem.syllabus.code, item.lecture_id];
+      if(Array.isArray(lastItem.name)){
+        lastItem.name = [...lastItem.name, item.title];
+        lastItem.room = [...lastItem.room, item.room];
+        lastItem.syllabus.code = [...lastItem.syllabus.code, item.lecture_id];
+      }else{
+        lastItem.name = [lastItem.name, item.title];
+        lastItem.room = [lastItem.room, item.room];
+        lastItem.syllabus.code = [lastItem.syllabus.code, item.lecture_id];
+      }
     }else{
       displayData[item.day].push({
         isEmptyCell: false,
