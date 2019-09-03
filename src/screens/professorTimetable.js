@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
 import { CardItem } from '../components/components';
-import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
+import Timetable, {extractFromData, convertForTimetable, mergeClassesInSametime} from '../components/Timetable';
 import BuildConfigs from '../config';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
@@ -215,7 +215,6 @@ export class SearchProfessors extends Component{
             }
           }
         }
-        console.log(arr);
         // 검색 중 표시 해제 및 결과 출력
         this.setDisplay(
           this.getDisplay()
