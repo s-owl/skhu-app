@@ -89,7 +89,7 @@ export function convertForTimetable(arr) {
     });
     console.log('lastitem: ' + JSON.stringify(lastItem));
     console.log('current: '+ JSON.stringify(item));
-    if(lastItem != undefined && lastItem.time == `${item.starts_at} ~ ${item.ends_at}`){
+    if(lastItem != undefined && lastItem.time.includes(`${item.starts_at} ~`)){
       console.log('merging duplicates');
       if(Array.isArray(lastItem.name)){
         lastItem.name = [...lastItem.name, item.title];
