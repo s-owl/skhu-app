@@ -140,8 +140,8 @@ export default class NoticeScreen extends Component {
                     'SosogParam': this.state.date,
                 }));
             let arr = [];
-            if (results.ok) {
-                const data = await results.json();
+            if (results != null) {
+                const data = results;
                 for (let item of data.DAT) {
                     arr.push({
                         key: `${item.GwamogCd}-${item.Bunban}`,

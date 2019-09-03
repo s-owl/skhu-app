@@ -234,8 +234,8 @@ export default class SyllabusDetails extends Component{
           'Yy':this.state.year,
           '주별내용count': 15
         }));
-      if(details.ok){
-        const data = await details.json();
+      if(details != null){
+        const data = details;
         this.setState({
           details: data.DAT,
           isLoading: false
