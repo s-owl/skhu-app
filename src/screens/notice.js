@@ -141,6 +141,7 @@ export default class NoticeScreen extends Component {
                 }));
             let arr = [];
             if (results != null) {
+                // postToSam 형식 변경에 대한 임시방편
                 const data = results;
                 for (let item of data.DAT) {
                     arr.push({
