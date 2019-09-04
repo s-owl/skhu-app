@@ -153,7 +153,7 @@ export default class Login extends Component {
       let sessionUpdatedAt = await SecureStore.getItemAsync('sessionUpdatedAt');
       if (sessionUpdatedAt != null) {
         sessionUpdatedAt = moment.utc(sessionUpdatedAt);
-        const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('85', 'minutes'));
+        const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('60', 'minutes'));
         if(!loginRequired){
           NavigationService.reset('Main');
           return;

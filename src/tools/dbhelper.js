@@ -176,9 +176,9 @@ export default class DBHelper{
           'Haggi': semester.code,
           'HaggiNm': semester.name
         }), false);
-      if(timetable.ok){
+      if(timetable != null){
         console.log('timetable');
-        let data = await timetable.json();
+        let data = timetable;
 
         let tCurrent = (await this.getTimetableData());
         let tcArr = tCurrent._array;

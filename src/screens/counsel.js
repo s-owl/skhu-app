@@ -29,8 +29,8 @@ export default class CounselHistory extends Component{
         counselor: '지도교수',
         countOrType: '상담횟수'
       });
-      if(professors.ok){
-        const data = await professors.json();
+      if(professors != null){
+        const data = professors;
         for(let item of data.DAT){
           professorsList.push({
             timestamp: `${item.Yy}-${item.HaggiNm}`,
@@ -47,8 +47,8 @@ export default class CounselHistory extends Component{
         counselor: '상담자',
         countOrType: '상담구분'
       });
-      if(history.ok){
-        const data = await history.json();
+      if(history != null){
+        const data = history;
         for(let item of data.DAT){
           historyList.push({
             timestamp: `${item.Yy}-${item.HaggiNm} / ${item.CounselingDt}`,
