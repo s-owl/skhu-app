@@ -63,7 +63,7 @@ async function runFetcher(fetcher) {
   let data = await isJson(await fetcher());
   if (data == null) {
     await reLogin();
-    let data = await isJson(await fetcher());
+    data = await isJson(await fetcher());
   }
   return data;
 }
