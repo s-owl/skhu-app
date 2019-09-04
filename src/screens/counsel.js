@@ -30,6 +30,7 @@ export default class CounselHistory extends Component{
         countOrType: '상담횟수'
       });
       if(professors != null){
+        // postToSam 형식 변경에 대한 임시방편
         const data = professors;
         for(let item of data.DAT){
           professorsList.push({
@@ -48,6 +49,7 @@ export default class CounselHistory extends Component{
         countOrType: '상담구분'
       });
       if(history != null){
+        // postToSam 형식 변경에 대한 임시방편
         const data = history;
         for(let item of data.DAT){
           historyList.push({

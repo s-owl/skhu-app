@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, TouchableHighlight, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Text, TouchableHighlight, FlatList } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import DateTools from '../tools/datetools';
 import moment from 'moment';
+import {InfoModal} from './infoModal';
+import {CardItem} from './components';
 
-export function extractFromData(Data, professorNameCol) {
-  // 가끔씩 교수이름 칸만 이름이  다른 경우가 있다.
-  if (professorNameCol != undefined) {
-    professorNameCol = "GyosuNm";
-  }
+const timeTemplate = 'HH:mm:ss';
+
+// professorNameCol: 가끔씩 교수이름 칸만 이름이  다른 경우가 있다.
+
+export function extractFromData(Data, professorNameCol='GyosuNm') {
 
   return Data.map((item) => {
     return {
@@ -18,8 +20,11 @@ export function extractFromData(Data, professorNameCol) {
       day: DateTools.dayOfWeekStrToNum(item.YoilNm),
       starts_at: item.FrTm,
       ends_at: item.ToTm,
-      lecture_id: '${item.GwamogCd}-${item.Bunban}',
-    }});
+      lecture_id: `${item.GwamogCd}-${item.Bunban}`,
+      semester_code: item.Haggi,
+      year: item.Yy
+    };
+  });
 }
 
 export function convertForTimetable(arr) {
@@ -31,7 +36,7 @@ export function convertForTimetable(arr) {
     let item = arr[i];
     console.log(item);
 
-    let timeTemplate = 'HH:mm:ss';
+   
     let minTemplate;
     if (item.starts_at.length == 8 && item.ends_at.length == 8) {
       minTemplate = '08:00:00';
@@ -75,19 +80,41 @@ export function convertForTimetable(arr) {
         height: calcHeight(prevEndsAt, startsAtDatetime)
       });
     }
-    displayData[item.day].push({
-      isEmptyCell: false,
-      time: `${item.starts_at} ~ ${item.ends_at}`,
-      endsAt: endsAtDatetime,
-      name: item.title,
-      room: item.room,
-      height: calcHeight(startsAtDatetime, endsAtDatetime),
-      syllabus:{
-        code: item.lecture_id,
-        semester: item.semester_code,
-        year: item.year
+    
+    let lastItem;
+    displayData[item.day].forEach((item)=>{
+      if(!item.isEmptyCell){
+        lastItem = item;
       }
     });
+    console.log('lastitem: ' + JSON.stringify(lastItem));
+    console.log('current: '+ JSON.stringify(item));
+    if(lastItem != undefined && lastItem.time.includes(`${item.starts_at} ~`)){
+      console.log('merging duplicates');
+      if(Array.isArray(lastItem.name)){
+        lastItem.name = [...lastItem.name, item.title];
+        lastItem.room = [...lastItem.room, item.room];
+        lastItem.syllabus.code = [...lastItem.syllabus.code, item.lecture_id];
+      }else{
+        lastItem.name = [lastItem.name, item.title];
+        lastItem.room = [lastItem.room, item.room];
+        lastItem.syllabus.code = [lastItem.syllabus.code, item.lecture_id];
+      }
+    }else{
+      displayData[item.day].push({
+        isEmptyCell: false,
+        time: `${item.starts_at} ~ ${item.ends_at}`,
+        endsAt: endsAtDatetime,
+        name: item.title,
+        room: item.room,
+        height: calcHeight(startsAtDatetime, endsAtDatetime),
+        syllabus:{
+          code: item.lecture_id,
+          semester: item.semester_code,
+          year: item.year
+        }
+      });
+    }
   }
   return displayData;
 }
@@ -95,6 +122,10 @@ export function convertForTimetable(arr) {
 class Timetable extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      classChooser: false,
+      overlappedClasses: []
+    };
   }
 
   render() {
@@ -114,6 +145,33 @@ class Timetable extends Component {
                       <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}
                         key={`subject_${i}_${j}`}>
                       </View>
+                    );
+                  }else if(Array.isArray(subject.name) && Array.isArray(subject.room)
+                    && Array.isArray(subject.syllabus.code)){
+                    let more = `및 ${subject.name.length -1}개의 강의`;
+                    return(
+                      <TouchableHighlight style={{}}
+                        key={`subject_${i}_${j}`} onPress={()=>{
+                          let overlapped = [];
+                          for(let o=0; o<subject.name.length; o++){
+                            overlapped.push({
+                              name: subject.name[o],
+                              code: subject.syllabus.code[o],
+                              semester: subject.syllabus.semester,
+                              year: subject.syllabus.year
+                            });
+                          }
+                          this.setState({
+                            overlappedClasses: overlapped,
+                            classChooser: true});
+                        }}>
+                        <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}>
+                          <Text style={{color: 'black', fontSize: 12}}>{subject.name[0]}</Text>
+                          <Text style={{color: 'black', fontSize: 8}}>{subject.time}</Text>
+                          <Text style={{color: 'black', fontSize: 8}}>{subject.room[0]}</Text>
+                          <Text style={{color: 'black', fontSize: 8}}>{more}</Text>
+                        </View>
+                      </TouchableHighlight>
                     );
                   }else{
                     return(
@@ -138,10 +196,41 @@ class Timetable extends Component {
               </View>
             );
           })}
+          
+          <InfoModal
+            visible={this.state.classChooser}
+            icon='timetable'
+            title='강의 선택'
+            buttons={[
+              {label: '닫기', onPress: ()=>this.setState({classChooser: false})}
+            ]}>
+            <CardItem style={{alignItems:'center'}}>
+              <Text>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</Text>
+            </CardItem>
+            <FlatList style={{backgroundColor: 'whitesmoke'}}
+              data={this.state.overlappedClasses}
+              ListFooterComponent={()=>(
+                <CardItem style={{height: 50}}/>
+              )}
+              renderItem={({item})=>
+                <CardItem onPress={()=>{
+                  this.props.navigation.navigate('SyllabusDetails', {
+                    subjectCode: item.code.split('-')[0],
+                    classCode: item.code.split('-')[1],
+                    semesterCode: item.semester,
+                    year: item.year
+                  });
+                  this.setState({classChooser: false});
+                }}>
+                  <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
+                  <Text>{item.code}</Text>
+                </CardItem>
+              }
+            />
+          </InfoModal>
         </View>
       </ScrollView>);
   }
 }
 
 export default withNavigation(Timetable);
-

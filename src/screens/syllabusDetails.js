@@ -235,6 +235,7 @@ export default class SyllabusDetails extends Component{
           '주별내용count': 15
         }));
       if(details != null){
+        // postToSam 형식 변경에 대한 임시방편
         const data = details;
         this.setState({
           details: data.DAT,
