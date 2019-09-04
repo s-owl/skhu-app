@@ -21,16 +21,16 @@ async function isJson(req) {
 
 // reLogin 은 다시 로그인하는 함수이다.
 async function reLogin() {
-  const res = ForestApi.login(
+  const res = await ForestApi.login(
     await SecureStore.getItemAsync('userid'),
     await SecureStore.getItemAsync('userpw')
   );
 
   if (res.ok) {
     let tokens = await res.json();
-    await SecureStorage.setItemAsync('CredentialOld', tokens['credential-old']);
-    await SecureStorage.setItemAsync('CredentialNew', tokens['credential-new']);
-    await SecureStorage.setItemAsync('CredentialNewToken', tokens['credential-new-token']);
+    await SecureStore.setItemAsync('CredentialOld', tokens['credential-old']);
+    await SecureStore.setItemAsync('CredentialNew', tokens['credential-new']);
+    await SecureStore.setItemAsync('CredentialNewToken', tokens['credential-new-token']);
     await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
   }
 }
