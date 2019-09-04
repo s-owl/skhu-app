@@ -168,7 +168,6 @@ export default class Syllabus extends Component{
       let arr = [];
       if(results != null){
         // json으로 파싱해서 배열에 원하는 형태로 변형해서 배열에 추가한다.
-        // postToSam 형식 변경에 대한 임시방편
         const data = results;
         for(let item of data.DAT){
           arr.push({

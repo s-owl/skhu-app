@@ -178,7 +178,6 @@ export default class DBHelper{
         }), false);
       if(timetable != null){
         console.log('timetable');
-        // postToSam 형식 변경에 대한 임시방편
         let data = timetable;
 
         let tCurrent = (await this.getTimetableData());
@@ -250,11 +249,11 @@ export default class DBHelper{
       this.db.transaction(tx => {
         tx.executeSql(
           `select t.title, t.room, t.day, t.starts_at, t.ends_at,
-               a.attend, a.late, a.absence, a.approved, a.menstrual, a.early
-               from timetable as t, attendance as a
+			         a.attend, a.late, a.absence, a.approved, a.menstrual, a.early
+			         from timetable as t, attendance as a
            where t.lecture_id = a.id and t.day = ? and t.starts_at > ?
            and t.semester_code = ? and t.year = ?
-           order by t.starts_at limit 1;`,
+					 order by t.starts_at limit 1;`,
           [today.getDay(), `${today.getHours()}:${today.getMinutes()}`,
             semester.code, today.getFullYear()],
           // [1, `${'09'}:${today.getMinutes()}`],

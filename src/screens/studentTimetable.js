@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-import Timetable, {convertForTimetable} from '../components/Timetable';
+import Timetable, {convertForTimetable} from '../components/Timetable'
 import DBHelper from '../tools/dbhelper';
 import DateTools from '../tools/datetools';
 import BuildConfigs from '../config';
@@ -46,13 +46,13 @@ export default class StudentTimetable extends Component{
     }
   }
 
-  async loadTimetable(){
+  loadTimetable(){
     this.setState({isLoading: true});
-    await this.db.fetchTimetable();
-    const query = await this.db.getTimetableData();
-    this.setState({
-      timetable: convertForTimetable(query._array),
-      isLoading: false
+    this.db.getTimetableData().then((query)=>{
+      this.setState({
+        timetable: convertForTimetable(query._array),
+        isLoading: false
+      });
     });
   }
 }

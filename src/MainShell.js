@@ -21,7 +21,6 @@ import searchCondition from './screens/searchCondition';
 import { MaterialIcons } from '@expo/vector-icons';
 import BuildConfigs from './config';
 import NoticeScreen from './screens/notice';
-import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
 
 const HomeStack = createStackNavigator(
   {
@@ -58,9 +57,7 @@ const MenuStack = createStackNavigator(
     Subjects: Subjects,
     About: About,
     Meal: Meal,
-    searchCondition: searchCondition,
-    ProfessorTimetable: ProfessorTimetable,
-    SearchProfessors: SearchProfessors
+    searchCondition: searchCondition
   },
   {
     initialRouteName: 'Menu',

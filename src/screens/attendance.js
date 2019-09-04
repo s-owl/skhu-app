@@ -23,7 +23,6 @@ export default class AttendanceScreen extends Component{
     }
     async componentDidMount(){
       this.setState({isLoading: true});
-      await this.db.fetchAttendance();
       const data = await this.db.queryAttendance();
       data.unshift({id:0, lecture_name: '강의명', attend:'출석', late:'지각', absence:'결석', 
         approved:'공결', menstrual:'생공', early:'조퇴'});
