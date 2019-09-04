@@ -37,7 +37,7 @@ async function reLogin() {
 
 // getSamFetcher 쿠키를 시간에 따라 처리하기 위해 클로져로
 // Fetch를 호출하고 결과를 리턴한다.
-function getSamFetcher(path, jsonBody) {
+function getSamFetcher(path, jsonBody, isPost) {
   return async()=> {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -49,7 +49,7 @@ function getSamFetcher(path, jsonBody) {
       headers: headers
     };
 
-    if (jsonBody != undefined) {
+    if (isPost) {
       req.method = 'POST';
       req.body = jsonBody;
     }
@@ -120,13 +120,13 @@ export default class ForestApi{
   }
 
   static async getFromSam(path){
-    const fetcher = getSamFetcher(path);
+    const fetcher = getSamFetcher(path, null, false);
     let data = await runFetcher(fetcher);
     return data;
   }
 
   static async postToSam(path, body=null){
-    const fetcher = getSamFetcher(path, body);
+    const fetcher = getSamFetcher(path, body, true);
     let data = await runFetcher(fetcher);
     return data;
   }
