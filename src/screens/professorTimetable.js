@@ -64,8 +64,9 @@ export class ProfessorTimetable extends Component{
           'StaffNo':this.state.professorId,
           'Yy':this.state.year,
         }));
-      if(timetable.ok){
-        const data = await timetable.json();
+      if(timetable != null){
+				// postToSam 형식 변경에 대한 임시방편
+        const data = timetable;
         const extracted = extractFromData(data.DAT, 'ProfStaffName');
         this.setState({
           timetable: convertForTimetable(extracted),
@@ -195,9 +196,10 @@ export class SearchProfessors extends Component{
 
       // 결과를 넣을 배열 초기화
       let arr = [];
-      if(results.ok){
+      if(results != null){
         // json으로 파싱해서 배열에 원하는 형태로 변형해서 배열에 추가한다.
-        const data = await results.json();
+				// postToSam 형식 변경에 대한 임시방편
+        const data = results;
         const professorName = condition.get('professorName');
         const professorId = condition.get('professorId');
         console.log('professorName:'+ professorName);
