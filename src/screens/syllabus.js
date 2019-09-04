@@ -166,9 +166,9 @@ export default class Syllabus extends Component{
 
       // 결과를 넣을 배열 초기화
       let arr = [];
-      if(results.ok){
+      if(results != null){
         // json으로 파싱해서 배열에 원하는 형태로 변형해서 배열에 추가한다.
-        const data = await results.json();
+        const data = results;
         for(let item of data.DAT){
           arr.push({
             key: `${item.GwamogCd}-${item.Bunban}`,
