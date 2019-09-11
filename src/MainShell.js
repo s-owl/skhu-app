@@ -22,6 +22,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import BuildConfigs from './config';
 import NoticeScreen from './screens/notice';
 import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
+import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 
 const HomeStack = createStackNavigator(
   {
@@ -60,7 +61,9 @@ const MenuStack = createStackNavigator(
     Meal: Meal,
     searchCondition: searchCondition,
     ProfessorTimetable: ProfessorTimetable,
-    SearchProfessors: SearchProfessors
+    SearchProfessors: SearchProfessors,
+    LectureRoomTimetable: LectureRoomTimetable,
+    SearchLectureRooms: SearchLectureRooms
   },
   {
     initialRouteName: 'Menu',
