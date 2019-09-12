@@ -6,6 +6,7 @@ import {InfoModal} from '../components/infoModal';
 import {Map} from 'immutable';
 import * as WebBrowser from 'expo-web-browser';
 import LegalInfo from '../legal';
+import BuildConfigs from '../config';
 
 export default class About extends Component{
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -42,6 +43,7 @@ export default class About extends Component{
             <Image style={{marginBottom: 16, width:200, height:200}} source={ require('../../assets/imgs/icon.png') }/>
             <Text style={{fontWeight: 'bold', fontSize: 36}}>{Constants.manifest.name}</Text>
             <Text>{Constants.manifest.version}</Text>
+            <Text>OTA - {BuildConfigs.OtaDeployedAt}</Text>
           </View>
           <CardItem isHeader={true}>
             <Text style={{fontWeight: 'bold'}}>개발자 정보</Text>

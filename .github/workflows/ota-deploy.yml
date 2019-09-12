@@ -1,0 +1,35 @@
+name: OTA 업데이트 배포
+
+on:
+  push:
+    branches:    
+      - master
+    tags:        
+      - OTA-*
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Node.js 12.x 준비
+      uses: actions/setup-node@v1
+      with:
+        node-version:12.x
+
+    - name: 빌드 도구 설치
+      run: npm i -g expo-cli yarn
+    
+    - name: Expo CLI 로그인
+      env:
+        EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+        EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+      run: expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+    
+    - name: 의존성 다운로드
+      run: yarn install
+    
+    - name: OTA 업데이트 빌드 및 배포
+      run: expo publish
