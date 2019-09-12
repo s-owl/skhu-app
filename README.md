@@ -1,6 +1,7 @@
 # SKHU's - Mobile App Client
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/af9e32c1e5cf43ed9b904e70c33d3714)](https://app.codacy.com/app/s-owl/skhu-app?utm_source=github.com&utm_medium=referral&utm_content=s-owl/skhu-app&utm_campaign=Badge_Grade_Settings)
+[![모바일 앱 OTA 배포 현황](https://github.com/s-owl/skhu-app/workflows/OTA%20업데이트%20배포/badge.svg)](https://github.com/s-owl/skhu-app/actions)
 
 성공회대학교의 종합정보시스템과, 학내 소식을 모바일 환경에서 쉽게 받아볼 수 있게 해주는 앱, SKHU's 의 모바일 앱 소스코드 저장소 입니다.
 기존 Foressst 앱의 리뉴얼 버전입니다. React Native 와 Expo 를 사용하여 개발되었습니다.
