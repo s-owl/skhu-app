@@ -67,6 +67,9 @@ render() {
           {title: '시간표 조회', data: [
             {label: '교원별 시간표', icon: 'face', onPress: ()=>{
               this.props.navigation.navigate('SearchProfessors');
+            }},
+            {label: '강의실별 시간표', icon: 'map-marker-radius', onPress: ()=>{
+              this.props.navigation.navigate('SearchLectureRooms');
             }}
           ]},
           {title: '성적 및 장학 관리', data: [
