@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {View, FlatList, Text, ActivityIndicator} from 'react-native';
-import {CardItem} from '../components/components';
+import ListItem from '../components/listitem';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
@@ -48,18 +48,18 @@ export default class Credits extends Component{
       }else{
         return(
           <View>
-            <FlatList style={{height:'100%', backgroundColor: 'whitesmoke'}}
+            <FlatList style={{height:'100%', backgroundColor: 'white'}}
               data={this.state.data}
               keyExtractor={(item, index) => index}
               ListFooterComponent={()=>(
-                <CardItem>
+                <ListItem>
                   <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
                     {this.state.summary}
                   </Text>
-                </CardItem>
+                </ListItem>
               )}
               renderItem={({item})=>
-                <CardItem style={{flex:1, flexDirection: 'row'}}>
+                <ListItem style={{flex:1, flexDirection: 'row'}}>
                   {item.map((subItem, index)=>{
                     return(
                       <View style={{flex: 1}}>
@@ -68,7 +68,7 @@ export default class Credits extends Component{
                       </View>
                     );
                   })}
-                </CardItem>
+                </ListItem>
               }/>
           </View>
         );

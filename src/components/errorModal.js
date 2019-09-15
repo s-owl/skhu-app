@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {Modal, Text, View, ScrollView, Clipboard} from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {CardItem} from './components';
+import {Text, View, Clipboard} from 'react-native';
 import {HelpModal} from './helpModal';
 import NavigationService from '../tools/NavigationService';
 import {InfoModal} from './infoModal';
@@ -18,7 +16,7 @@ export class ErrorModal extends Component{
   }
 
   afterCloseHelp() {
-    this.setVisible(true)
+    this.setVisible(true);
   }
 
   CommonErrors = {

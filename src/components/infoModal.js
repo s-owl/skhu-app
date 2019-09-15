@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Modal, Text, View, ScrollView} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {CardItem} from './components';
+import ListItem from './listitem';
 
 
 export function InfoModal(props) {
@@ -22,9 +22,9 @@ export function InfoModal(props) {
             height:50, width:'100%', marginBottom: 16}}>
             {props.buttons.map((item, index)=>{
               return(
-                <CardItem key={index} style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
+                <ListItem key={index} style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
                   <Text>{item.label}</Text>
-                </CardItem>
+                </ListItem>
               );
             })}
           </View>

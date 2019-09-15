@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Text, SectionList, Linking} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {CardItem} from './components';
+import ListItem from './listitem';
 import {InfoModal} from './infoModal';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -33,7 +33,7 @@ export class HelpModal extends Component{
     this.setVisible(false);
     if (this.props.onClose == undefined ||
         this.props.onClose == null) {
-      return
+      return;
     }
     this.props.onClose();
   }
@@ -84,15 +84,15 @@ export class HelpModal extends Component{
         ]}>
         <SectionList style={{height:'100%'}}
           renderItem={({item, index, section}) => (
-            <CardItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
+            <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
               <MaterialCommunityIcons name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
               <Text style={{flex: 1}}>{item.label}</Text>
-            </CardItem>
+            </ListItem>
           )}
           renderSectionHeader={({section: {title}}) => (
-            <CardItem style={{flex: 0, flexDirection: 'row'}}>
+            <ListItem style={{flex: 0, flexDirection: 'row'}}>
               <Text style={{fontWeight: 'bold'}}>{title}</Text>
-            </CardItem>
+            </ListItem>
           )}
           sections={sections}
           keyExtractor={(item, index) => item + index}

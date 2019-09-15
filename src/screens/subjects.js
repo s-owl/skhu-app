@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {RefreshControl, Modal, Text, View, FlatList,
   TextInput, Picker, SafeAreaView, ActivityIndicator, Alert} from 'react-native';
 import { Map } from 'immutable';
-import {CardItem} from '../components/components';
+import ListItem from '../components/listitem';
 import SearchBar, {createSearchCondition} from '../components/searchBar';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
@@ -220,17 +220,17 @@ export default class Subjects extends Component{
       );
     }else{
       return(
-        <View style={{backgroundColor: 'whitesmoke'}}>
+        <View style={{backgroundColor: 'white'}}>
           <SearchBar
             dataType={this.dataType}
             initParam={this.initParam}
             onChange={this.handleCondition.bind(this)}
           />
-          <FlatList style={{backgroundColor: 'whitesmoke'}}
+          <FlatList style={{backgroundColor: 'white'}}
             ref="itemList"
             data={display.get('result')}
             ListFooterComponent={()=>(
-              <CardItem style={{height: 50}}/>
+              <ListItem style={{height: 50}}/>
             )}
             refreshControl={
               <RefreshControl
@@ -241,7 +241,7 @@ export default class Subjects extends Component{
               />
             }
             renderItem={({item})=>
-              <CardItem onPress={()=>{
+              <ListItem onPress={()=>{
                 this.props.navigation.navigate('SyllabusDetails', {
                   subjectCode: item.subjectCode,
                   classCode: item.classCode,
@@ -254,7 +254,7 @@ export default class Subjects extends Component{
                 <Text>학년제한: {item.grade_limit}, 학과제한: {item.major_limit}, 신청/정원: {item.available}</Text>
                 <Text>{item.time}</Text>
                 <Text>{item.note}</Text>
-              </CardItem>
+              </ListItem>
             }
           />
         </View>
