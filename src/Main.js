@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   StyleSheet, Text, View,
-  ScrollView, SafeAreaView, ActivityIndicator, FlatList, ListView
+  ScrollView, SafeAreaView, ActivityIndicator, 
 } from 'react-native';
 import { CardView } from './components/components';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -49,19 +49,15 @@ export default class Main extends Component {
               <MaterialIcons name="insert-chart" size={20} style={{ flex: 1 }} />
               <Text style={{ flex: 0 }}>현재 이수 학점</Text>
             </CardView>
-            <Text style={{ fontSize: 20, marginTop: 16 }}>다음 강의</Text>
+            <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>다음 강의</Text>
             <NextClassInfo dbHelper={this.db} onPress={() => {
               this.props.navigation.navigate('Timetable');
             }} />
-            <Text style={{ fontSize: 20, marginTop: 16 }}>학사 일정</Text>
+            <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>학사 일정</Text>
             <MonthlySchedule onPress={() => {
               this.props.navigation.navigate('Schedules');
             }} />
-            {/* <Text style={{ fontSize: 20, marginTop: 16 }}>공지사항</Text>
-            <NoticeSchedule onPress={() => {
-              this.props.navigation.navigate('NoticeScreen');
-            }} /> */}
-            <Text style={{ fontSize: 20, marginTop: 16 }}>학식</Text>
+            <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>학식</Text>
             <Meal url={this.state.url} onPress={() => {
               this.props.navigation.navigate('Meal');
             }} />
@@ -269,10 +265,9 @@ class Meal extends Component {
       let day = new Date().getDay(); //0 : 일요일,  1: 월요일...
       day = (day == 0 || day == 6) ? 4 : day - 1;
 
-      let meal = meals[day]; //0:월요일 1:화요일...
       console.log(meals.length);
       this.setState({
-        meal: meal,
+        meal:  meals[day],
         isLoading: false
       });
     });
@@ -297,18 +292,18 @@ class Meal extends Component {
           </View>
           <View style={{ flexDirection: 'column', marginTop: 10 }}>
             <View style={{ flexDirection: 'row' }}>
-              <View style={{margin: 5, flex: 1}}>
+              <CardView outlined={true} style={{margin: 5, flex: 1}}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>학식</Text>
                 <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.lunch.a.diet}</Text>
-              </View>
-              <View style={{margin: 5, flex: 1}}>
+              </CardView>
+              <CardView outlined={true} style={{margin: 5, flex: 1}}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>일품</Text>
                 <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.lunch.b.diet}</Text>
-              </View>
-              <View style={{margin: 5, flex: 1}}>
+              </CardView>
+              <CardView outlined={true} style={{margin: 5, flex: 1}}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>석식</Text>
                 <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.dinner.a.diet}</Text>
-              </View>
+              </CardView>
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ color: 'grey' }}>주간 식단 보기</Text>

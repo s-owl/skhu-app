@@ -8,38 +8,19 @@ import Touchable from './touchable';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
-class CardView extends Component{ //table View
-  render(){     //객체 업데이트 maybe callback, touch처리 메소드
+class CardView extends Component{
+  render(){ 
+    const cardViewStyle = (this.props.outlined) ? styles.outlinedCardView : styles.cardView;
     if(this.props.onPress != undefined){
       return(
         <Touchable onPress={this.props.onPress}
-          style={[styles.container, this.props.style]}>
+          style={[cardViewStyle, this.props.style]}>
           {this.props.children}
         </Touchable>
       );
     }else{
       return(
-        <View style={[styles.container, this.props.style]}>
-          {this.props.children}
-        </View>
-      );
-    }
-  }
-}
-
-class CardItem extends Component{
-  render(){
-    const itemStyle = this.props.isHeader ? styles.cardItemHeader : styles.cardItem;
-    if(this.props.onPress != undefined){
-      return(
-        <Touchable onPress={this.props.onPress}
-          style={[itemStyle, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
-          {this.props.children}
-        </Touchable>
-      );
-    }else{
-      return(
-        <View style={[itemStyle, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
+        <View style={[cardViewStyle, this.props.style]}>
           {this.props.children}
         </View>
       );
@@ -85,8 +66,6 @@ class BottomModal extends Component{
                 <CardItem/>
               </KeyboardAvoidingView>
             </LinearGradient>
-
-
           </SafeAreaView>
         </ScrollView>
       </Modal>
@@ -96,35 +75,31 @@ class BottomModal extends Component{
 
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 5,
+  cardView: {
+    borderRadius: 16,
     borderColor: '#ddd',
     borderBottomWidth: 0,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 1,
+    elevation: 2,
     padding: 16,
     marginTop: 8,
     marginBottom: 8,
     backgroundColor: 'white',
   },
-  cardItem: {
-    // elevation: 1,
+  outlinedCardView: {
+    borderRadius: 16,
+    borderColor: 'lightgrey',
+    borderWidth: 1,
     padding: 16,
+    marginTop: 8,
+    marginBottom: 8,
     backgroundColor: 'white',
   },
-  cardItemHeader: {
-    // elevation: 1,
-    marginTop: 16,
-    paddingLeft: 16,
-    paddingRight: 16,
-    padding: 8,
-    backgroundColor: 'white',
-  }
 });
 
 export{
-  CardView, CardItem, BottomModal
+  CardView, BottomModal
 };
