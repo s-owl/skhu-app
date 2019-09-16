@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import Touchable from './touchable';
 import { LinearGradient } from 'expo-linear-gradient';
+import BuildConfigs from '../config';
 
 
 class CardView extends Component{
@@ -16,12 +17,14 @@ class CardView extends Component{
         <Touchable onPress={this.props.onPress}
           style={[cardViewStyle, this.props.style]}>
           {this.props.children}
+          <Text style={styles.actionsLabel}>{this.props.actionLabel}</Text>
         </Touchable>
       );
     }else{
       return(
         <View style={[cardViewStyle, this.props.style]}>
           {this.props.children}
+          <Text style={styles.actionsLabel}>{this.props.actionLabel}</Text>
         </View>
       );
     }
@@ -98,6 +101,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     backgroundColor: 'white',
   },
+  actionsLabel: {
+    color: BuildConfigs.primaryColor
+  }
 });
 
 export{

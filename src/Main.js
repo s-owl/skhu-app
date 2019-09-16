@@ -4,15 +4,13 @@ import {
   ScrollView, SafeAreaView, ActivityIndicator, 
 } from 'react-native';
 import { CardView } from './components/components';
-import { MaterialIcons } from '@expo/vector-icons';
 import ForestApi from './tools/apis';
 import { TopWidget } from './components/weather';
 import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
 import FetchHelper from './tools/fetchHelper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';  //아이콘임포트
-
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';  //아이콘임포트
 
 export default class Main extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -116,15 +114,12 @@ class NextClassInfo extends Component {
           <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{this.state.name}</Text>
           <Text style={{ fontSize: 20 }}>{this.state.time}</Text>
           <Text>{this.state.attendance}</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ color: 'grey' }}>이번 학기 시간표 보기</Text>
-            <MaterialIcons name="chevron-right" size={16} />
-          </View>
         </View>
       );
     }
     return (
-      <CardView onPress={this.props.onPress} elevate={true}>
+      <CardView onPress={this.props.onPress} elevate={true}
+        actionLabel="이번 학기 시간표 보기 >">
         {content}
       </CardView>
     );
@@ -176,74 +171,12 @@ class MonthlySchedule extends Component {
             <Text style={{ flex: 0, fontWeight: 'bold' }}>{this.state.dates}</Text>
             <Text style={{ flex: 1 }}>{this.state.contents}</Text>
           </View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ color: 'grey' }}>학사 일정 더 보기</Text>
-            <MaterialIcons name="chevron-right" size={16} />
-          </View>
         </View>
       );
     }
     return (
-      <CardView onPress={this.props.onPress} elevate={true}>
-        {content}
-      </CardView>
-    );
-  }
-}
-
-class NoticeSchedule extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dates: '',
-      isLoading: false
-    };
-  }
-  async componentDidMount() {
-    this.setState({ isLoading: true });
-    let today = new Date();
-    let schedule = await ForestApi.post('/life/schedules', JSON.stringify({
-      'year': today.getFullYear(),
-      'month': today.getMonth() + 1
-    }), false);
-    if (schedule.ok) {
-      let data = await schedule.json();
-      let dates = '', contents = '';
-      for (let item of data.schedules) {
-        dates += `${item.period}\n`;
-        contents += ` | ${item.content}\n`;
-      }
-      this.setState({
-        dates: dates,
-        contents: contents,
-        isLoading: false
-      });
-    }
-  }
-  render() {
-    let content;
-    if (this.state.isLoading) {
-      content = (
-        <View style={{ justifyContent: 'center', padding: 32 }}>
-          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
-        </View>
-      );
-    } else {
-      content = (
-        <View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ flex: 0, fontWeight: 'bold' }}>{this.state.dates}</Text>
-            <Text style={{ flex: 1 }}>{this.state.contents}</Text>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ color: 'grey' }}>공지사항 더 보기</Text>
-            <MaterialIcons name="chevron-right" size={16} />
-          </View>
-        </View>
-      );
-    }
-    return (
-      <CardView onPress={this.props.onPress} elevate={true}>
+      <CardView onPress={this.props.onPress} elevate={true}
+        actionLabel="학사 일정 더 보기 >">
         {content}
       </CardView>
     );
@@ -305,16 +238,13 @@ class Meal extends Component {
                 <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.dinner.a.diet}</Text>
               </CardView>
             </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ color: 'grey' }}>주간 식단 보기</Text>
-              <MaterialIcons name="chevron-right" size={16} />
-            </View>
           </View>
         </View>
       );
     }
     return (
-      <CardView onPress={this.props.onPress} elevate={true}>
+      <CardView onPress={this.props.onPress} elevate={true}
+        actionLabel="주간 식단 보기 >">
         {content}
       </CardView>
 
