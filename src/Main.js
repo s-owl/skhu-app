@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, View,
+  Text, View, Image, 
   ScrollView, SafeAreaView, ActivityIndicator, 
 } from 'react-native';
 import { CardView } from './components/components';
@@ -10,7 +10,8 @@ import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
 import FetchHelper from './tools/fetchHelper';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';  //아이콘임포트
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
+import Touchable from './components/touchable';
 
 export default class Main extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -34,19 +35,44 @@ export default class Main extends Component {
         <ScrollView>
           <View style={{ marginTop: 50, padding: 16 }}>
             <TopWidget />
-            <CardView style={{ flex: 0, flexDirection: 'row' }}
-              onPress={() => {
-                this.props.navigation.navigate('Attendance');
-              }} elevate={true}>
-              <MaterialIcons name="check-circle" size={20} style={{ flex: 1 }} />
-              <Text style={{ flex: 0 }}>나의 출결 현황</Text>
-            </CardView>
-            <CardView style={{ flex: 0, flexDirection: 'row' }} onPress={() => {
-              this.props.navigation.navigate('Credits');
-            }} elevate={true}>
-              <MaterialIcons name="insert-chart" size={20} style={{ flex: 1 }} />
-              <Text style={{ flex: 0 }}>현재 이수 학점</Text>
-            </CardView>
+            <View style={{flex: 0, flexDirection: 'row', width:'100%',
+              marginTop: 8, marginBottom: 8}}>
+              <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
+                onPress={() => {
+                  this.props.navigation.navigate('Attendance');
+                }}>
+                <MaterialIcons name="check-circle" size={32}
+                  style={{borderRadius: 24,
+                    borderColor: 'lightgrey',
+                    borderWidth: 1,
+                    padding: 8}}/>
+                <Text style={{padding: 8}}>출결 현황</Text>
+              </Touchable>
+              <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
+                onPress={() => {
+                  this.props.navigation.navigate('Credits');
+                }}>
+                <MaterialIcons name="insert-chart" size={32}
+                  style={{borderRadius: 24,
+                    borderColor: 'lightgrey',
+                    borderWidth: 1,
+                    padding: 8}} />
+                <Text style={{padding: 8}}>이수 학점</Text>
+              </Touchable>
+              <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
+                onPress={() => {
+                  // this.props.navigation.navigate('Credits');
+                }}>
+                <Image
+                  style={{width: 50, height: 50, borderRadius: 25, padding: 8,
+                    borderColor: 'lightgrey', borderWidth: 1}}
+                  source={{uri: 'https://avatars0.githubusercontent.com/u/20768166?s=200&v=4'}}
+                />
+                <Text style={{padding: 8}}>(사용자 이름)</Text>
+              </Touchable>
+            </View>
+
+
             <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>다음 강의</Text>
             <NextClassInfo dbHelper={this.db} onPress={() => {
               this.props.navigation.navigate('Timetable');
