@@ -11,7 +11,7 @@ export class ErrorModal extends Component{
     this.setState(state);
   }
 
-  beforeOpenHelp() {
+  closeErrorModal() {
     this.setVisible(false);
   }
 
@@ -29,7 +29,7 @@ export class ErrorModal extends Component{
           NavigationService.reset('Login');
         }},
         {label: '도움 받기', onPress:()=>{
-          this.beforeOpenHelp();
+          this.closeErrorModal();
           this.helpModal.current.open(undefined, true);
         }}
       ]
@@ -47,7 +47,7 @@ export class ErrorModal extends Component{
           NavigationService.reset('Login');
         }},
         {label: '도움 받기', onPress:()=>{
-          this.beforeOpenHelp();
+          this.closeErrorModal();
           this.helpModal.current.open(undefined, true);
         }}
       ]
@@ -61,14 +61,14 @@ export class ErrorModal extends Component{
         + 'sam.skhu.ac.kr 쪽에서 로그인이 불가능한 경우, 성공회대학교 전자계산소에 문의하세요.\n\n'
         + '추가정보:\n',
       buttons: [
-        {label: '다시 시도', onPress:()=>{
-          NavigationService.reset('Login');
+        {label: '닫기', onPress:()=>{
+          this.closeErrorModal();
         }},
         {label: '오류 정보 복사', onPress:()=>{
           Clipboard.setString(this.state.desc);
         }},
         {label: '도움 받기', onPress:()=>{
-          this.beforeOpenHelp();
+          this.closeErrorModal();
           this.helpModal.current.open(this.state.desc, true);
         }}
       ]
@@ -90,7 +90,7 @@ export class ErrorModal extends Component{
           Clipboard.setString(this.state.desc);
         }},
         {label: '도움 받기', onPress:()=>{
-          this.beforeOpenHelp();
+          this.closeErrorModal();
           this.helpModal.current.open(this.state.desc, true);
         }}
       ]

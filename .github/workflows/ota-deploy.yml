@@ -2,8 +2,6 @@ name: OTA 업데이트 배포
 
 on:
   push:
-    branches:    
-      - master
     tags:        
       - OTA-*
 
@@ -17,7 +15,7 @@ jobs:
     - name: Node.js 12.x 준비
       uses: actions/setup-node@v1
       with:
-        node-version:12.x
+        node-version: 12.x
 
     - name: 빌드 도구 설치
       run: npm i -g expo-cli yarn
