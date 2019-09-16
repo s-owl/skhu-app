@@ -81,15 +81,15 @@ export default class ForestApi{
 
     loginHeaders.append('Content-Type', 'application/json');
     return fetch(`${ForestApi.url}/user/login`,
-    {
-      method: 'POST',
-      headers: loginHeaders,
-      signal: signal,
-      body: JSON.stringify({
-        userid :userid.toString(),
-        userpw :userpw.toString()
-      })
-    });
+      {
+        method: 'POST',
+        headers: loginHeaders,
+        signal: signal,
+        body: JSON.stringify({
+          userid :userid.toString(),
+          userpw :userpw.toString()
+        })
+      });
   }
 
   static async get(path, withCredential){
@@ -127,5 +127,9 @@ export default class ForestApi{
     const fetcher = getSamFetcher(path, 'POST', body);
     let data = await runFetcher(fetcher);
     return data;
+  }
+
+  static async getCredentialOld(){
+    return SecureStore.getItemAsync('CredentialOld');
   }
 }

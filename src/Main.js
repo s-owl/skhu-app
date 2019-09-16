@@ -28,6 +28,12 @@ export default class Main extends Component {
     this.db.fetchAttendance();
     this.db.fetchTimetable();
     FetchHelper.fetchMealsUrl().then(url => this.setState({ url }));
+
+    this.state = {
+      profile: {
+        
+      }
+    };
   }
   render() {
     return (
@@ -37,41 +43,16 @@ export default class Main extends Component {
             <TopWidget />
             <View style={{flex: 0, flexDirection: 'row', width:'100%',
               marginTop: 8, marginBottom: 8}}>
-              <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
-                onPress={() => {
-                  this.props.navigation.navigate('Attendance');
-                }}>
-                <MaterialIcons name="check-circle" size={32}
-                  style={{borderRadius: 24,
-                    borderColor: 'lightgrey',
-                    borderWidth: 1,
-                    padding: 8}}/>
-                <Text style={{padding: 8}}>출결 현황</Text>
-              </Touchable>
-              <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
-                onPress={() => {
-                  this.props.navigation.navigate('Credits');
-                }}>
-                <MaterialIcons name="insert-chart" size={32}
-                  style={{borderRadius: 24,
-                    borderColor: 'lightgrey',
-                    borderWidth: 1,
-                    padding: 8}} />
-                <Text style={{padding: 8}}>이수 학점</Text>
-              </Touchable>
-              <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
-                onPress={() => {
-                  // this.props.navigation.navigate('Credits');
-                }}>
-                <Image
-                  style={{width: 50, height: 50, borderRadius: 25, padding: 8,
-                    borderColor: 'lightgrey', borderWidth: 1}}
-                  source={{uri: 'https://avatars0.githubusercontent.com/u/20768166?s=200&v=4'}}
-                />
-                <Text style={{padding: 8}}>(사용자 이름)</Text>
-              </Touchable>
+              <ShortcutButton
+                icon="check-circle"
+                label="출결 현황"
+                onPress={() => this.props.navigation.navigate('Attendance')}/>
+              <ShortcutButton
+                icon="insert-chart"
+                label="이수 학점"
+                onPress={() => this.props.navigation.navigate('Credits')}/>
+              <ProfileButton/>
             </View>
-
 
             <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>다음 강의</Text>
             <NextClassInfo dbHelper={this.db} onPress={() => {
@@ -89,6 +70,75 @@ export default class Main extends Component {
           </View>
         </ScrollView>
       </SafeAreaView>
+    );
+  }
+}
+
+class ProfileButton extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      image:{
+        uri: 'https://avatars3.githubusercontent.com/u/20768166?s=400&u=4873a2c4153dde35ab8f6f32ae4cf454e31443cb&v=4',
+        method: 'GET',
+        headers: {
+          Cookie: ''
+        }
+      },
+      name: '인증 정보'
+    };
+  }
+
+  async componentDidMount(){
+    try{
+      let res = await ForestApi.get('/user/profile', true);
+      let credentialOld = await ForestApi.getCredentialOld();
+      if(res.ok){
+        let profile = await res.json();
+        console.log(JSON.stringify(profile));
+        this.setState({
+          image: {
+            uri: profile.image,
+            method: 'GET',
+            headers: {
+              Cookie: credentialOld
+            }
+          },
+          name: profile.name
+        });
+      }
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  render(){
+    return(
+      <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
+        onPress={this.props.onPress}>
+        <Image
+          style={{width: 50, height: 50, borderRadius: 25, padding: 8,
+            borderColor: 'lightgrey', borderWidth: 1, backgroundColor: 'lightgrey'}}
+          source={this.state.image}
+        />
+        <Text style={{padding: 8}}>{this.state.name}</Text>
+      </Touchable>
+    );
+  }
+}
+
+class ShortcutButton extends Component{
+  render(){
+    return(
+      <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
+        onPress={this.props.onPress}>
+        <MaterialIcons name={this.props.icon} size={32}
+          style={{borderRadius: 24,
+            borderColor: 'lightgrey',
+            borderWidth: 1,
+            padding: 8}} />
+        <Text style={{padding: 8}}>{this.props.label}</Text>
+      </Touchable>
     );
   }
 }
