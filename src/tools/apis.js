@@ -37,7 +37,7 @@ async function reLogin() {
 
 // getSamFetcher 쿠키를 시간에 따라 처리하기 위해 클로져로
 // Fetch를 호출하고 결과를 리턴한다.
-function getSamFetcher(path, jsonBody) {
+function getSamFetcher(path, method, jsonBody=undefined) {
   return async()=> {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -45,14 +45,12 @@ function getSamFetcher(path, jsonBody) {
     headers.append('Cookie', await SecureStore.getItemAsync('CredentialNew'));
     headers.append('RequestVerificationToken', await SecureStore.getItemAsync('CredentialNewToken'));
     req = {
-      method: 'GET',
+      method: method,
       headers: headers
     };
 
-    if (jsonBody != undefined) {
-      req.method = 'POST';
-      req.body = jsonBody;
-    }
+    if (!['GET', 'HEAD', 'DELETE', 'OPTIONS'].includes(method.toUpperCase())) req.body = jsonBody;
+    
     return fetch(`http://sam.skhu.ac.kr${path}`,
       req);
   };
@@ -63,7 +61,7 @@ async function runFetcher(fetcher) {
   let data = await isJson(await fetcher());
   if (data == null) {
     await reLogin();
-    let data = await isJson(await fetcher());
+    data = await isJson(await fetcher());
   }
   return data;
 }
@@ -120,13 +118,13 @@ export default class ForestApi{
   }
 
   static async getFromSam(path){
-    const fetcher = getSamFetcher(path);
+    const fetcher = getSamFetcher(path, 'GET');
     let data = await runFetcher(fetcher);
     return data;
   }
 
-  static async postToSam(path, body=null){
-    const fetcher = getSamFetcher(path, body);
+  static async postToSam(path, body=undefined){
+    const fetcher = getSamFetcher(path, 'POST', body);
     let data = await runFetcher(fetcher);
     return data;
   }
