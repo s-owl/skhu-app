@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { CardView } from './components/components';
 import ForestApi from './tools/apis';
-import { TopWidget } from './components/weather';
+import SummaryWidget from './components/summaryWidget';
 import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
@@ -40,7 +40,7 @@ export default class Main extends Component {
       <SafeAreaView style={{backgroundColor: 'whitesmoke'}}>
         <ScrollView>
           <View style={{ marginTop: 50, padding: 16 }}>
-            <TopWidget />
+            <SummaryWidget />
             <View style={{flex: 0, flexDirection: 'row', width:'100%',
               marginTop: 8, marginBottom: 8}}>
               <ShortcutButton
