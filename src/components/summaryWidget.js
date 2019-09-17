@@ -25,6 +25,8 @@ export default class SummaryWidget extends Component{
         msg = '점심 식사는 하셨나요?';
       }else if(now >= 20 && now < 24){
         msg = '오늘 하루 어떠셨나요?';
+      }else{
+        msg = '좋은 하루 되세요!';
       }
     }else if(choice==1){
       this.db = new DBHelper();
