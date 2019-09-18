@@ -23,17 +23,10 @@ export default class Main extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = { url: '' };
     this.db = new DBHelper();
     this.db.fetchAttendance();
     this.db.fetchTimetable();
     FetchHelper.fetchMealsUrl().then(url => this.setState({ url }));
-
-    this.state = {
-      profile: {
-        
-      }
-    };
   }
   render() {
     return (
@@ -79,32 +72,21 @@ class ProfileButton extends Component{
     super(props);
     this.state = {
       image:{
-        uri: 'https://avatars3.githubusercontent.com/u/20768166?s=400&u=4873a2c4153dde35ab8f6f32ae4cf454e31443cb&v=4',
-        method: 'GET',
-        headers: {
-          Cookie: ''
-        }
+        uri: require('../assets/imgs/icon.png')
       },
       name: '인증 정보'
     };
   }
 
+
   async componentDidMount(){
     try{
       let res = await ForestApi.get('/user/profile', true);
-      let credentialOld = await ForestApi.getCredentialOld();
       if(res.ok){
         let profile = await res.json();
-        console.log(JSON.stringify(profile));
         this.setState({
-          image: {
-            uri: profile.image,
-            method: 'GET',
-            headers: {
-              Cookie: credentialOld
-            }
-          },
-          name: profile.name
+          name: profile.name,
+          image: {uri: profile.image}
         });
       }
     }catch(err){
@@ -120,6 +102,7 @@ class ProfileButton extends Component{
           style={{width: 50, height: 50, borderRadius: 25, padding: 8,
             borderColor: 'lightgrey', borderWidth: 1, backgroundColor: 'lightgrey'}}
           source={this.state.image}
+          onError={(error)=>console.log(error)}
         />
         <Text style={{padding: 8}}>{this.state.name}</Text>
       </Touchable>
