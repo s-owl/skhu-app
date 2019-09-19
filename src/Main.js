@@ -56,7 +56,7 @@ export default class Main extends Component {
               this.props.navigation.navigate('Schedules');
             }} />
             <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>학식</Text>
-            <Meal url={this.state.url} onPress={() => {
+            <Meal onPress={() => {
               this.props.navigation.navigate('Meal');
             }} />
 
@@ -71,9 +71,7 @@ class ProfileButton extends Component{
   constructor(props){
     super(props);
     this.state = {
-      image:{
-        uri: require('../assets/imgs/icon.png')
-      },
+      image:  require('../assets/imgs/icon.png'),
       name: '인증 정보'
     };
   }
@@ -250,7 +248,7 @@ class Meal extends Component {
   };
 
   componentDidMount() {
-    FetchHelper.fetchMealsData(this.props.url).then(meals => {
+    FetchHelper.fetchMealsData('').then(meals => {
       
       // TODO: 오늘 구하는 공식 들어가야함 일단은 첫번째 인덱스 배열 값 가져옴...
 
