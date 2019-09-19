@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {SectionList, Text, ActivityIndicator, View} from 'react-native';
-import {CardItem} from '../components/components';
+import ListItem from '../components/listitem';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
@@ -75,18 +75,18 @@ export default class CounselHistory extends Component{
         );
       }else{
         return(
-          <SectionList style={{height:'100%', backgroundColor: 'whitesmoke'}}
+          <SectionList style={{height:'100%', backgroundColor: 'white'}}
             renderItem={({item, index, section}) => (
-              <CardItem key={index} style={{flex: 0, flexDirection: 'row'}}>
+              <ListItem key={index} style={{flex: 0, flexDirection: 'row'}}>
                 <Text style={{flex: 2, textAlign: 'center'}}>{item.timestamp}</Text>
                 <Text style={{flex: 1, textAlign: 'center'}}>{item.counselor}</Text>
                 <Text style={{flex: 1, textAlign: 'center'}}>{item.countOrType}</Text>
-              </CardItem>
+              </ListItem>
             )}
             renderSectionHeader={({section: {title}}) => (
-              <CardItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
+              <ListItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
                 <Text style={{fontWeight: 'bold'}}>{title}</Text>
-              </CardItem>
+              </ListItem>
             )}
             sections={[
               {title: '지도교수 목록', data: this.state.professors},

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CardItem, CardView } from '../components/components';
+import { CardView } from '../components/components';
 import { ScrollView, SafeAreaView, View, Text, ActivityIndicator, FlatList } from 'react-native';
 import FetchHelper from '../tools/fetchHelper';
 import BuildConfigs from '../config';
@@ -46,7 +46,7 @@ export default class Meal extends Component {
     }
     else {
       return (
-        <SafeAreaView style={{backgroundColor: 'whitesmoke'}}>
+        <SafeAreaView style={{backgroundColor: 'white'}}>
           <ScrollView>
             <FlatList
               data={meals}

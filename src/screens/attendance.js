@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {View, FlatList, Text, ActivityIndicator} from 'react-native';
-import {CardItem} from '../components/components';
+import ListItem from '../components/listitem';
 import DBHelper from '../tools/dbhelper';
 import BuildConfigs from '../config';
 
@@ -48,11 +48,11 @@ export default class AttendanceScreen extends Component{
       }else{
         return(
           <View>
-            <FlatList style={{height:'100%', backgroundColor: 'whitesmoke'}}
+            <FlatList style={{height:'100%', backgroundColor: 'white'}}
               data={this.state.data}
               keyExtractor={(item, index) => index}
               renderItem={({item})=>
-                <CardItem style={{flex:1, flexDirection: 'row'}}>
+                <ListItem style={{flex:1, flexDirection: 'row'}}>
                   <Text style={{flex:1}}>{item.lecture_name}</Text>
                   <Text style={{width:30, textAlign: 'center'}}>{item.attend}</Text>
                   <Text style={{width:30, textAlign: 'center'}}>{item.late}</Text>
@@ -60,7 +60,7 @@ export default class AttendanceScreen extends Component{
                   <Text style={{width:30, textAlign: 'center'}}>{item.approved}</Text>
                   <Text style={{width:30, textAlign: 'center'}}>{item.menstrual}</Text>
                   <Text style={{width:30, textAlign: 'center'}}>{item.early}</Text>
-                </CardItem>
+                </ListItem>
               }/>
           </View>
         );

@@ -4,14 +4,11 @@ import {
     View, FlatList, Text, ActivityIndicator, StyleSheet,
     ScrollView, SafeAreaView, Button, Image, TouchableOpacity, RefreshControl, Modal, TextInput, Picker, SectionList
 } from 'react-native';
-import { CardView, CardItem, BottomModal } from '../components/components';
-import { MaterialHeaderButtons } from '../components/headerButtons';
+import { CardView, BottomModal } from '../components/components';
 import BuildConfigs from '../config';
-import Printer from '../tools/printer';
 import DateTools from '../tools/datetools';
 //import NoticeApi from '../tools/apis';
 import ForestApi from '../tools/apis';
-import moment from 'moment';
 
 export default class NoticeScreen extends Component {
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -51,13 +48,13 @@ export default class NoticeScreen extends Component {
             return (
                 <View>
                     {/* 검색 부분 카드뷰 */}
-                    <CardItem style={{}} onPress={() => this.setState({ showSearchModal: true })}
+                    <ListItem style={{}} onPress={() => this.setState({ showSearchModal: true })}
                         style={{ flex: 0, flexDirection: 'row' }} elevate={true}>
                         <Text style={{ flex: 1 }}>
                             {this.state.title} / {this.state.date}
                         </Text>
                         <MaterialIcons name="search" size={20} style={{ flex: 0 }} />
-                    </CardItem>
+                    </ListItem>
 
                     {/* 렌더링 */}
                     <FlatList
@@ -71,7 +68,7 @@ export default class NoticeScreen extends Component {
                             />
                         }
                         ListFooterComponent={() => (
-                            <CardItem style={{ height: 50 }} />
+                            <ListItem style={{ height: 50 }} />
                         )}
                         renderItem={({ item }) =>
                             <SafeAreaView>
@@ -113,16 +110,16 @@ export default class NoticeScreen extends Component {
                                 }
                             }
                         ]}>
-                        <CardItem>
+                        <ListItem>
                             <TextInput placeholder={'키워드 검색 (선택)'} style={{ fontSize: 16, padding: 8 }}
                                 defaultValue={this.state.title}
                                 onChangeText={(text) => this.setState({ title: text })} />
-                        </CardItem>
-                        <CardItem>
+                        </ListItem>
+                        <ListItem>
                             <TextInput placeholder={'게시일 검색 (선택 : ex)2019.01.01.)'} style={{ fontSize: 16, padding: 8 }}
                                 defaultValue={this.state.date}
                                 onChangeText={(text) => this.setState({ date: text })} />
-                        </CardItem>
+                        </ListItem>
                     </BottomModal>
                 </View>
             );

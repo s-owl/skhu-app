@@ -6,12 +6,12 @@ import { Map, List } from "immutable";
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { SortByCodes } from '../components/searchBar';
-import { CardItem } from '../components/components';
+import ListItem from '../components/listitem';
 import { primaryColor } from '../config.js';
 
 // 스타일 지정
 const styles = StyleSheet.create({
-  view: {flex: 1,backgroundColor: 'whitesmoke',justifyContent: "space-around"},
+  view: {flex: 1,backgroundColor: 'white',justifyContent: "space-around"},
   input: {
     fontSize:20
   },
@@ -79,7 +79,7 @@ export default class searchCondition extends Component {
         {
           this.dataType.toArray()
           .map((item)=>(
-            <CardItem style={styles.container}>
+            <ListItem style={styles.container}>
               {(() => {
                 const itemKey = item[0];
                 const itemType = item[1];
@@ -105,20 +105,20 @@ export default class searchCondition extends Component {
                               })}
                          </Picker>)
                 }})()}
-            </CardItem>)
+            </ListItem>)
           )
         }
         <View style={styles.buttonContainer}>
-          <CardItem
+          <ListItem
               onPress={this.handleCancel}
               style={styles.buttons}>
             <Text style={styles.text}>취소</Text>
-          </CardItem>
-          <CardItem
+          </ListItem>
+          <ListItem
               onPress={this.handleConfirm}
               style={styles.buttons}>
             <Text style={styles.text}>확인</Text>
-          </CardItem>
+          </ListItem>
         </View>
         <View style={{ height: 50 }} /> 
       </KeyboardAvoidingView>

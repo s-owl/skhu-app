@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { 
   Alert, Text, SafeAreaView, SectionList, Linking
 } from 'react-native';
-import { CardItem } from './components/components';
+import ListItem from './components/listitem';
 import NavigationService from './tools/NavigationService';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
@@ -32,17 +32,17 @@ showSnackbar(msg){
 render() {
   return(
     <SafeAreaView>
-      <SectionList style={{height:'100%', backgroundColor: 'whitesmoke'}}
+      <SectionList style={{height:'100%', backgroundColor: 'white'}}
         renderItem={({item, index, section}) => (
-          <CardItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
+          <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
             <MaterialCommunityIcons name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
             <Text style={{flex: 1}}>{item.label}</Text>
-          </CardItem>
+          </ListItem>
         )}
         renderSectionHeader={({section: {title}}) => (
-          <CardItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
+          <ListItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
             <Text style={{fontWeight: 'bold'}}>{title}</Text>
-          </CardItem>
+          </ListItem>
         )}
         sections={[
           {title: '학교 생활', data: [

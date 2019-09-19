@@ -4,7 +4,7 @@ import { withNavigation } from 'react-navigation';
 import DateTools from '../tools/datetools';
 import moment from 'moment';
 import {InfoModal} from './infoModal';
-import {CardItem} from './components';
+import ListItem from './listitem';
 
 const timeTemplate = 'HH:mm:ss';
 
@@ -130,7 +130,7 @@ class Timetable extends Component {
 
   render() {
     return (
-      <ScrollView style={{backgroundColor: 'whitesmoke'}}>
+      <ScrollView style={{backgroundColor: 'white'}}>
         <View style={{flex:1, flexDirection: 'row'}}>
           {this.props.timetable.map((item, i)=>{
             return(
@@ -204,16 +204,16 @@ class Timetable extends Component {
             buttons={[
               {label: '닫기', onPress: ()=>this.setState({classChooser: false})}
             ]}>
-            <CardItem style={{alignItems:'center'}}>
+            <ListItem style={{alignItems:'center'}}>
               <Text>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</Text>
-            </CardItem>
-            <FlatList style={{backgroundColor: 'whitesmoke'}}
+            </ListItem>
+            <FlatList style={{backgroundColor: 'white'}}
               data={this.state.overlappedClasses}
               ListFooterComponent={()=>(
-                <CardItem style={{height: 50}}/>
+                <ListItem style={{height: 50}}/>
               )}
               renderItem={({item})=>
-                <CardItem onPress={()=>{
+                <ListItem onPress={()=>{
                   this.props.navigation.navigate('SyllabusDetails', {
                     subjectCode: item.code.split('-')[0],
                     classCode: item.code.split('-')[1],
@@ -224,7 +224,7 @@ class Timetable extends Component {
                 }}>
                   <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
                   <Text>{item.code}</Text>
-                </CardItem>
+                </ListItem>
               }
             />
           </InfoModal>

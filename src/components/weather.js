@@ -89,7 +89,7 @@ class SmallWeatherWidget extends Component{
         name: '...',
         conditionCode: 0,
         temp: 0,
-        icon: (<MaterialCommunityIcons size={50} name="weather-snowy"/>)
+        icon: (<MaterialCommunityIcons size={25} name="weather-snowy"/>)
       }
     };
   }
@@ -115,7 +115,7 @@ class SmallWeatherWidget extends Component{
           name: (this.props.name)? this.props.name : name,
           conditionCode: weather.conditionCode,
           temp: weather.temp,
-          icon: WeatherUtils.getIconForCode(weather.conditionCode, 50)
+          icon: WeatherUtils.getIconForCode(weather.conditionCode, 25)
         }
       });
     }catch(err){
@@ -125,59 +125,19 @@ class SmallWeatherWidget extends Component{
 
   render(){
     return(
-      <View style={{flexDirection: 'column', flex: 0, alignItems: 'center'}}>
+      <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', padding: 8}}>
         {this.state.current.icon}
-        <Text style={{fontSize: 10}}>{this.state.current.temp}°</Text>
-        <Text style={{fontSize: 10}}>{this.state.current.name}</Text>
-      </View>
-    );
-  }
-
-}
-
-class TopWidget extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      today: new Date(),
-      currentPosition: {}
-    };
-  }
-
-  // async componentDidMount(){
-  //   navigator.geolocation.getCurrentPosition((position)=>{
-  //     try{
-  //       this.setState({
-  //         currentPosition:{
-  //           latitude: position.coords.latitude,
-  //           longitude: position.coords.longitude
-  //         }
-  //       });
-
-  //     }catch(err){
-  //       console.log(err);
-  //     }
-
-  //   });
-  // }
-
-  render(){
-    return(
-      <View style={{flexDirection: 'row', flex: 0, padding: 8}}>
-        <View style={{flexDirection: 'column', flex: 1, justifyContent: 'center'}}>
-          <Text style={{fontSize: 30}}>{this.state.today.getFullYear()}. {this.state.today.getMonth()+1}. {this.state.today.getDate()}.</Text>
+        <View style={{flexDirection: 'column', flex: 0, alignItems: 'center'}}>
+          <Text style={{fontSize: 10, marginLeft: 4}}>{this.state.current.name}</Text>
+          <Text style={{fontSize: 10, marginLeft: 4}}>{this.state.current.temp}°</Text>
         </View>
-        <SmallWeatherWidget
-          unit='metric' appid={BuildConfigs.OPENWEATHERMAP_API_KEY}/>
-        <SmallWeatherWidget
-          unit='metric' appid={BuildConfigs.OPENWEATHERMAP_API_KEY}
-          name='성공회대' position={{latitude:'37.48750', longitude:'126.82564'}}/>
       </View>
     );
   }
 
 }
+
 
 export{
-  SmallWeatherWidget, TopWidget
+  SmallWeatherWidget
 };

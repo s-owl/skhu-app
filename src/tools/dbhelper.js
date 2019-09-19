@@ -242,6 +242,29 @@ export default class DBHelper{
 
   }
 
+  getTodayClassCount(){
+    return new Promise((resolve, reject)=>{
+      const today = new Date();
+      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      this.db.transaction(tx => {
+        tx.executeSql(
+          'select count(title) as classes from timetable where day = ? and semester_code = ?;',
+          [today.getDay(), semester.code],
+          (tx, result)=>{
+            if(result.rows.length > 0){
+              resolve(result.rows.item(0));
+            }else{
+              resolve(undefined);
+            }
+          },
+          (err)=>{
+            reject(err);
+          }
+        );
+      });
+    });
+  }
+
   getNextClassInfo(){
     return new Promise((resolve, reject)=>{
       const today = new Date();

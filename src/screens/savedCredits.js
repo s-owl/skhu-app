@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {CardItem} from '../components/components';
+import ListItem from '../components/listitem';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
@@ -48,13 +48,13 @@ export default class SavedCredits extends Component{
         );
       }else{
         return(
-          <FlatList style={{backgroundColor: 'whitesmoke'}}
+          <FlatList style={{backgroundColor: 'white'}}
             ListHeaderComponent={()=>(
               <View>
-                <CardItem isHeader={true}>
+                <ListItem isHeader={true}>
                   <Text>학점세이브 상태</Text>
-                </CardItem>
-                <CardItem style={{flex:1, flexDirection: 'row'}}>
+                </ListItem>
+                <ListItem style={{flex:1, flexDirection: 'row'}}>
                   <View style={{flex: 1}}>
                     <Text style={{fontWeight: 'bold'}}>누적학점</Text>
                     <Text>{this.state.status.accrued}</Text>
@@ -63,8 +63,8 @@ export default class SavedCredits extends Component{
                     <Text style={{fontWeight: 'bold'}}>누적학점 기준(누적시기)</Text>
                     <Text>{this.state.status.accrued_criteria}</Text>
                   </View>
-                </CardItem>
-                <CardItem style={{flex:1, flexDirection: 'row'}}>
+                </ListItem>
+                <ListItem style={{flex:1, flexDirection: 'row'}}>
                   <View style={{flex: 1}}>
                     <Text style={{fontWeight: 'bold'}}>사용학점</Text>
                     <Text>{this.state.status.used}</Text>
@@ -77,18 +77,18 @@ export default class SavedCredits extends Component{
                     <Text style={{fontWeight: 'bold'}}>사용 가능 학점</Text>
                     <Text>{this.state.status.available}</Text>
                   </View>
-                </CardItem>
-                <CardItem isHeader={true}>
+                </ListItem>
+                <ListItem isHeader={true}>
                   <Text>학점 세이브 상세사항</Text>
-                </CardItem>
+                </ListItem>
               </View>
             )}
             data={this.state.details}
             renderItem={({item})=>(
-              <CardItem>
+              <ListItem>
                 <Text style={{fontWeight: 'bold'}}>{item.year}년 {item.semester}</Text>
                 <Text>세이브 학점: {item.saved}, 사용 학점: {item.used}</Text>
-              </CardItem>
+              </ListItem>
             )}
           />
         );
