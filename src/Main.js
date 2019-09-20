@@ -44,7 +44,7 @@ export default class Main extends Component {
                 icon="insert-chart"
                 label="이수 학점"
                 onPress={() => this.props.navigation.navigate('Credits')}/>
-              <ProfileButton/>
+              <ProfileButton onPress={() => this.props.navigation.navigate('Authinfo')}/>
             </View>
 
             <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>다음 강의</Text>
