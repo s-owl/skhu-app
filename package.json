@@ -26,6 +26,7 @@
     "expo-asset": "^5.0.1",
     "expo-constants": "~5.0.1",
     "expo-linear-gradient": "~5.0.1",
+    "expo-local-authentication": "~6.0.0",
     "expo-print": "~5.0.1",
     "expo-secure-store": "~5.0.1",
     "expo-sqlite": "~5.0.1",

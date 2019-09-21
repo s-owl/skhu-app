@@ -10,7 +10,7 @@ export default class Touchable extends Component{
       return(
         <TouchableNativeFeedback onPress={this.props.onPress} 
           delayPressIn={1} delayPressOut={10}
-          background={background} useForeground={true}>
+          background={background} useForeground={this.props.borderless}>
           <View style={this.props.style}>{this.props.children}</View>
         </TouchableNativeFeedback>
       );
@@ -23,3 +23,4 @@ export default class Touchable extends Component{
     }
   }
 }
+
