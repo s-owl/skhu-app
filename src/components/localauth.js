@@ -33,7 +33,8 @@ export default class LocalAuth extends Component {
     const result = await LocalAuthentication.authenticateAsync({fallbackLabel: ''});
     if(result.success){
       this.authSuccess();
-    }else {
+    }else if(result.error != 'user_cancel'){
+      console.log(result.error);
       this.setState({
         msg: `${type[0]} 인증에 실패하였습니다.`,
         pin: '',
@@ -55,12 +56,12 @@ export default class LocalAuth extends Component {
       pinCheck: '',
       display: '',
       icon: 'lock-open'});
-    if(Platform.OS == 'android'){
-      LocalAuthentication.cancelAuthenticate();
-    }
-    setTimeout(()=>{
+    setTimeout(async ()=>{
       this.props.onAuthSuccess();
       this.setState(initState);
+      if(Platform.OS == 'android'){
+        await LocalAuthentication.cancelAuthenticate();
+      }
     },1000);
   }
 
@@ -182,10 +183,10 @@ export default class LocalAuth extends Component {
           </View>
           <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
             height:50, width:'100%', marginBottom: 16}}>
-            <ListItem style={{flex:1, alignItems:'center'}} onPress={()=>{
+            <ListItem style={{flex:1, alignItems:'center'}} onPress={async ()=>{
               this.setState(initState);
               if(Platform.OS == 'android'){
-                LocalAuthentication.cancelAuthenticate();
+                await LocalAuthentication.cancelAuthenticate();
               }
             }}>
               <Text>취소</Text>
