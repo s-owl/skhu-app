@@ -62,7 +62,7 @@ export default class LocalAuth extends Component {
       if(Platform.OS == 'android'){
         await LocalAuthentication.cancelAuthenticate();
       }
-    },1000);
+    },500);
   }
 
   async startAuth(){
