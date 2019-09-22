@@ -13,7 +13,7 @@ const initState = {
   hasSensor: false,
   pin: '',
   pinCheck: '',
-  display: '',
+  display: '______',
   msg: '',
   pinRegistered: false,
   icon: 'lock-outline'
@@ -24,6 +24,14 @@ export default class LocalAuth extends Component {
   constructor(props){
     super(props);
     this.state = initState;
+  }
+
+  getDisplayString(len=0){
+    if(len >= 6){
+      return '*'.repeat(6)
+    }else{
+      return '*'.repeat(len) + '_'.repeat(6-len)
+    }
   }
 
   async bioAuth(){
@@ -39,7 +47,7 @@ export default class LocalAuth extends Component {
         msg: `${type[0]} 인증에 실패하였습니다.`,
         pin: '',
         pinCheck: '',
-        display: '',
+        display: this.getDisplayString(),
         icon: 'error-outline'});
       if(Platform.OS == 'android'){
         setTimeout(()=>{
@@ -54,7 +62,7 @@ export default class LocalAuth extends Component {
       msg: '인증되었습니다.',
       pin: '',
       pinCheck: '',
-      display: '',
+      display: this.getDisplayString(),
       icon: 'lock-open'});
     setTimeout(async ()=>{
       this.props.onAuthSuccess();
@@ -89,14 +97,14 @@ export default class LocalAuth extends Component {
       newPin = this.state.pin.slice(0, -1);
       this.setState({
         pin: newPin,
-        display: '*'.repeat(newPin.length)
+        display: this.getDisplayString(newPin.length)
       }); 
       
     }else if(digit != '<' && this.state.pin.length < 6){
       newPin = `${this.state.pin}${digit}`;
       this.setState({
         pin: newPin,
-        display: '*'.repeat(newPin.length)
+        display: this.getDisplayString(newPin.length)
       }); 
       if(newPin.length == 6){
         if(this.state.pinRegistered){
@@ -108,7 +116,7 @@ export default class LocalAuth extends Component {
               msg: '틀린 PIN 입니다.',
               pin: '',
               pinCheck: '',
-              display: '',
+              display: this.getDisplayString(),
               icon: 'error-outline'
             });
           }
@@ -117,7 +125,7 @@ export default class LocalAuth extends Component {
             this.setState({
               pin: '',
               pinCheck: newPin,
-              display: '',
+              display: this.getDisplayString(),
               msg: '동일한 PIN을 다시 한번 입력하세요.'
             });
           }else if(this.state.pinCheck == newPin){
@@ -126,7 +134,7 @@ export default class LocalAuth extends Component {
               msg: '등록 완료. 방금 등록한 PIN 으로 인증하세요.',
               pin: '',
               pinCheck: '',
-              display: '',
+              display: this.getDisplayString(),
               pinRegistered: true
             });
           }
