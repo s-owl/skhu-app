@@ -74,6 +74,7 @@ export default class LocalAuth extends Component {
   }
 
   async startAuth(){
+    this.setState(initState);
     const pin = await SecureStore.getItemAsync('localAuthPin');
     const hasHw = await LocalAuthentication.hasHardwareAsync();
     const bioAuthRegistered = await LocalAuthentication.isEnrolledAsync();
@@ -137,6 +138,15 @@ export default class LocalAuth extends Component {
               display: this.getDisplayString(),
               pinRegistered: true
             });
+          }else if(this.state.pinCheck != newPin){
+            this.setState({
+              msg: '틀렸습니다. 처음부터 다시 시작하세요.',
+              pin: '',
+              pinCheck: '',
+              display: this.getDisplayString(),
+              icon: 'error-outline'
+            });
+            setTimeout(()=>this.startAuth(), 500);
           }
         }
       }
