@@ -28,9 +28,9 @@ export default class LocalAuth extends Component {
 
   getDisplayString(len=0){
     if(len >= 6){
-      return '*'.repeat(6)
+      return '*'.repeat(6);
     }else{
-      return '*'.repeat(len) + '_'.repeat(6-len)
+      return '*'.repeat(len) + '_'.repeat(6-len);
     }
   }
 
@@ -147,52 +147,52 @@ export default class LocalAuth extends Component {
       <Modal
         animationType="fade"
         visible={this.state.visible}>
-        <View style={{paddingTop: 40, padding: 16, flex: 1}}>
-          <View style={{padding: '5%', flex: 1}}>
-            <View style={{alignItems: 'center'}}>
-              <MaterialIcons name={this.state.icon} size={32} style={{padding: 16}}/>
-              <Text>{this.state.msg}</Text>
-              <Text style={{fontSize: 32}}>{this.state.display}</Text>
-              <View style={styles.digitRow}>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(1)}><Text style={{ fontSize: 24 }}>1</Text></Touchable>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(2)}><Text style={{ fontSize: 24 }}>2</Text></Touchable>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(3)}><Text style={{ fontSize: 24 }}>3</Text></Touchable>
-              </View>
-              <View style={styles.digitRow}>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(4)}><Text style={{ fontSize: 24 }}>4</Text></Touchable>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(5)}><Text style={{ fontSize: 24 }}>5</Text></Touchable>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(6)}><Text style={{ fontSize: 24 }}>6</Text></Touchable>
-              </View>
-              <View style={styles.digitRow}>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(7)}><Text style={{ fontSize: 24 }}>7</Text></Touchable>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(8)}><Text style={{ fontSize: 24 }}>8</Text></Touchable>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(9)}><Text style={{ fontSize: 24 }}>9</Text></Touchable>
-              </View>
-              <View style={styles.digitRow}>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit(0)}><Text style={{ fontSize: 24 }}>0</Text></Touchable>
-                <Touchable style={styles.digitButton} borderless={true}
-                  onPress={()=>this.inputDigit('<')}><Text style={{ fontSize: 24 }}>{'<'}</Text></Touchable>
-              </View>
-              <View style={styles.digitRow}>
-                <ListItem style={{flex:1, alignItems:'center'}} onPress={async ()=>{
-                  this.setState(initState);
-                  if(Platform.OS == 'android'){
-                    await LocalAuthentication.cancelAuthenticate();
-                  }
-                }}>
+        <View style={{paddingTop: 30, padding: 16, flex: 1}}>
+          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <MaterialIcons name={this.state.icon} size={32} style={{padding: 16}}/>
+            <Text>{this.state.msg}</Text>
+            <Text style={{fontSize: 32}}>{this.state.display}</Text>
+          </View>
+          <View style={{flex: 3, justifyContent: 'flex-end'}}>
+            <View style={styles.digitRow}>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(1)}><Text style={{ fontSize: 24 }}>1</Text></Touchable>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(2)}><Text style={{ fontSize: 24 }}>2</Text></Touchable>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(3)}><Text style={{ fontSize: 24 }}>3</Text></Touchable>
+            </View>
+            <View style={styles.digitRow}>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(4)}><Text style={{ fontSize: 24 }}>4</Text></Touchable>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(5)}><Text style={{ fontSize: 24 }}>5</Text></Touchable>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(6)}><Text style={{ fontSize: 24 }}>6</Text></Touchable>
+            </View>
+            <View style={styles.digitRow}>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(7)}><Text style={{ fontSize: 24 }}>7</Text></Touchable>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(8)}><Text style={{ fontSize: 24 }}>8</Text></Touchable>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(9)}><Text style={{ fontSize: 24 }}>9</Text></Touchable>
+            </View>
+            <View style={styles.digitRow}>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit(0)}><Text style={{ fontSize: 24 }}>0</Text></Touchable>
+              <Touchable style={styles.digitButton} borderless={true}
+                onPress={()=>this.inputDigit('<')}><Text style={{ fontSize: 24 }}>{'<'}</Text></Touchable>
+            </View>
+            <View style={styles.digitRow}>
+              <ListItem style={{flex:1, alignItems:'center', justifyContent: 'center'}} onPress={async ()=>{
+                this.setState(initState);
+                if(Platform.OS == 'android'){
+                  await LocalAuthentication.cancelAuthenticate();
+                }
+              }}>
                 <Text>취소</Text>
-                </ListItem>
-              </View>
+              </ListItem>
             </View>
           </View>
         </View>
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   digitRow: {
-    flex: 0, flexDirection: 'row', width:'100%',
-    marginTop: 8, marginBottom: 8, height: '14%'
+    flex: 1, flexDirection: 'row', width:'100%',
+    marginTop: 8, marginBottom: 8,
   }
 });
