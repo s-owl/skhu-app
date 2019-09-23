@@ -2869,6 +2869,13 @@ expo-local-authentication@~5.0.1:
   dependencies:
     invariant "^2.2.4"
 
+expo-local-authentication@~6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-6.0.0.tgz#57a0e1e7d84c211cd88ca66227c4317b9b371b68"
+  integrity sha512-ecvHGJyMnpCWBG4z4G//3vo2LemVx6d8+8X09YLcrfBywxNYTOyHQjFV5Y39w5hcI4S6R5XmibO3fV/hjH+Bxg==
+  dependencies:
+    invariant "^2.2.4"
+
 expo-localization@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/expo-localization/-/expo-localization-5.0.1.tgz#9b617198f4627ed5c4eea406ed1a616dbc6d44f6"

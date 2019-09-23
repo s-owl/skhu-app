@@ -12,6 +12,7 @@ import DBHelper from './tools/dbhelper';
 import FetchHelper from './tools/fetchHelper';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
 import Touchable from './components/touchable';
+import LocalAuth from './components/localauth';
 
 export default class Main extends Component {
   static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -27,6 +28,7 @@ export default class Main extends Component {
     this.db.fetchAttendance();
     this.db.fetchTimetable();
     FetchHelper.fetchMealsUrl().then(url => this.setState({ url }));
+    this.localAuth = React.createRef();
   }
   render() {
     return (
@@ -44,7 +46,7 @@ export default class Main extends Component {
                 icon="insert-chart"
                 label="이수 학점"
                 onPress={() => this.props.navigation.navigate('Credits')}/>
-              <ProfileButton/>
+              <ProfileButton onPress={() => this.localAuth.current.startAuth()}/>
             </View>
 
             <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>다음 강의</Text>
@@ -61,6 +63,8 @@ export default class Main extends Component {
             }} />
 
           </View>
+          <LocalAuth ref={this.localAuth} 
+            onAuthSuccess={()=>this.props.navigation.navigate('Authinfo')}/>
         </ScrollView>
       </SafeAreaView>
     );
@@ -75,7 +79,6 @@ class ProfileButton extends Component{
       name: '인증 정보'
     };
   }
-
 
   async componentDidMount(){
     try{

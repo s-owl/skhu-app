@@ -23,6 +23,7 @@ import BuildConfigs from './config';
 import NoticeScreen from './screens/notice';
 import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
+import Authinfo from './screens/authinfo';
 
 const HomeStack = createStackNavigator(
   {
@@ -33,7 +34,8 @@ const HomeStack = createStackNavigator(
     Timetable: StudentTimetable,
     SyllabusDetails: SyllabusDetails,
     NoticeScreen :NoticeScreen,
-    Meal: Meal
+    Meal: Meal,
+    Authinfo: Authinfo
   },
   {
     initialRouteName: 'Home',
