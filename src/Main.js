@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, 
+  Text, View, Image, AsyncStorage,
   ScrollView, SafeAreaView, ActivityIndicator, 
 } from 'react-native';
 import { CardView } from './components/components';
@@ -75,7 +75,7 @@ class ProfileButton extends Component{
   constructor(props){
     super(props);
     this.state = {
-      image:  require('../assets/imgs/icon.png'),
+      image:  require('../assets/imgs/profilePlaceholder.png'),
       name: '인증 정보'
     };
   }
@@ -85,10 +85,21 @@ class ProfileButton extends Component{
       let res = await ForestApi.get('/user/profile', true);
       if(res.ok){
         let profile = await res.json();
-        this.setState({
-          name: profile.name,
-          image: {uri: profile.image}
-        });
+        let rawConfig = await AsyncStorage.getItem('hideProfile');
+        let configValue = JSON.parse(rawConfig);
+        if(rawConfig == null || rawConfig == undefined){
+          configValue = true;
+        }
+        if(configValue){
+          this.setState({
+            name: profile.name,
+          });
+        }else{
+          this.setState({
+            name: profile.name,
+            image: {uri: profile.image}
+          });
+        }
       }
     }catch(err){
       console.log(err);

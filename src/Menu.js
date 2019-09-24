@@ -84,6 +84,9 @@ render() {
             {label: '앱 정보', icon: 'information', onPress: ()=>{
               this.props.navigation.navigate('About');
             }},
+            {label: '앱 설정', icon: 'settings-outline', onPress: ()=>{
+              this.props.navigation.navigate('Settings');
+            }},
             {label: '도움 받기', icon: 'help-circle-outline', onPress: ()=>{
               this.helpModal.current.open();
             }},

@@ -39,7 +39,7 @@ class Profile extends Component{
   constructor(props){
     super(props);
     this.state = {
-      image:  require('../../assets/imgs/icon.png'),
+      image:  require('../../assets/imgs/profilePlaceholder.png'),
       name: '이름', id: '학번',
       classtype: '주간/야간',
       college: '대학',
