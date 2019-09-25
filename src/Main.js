@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Image, 
+  Text, View, Image, Platform,
   ScrollView, SafeAreaView, ActivityIndicator, 
 } from 'react-native';
 import { CardView } from './components/components';
@@ -31,10 +31,11 @@ export default class Main extends Component {
     this.localAuth = React.createRef();
   }
   render() {
+    const topMargin = (Platform.OS == 'ios')? 20 : 50;
     return (
       <SafeAreaView style={{backgroundColor: 'whitesmoke'}}>
         <ScrollView>
-          <View style={{ marginTop: 50, padding: 16 }}>
+          <View style={{ marginTop: topMargin, padding: 16 }}>
             <SummaryWidget />
             <View style={{flex: 0, flexDirection: 'row', width:'100%',
               marginTop: 8, marginBottom: 8}}>

@@ -16,7 +16,7 @@ export default class SummaryWidget extends Component{
 
   async componentDidMount(){
     let choice = Math.round(Math.random() * 2);
-    let msg;
+    let msg = '좋은 하루 되세요!';
     if(choice==0){
       let now = new Date().getHours();
       if(now >= 6 && now <= 9){
@@ -70,11 +70,11 @@ export default class SummaryWidget extends Component{
   render(){
     return(
       <View style={{flexDirection: 'column', flex: 0, width: '100%',
-        padding: 8, justifyContent: 'center', marginTop: 16}}>
+        padding: 8, justifyContent: 'center', marginTop: 8}}>
         <View style={{flexDirection: 'row', flex: 0, width: '100%', justifyContent: 'center'}}>
           <Text style={{fontSize: 24}}>{this.state.msg}</Text>
         </View>
-        <View style={{flexDirection: 'row', flex: 0, width: '100%', justifyContent: 'center'}}>
+        <View style={{flexDirection: 'row', marginTop: 8, flex: 0, width: '100%', justifyContent: 'center'}}>
           <SmallWeatherWidget
             unit='metric' appid={BuildConfigs.OPENWEATHERMAP_API_KEY}/>
           <SmallWeatherWidget
