@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { 
-  Alert, Text, SafeAreaView, SectionList, Linking
+  Alert, Text, SafeAreaView, SectionList, Linking, AsyncStorage
 } from 'react-native';
 import ListItem from './components/listitem';
 import NavigationService from './tools/NavigationService';
@@ -105,6 +105,7 @@ render() {
                     await SecureStore.deleteItemAsync('CredentialNewToken');
                     await SecureStore.deleteItemAsync('sessionUpdatedAt');
                     await SecureStore.deleteItemAsync('localAuthPin');
+                    await AsyncStorage.clear();
                     const db = new DBHelper();
                     await db.dropAllTables();
                     NavigationService.reset('Login', {loggedOut: true});
