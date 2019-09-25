@@ -38,7 +38,7 @@ export default class LocalAuth extends Component {
     const availableHws = await LocalAuthentication.supportedAuthenticationTypesAsync();
     const type = availableHws.includes(2) ? ['얼굴인식',  'face'] : ['지문인식', 'fingerprint'];
     this.setState({msg: `${type[0]} 또는 6자리 PIN으로 인증하세요`, icon: type[1]});
-    const result = await LocalAuthentication.authenticateAsync({fallbackLabel: ''});
+    const result = await LocalAuthentication.authenticateAsync({fallbackLabel: '', promptMessage: '계속하려면 인증이 필요합니다.'});
     if(result.success){
       this.authSuccess();
     }else if(result.error != 'user_cancel'){
