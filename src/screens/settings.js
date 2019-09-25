@@ -75,7 +75,14 @@ render() {
               }}
               style={{flex: 0, flexDirection: 'row'}}>
                 <Text style={{flex: 1}}>{item.label}</Text>
-                <Switch value={this.state[item.name]}/>
+                <Switch value={this.state[item.name]} onValueChange={
+                  async (value)=>{
+                    this.setState({
+                      [item.name]: value
+                    });
+                    await AsyncStorage.setItem(item.name, value.toString());
+                  }
+                }/>
               </ListItem> 
             );
           default:
