@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { 
-  Switch, Text, SafeAreaView, SectionList, AsyncStorage,
-  TextInput, View, Alert, KeyboardAvoidingView
+  Switch, Text, SafeAreaView, SectionList, AsyncStorage, Button, Platform,
+  TextInput, View, Alert, KeyboardAvoidingView, InputAccessoryView
 } from 'react-native';
 import ListItem from '../components/listitem';
 import * as SecureStore from 'expo-secure-store';
@@ -131,6 +131,30 @@ export class PinRecovery extends Component{
   }
 
   render(){
+    const idToNewPinCheck = 'idToNewPinCheck';
+    const idToUserpw = 'idToUserpw';
+    const idRecover = 'idRecover';
+    let keyboardToolbar = (Platform.OS == 'ios') ? (
+      <View>
+        <InputAccessoryView nativeID={idToNewPinCheck}>
+          <Button
+            onPress={() => this.newPinCheck.current.focus()}
+            title="새 PIN 확인(6자) 입력"
+          />
+        </InputAccessoryView>
+        <InputAccessoryView nativeID={idToUserpw}>
+          <Button
+            onPress={() => this.userpw.current.focus()}
+            title="로그인 비밀번호 입력"
+          />
+        </InputAccessoryView>
+        <InputAccessoryView nativeID={idRecover}>
+          <Button
+            onPress={() => this.recoverPin()}
+            title="PIN 복구"
+          />
+        </InputAccessoryView>
+      </View>) : (<View></View>);
     return(
       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <View style={{flex: 1}}>
@@ -138,19 +162,22 @@ export class PinRecovery extends Component{
             <TextInput placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPin}
               onSubmitEditing={ () => this.newPinCheck.current.focus() }
-              onChangeText={(value)=>this.setState({newPin: value})}/>
+              onChangeText={(value)=>this.setState({newPin: value})}
+              inputAccessoryViewID={idToNewPinCheck}/>
           </ListItem>
           <ListItem>
             <TextInput placeholder='새 PIN 확인(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPinCheck}
               onSubmitEditing={ () => this.userpw.current.focus() }
-              onChangeText={(value)=>this.setState({newPinCheck: value})}/>
+              onChangeText={(value)=>this.setState({newPinCheck: value})}
+              inputAccessoryViewID={idToUserpw}/>
           </ListItem>
           <ListItem>
             <TextInput placeholder='로그인 비밀번호 입력'  returnkeyType='go'
               secureTextEntry={ true } autocorrect={ false } ref={this.userpw}
               onSubmitEditing={()=>this.recoverPin()}
-              onChangeText={(value)=>this.setState({userpw: value})}/>
+              onChangeText={(value)=>this.setState({userpw: value})}
+              inputAccessoryViewID={idRecover}/>
           </ListItem>
         </View>
         <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
@@ -165,6 +192,7 @@ export class PinRecovery extends Component{
           </ListItem>
         </View>
         <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
+        {keyboardToolbar}
       </KeyboardAvoidingView>
     );
   }
@@ -224,6 +252,31 @@ export class ChangePin extends Component{
   }
 
   render(){
+    const idToNewPin = 'idToNewPin';
+    const idToNewPinCheck = 'idToNewPinCheck';
+    const idChange = 'idChange';
+
+    let keyboardToolbar = (Platform.OS == 'ios') ? (
+      <View>
+        <InputAccessoryView nativeID={idToNewPin}>
+          <Button
+            onPress={() => this.newPin.current.focus()}
+            title="새 PIN(6자) 입력"
+          />
+        </InputAccessoryView>
+        <InputAccessoryView nativeID={idToNewPinCheck}>
+          <Button
+            onPress={() => this.newPinCheck.current.focus()}
+            title="새 PIN 확인(6자) 입력"
+          />
+        </InputAccessoryView>
+        <InputAccessoryView nativeID={idChange}>
+          <Button
+            onPress={() => this.changePin()}
+            title="PIN 변경"
+          />
+        </InputAccessoryView>
+      </View>) : (<View></View>);
     return(
       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <View style={{flex: 1}}>
@@ -231,19 +284,22 @@ export class ChangePin extends Component{
             <TextInput placeholder='기존 PIN 입력'  returnkeyType='next' keyboardType='number-pad'
               secureTextEntry={ true } autocorrect={ false } ref={this.currentPin}
               onSubmitEditing={ () => this.newPin.current.focus() } maxLength={6}
-              onChangeText={(value)=>this.setState({currentPin: value})}/>
+              onChangeText={(value)=>this.setState({currentPin: value})}
+              inputAccessoryViewID={idToNewPin}/>
           </ListItem>
           <ListItem>
             <TextInput placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPin}
               onSubmitEditing={ () => this.newPinCheck.current.focus() }
-              onChangeText={(value)=>this.setState({newPin: value})}/>
+              onChangeText={(value)=>this.setState({newPin: value})}
+              inputAccessoryViewID={idToNewPinCheck}/>
           </ListItem>
           <ListItem>
             <TextInput placeholder='새 PIN 확인(6자)'  returnkeyType='go' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPinCheck}
               onSubmitEditing={ () => this.changePin() }
-              onChangeText={(value)=>this.setState({newPinCheck: value})}/>
+              onChangeText={(value)=>this.setState({newPinCheck: value})}
+              inputAccessoryViewID={idChange}/>
           </ListItem>
         </View>
         <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
@@ -253,16 +309,17 @@ export class ChangePin extends Component{
             <Text>취소</Text>
           </ListItem>
           <ListItem style={{flex:1, alignItems:'center'}}
-            onPress={()=>this.recoverPin()}>
+            onPress={()=>this.changePin()}>
             <Text>복구</Text>
           </ListItem>
         </View>
         <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
+        {keyboardToolbar}
       </KeyboardAvoidingView>
     );
   }
 
-  async ChangePin(){
+  async changePin(){
     if(this.state.currentPin.length == 6 &&
       this.state.newPin.length == 6 && 
       this.state.newPinCheck.length == 6){
