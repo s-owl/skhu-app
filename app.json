@@ -4,9 +4,9 @@
     "description": "The Essential App for Sungkonghoe University students.",
     "slug": "skhus-app",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
+    "sdkVersion": "34.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.2.1",
+    "version": "0.3.0",
     "orientation": "portrait",
     "icon": "./assets/imgs/icon.png",
     "primaryColor": "#ffffff",
@@ -15,7 +15,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
-      "buildNumber": "0.2.1.2",
+      "buildNumber": "0.3.0",
       "icon": "./assets/imgs/ios.png",
       "supportsTablet": true,
       "infoPlist":{
@@ -35,7 +35,7 @@
       }
     },
     "android": {
-      "versionCode": 9,
+      "versionCode": 10,
       "package": "com.sowl.skhus",
       "adaptiveIcon":{
         "foregroundImage":"./assets/imgs/androidAdaptive.png"
