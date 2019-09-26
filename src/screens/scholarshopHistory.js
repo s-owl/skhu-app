@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {CardItem} from '../components/components';
+import ListItem from '../components/listitem';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
@@ -40,15 +40,15 @@ export default class ScholarshipHistory extends Component{
         );
       }else{
         return(
-          <FlatList style={{backgroundColor: 'whitesmoke'}}
+          <FlatList style={{backgroundColor: 'white'}}
             data={this.state.history}
             renderItem={({item})=>(
-              <CardItem>
+              <ListItem>
                 <Text>{item.year}년 {item.grade}학년 {item.semester}</Text>
                 <Text style={{fontWeight: 'bold'}}>{item.scholarship_name} - {item.order}</Text>
                 <Text>입학장학 {item.amount_entrance}원, 수업장학 {item.amount_class}원 {item.benefit_type}</Text>
                 <Text>{item.note}</Text>
-              </CardItem>
+              </ListItem>
             )}
           />
         );

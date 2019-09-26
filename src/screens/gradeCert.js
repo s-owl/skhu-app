@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {CardItem} from '../components/components';
+import ListItem from '../components/listitem';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import ForestApi from '../tools/apis';
 import Printer from '../tools/printer';
@@ -59,28 +59,28 @@ export default class GradeCert extends Component{
         );
       }else{
         return(
-          <FlatList style={{height:'100%', backgroundColor: 'whitesmoke'}}
+          <FlatList style={{height:'100%', backgroundColor: 'white'}}
             ListHeaderComponent={()=>(
               <View>
-                <CardItem isHeader={true}>
+                <ListItem isHeader={true}>
                   <Text style={{fontWeight: 'bold'}}>학생 정보</Text>
-                </CardItem>
-                <CardItem>
+                </ListItem>
+                <ListItem>
                   {this.state.userinfo.map(((item, index)=>{
                     return(
                       <Text key={`info${index}`}>{item.name}: {item.value}</Text>
                     );
                   }))}
-                </CardItem>
-                <CardItem isHeader={true}>
+                </ListItem>
+                <ListItem isHeader={true}>
                   <Text style={{fontWeight: 'bold'}}>성적 내역 상세</Text>
-                </CardItem>
+                </ListItem>
               </View>
             )}
         
             data={this.state.details}
             renderItem={({item}, index)=>(
-              <CardItem style={{flex:0, flexDirection: 'row'}} key={`details${index}`}>
+              <ListItem style={{flex:0, flexDirection: 'row'}} key={`details${index}`}>
                 <Text style={{flex: 2}}>{item.year}{'\n'}{item.semester}</Text>
                 <View style={{flex: 4}}>
                   <Text style={{fontWeight: 'bold'}}>{item.subject}</Text>
@@ -89,14 +89,14 @@ export default class GradeCert extends Component{
                 <Text style={{flex: 1}}>{item.type}</Text>
                 <Text style={{flex: 1}}>{item.credit}</Text>
                 <Text style={{flex: 1}}>{item.grade}</Text>
-              </CardItem>
+              </ListItem>
             )}
             ListFooterComponent={()=>(
               <View>
-                <CardItem isHeader={true}>
+                <ListItem isHeader={true}>
                   <Text style={{fontWeight: 'bold'}}>요약</Text>
-                </CardItem>
-                <CardItem style={{flex:0, flexDirection: 'row', flexWrap: 'wrap'}}>
+                </ListItem>
+                <ListItem style={{flex:0, flexDirection: 'row', flexWrap: 'wrap'}}>
                   {this.state.summary.map(((item, index)=>{
                     return(
                       <View style={{padding: 2}} key={`summ${index}`}>
@@ -105,10 +105,10 @@ export default class GradeCert extends Component{
                       </View>
                     );
                   }))}
-                </CardItem>
-                <CardItem>
+                </ListItem>
+                <ListItem>
                   <Text style={{fontWeight: 'bold'}}>{this.state.date}</Text>
-                </CardItem>
+                </ListItem>
               </View>
             )}
           />

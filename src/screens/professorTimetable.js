@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
-import { CardItem } from '../components/components';
+import ListItem from '../components/listitem';
 import Timetable, {extractFromData, convertForTimetable, mergeClassesInSametime} from '../components/Timetable';
 import BuildConfigs from '../config';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
@@ -244,17 +244,17 @@ export class SearchProfessors extends Component{
     const condition = this.getCondition();
 
     return(
-      <View style={{backgroundColor: 'whitesmoke'}}>
+      <View style={{backgroundColor: 'white'}}>
         <SearchBar
           dataType={this.dataType}
           initParam={this.initParam}
           onChange={this.handleCondition.bind(this)} 
         />
-        <FlatList style={{backgroundColor: 'whitesmoke'}}
+        <FlatList style={{backgroundColor: 'white'}}
           ref="itemList"
           data={display.get('result')}
           ListFooterComponent={()=>(
-            <CardItem style={{height: 50}}/>
+            <ListItem style={{height: 50}}/>
           )}
           refreshControl={
             <RefreshControl
@@ -265,7 +265,7 @@ export class SearchProfessors extends Component{
             />
           }
           renderItem={({item})=>
-            <CardItem onPress={()=>{
+            <ListItem onPress={()=>{
               this.props.navigation.navigate('ProfessorTimetable', {
                 semesterCode: condition.get('semester'),
                 year: condition.get('year'),
@@ -275,7 +275,7 @@ export class SearchProfessors extends Component{
             }}>
               <Text style={{fontWeight: 'bold'}}>{item.professorName}({item.position})</Text>
               <Text>{item.department} | {item.state} | {item.professorId}</Text>
-            </CardItem>
+            </ListItem>
           }
         />
       </View>

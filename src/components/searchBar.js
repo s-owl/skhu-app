@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { withNavigation } from 'react-navigation'
+import { withNavigation } from 'react-navigation';
 import {
   View, Text
 } from 'react-native';
-import { Map, List } from "immutable";
+import { Map, List } from 'immutable';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import {CardItem} from './components'
+import ListItem from './listitem';
 
 // 픽커와 형식 간의 정렬을 통일하기 위한 함수
 export function SortByCodes(pickerValues) {
@@ -35,7 +35,7 @@ function initCondition(dataType, initParam) {
         init =
           init.set(
             k,
-            SortByCodes(dataType.getIn([k,"values"]))
+            SortByCodes(dataType.getIn([k,'values']))
               .toList().findEntry((value)=> v == value)[0]);
     });
   }
@@ -76,7 +76,7 @@ class SearchBar extends Component {
     init = initCondition(this.dataType, props.initParam);
     this.state = {
       condition: init
-    }
+    };
   }
 
   // 변경시 일어나는 행동을 정의
@@ -91,32 +91,32 @@ class SearchBar extends Component {
 
   render() {
     return(
-      <View style={{backgroundColor: 'whitesmoke'}}>
-        <CardItem style={{flex:0, flexDirection: 'row'}}
-                  elevate={true}
-                  onPress={()=>{
-                    this.props.navigation.navigate("searchCondition", {
-                      dataType: this.dataType,
-                      condition: this.state.condition,
-                      onConfirm: this.handleCondition.bind(this)
-                    });
-                  }}>
+      <View style={{backgroundColor: 'white'}}>
+        <ListItem style={{flex:0, flexDirection: 'row'}}
+          elevate={true}
+          onPress={()=>{
+            this.props.navigation.navigate('searchCondition', {
+              dataType: this.dataType,
+              condition: this.state.condition,
+              onConfirm: this.handleCondition.bind(this)
+            });
+          }}>
           <Text style={{flex:1}}>
             {this.getCondition()
-                 .map((value, key) => {
-                   if (typeof value == "string") {
-                     return value;
-                   } else if (typeof value == "number") {
-                     return List(SortByCodes(this.dataType.getIn([key,"values"])).keys())
-                       .get(value);
-                   }
-                   return ''
-                 })
-                 .toList()
-                 .toJS().join(', ')}
+              .map((value, key) => {
+                if (typeof value == 'string') {
+                  return value;
+                } else if (typeof value == 'number') {
+                  return List(SortByCodes(this.dataType.getIn([key,'values'])).keys())
+                    .get(value);
+                }
+                return '';
+              })
+              .toList()
+              .toJS().join(', ')}
           </Text>
           <MaterialIcons name="search" size={20} style={{flex: 0}}/>
-        </CardItem>
+        </ListItem>
       </View>);
   }
 }

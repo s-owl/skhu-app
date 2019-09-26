@@ -23,6 +23,8 @@ import BuildConfigs from './config';
 import NoticeScreen from './screens/notice';
 import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
+import Authinfo from './screens/authinfo';
+import {Settings, PinRecovery, ChangePin} from './screens/settings';
 
 const HomeStack = createStackNavigator(
   {
@@ -33,7 +35,8 @@ const HomeStack = createStackNavigator(
     Timetable: StudentTimetable,
     SyllabusDetails: SyllabusDetails,
     NoticeScreen :NoticeScreen,
-    Meal: Meal
+    Meal: Meal,
+    Authinfo: Authinfo
   },
   {
     initialRouteName: 'Home',
@@ -63,7 +66,10 @@ const MenuStack = createStackNavigator(
     ProfessorTimetable: ProfessorTimetable,
     SearchProfessors: SearchProfessors,
     LectureRoomTimetable: LectureRoomTimetable,
-    SearchLectureRooms: SearchLectureRooms
+    SearchLectureRooms: SearchLectureRooms,
+    Settings: Settings,
+    PinRecovery: PinRecovery,
+    ChangePin: ChangePin
   },
   {
     initialRouteName: 'Menu',

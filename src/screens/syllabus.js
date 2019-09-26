@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {RefreshControl, Text, View, FlatList,
   TextInput, Picker, Alert} from 'react-native';
 import { Map } from 'immutable';
-import {CardItem} from '../components/components';
+import ListItem from '../components/listitem';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
@@ -109,11 +109,11 @@ export default class Syllabus extends Component{
     const condition = this.getCondition();
 
     return(
-      <View style={{backgroundColor: 'whitesmoke'}}>
+      <View style={{backgroundColor: 'white'}}>
         <SearchBar dataType={this.dataType}
                    initParam={this.initParam}
                    onChange={this.handleCondition.bind(this)} />
-        <FlatList style={{backgroundColor: 'whitesmoke'}}
+        <FlatList style={{backgroundColor: 'white'}}
           ref='itemList'
           data={display.get('result')}
           refreshControl={
@@ -125,10 +125,10 @@ export default class Syllabus extends Component{
             />
           }
           ListFooterComponent={()=>(
-            <CardItem style={{height: 50}}/>
+            <ListItem style={{height: 50}}/>
           )}
           renderItem={({item})=>
-            <CardItem onPress={()=>{
+            <ListItem onPress={()=>{
               this.props.navigation.navigate('SyllabusDetails', {
                 subjectCode: item.subjectCode,
                 classCode: item.classCode,
@@ -139,7 +139,7 @@ export default class Syllabus extends Component{
               <Text style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</Text>
               <Text>{item.college} {item.major} | {item.professor}({item.professorNo})</Text>
               <Text>작성여부: {item.availablity}</Text>
-            </CardItem>
+            </ListItem>
           }
         />
       </View>

@@ -9,7 +9,7 @@ import NavigationService from './tools/NavigationService';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'react-native-snackbar-component';
-import {CardView, CardItem, BottomModal} from './components/components';
+import {CardView, ListItem, BottomModal} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
 import {ErrorModal} from './components/errorModal';
