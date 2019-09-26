@@ -24,6 +24,7 @@ import NoticeScreen from './screens/notice';
 import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
+import {Settings, PinRecovery, ChangePin} from './screens/settings';
 
 const HomeStack = createStackNavigator(
   {
@@ -65,7 +66,10 @@ const MenuStack = createStackNavigator(
     ProfessorTimetable: ProfessorTimetable,
     SearchProfessors: SearchProfessors,
     LectureRoomTimetable: LectureRoomTimetable,
-    SearchLectureRooms: SearchLectureRooms
+    SearchLectureRooms: SearchLectureRooms,
+    Settings: Settings,
+    PinRecovery: PinRecovery,
+    ChangePin: ChangePin
   },
   {
     initialRouteName: 'Menu',
