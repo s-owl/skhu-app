@@ -13,13 +13,24 @@
     "assetBundlePatterns": [
       "assets/imgs/*"
     ],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "sleepy-owl",
+            "project": "skhus"
+          }
+        }
+      ]
+    },
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
       "buildNumber": "0.3.0",
       "icon": "./assets/imgs/ios.png",
       "supportsTablet": true,
       "infoPlist":{
-        "infoPlist.NSFaceIDUsageDescription": 
+        "NSFaceIDUsageDescription": 
         "민감한 개인정보나 본인 인증 관련 기능 사용 전 인증을 하기 위해 사용됩니다.\n To authenticate before accessing personal data or personal authentication relates features",
         "NSLocationWhenInUseUsageDescription":
         "현재 위치 정보를 얻어 해당 위치의 날씨 정보를 표시하기 위해 사용됩나다.\n To provide weather informations for your current location.",
@@ -35,7 +46,7 @@
       }
     },
     "android": {
-      "versionCode": 10,
+      "versionCode": 11,
       "package": "com.sowl.skhus",
       "adaptiveIcon":{
         "foregroundImage":"./assets/imgs/androidAdaptive.png"
@@ -43,7 +54,9 @@
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
-        "ACCESS_NETWORK_STATE"
+        "ACCESS_NETWORK_STATE",
+        "USE_FINGERPRINT",
+        "USE_BIOMETRIC"
       ]
     },
     "splash": {

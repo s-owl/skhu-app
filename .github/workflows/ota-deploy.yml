@@ -30,4 +30,8 @@ jobs:
       run: yarn install
     
     - name: OTA 업데이트 빌드 및 배포
+      env:
+        OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       run: expo publish
