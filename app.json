@@ -13,6 +13,17 @@
     "assetBundlePatterns": [
       "assets/imgs/*"
     ],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "sleepy-owl",
+            "project": "skhus"
+          }
+        }
+      ]
+    },
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
       "buildNumber": "0.3.0",
