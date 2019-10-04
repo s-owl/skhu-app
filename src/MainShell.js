@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, StatusBar, Platform } from 'react-native';
-import { createBottomTabNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Touchable from './components/touchable';
 import Main from './Main';
 import Menu from './Menu';
