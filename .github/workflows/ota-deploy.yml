@@ -34,4 +34,7 @@ jobs:
         OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
         SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      run: expo publish
+      run: |
+        echo OPENWEATHERMAP_API_KEY=$OPENWEATHERMAP_API_KEY > .env
+        echo -e "\n" >> .env && echo SENTRY_DSN=$SENTRY_DSN >> .env
+        echo -e "\n" >> .env && expo publish
