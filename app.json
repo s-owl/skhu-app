@@ -46,7 +46,7 @@
       }
     },
     "android": {
-      "versionCode": 14,
+      "versionCode": 15,
       "package": "com.sowl.skhus",
       "adaptiveIcon":{
         "foregroundImage":"./assets/imgs/androidAdaptive.png"
