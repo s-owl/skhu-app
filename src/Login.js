@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
+import ChunkSecureStore from './tools/chunkSecureStore';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'react-native-snackbar-component';
@@ -15,6 +16,7 @@ import Touchable from './components/touchable';
 import {ErrorModal} from './components/errorModal';
 import {HelpModal} from './components/helpModal';
 import moment from 'moment';
+
 
 
 export default class Login extends Component {
@@ -174,12 +176,21 @@ export default class Login extends Component {
         let response = await ForestApi.login(id, pw);
         if(response.ok){
           let data = await response.json();
-          await SecureStore.setItemAsync('CredentialOld', data['credential-old']);
-          await SecureStore.setItemAsync('CredentialNew', data['credential-new']);
-          await SecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
+          // await SecureStore.setItemAsync('CredentialOld', data['credential-old']);
+          // await SecureStore.setItemAsync('CredentialNew', data['credential-new']);
+          // await SecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
           await SecureStore.setItemAsync('userid', id);
           await SecureStore.setItemAsync('userpw', pw);
           await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
+          console.log(JSON.stringify(data));
+          try{
+            await ChunkSecureStore.setItemAsync('CredentialOld', data['credential-old']);
+            await ChunkSecureStore.setItemAsync('CredentialNew', data['credential-new']);
+            await ChunkSecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
+          }catch(err){
+            console.log(err);
+          }
+
           this.setState({isLoading: false});
           NavigationService.reset('Main');
         }else if(response.status == 400){

@@ -2,6 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 import BuildConfigs from '../config';
 import 'abortcontroller-polyfill';
 import moment from 'moment';
+import ChunkSecureStore from './chunkSecureStore';
 
 //isJson 은 요청 내용이 json으로 들어오는지 확인한다.
 async function isJson(req) {
@@ -22,16 +23,16 @@ async function isJson(req) {
 // reLogin 은 다시 로그인하는 함수이다.
 async function reLogin() {
   const res = await ForestApi.login(
-    await SecureStore.getItemAsync('userid'),
-    await SecureStore.getItemAsync('userpw')
+    await ChunkSecureStore.getItemAsync('userid'),
+    await ChunkSecureStore.getItemAsync('userpw')
   );
 
   if (res.ok) {
     let tokens = await res.json();
-    await SecureStore.setItemAsync('CredentialOld', tokens['credential-old']);
-    await SecureStore.setItemAsync('CredentialNew', tokens['credential-new']);
-    await SecureStore.setItemAsync('CredentialNewToken', tokens['credential-new-token']);
-    await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
+    await ChunkSecureStore.setItemAsync('CredentialOld', tokens['credential-old']);
+    await ChunkSecureStore.setItemAsync('CredentialNew', tokens['credential-new']);
+    await ChunkSecureStore.setItemAsync('CredentialNewToken', tokens['credential-new-token']);
+    await ChunkSecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
   }
 }
 
@@ -42,8 +43,8 @@ function getSamFetcher(path, method, jsonBody=undefined) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
-    headers.append('Cookie', await SecureStore.getItemAsync('CredentialNew'));
-    headers.append('RequestVerificationToken', await SecureStore.getItemAsync('CredentialNewToken'));
+    headers.append('Cookie', await ChunkSecureStore.getItemAsync('CredentialNew'));
+    headers.append('RequestVerificationToken', await ChunkSecureStore.getItemAsync('CredentialNewToken'));
     let req = {
       method: method,
       headers: headers
@@ -95,7 +96,7 @@ export default class ForestApi{
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     if(withCredential){
-      headers.append('Credential', await SecureStore.getItemAsync('CredentialOld'));
+      headers.append('Credential', await ChunkSecureStore.getItemAsync('CredentialOld'));
     }
     return fetch(`${ForestApi.url}${path}`, {
       method: 'GET',
@@ -107,7 +108,7 @@ export default class ForestApi{
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     if(withCredential){
-      headers.append('Credential', await SecureStore.getItemAsync('CredentialOld'));
+      headers.append('Credential', await ChunkSecureStore.getItemAsync('CredentialOld'));
     }
     return fetch(`${ForestApi.url}${path}`, {
       method: 'POST',
@@ -129,6 +130,6 @@ export default class ForestApi{
   }
 
   static async getCredentialOld(){
-    return SecureStore.getItemAsync('CredentialOld');
+    return ChunkSecureStore.getItemAsync('CredentialOld');
   }
 }
