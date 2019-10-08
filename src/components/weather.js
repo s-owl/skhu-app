@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-  StyleSheet, View, ActivityIndicator, Modal, TouchableOpacity, Text
+  View, Text
 } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import BuildConfigs from '../config';
-
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 class WeatherUtils{
   static fetchWeatherData(lat, lon, unit, appid){
@@ -111,7 +109,7 @@ class SmallWeatherWidget extends Component{
       let weather = await WeatherUtils.fetchWeatherData(pos.latitude, pos.longitude,
         this.props.unit, this.props.appid);
       this.setState({
-        current:{
+        current: {
           name: (this.props.name)? this.props.name : name,
           conditionCode: weather.conditionCode,
           temp: weather.temp,

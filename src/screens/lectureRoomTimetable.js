@@ -6,12 +6,12 @@ import BuildConfigs from '../config';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
-import { Map } from 'immutable';
+import {Map} from 'immutable';
 
 
 export class LectureRoomTimetable extends Component{
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
         
     return {
       title: '강의실별 시간표',
@@ -20,10 +20,10 @@ export class LectureRoomTimetable extends Component{
   constructor(props){
     super(props);
     this.state = {
-      semesterCode: this.props.navigation.getParam('semesterCode',''),
-      year: this.props.navigation.getParam('year',''),
-      roomName: this.props.navigation.getParam('roomName',''),
-      roomNumber: this.props.navigation.getParam('roomNumber',''),
+      semesterCode: this.props.navigation.getParam('semesterCode', ''),
+      year: this.props.navigation.getParam('year', ''),
+      roomName: this.props.navigation.getParam('roomName', ''),
+      roomNumber: this.props.navigation.getParam('roomNumber', ''),
       timetable: [],
       isLoading: false
     };
@@ -60,9 +60,9 @@ export class LectureRoomTimetable extends Component{
         '/SSE/SSEAD/SSEAD01_GetList',
         JSON.stringify({
           'Haggi': this.state.semesterCode,
-          'RoomName':this.state.roomName,
-          'PlaceCode':this.state.roomNumber,
-          'Yy':this.state.year,
+          'RoomName': this.state.roomName,
+          'PlaceCode': this.state.roomNumber,
+          'Yy': this.state.year,
         }));
       if(timetable != null){
         // postToSam 형식 변경에 대한 임시방편
@@ -72,8 +72,8 @@ export class LectureRoomTimetable extends Component{
             ...item,
             Haggi: this.state.semesterCode.toString(),
             Yy: this.state.year.toString()
-          }
-        })
+          };
+        });
         const extracted = extractFromData(table, 'GyosuNm');
         this.setState({
           timetable: convertForTimetable(extracted),
@@ -95,8 +95,8 @@ export class LectureRoomTimetable extends Component{
 
 export class SearchLectureRooms extends Component{
   // 상단에 이름 출력
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
 
     return {
       title: '강의실 검색(강의실별 시간표)',

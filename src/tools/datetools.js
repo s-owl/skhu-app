@@ -1,16 +1,16 @@
 export default class DateTools{
   static getSemesterCode(month){
     if(month >=1 && month < 2){
-      return {code:'Z0104', name:'겨울학기'};
+      return {code: 'Z0104', name: '겨울학기'};
     }
     else if(month >=2 && month < 7){
-      return {code:'Z0101', name:'1학기'};
+      return {code: 'Z0101', name: '1학기'};
     }
     else if(month >=7 && month < 8){
-      return {code:'Z0103', name:'여름학기'};
+      return {code: 'Z0103', name: '여름학기'};
     }
     else {
-      return {code:'Z0102', name:'2학기'};
+      return {code: 'Z0102', name: '2학기'};
     }
   }
       
@@ -34,8 +34,8 @@ export default class DateTools{
 }
 
 export const SemesterCodes = {
-    "1학기":"Z0101",
-    "2학기":"Z0102",
-    "여름학기":"Z0103",
-    "겨울학기":"Z0104"
+  '1학기': 'Z0101',
+  '2학기': 'Z0102',
+  '여름학기': 'Z0103',
+  '겨울학기': 'Z0104'
 };

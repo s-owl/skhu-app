@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import ListItem from '../components/listitem';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import {View, Text, FlatList, ActivityIndicator} from 'react-native';
 import ForestApi from '../tools/apis';
 import Printer from '../tools/printer';
-import { MaterialHeaderButtons} from '../components/headerButtons';
+import {MaterialHeaderButtons} from '../components/headerButtons';
 import BuildConfigs from '../config';
 
 
 
 export default class GradeCert extends Component{
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-      const { params } = navigation.state;
+    static navigationOptions = ({navigation, navigationOptions}) => {
+      const {params} = navigation.state;
           
       return {
         title: '학내 제출용 성적증명서',
@@ -33,7 +33,7 @@ export default class GradeCert extends Component{
     }
     async componentDidMount(){
       this.setState({isLoading: true});
-      this.props.navigation.setParams({ print: this.print });
+      this.props.navigation.setParams({print: this.print});
       const gradeCert = await ForestApi.get('/grade/certificate', true);
       if(gradeCert.ok){
         const data = await gradeCert.json();
@@ -59,7 +59,7 @@ export default class GradeCert extends Component{
         );
       }else{
         return(
-          <FlatList style={{height:'100%', backgroundColor: 'white'}}
+          <FlatList style={{height: '100%', backgroundColor: 'white'}}
             ListHeaderComponent={()=>(
               <View>
                 <ListItem isHeader={true}>
@@ -80,7 +80,7 @@ export default class GradeCert extends Component{
         
             data={this.state.details}
             renderItem={({item}, index)=>(
-              <ListItem style={{flex:0, flexDirection: 'row'}} key={`details${index}`}>
+              <ListItem style={{flex: 0, flexDirection: 'row'}} key={`details${index}`}>
                 <Text style={{flex: 2}}>{item.year}{'\n'}{item.semester}</Text>
                 <View style={{flex: 4}}>
                   <Text style={{fontWeight: 'bold'}}>{item.subject}</Text>
@@ -96,7 +96,7 @@ export default class GradeCert extends Component{
                 <ListItem isHeader={true}>
                   <Text style={{fontWeight: 'bold'}}>요약</Text>
                 </ListItem>
-                <ListItem style={{flex:0, flexDirection: 'row', flexWrap: 'wrap'}}>
+                <ListItem style={{flex: 0, flexDirection: 'row', flexWrap: 'wrap'}}>
                   {this.state.summary.map(((item, index)=>{
                     return(
                       <View style={{padding: 2}} key={`summ${index}`}>

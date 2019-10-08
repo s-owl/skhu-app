@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { StyleSheet, AsyncStorage } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import React, {Component} from 'react';
+import {StyleSheet} from 'react-native';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import NavigationService from './src/tools/NavigationService';
 import BuildConfigs from './src/config';
 
@@ -10,7 +10,7 @@ import MainShell from './src/MainShell';
 import About from './src/screens/about';
 import * as Sentry from 'sentry-expo';
 
-import { Asset } from 'expo-asset';
+import {Asset} from 'expo-asset';
 Asset;
 
 const RootStack = createStackNavigator(
@@ -42,9 +42,3 @@ export default class App extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  }
-});

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import { 
   Switch, Text, SafeAreaView, SectionList, AsyncStorage, Button, Platform,
   TextInput, View, Alert, KeyboardAvoidingView, InputAccessoryView
@@ -9,8 +9,8 @@ import SnackBar from 'react-native-snackbar-component';
 
 
 export class Settings extends Component {
-static navigationOptions = ({ navigation, navigationOptions }) => {
-  const { params } = navigation.state;
+static navigationOptions = ({navigation, navigationOptions}) => {
+  const {params} = navigation.state;
 
   return {
     title: '설정',
@@ -54,7 +54,7 @@ componentDidMount(){
 render() {
   return(
     <SafeAreaView>
-      <SectionList style={{height:'100%', backgroundColor: 'white'}}
+      <SectionList style={{height: '100%', backgroundColor: 'white'}}
         renderItem={({item, index, section}) => {
           switch(item.type){
           case 'nav':
@@ -108,8 +108,8 @@ render() {
 }
 
 export class PinRecovery extends Component{
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
   
     return {
       title: 'PIN 복구',
@@ -134,7 +134,7 @@ export class PinRecovery extends Component{
     this.setState({msg: msg, snackbar: true});
     setTimeout(()=>{
       this.setState({msg: '', snackbar: false});
-    },3000);
+    }, 3000);
   }
 
   render(){
@@ -188,12 +188,12 @@ export class PinRecovery extends Component{
           </ListItem>
         </View>
         <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
-          height:50, width:'100%', marginBottom: 16}}>
-          <ListItem style={{flex:1, alignItems:'center'}}
+          height: 50, width: '100%', marginBottom: 16}}>
+          <ListItem style={{flex: 1, alignItems: 'center'}}
             onPress={()=>this.props.navigation.goBack()}>
             <Text>취소</Text>
           </ListItem>
-          <ListItem style={{flex:1, alignItems:'center'}}
+          <ListItem style={{flex: 1, alignItems: 'center'}}
             onPress={()=>this.recoverPin()}>
             <Text>복구</Text>
           </ListItem>
@@ -214,7 +214,7 @@ export class PinRecovery extends Component{
             'PIN 복구',
             'PIN 이 복구되었습니다.',
             [
-              {text: '확인', onPress:()=>this.props.navigation.goBack()}
+              {text: '확인', onPress: ()=>this.props.navigation.goBack()}
             ]);
         }else{
           this.showSnackbar('틀린 로그인 비밀번호 입니다.');
@@ -229,8 +229,8 @@ export class PinRecovery extends Component{
 }
 
 export class ChangePin extends Component{
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
   
     return {
       title: 'PIN 변경',
@@ -255,7 +255,7 @@ export class ChangePin extends Component{
     this.setState({msg: msg, snackbar: true});
     setTimeout(()=>{
       this.setState({msg: '', snackbar: false});
-    },3000);
+    }, 3000);
   }
 
   render(){
@@ -310,12 +310,12 @@ export class ChangePin extends Component{
           </ListItem>
         </View>
         <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
-          height:50, width:'100%', marginBottom: 16}}>
-          <ListItem style={{flex:1, alignItems:'center'}}
+          height: 50, width: '100%', marginBottom: 16}}>
+          <ListItem style={{flex: 1, alignItems: 'center'}}
             onPress={()=>this.props.navigation.goBack()}>
             <Text>취소</Text>
           </ListItem>
-          <ListItem style={{flex:1, alignItems:'center'}}
+          <ListItem style={{flex: 1, alignItems: 'center'}}
             onPress={()=>this.changePin()}>
             <Text>복구</Text>
           </ListItem>
@@ -338,7 +338,7 @@ export class ChangePin extends Component{
             'PIN 변경',
             'PIN 이 변경되었습니다.',
             [
-              {text: '확인', onPress:()=>this.props.navigation.goBack()}
+              {text: '확인', onPress: ()=>this.props.navigation.goBack()}
             ]);
         }else{
           this.showSnackbar('틀린 PIN 입니다.');

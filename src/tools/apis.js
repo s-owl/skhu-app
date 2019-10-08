@@ -86,8 +86,8 @@ export default class ForestApi{
         headers: loginHeaders,
         signal: signal,
         body: JSON.stringify({
-          userid :userid.toString(),
-          userpw :userpw.toString()
+          userid: userid.toString(),
+          userpw: userpw.toString()
         })
       });
   }

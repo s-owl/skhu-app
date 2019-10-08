@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-  StyleSheet, Text ,View, Image, TextInput, Linking,
+  StyleSheet, Text, View, Image, TextInput,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
-  Alert, ActivityIndicator, NetInfo, Platform
+  ActivityIndicator, NetInfo, Platform
 } from 'react-native';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'react-native-snackbar-component';
-import {CardView, ListItem, BottomModal} from './components/components';
+import {CardView} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
 import {ErrorModal} from './components/errorModal';
@@ -18,8 +18,8 @@ import moment from 'moment';
 
 
 export default class Login extends Component {
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
 
     return {
       header: null // 헤더 비활성화
@@ -45,7 +45,7 @@ export default class Login extends Component {
     this.setState({msg: msg, snackbar: true});
     setTimeout(()=>{
       this.setState({msg: '', snackbar: false});
-    },3000);
+    }, 3000);
   }
   async componentDidMount() {
     if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
@@ -84,8 +84,8 @@ export default class Login extends Component {
             underlineColorAndroid="transparent"
             returnkeyType='go' ref={ 'password' }  autocorrect={ false }
             onSubmitEditing={ () => {
-              let id = this.textInput.idInput.replace(/\s/g,'');
-              let pw = this.textInput.pwInput.replace(/\s/g,'');
+              let id = this.textInput.idInput.replace(/\s/g, '');
+              let pw = this.textInput.pwInput.replace(/\s/g, '');
               this.runLogInProcess(id, pw);
             } }
             onChangeText={(text)=>{
@@ -93,8 +93,8 @@ export default class Login extends Component {
             }}>
           </TextInput>
           <CardView elevate={true} onPress={()=>{
-            let id = this.textInput.idInput.replace(/\s/g,'');
-            let pw = this.textInput.pwInput.replace(/\s/g,'');
+            let id = this.textInput.idInput.replace(/\s/g, '');
+            let pw = this.textInput.pwInput.replace(/\s/g, '');
             this.runLogInProcess(id, pw);
           }} style={{backgroundColor: '#569f59', justifyContent: 'center', flexDirection: 'row'}}>
             <MaterialCommunityIcons name={'login'} size={16} color={'white'} style={{marginRight: 8}}/>

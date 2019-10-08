@@ -1,5 +1,5 @@
 const LegalInfo = {
-  devlopers:[
+  devlopers: [
     {
       period: '2019.07 ~ ',
       data: [

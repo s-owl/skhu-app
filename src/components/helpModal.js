@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Text, SectionList, Linking} from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
 import {InfoModal} from './infoModal';
 import * as WebBrowser from 'expo-web-browser';
@@ -52,7 +52,7 @@ export class HelpModal extends Component{
         {label: '페이스북 메신저로 문의', icon: 'facebook-messenger', onPress: ()=>{
           Linking.openURL('https://m.me/SKHUsMobileApp');
         }},
-        {label: '이메일로 문의', icon: 'email-outline' ,onPress: ()=>{
+        {label: '이메일로 문의', icon: 'email-outline', onPress: ()=>{
           Linking.openURL(`mailto:s.owl.contact@gmail.com?body=${this.state.errorMsg}`);
         }},
         {label: 'GitHub에 이슈 등록', icon: 'github-circle', onPress: async()=>{
@@ -82,7 +82,7 @@ export class HelpModal extends Component{
         buttons={[
           {label: '닫기', onPress: ()=>this.close()}
         ]}>
-        <SectionList style={{height:'100%'}}
+        <SectionList style={{height: '100%'}}
           renderItem={({item, index, section}) => (
             <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
               <MaterialCommunityIcons name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>

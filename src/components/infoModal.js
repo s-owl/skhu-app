@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Modal, Text, View, ScrollView} from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
 
 
@@ -19,10 +19,10 @@ export function InfoModal(props) {
             {props.children}
           </ScrollView>
           <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
-            height:50, width:'100%', marginBottom: 16}}>
+            height: 50, width: '100%', marginBottom: 16}}>
             {props.buttons.map((item, index)=>{
               return(
-                <ListItem key={index} style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
+                <ListItem key={index} style={{flex: 1, alignItems: 'center'}} onPress={item.onPress}>
                   <Text>{item.label}</Text>
                 </ListItem>
               );

@@ -1,4 +1,4 @@
-import { OPENWEATHERMAP_API_KEY, SENTRY_DSN } from 'react-native-dotenv';
+import {OPENWEATHERMAP_API_KEY, SENTRY_DSN} from 'react-native-dotenv';
 
 export default class BuildConfigs{
     // TODO: local 서버 돌리는 법을 몰라서 일단 이렇게 개발

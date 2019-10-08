@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import ListItem from '../components/listitem';
-import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
+import {ScrollView, View, Text, ActivityIndicator} from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import moment from 'moment';
 
 
 export default class Schedules extends Component{
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-      const { params } = navigation.state;
+    static navigationOptions = ({navigation, navigationOptions}) => {
+      const {params} = navigation.state;
           
       return {
         title: '학사 일정',
@@ -19,7 +19,7 @@ export default class Schedules extends Component{
     }
     render(){
       return(
-        <ScrollView style={{height:'100%', backgroundColor: 'white'}}>
+        <ScrollView style={{height: '100%', backgroundColor: 'white'}}>
           <ScheduleComponent year={moment().year()} month={moment().month()+1}/>
           <ScheduleComponent year={moment().add(1, 'months').year()} month={moment().add(1, 'months').month()+1}/>
           <ScheduleComponent year={moment().add(2, 'months').year()} month={moment().add(2, 'months').month()+1}/>
