@@ -16,7 +16,7 @@ export function SortByCodes(pickerValues) {
 // 검색 조건 초기화
 function initCondition(dataType, initParam) {
   // 조건 초기화
-  init = dataType.map(value=>{
+  let init = dataType.map(value=>{
     if (typeof value == 'string') {
       return '';
     } else if (typeof value == 'object') {
@@ -56,7 +56,7 @@ function translatePickerCondition(condition, dataType) {
       return condition.get(key);
     else if (typeof type == 'object') {
       // 표시되는 픽커아이템의 숫자와 동일한 숫자값을 갖게 하기 위해 SortByCodes를 쓴다.
-      res = SortByCodes(type.values).toList().get(condition.get(key));
+      let res = SortByCodes(type.values).toList().get(condition.get(key));
       return res;
     }
   });
@@ -73,7 +73,7 @@ class SearchBar extends Component {
     super(props);
     this.dataType = Map(props.dataType);
 
-    init = initCondition(this.dataType, props.initParam);
+    let init = initCondition(this.dataType, props.initParam);
     this.state = {
       condition: init
     };
@@ -85,7 +85,7 @@ class SearchBar extends Component {
       condition: condition
     });
 
-    newCondition = translatePickerCondition(condition, this.dataType);
+    let newCondition = translatePickerCondition(condition, this.dataType);
     this.props.onChange(newCondition);
   }
 

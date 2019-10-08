@@ -7,7 +7,7 @@ import * as WebBrowser from 'expo-web-browser';
 
 export class HelpModal extends Component{
   setVisible(visible) {
-    state = this.state;
+    let state = this.state;
     state.visible = visible;
     this.setState(state);
   }

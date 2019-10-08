@@ -15,7 +15,7 @@ function errorMessage() {
 
 // 검색 데이터에서 조건의 형태를 생성한다.
 function getTypesInSearchData(searchData) {
-  majorCodes = Map({});
+  let majorCodes = Map({});
   searchData.options.major.forEach(
     (major)=>{
       majorCodes = majorCodes.set(major.title, major.value);});
@@ -105,14 +105,14 @@ export default class Subjects extends Component{
 
   // 검색 조건의 setter
   setCondition(condition) {
-    state = this.state;
+    let state = this.state;
     state.condition = condition;
     this.setState(state);
   }
 
   // 출력 조건의 setter
   setDisplay(display) {
-    state = this.state;
+    let state = this.state;
     state.display = display;
     this.setState(state);
   }
@@ -140,7 +140,7 @@ export default class Subjects extends Component{
   async initSearch() {
     try {
       // 검색 데이터 가져오기
-      res = await this.loadSearchData();
+      let res = await this.loadSearchData();
       if (res.ok) {
         // json 으로 파싱
         const searchData = await res.json();
@@ -168,7 +168,7 @@ export default class Subjects extends Component{
         condition
           .set('refreshing', true));
       // 검색 데이터 가져오기
-      res = await this.loadSearchData();
+      let res = await this.loadSearchData();
 
       if (res.ok) {
         //json 으로 파싱

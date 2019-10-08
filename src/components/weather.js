@@ -6,18 +6,19 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 class WeatherUtils{
   static fetchWeatherData(lat, lon, unit, appid){
-    return new Promise(async (resolve, reject)=>{
+    return new Promise((resolve, reject)=>{
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${unit}&appid=${appid}`;
-      let response = await fetch(url);
-      if(response.ok){
-        let data = await response.json();
-        resolve({
-          conditionCode: data.weather[0].id,
-          temp: data.main.temp
-        });
-      }else{
-        reject(response);
-      }
+      fetch(url).then(async (res)=>{
+        if(res.ok){
+          let data = await res.json();
+          resolve({
+            conditionCode: data.weather[0].id,
+            temp: data.main.temp
+          });
+        }else{
+          reject(res);
+        }
+      });
     });
   }
 
@@ -33,15 +34,16 @@ class WeatherUtils{
     });
   }
   static getGeoName(lat, lon){
-    return new Promise(async (resolve, reject)=>{
+    return new Promise((resolve, reject)=>{
       const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
-      let response = await fetch(url);
-      if(response.ok){
-        let data = await response.json();
-        resolve(data.address.village);
-      }else{
-        reject(response);
-      }
+      fetch(url).then(async (response)=>{
+        if(response.ok){
+          let data = await response.json();
+          resolve(data.address.village);
+        }else{
+          reject(response);
+        }
+      });
     });
   
   }

@@ -44,15 +44,14 @@ function getSamFetcher(path, method, jsonBody=undefined) {
     headers.append('Accept', 'application/json');
     headers.append('Cookie', await SecureStore.getItemAsync('CredentialNew'));
     headers.append('RequestVerificationToken', await SecureStore.getItemAsync('CredentialNewToken'));
-    req = {
+    let req = {
       method: method,
       headers: headers
     };
 
     if (!['GET', 'HEAD', 'DELETE', 'OPTIONS'].includes(method.toUpperCase())) req.body = jsonBody;
     
-    return fetch(`http://sam.skhu.ac.kr${path}`,
-      req);
+    return fetch(`http://sam.skhu.ac.kr${path}`, req);
   };
 }
 

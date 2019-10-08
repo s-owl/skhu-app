@@ -29,14 +29,14 @@ export default class About extends Component{
     }
 
     setModal(name, visible) {
-      modal = this.state.modal.set(name, visible);
+      let modal = this.state.modal.set(name, visible);
       this.setState({
         modal: modal
       });
     }
 
     render(){
-      modal = this.state.modal;
+      let modal = this.state.modal;
       return(
         <ScrollView style={{backgroundColor: 'white'}}>
           <View style={{padding: 32, alignItems: 'center'}}>

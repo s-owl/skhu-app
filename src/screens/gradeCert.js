@@ -6,8 +6,6 @@ import Printer from '../tools/printer';
 import {MaterialHeaderButtons} from '../components/headerButtons';
 import BuildConfigs from '../config';
 
-
-
 export default class GradeCert extends Component{
     static navigationOptions = ({navigation, navigationOptions}) => {
       const {params} = navigation.state;

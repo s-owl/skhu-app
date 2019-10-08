@@ -85,7 +85,3 @@ export default class SummaryWidget extends Component{
     );
   }
 }
-
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}

@@ -66,14 +66,14 @@ export default class Syllabus extends Component{
 
   // 검색 조건의 setter
   setCondition(condition) {
-    state = this.state;
+    let state = this.state;
     state.condition = condition;
     this.setState(state);
   }
 
   // 출력 조건의 setter
   setDisplay(display) {
-    state = this.state;
+    let state = this.state;
     state.display = display;
     this.setState(state);
   }
@@ -147,11 +147,11 @@ export default class Syllabus extends Component{
 
   // 비동기로 검색조건을 가져온다.
   async loadSearchResults(){
+    // 검색 조건을 가져오기
+    const condition = this.getCondition();
     try{
       // 검색 중이라는 것을 출력
       this.setDisplay(this.getDisplay().set('refreshing', true));
-      // 검색 조건을 가져오기
-      const condition = this.getCondition();
       // api 규격에 맞춰
       const req = JSON.stringify({
         'Haggi': condition.get('semester'),
