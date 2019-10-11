@@ -28,7 +28,7 @@ const AppContainer = createAppContainer(RootStack);
 
 Sentry.init({
   dsn: BuildConfigs.SENTRY_DSN,
-  enableInExpoDevelopment: true,
+  enableInExpoDevelopment: false,
   debug: true
 });
 
