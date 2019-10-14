@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import ListItem from '../components/listitem';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import {View, Text, FlatList, ActivityIndicator} from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
 
 export default class ScholarshipHistory extends Component{
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-      const { params } = navigation.state;
+    static navigationOptions = ({navigation, navigationOptions}) => {
+      const {params} = navigation.state;
           
       return {
         title: '장학 내역 조회',

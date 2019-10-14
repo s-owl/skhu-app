@@ -1,5 +1,4 @@
-import { NavigationActions, StackActions } from 'react-navigation';
-
+import {NavigationActions, StackActions} from 'react-navigation';
 
 export default class NavigationService{
     static _navigator;
@@ -8,7 +7,7 @@ export default class NavigationService{
       NavigationService._navigator.dispatch(
         StackActions.reset({
           index: 0,
-          actions: [NavigationActions.navigate({ routeName: routeName, params: params})],
+          actions: [NavigationActions.navigate({routeName: routeName, params: params})],
         })
       );
     }

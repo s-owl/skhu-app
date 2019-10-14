@@ -1,6 +1,5 @@
-//해야해요
 
-import { SQLite } from 'expo-sqlite';
+import {SQLite} from 'expo-sqlite';
 import ForestApi from './apis';
 import DateTools from './datetools';
 export default class DBHelper{
@@ -20,7 +19,7 @@ export default class DBHelper{
           menstrual integer not null,
           early integer not null,
           semester_code varchar(6) not null,
-          year integer not null);`,[],
+          year integer not null);`, [],
         (tx, result)=>{
           console.log('done create attendance');
           console.log(result);
@@ -44,7 +43,7 @@ export default class DBHelper{
           ends_at datetime not null,
           lecture_id varchar(12) not null,
           semester_code varchar(6) not null,
-          year integer not null);`,[],
+          year integer not null);`, [],
         (tx, result)=>{
           console.log('done create timetable');
           console.log(result);
@@ -77,10 +76,10 @@ export default class DBHelper{
     return new Promise((resolve, reject)=>{
       this.db.transaction(tx => {
         tx.executeSql(
-          'drop table if exists attendance;',[],
+          'drop table if exists attendance;', [],
           (tx, result)=>{
             tx.executeSql(
-              'drop table if exists timetable;',[],
+              'drop table if exists timetable;', [],
               (tx, result)=>{resolve(result);},
               (err)=>{reject(err);}
             );
@@ -97,7 +96,7 @@ export default class DBHelper{
     const semester = DateTools.getSemesterCode(today.getMonth()+1);
     // const semester = DateTools.getSemesterCode(5);
     let attendance = await ForestApi.post('/user/attendance',
-      JSON.stringify({'semester':semester.code}), true);
+      JSON.stringify({'semester': semester.code}), true);
     if(attendance.ok){
       console.log('attendance');
       let data = await attendance.json();

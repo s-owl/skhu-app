@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import {View, Text, ActivityIndicator} from 'react-native';
 import Timetable, {convertForTimetable} from '../components/Timetable';
 import DBHelper from '../tools/dbhelper';
-import DateTools from '../tools/datetools';
 import BuildConfigs from '../config';
 
 export default class StudentTimetable extends Component{
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
         
     return {
       title: '시간표',

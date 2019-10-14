@@ -6,7 +6,7 @@
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "platforms": ["ios", "android"],
-    "version": "0.3.0",
+    "version": "0.3.1",
     "orientation": "portrait",
     "icon": "./assets/imgs/icon.png",
     "primaryColor": "#ffffff",
@@ -26,7 +26,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
-      "buildNumber": "0.3.0",
+      "buildNumber": "0.3.1",
       "icon": "./assets/imgs/ios.png",
       "supportsTablet": true,
       "infoPlist":{
@@ -46,7 +46,7 @@
       }
     },
     "android": {
-      "versionCode": 11,
+      "versionCode": 15,
       "package": "com.sowl.skhus",
       "adaptiveIcon":{
         "foregroundImage":"./assets/imgs/androidAdaptive.png"

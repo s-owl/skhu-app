@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {View, FlatList, Text, ActivityIndicator} from 'react-native';
 import ListItem from '../components/listitem';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
 export default class Credits extends Component{
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-      const { params } = navigation.state;
+    static navigationOptions = ({navigation, navigationOptions}) => {
+      const {params} = navigation.state;
       
       return {
         title: '현재 이수 학점',
@@ -28,7 +28,7 @@ export default class Credits extends Component{
         let data = await credits.json();
         const chunk = 3;
         for (let i=0, j=data.credits.length; i<j; i+=chunk) {
-          let tempArr = data.credits.slice(i,i+chunk);
+          let tempArr = data.credits.slice(i, i+chunk);
           finalArr.push(tempArr);
         }
         this.setState({
@@ -48,7 +48,7 @@ export default class Credits extends Component{
       }else{
         return(
           <View>
-            <FlatList style={{height:'100%', backgroundColor: 'white'}}
+            <FlatList style={{height: '100%', backgroundColor: 'white'}}
               data={this.state.data}
               keyExtractor={(item, index) => index}
               ListFooterComponent={()=>(
@@ -59,12 +59,12 @@ export default class Credits extends Component{
                 </ListItem>
               )}
               renderItem={({item})=>
-                <ListItem style={{flex:1, flexDirection: 'row'}}>
+                <ListItem style={{flex: 1, flexDirection: 'row'}}>
                   {item.map((subItem, index)=>{
                     return(
                       <View style={{flex: 1}}>
                         <Text style={{fontWeight: 'bold',  textAlign: 'center'}}>{subItem.type}</Text>
-                        <Text style={{ textAlign: 'center'}}>{subItem.earned}</Text>
+                        <Text style={{textAlign: 'center'}}>{subItem.earned}</Text>
                       </View>
                     );
                   })}

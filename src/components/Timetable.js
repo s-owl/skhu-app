@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { View, ScrollView, Text, TouchableHighlight, FlatList } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import React, {Component} from 'react';
+import {View, ScrollView, Text, TouchableHighlight, FlatList} from 'react-native';
+import {withNavigation} from 'react-navigation';
 import DateTools from '../tools/datetools';
 import moment from 'moment';
 import {InfoModal} from './infoModal';
@@ -64,8 +64,8 @@ export function convertForTimetable(arr) {
         isEmptyCell: true,
         time: `${minTemplate} ~ ${item.starts_at}`,
         endsAt: startsAtDatetime,
-        name:'',
-        room:'',
+        name: '',
+        room: '',
         height: calcHeight(sevenMorning, startsAtDatetime)
       });
     }else{
@@ -75,8 +75,8 @@ export function convertForTimetable(arr) {
         isEmptyCell: true,
         time: `${prevEndsAt.hour}:${prevEndsAt.mins} ~ ${item.starts_at}`,
         endsAt: startsAtDatetime,
-        name:'',
-        room:'',
+        name: '',
+        room: '',
         height: calcHeight(prevEndsAt, startsAtDatetime)
       });
     }
@@ -108,7 +108,7 @@ export function convertForTimetable(arr) {
         name: item.title,
         room: item.room,
         height: calcHeight(startsAtDatetime, endsAtDatetime),
-        syllabus:{
+        syllabus: {
           code: item.lecture_id,
           semester: item.semester_code,
           year: item.year
@@ -131,7 +131,7 @@ class Timetable extends Component {
   render() {
     return (
       <ScrollView style={{backgroundColor: 'white'}}>
-        <View style={{flex:1, flexDirection: 'row'}}>
+        <View style={{flex: 1, flexDirection: 'row'}}>
           {this.props.timetable.map((item, i)=>{
             return(
               <View style={{flex: 1}}>
@@ -204,7 +204,7 @@ class Timetable extends Component {
             buttons={[
               {label: '닫기', onPress: ()=>this.setState({classChooser: false})}
             ]}>
-            <ListItem style={{alignItems:'center'}}>
+            <ListItem style={{alignItems: 'center'}}>
               <Text>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</Text>
             </ListItem>
             <FlatList style={{backgroundColor: 'white'}}

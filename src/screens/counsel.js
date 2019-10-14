@@ -5,8 +5,8 @@ import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
 export default class CounselHistory extends Component{
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-      const { params } = navigation.state;
+    static navigationOptions = ({navigation, navigationOptions}) => {
+      const {params} = navigation.state;
         
       return {
         title: '나의 상담 이력',
@@ -15,8 +15,8 @@ export default class CounselHistory extends Component{
     constructor(props){
       super(props);
       this.state = {
-        professors:[],
-        history:[],
+        professors: [],
+        history: [],
         isLoading: false
       };
     }
@@ -75,7 +75,7 @@ export default class CounselHistory extends Component{
         );
       }else{
         return(
-          <SectionList style={{height:'100%', backgroundColor: 'white'}}
+          <SectionList style={{height: '100%', backgroundColor: 'white'}}
             renderItem={({item, index, section}) => (
               <ListItem key={index} style={{flex: 0, flexDirection: 'row'}}>
                 <Text style={{flex: 2, textAlign: 'center'}}>{item.timestamp}</Text>

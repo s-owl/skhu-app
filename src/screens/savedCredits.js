@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import ListItem from '../components/listitem';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import {View, Text, FlatList, ActivityIndicator} from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
 
 export default class SavedCredits extends Component{
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-      const { params } = navigation.state;
+    static navigationOptions = ({navigation, navigationOptions}) => {
+      const {params} = navigation.state;
           
       return {
         title: '학점 세이브 조회',
@@ -54,7 +54,7 @@ export default class SavedCredits extends Component{
                 <ListItem isHeader={true}>
                   <Text>학점세이브 상태</Text>
                 </ListItem>
-                <ListItem style={{flex:1, flexDirection: 'row'}}>
+                <ListItem style={{flex: 1, flexDirection: 'row'}}>
                   <View style={{flex: 1}}>
                     <Text style={{fontWeight: 'bold'}}>누적학점</Text>
                     <Text>{this.state.status.accrued}</Text>
@@ -64,7 +64,7 @@ export default class SavedCredits extends Component{
                     <Text>{this.state.status.accrued_criteria}</Text>
                   </View>
                 </ListItem>
-                <ListItem style={{flex:1, flexDirection: 'row'}}>
+                <ListItem style={{flex: 1, flexDirection: 'row'}}>
                   <View style={{flex: 1}}>
                     <Text style={{fontWeight: 'bold'}}>사용학점</Text>
                     <Text>{this.state.status.used}</Text>
