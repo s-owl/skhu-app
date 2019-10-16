@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {ScrollView, Text, View, ActivityIndicator} from 'react-native';
 import ListItem from '../components/listitem';
-import { MaterialIcons } from '@expo/vector-icons';
+import {MaterialIcons} from '@expo/vector-icons';
 import {Linking} from 'expo';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
 export default class SyllabusDetails extends Component{
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
       
     return {
       title: '강의계획서 상세',
@@ -17,10 +17,10 @@ export default class SyllabusDetails extends Component{
   constructor(props){
     super(props);
     this.state = {
-      subjectCode: this.props.navigation.getParam('subjectCode',''),
-      classCode: this.props.navigation.getParam('classCode',''),
-      semesterCode: this.props.navigation.getParam('semesterCode',''),
-      year: this.props.navigation.getParam('year',''),
+      subjectCode: this.props.navigation.getParam('subjectCode', ''),
+      classCode: this.props.navigation.getParam('classCode', ''),
+      semesterCode: this.props.navigation.getParam('semesterCode', ''),
+      year: this.props.navigation.getParam('year', ''),
       details: undefined,
       isLoading: false
     };
@@ -73,8 +73,8 @@ export default class SyllabusDetails extends Component{
                 {details.ProfKorNm}
               </Text>
             </ListItem>
-            <View style={{flex:0, flexDirection: 'row', height:50, width:'100%'}}>
-              <ListItem style={{flex:1, flexDirection: 'row'}} onPress={()=>{
+            <View style={{flex: 0, flexDirection: 'row', height: 50, width: '100%'}}>
+              <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{
                 if(details['전화번호']!=undefined && details['전화번호']!=''){
                   Linking.openURL(`tel:${details['전화번호']}`);
                 }
@@ -82,7 +82,7 @@ export default class SyllabusDetails extends Component{
                 <MaterialIcons name="call" size={20} style={{flex: 0}}/>
                 <Text>{details['전화번호']}</Text>
               </ListItem>
-              <ListItem style={{flex:1, flexDirection: 'row'}} onPress={()=>{
+              <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{
                 if(details['휴대전화번호']!=undefined && details['휴대전화번호']!=''){
                   Linking.openURL(`tel:${details['휴대전화번호']}`);
                 }
@@ -91,8 +91,8 @@ export default class SyllabusDetails extends Component{
                 <Text>{details['휴대전화번호']}</Text>
               </ListItem>
             </View>
-            <View style={{flex:0, flexDirection: 'row', height:50, width:'100%'}}>
-              <ListItem style={{flex:1, flexDirection: 'row'}} onPress={()=>{
+            <View style={{flex: 0, flexDirection: 'row', height: 50, width: '100%'}}>
+              <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{
                 if(details['이메일']!=undefined && details['이메일']!=''){
                   Linking.openURL(`mailto:${details['이메일']}`);
                 }
@@ -100,7 +100,7 @@ export default class SyllabusDetails extends Component{
                 <MaterialIcons name="email" size={20} style={{flex: 0}}/>
                 <Text>{details['이메일']}</Text>
               </ListItem>
-              <ListItem style={{flex:1, flexDirection: 'row'}} onPress={()=>{
+              <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{
                 if(details['홈페이지']!=undefined && details['홈페이지']!=''){
                   Linking.openURL(`${details['홈페이지']}`);
                 }
@@ -167,13 +167,13 @@ export default class SyllabusDetails extends Component{
             <ListItem>
               {references.map((item, index)=>{
                 return (
-                  <Text key={index} style={{paddingBottom:2}}>
+                  <Text key={index} style={{paddingBottom: 2}}>
                     {item['제목']}({item['저자']} 저자, {item['출판연도']}년 {item['출판사']} 출판)
                     {'\n'}{item['비고']}
                   </Text>
                 );
               })}
-              <Text style={{paddingTop:2, paddingBottom:2}}>{details['교재와참고문헌']}</Text>
+              <Text style={{paddingTop: 2, paddingBottom: 2}}>{details['교재와참고문헌']}</Text>
             </ListItem>
 
             <ListItem isHeader={true}>
@@ -182,12 +182,12 @@ export default class SyllabusDetails extends Component{
             {weeklyPlan.map((item, index)=>{
               return (
                 <ListItem key={index}>
-                  <View style={{flex:0, flexDirection: 'row'}}>
-                    <Text style={{flex:1, fontWeight: 'bold', padding:2}}>{item.K}회차</Text>
-                    <Text style={{flex:4, padding:2}}>{item.C1}</Text>
-                    <Text style={{flex:2, padding:2}}>{item.C2}</Text>
+                  <View style={{flex: 0, flexDirection: 'row'}}>
+                    <Text style={{flex: 1, fontWeight: 'bold', padding: 2}}>{item.K}회차</Text>
+                    <Text style={{flex: 4, padding: 2}}>{item.C1}</Text>
+                    <Text style={{flex: 2, padding: 2}}>{item.C2}</Text>
                   </View>
-                  <Text style={{padding:2}}>준비사항: {item.C3}</Text>
+                  <Text style={{padding: 2}}>준비사항: {item.C3}</Text>
                 </ListItem>
               );
             })}
@@ -198,9 +198,9 @@ export default class SyllabusDetails extends Component{
             {evalMethod.map((item, index)=>{
               return (
                 <ListItem key={index}>
-                  <Text style={{fontWeight: 'bold', padding:2}}>{item['평가항목']}({item['비율']}%)</Text>
-                  <Text style={{padding:2}}>평가방식: {item['평가방식']}</Text>
-                  <Text style={{padding:2}}>학습방법: {item['학습방법']}</Text>
+                  <Text style={{fontWeight: 'bold', padding: 2}}>{item['평가항목']}({item['비율']}%)</Text>
+                  <Text style={{padding: 2}}>평가방식: {item['평가방식']}</Text>
+                  <Text style={{padding: 2}}>학습방법: {item['학습방법']}</Text>
                 </ListItem>
               );
             })}
@@ -228,10 +228,10 @@ export default class SyllabusDetails extends Component{
         '/SSE/SSEA1/SSEA102_Get%EA%B0%95%EC%9D%98%EA%B3%84%ED%9A%8D%EC%84%9C',
         JSON.stringify({
           'ActionMode': 'R',
-          'Bunban':this.state.classCode,
-          'GwamogCd':this.state.subjectCode,
-          'Haggi':this.state.semesterCode,
-          'Yy':this.state.year,
+          'Bunban': this.state.classCode,
+          'GwamogCd': this.state.subjectCode,
+          'Haggi': this.state.semesterCode,
+          'Yy': this.state.year,
           '주별내용count': 15
         }));
       if(details != null){

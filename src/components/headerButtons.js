@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { MaterialIcons } from '@expo/vector-icons';
-import { HeaderButtons, HeaderButton } from 'react-navigation-header-buttons';
+import {MaterialIcons} from '@expo/vector-icons';
+import {HeaderButtons, HeaderButton} from 'react-navigation-header-buttons';
 
 // define IconComponent, color, sizes and OverflowIcon in one place
 const MaterialHeaderButton = props => (
@@ -16,4 +16,4 @@ export const MaterialHeaderButtons = props => {
     />
   );
 };
-export { Item } from 'react-navigation-header-buttons';
+export {Item} from 'react-navigation-header-buttons';

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {RefreshControl, Text, View, FlatList,
-  TextInput, Picker, Alert} from 'react-native';
-import { Map } from 'immutable';
+import {RefreshControl, Text, View, FlatList, Alert} from 'react-native';
+import {Map} from 'immutable';
 import ListItem from '../components/listitem';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
@@ -11,8 +10,8 @@ import BuildConfigs from '../config';
 // 강의계획서 목록 조회
 export default class Syllabus extends Component{
   // 상단에 이름 출력
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
 
     return {
       title: '강의계획서 조회',
@@ -27,14 +26,14 @@ export default class Syllabus extends Component{
     
     // 검색 조건의 타입(형태)
     this.dataType = Map({
-      year: "년도(필수)",
+      year: '년도(필수)',
       semester: {
-        name: "학기",
+        name: '학기',
         values: SemesterCodes
       },
-      subject: "강의 이름(선택)",
-      major: "개설 소속(선택)",
-      professor: "교수 이름(선택)"
+      subject: '강의 이름(선택)',
+      major: '개설 소속(선택)',
+      professor: '교수 이름(선택)'
     });
 
     // 초기 검색 조건
@@ -67,14 +66,14 @@ export default class Syllabus extends Component{
 
   // 검색 조건의 setter
   setCondition(condition) {
-    state = this.state;
+    let state = this.state;
     state.condition = condition;
     this.setState(state);
   }
 
   // 출력 조건의 setter
   setDisplay(display) {
-    state = this.state;
+    let state = this.state;
     state.display = display;
     this.setState(state);
   }
@@ -111,8 +110,8 @@ export default class Syllabus extends Component{
     return(
       <View style={{backgroundColor: 'white'}}>
         <SearchBar dataType={this.dataType}
-                   initParam={this.initParam}
-                   onChange={this.handleCondition.bind(this)} />
+          initParam={this.initParam}
+          onChange={this.handleCondition.bind(this)} />
         <FlatList style={{backgroundColor: 'white'}}
           ref='itemList'
           data={display.get('result')}
@@ -148,18 +147,18 @@ export default class Syllabus extends Component{
 
   // 비동기로 검색조건을 가져온다.
   async loadSearchResults(){
+    // 검색 조건을 가져오기
+    const condition = this.getCondition();
     try{
       // 검색 중이라는 것을 출력
-      this.setDisplay(this.getDisplay().set("refreshing", true));
-      // 검색 조건을 가져오기
-      const condition = this.getCondition();
+      this.setDisplay(this.getDisplay().set('refreshing', true));
       // api 규격에 맞춰
       const req = JSON.stringify({
-        'Haggi': condition.get("semester"),
-        'Yy': condition.get("year"),
-        'GwamogParam': condition.get("subject"),
-        'ProfParam': condition.get("professor"),
-        'SosogParam': condition.get("major")
+        'Haggi': condition.get('semester'),
+        'Yy': condition.get('year'),
+        'GwamogParam': condition.get('subject'),
+        'ProfParam': condition.get('professor'),
+        'SosogParam': condition.get('major')
       });
       // 전송한다.
       const results = await ForestApi.postToSam('/SSE/SSEA1/SSEA104_GetList', req);
@@ -187,8 +186,8 @@ export default class Syllabus extends Component{
         // 검색 중 표시 해제 및 결과 출력
         this.setDisplay(
           this.getDisplay()
-            .set('result',arr)
-            .set('refreshing',false));
+            .set('result', arr)
+            .set('refreshing', false));
       }
     // 예외 처리
     }catch(err){

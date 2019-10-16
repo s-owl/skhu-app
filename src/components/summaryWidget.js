@@ -79,13 +79,9 @@ export default class SummaryWidget extends Component{
             unit='metric' appid={BuildConfigs.OPENWEATHERMAP_API_KEY}/>
           <SmallWeatherWidget
             unit='metric' appid={BuildConfigs.OPENWEATHERMAP_API_KEY}
-            name='성공회대' position={{latitude:'37.48750', longitude:'126.82564'}}/>
+            name='성공회대' position={{latitude: '37.48750', longitude: '126.82564'}}/>
         </View>
       </View>
     );
   }
-}
-
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
 }

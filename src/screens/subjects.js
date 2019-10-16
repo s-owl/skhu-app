@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {RefreshControl, Modal, Text, View, FlatList,
-  TextInput, Picker, SafeAreaView, ActivityIndicator, Alert} from 'react-native';
-import { Map } from 'immutable';
+import {RefreshControl, Text, View, FlatList,
+  ActivityIndicator, Alert} from 'react-native';
+import {Map} from 'immutable';
 import ListItem from '../components/listitem';
 import SearchBar, {createSearchCondition} from '../components/searchBar';
 import DateTools, {SemesterCodes} from '../tools/datetools';
@@ -10,26 +10,26 @@ import BuildConfigs from '../config';
 
 // 에러 표시
 function errorMessage() {
-  Alert.alert("조회 실패", "기간에 따른 제한 일 수 있으며 혹은 네트워크나 서버의 문제일 수 있습니다.");
+  Alert.alert('조회 실패', '기간에 따른 제한 일 수 있으며 혹은 네트워크나 서버의 문제일 수 있습니다.');
 }
 
 // 검색 데이터에서 조건의 형태를 생성한다.
 function getTypesInSearchData(searchData) {
-  majorCodes = Map({});
+  let majorCodes = Map({});
   searchData.options.major.forEach(
     (major)=>{
       majorCodes = majorCodes.set(major.title, major.value);});
   return {
-    year: "년도(필수)",
+    year: '년도(필수)',
     semester: {
-      name: "학년(필수)",
+      name: '학년(필수)',
       values: SemesterCodes
     },
     major: {
-      name: "개설 소속(필수)",
+      name: '개설 소속(필수)',
       values: majorCodes.toJS()
     },
-    professor: "교수 이름(선택)" 
+    professor: '교수 이름(선택)' 
   };
 }
 
@@ -64,14 +64,14 @@ function getResultInSearchData(searchData) {
       major_limit: item.major_limit,
       time: item.time,
       note: item.note
-    }
+    };
   });
   return arr;
 }
 
 export default class Subjects extends Component{
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
       
     return {
       title: '학과/학부별 개설과목 조회',
@@ -105,14 +105,14 @@ export default class Subjects extends Component{
 
   // 검색 조건의 setter
   setCondition(condition) {
-    state = this.state;
+    let state = this.state;
     state.condition = condition;
     this.setState(state);
   }
 
   // 출력 조건의 setter
   setDisplay(display) {
-    state = this.state;
+    let state = this.state;
     state.display = display;
     this.setState(state);
   }
@@ -134,13 +134,13 @@ export default class Subjects extends Component{
         'semester': condition.get('semester'),
         'major': condition.get('major'),
         'professor': condition.get('professor')
-    }), true);
+      }), true);
   }
 
   async initSearch() {
     try {
       // 검색 데이터 가져오기
-      res = await this.loadSearchData();
+      let res = await this.loadSearchData();
       if (res.ok) {
         // json 으로 파싱
         const searchData = await res.json();
@@ -168,7 +168,7 @@ export default class Subjects extends Component{
         condition
           .set('refreshing', true));
       // 검색 데이터 가져오기
-      res = await this.loadSearchData();
+      let res = await this.loadSearchData();
 
       if (res.ok) {
         //json 으로 파싱

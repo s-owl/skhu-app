@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
 import ListItem from '../components/listitem';
-import Timetable, {extractFromData, convertForTimetable, mergeClassesInSametime} from '../components/Timetable';
+import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
 import BuildConfigs from '../config';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
-import { Map } from 'immutable';
+import {Map} from 'immutable';
 
 
 export class ProfessorTimetable extends Component{
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
         
     return {
       title: '교원별 시간표',
@@ -20,10 +20,10 @@ export class ProfessorTimetable extends Component{
   constructor(props){
     super(props);
     this.state = {
-      semesterCode: this.props.navigation.getParam('semesterCode',''),
-      year: this.props.navigation.getParam('year',''),
-      professorName: this.props.navigation.getParam('professorName',''),
-      professorId: this.props.navigation.getParam('professorId',''),
+      semesterCode: this.props.navigation.getParam('semesterCode', ''),
+      year: this.props.navigation.getParam('year', ''),
+      professorName: this.props.navigation.getParam('professorName', ''),
+      professorId: this.props.navigation.getParam('professorId', ''),
       timetable: [],
       isLoading: false
     };
@@ -60,9 +60,9 @@ export class ProfessorTimetable extends Component{
         '/SSE/SSEAD/SSEAD05_GetList',
         JSON.stringify({
           'Haggi': this.state.semesterCode,
-          'StaffName':this.state.professorName,
-          'StaffNo':this.state.professorId,
-          'Yy':this.state.year,
+          'StaffName': this.state.professorName,
+          'StaffNo': this.state.professorId,
+          'Yy': this.state.year,
         }));
       if(timetable != null){
         // postToSam 형식 변경에 대한 임시방편
@@ -88,8 +88,8 @@ export class ProfessorTimetable extends Component{
 
 export class SearchProfessors extends Component{
   // 상단에 이름 출력
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
 
     return {
       title: '교원 검색(교원별 시간표)',

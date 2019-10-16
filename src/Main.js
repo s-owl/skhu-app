@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Text, View, Image, Platform, AsyncStorage,
   ScrollView, SafeAreaView, ActivityIndicator, 
 } from 'react-native';
-import { CardView } from './components/components';
+import {CardView} from './components/components';
 import ForestApi from './tools/apis';
 import SummaryWidget from './components/summaryWidget';
 import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
 import FetchHelper from './tools/fetchHelper';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
+import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons'; 
 import Touchable from './components/touchable';
 import LocalAuth from './components/localauth';
 
 export default class Main extends Component {
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
+  static navigationOptions = ({navigation, navigationOptions}) => {
+    const {params} = navigation.state;
     return {
       title: '홈',
       header: null // 헤더 비활성화
@@ -27,7 +27,7 @@ export default class Main extends Component {
     this.db = new DBHelper();
     this.db.fetchAttendance();
     this.db.fetchTimetable();
-    FetchHelper.fetchMealsUrl().then(url => this.setState({ url }));
+    FetchHelper.fetchMealsUrl().then(url => this.setState({url}));
     this.localAuth = React.createRef();
   }
   render() {
@@ -35,9 +35,9 @@ export default class Main extends Component {
     return (
       <SafeAreaView style={{backgroundColor: 'whitesmoke'}}>
         <ScrollView>
-          <View style={{ marginTop: topMargin, padding: 16 }}>
+          <View style={{marginTop: topMargin, padding: 16}}>
             <SummaryWidget />
-            <View style={{flex: 0, flexDirection: 'row', width:'100%',
+            <View style={{flex: 0, flexDirection: 'row', width: '100%',
               marginTop: 8, marginBottom: 8}}>
               <ShortcutButton
                 icon="check-circle"
@@ -50,15 +50,15 @@ export default class Main extends Component {
               <ProfileButton onPress={() => this.localAuth.current.startAuth()}/>
             </View>
 
-            <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>다음 강의</Text>
+            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>다음 강의</Text>
             <NextClassInfo dbHelper={this.db} onPress={() => {
               this.props.navigation.navigate('Timetable');
             }} />
-            <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>학사 일정</Text>
+            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학사 일정</Text>
             <MonthlySchedule onPress={() => {
               this.props.navigation.navigate('Schedules');
             }} />
-            <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>학식</Text>
+            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학식</Text>
             <Meal onPress={() => {
               this.props.navigation.navigate('Meal');
             }} />
@@ -76,7 +76,7 @@ class ProfileButton extends Component{
   constructor(props){
     super(props);
     this.state = {
-      image:  require('../assets/imgs/profilePlaceholder.png'),
+      image: require('../assets/imgs/profilePlaceholder.png'),
       name: '인증 정보'
     };
   }
@@ -109,7 +109,7 @@ class ProfileButton extends Component{
 
   render(){
     return(
-      <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
+      <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
         onPress={this.props.onPress}>
         <Image
           style={{width: 50, height: 50, borderRadius: 25, padding: 8,
@@ -126,7 +126,7 @@ class ProfileButton extends Component{
 class ShortcutButton extends Component{
   render(){
     return(
-      <Touchable borderless={true} style={{flex:1, alignItems:'center'}}
+      <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
         onPress={this.props.onPress}>
         <MaterialIcons name={this.props.icon} size={32}
           style={{borderRadius: 24,
@@ -151,7 +151,7 @@ class NextClassInfo extends Component {
   }
   async componentDidMount() {
     try {
-      this.setState({ isLoading: true });
+      this.setState({isLoading: true});
       const data = await this.props.dbHelper.getNextClassInfo();
       if (data != undefined) {
         this.setState({
@@ -162,12 +162,12 @@ class NextClassInfo extends Component {
           isLoading: false
         });
       } else {
-        this.setState({ time: '다음 강의가 없습니다.', isLoading: false });
+        this.setState({time: '다음 강의가 없습니다.', isLoading: false});
       }
 
 
     } catch (err) {
-      this.setState({ time: '다음 강의 정보를 조회하지 못했습니다.', isLoading: false });
+      this.setState({time: '다음 강의 정보를 조회하지 못했습니다.', isLoading: false});
       console.log(err);
 
     }
@@ -176,15 +176,15 @@ class NextClassInfo extends Component {
     let content;
     if (this.state.isLoading) {
       content = (
-        <View style={{ justifyContent: 'center', padding: 32 }}>
+        <View style={{justifyContent: 'center', padding: 32}}>
           <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
         </View>
       );
     } else {
       content = (
         <View>
-          <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{this.state.name}</Text>
-          <Text style={{ fontSize: 20 }}>{this.state.time}</Text>
+          <Text style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</Text>
+          <Text style={{fontSize: 20}}>{this.state.time}</Text>
           <Text>{this.state.attendance}</Text>
         </View>
       );
@@ -208,7 +208,7 @@ class MonthlySchedule extends Component {
     };
   }
   async componentDidMount() {
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     let today = new Date();
     let schedule = await ForestApi.post('/life/schedules', JSON.stringify({
       'year': today.getFullYear(),
@@ -232,16 +232,16 @@ class MonthlySchedule extends Component {
     let content;
     if (this.state.isLoading) {
       content = (
-        <View style={{ justifyContent: 'center', padding: 32 }}>
+        <View style={{justifyContent: 'center', padding: 32}}>
           <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
         </View>
       );
     } else {
       content = (
         <View>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={{ flex: 0, fontWeight: 'bold' }}>{this.state.dates}</Text>
-            <Text style={{ flex: 1 }}>{this.state.contents}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
+            <Text style={{flex: 1}}>{this.state.contents}</Text>
           </View>
         </View>
       );
@@ -272,7 +272,7 @@ class Meal extends Component {
 
       console.log(meals.length);
       this.setState({
-        meal:  meals[day],
+        meal: meals[day],
         isLoading: false
       });
     });
@@ -280,10 +280,10 @@ class Meal extends Component {
 
   render() {
     let content;
-    const { isLoading, meal } = this.state;
+    const {isLoading, meal} = this.state;
     if (isLoading || !meal) {
       content = (
-        <View style={{ justifyContent: 'center', padding: 32 }}>
+        <View style={{justifyContent: 'center', padding: 32}}>
           <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
         </View>
       );
@@ -291,23 +291,23 @@ class Meal extends Component {
     else {
       content = (
         <View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <MaterialCommunityIcons name="rice" size={20}/>
-            <Text style={{ marginStart: 5 }}>{meal.day} 식단</Text>
+            <Text style={{marginStart: 5}}>{meal.day} 식단</Text>
           </View>
-          <View style={{ flexDirection: 'column', marginTop: 10 }}>
-            <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'column', marginTop: 10}}>
+            <View style={{flexDirection: 'row'}}>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>학식</Text>
-                <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.lunch.a.diet}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 16}}>학식</Text>
+                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.a.diet}</Text>
               </CardView>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>일품</Text>
-                <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.lunch.b.diet}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 16}}>일품</Text>
+                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.b.diet}</Text>
               </CardView>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>석식</Text>
-                <Text style={{ marginBottom: 10, marginTop: 5 }}>{meal.dinner.a.diet}</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 16}}>석식</Text>
+                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.dinner.a.diet}</Text>
               </CardView>
             </View>
           </View>

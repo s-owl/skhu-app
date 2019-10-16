@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Text, View, Clipboard} from 'react-native';
 import {HelpModal} from './helpModal';
 import NavigationService from '../tools/NavigationService';
@@ -25,10 +25,10 @@ export class ErrorModal extends Component{
       title: '네트워크 연결이 필요합니다',
       desc: '본 앱을 사용하려면, 네트워크 연결이 필요합니다. 네트워크 연결을 설정한 후 앱을 다시 실행하세요.',
       buttons: [
-        {label: '다시 시도', onPress:()=>{
+        {label: '다시 시도', onPress: ()=>{
           NavigationService.reset('Login');
         }},
-        {label: '도움 받기', onPress:()=>{
+        {label: '도움 받기', onPress: ()=>{
           this.closeErrorModal();
           this.helpModal.current.open(undefined, true);
         }}
@@ -43,10 +43,10 @@ export class ErrorModal extends Component{
         + '8자리 미만 비밀번호 사용 시 PC 에서 종합정보시스템에 접속하여 비밀번호 변경 후 사용해 주세요.\n'
         + '비밀번호 변경에 문제가 있는 경우 성공회대학교 전자계산소에 문의하시기 바랍니다.',
       buttons: [
-        {label: '다시 시도', onPress:()=>{
+        {label: '다시 시도', onPress: ()=>{
           NavigationService.reset('Login');
         }},
-        {label: '도움 받기', onPress:()=>{
+        {label: '도움 받기', onPress: ()=>{
           this.closeErrorModal();
           this.helpModal.current.open(undefined, true);
         }}
@@ -61,13 +61,13 @@ export class ErrorModal extends Component{
         + 'sam.skhu.ac.kr 쪽에서 로그인이 불가능한 경우, 성공회대학교 전자계산소에 문의하세요.\n\n'
         + '추가정보:\n',
       buttons: [
-        {label: '닫기', onPress:()=>{
+        {label: '닫기', onPress: ()=>{
           this.closeErrorModal();
         }},
-        {label: '오류 정보 복사', onPress:()=>{
+        {label: '오류 정보 복사', onPress: ()=>{
           Clipboard.setString(this.state.desc);
         }},
-        {label: '도움 받기', onPress:()=>{
+        {label: '도움 받기', onPress: ()=>{
           this.closeErrorModal();
           this.helpModal.current.open(this.state.desc, true);
         }}
@@ -83,13 +83,13 @@ export class ErrorModal extends Component{
         + '4. SKHU\'s 서버에 문제가 있을 수 있습니다. 네트워크 연결 문제가 아닌 경우 SKHU\'s 개발팀에 보고해 주세요.\n\n'
         + '추가정보:\n',
       buttons: [
-        {label: '다시 시도', onPress:()=>{
+        {label: '다시 시도', onPress: ()=>{
           NavigationService.reset('Login');
         }},
-        {label: '오류 정보 복사', onPress:()=>{
+        {label: '오류 정보 복사', onPress: ()=>{
           Clipboard.setString(this.state.desc);
         }},
-        {label: '도움 받기', onPress:()=>{
+        {label: '도움 받기', onPress: ()=>{
           this.closeErrorModal();
           this.helpModal.current.open(this.state.desc, true);
         }}

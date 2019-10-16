@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {View, Image, Text, ActivityIndicator, Clipboard, Linking} from 'react-native';
-import { CardView } from '../components/components';
+import {CardView} from '../components/components';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 
 export default class Authinfo extends Component{
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-      const { params } = navigation.state;
+    static navigationOptions = ({navigation, navigationOptions}) => {
+      const {params} = navigation.state;
         
       return {
         title: '',
@@ -39,7 +39,7 @@ class Profile extends Component{
   constructor(props){
     super(props);
     this.state = {
-      image:  require('../../assets/imgs/profilePlaceholder.png'),
+      image: require('../../assets/imgs/profilePlaceholder.png'),
       name: '이름', id: '학번',
       classtype: '주간/야간',
       college: '대학',
@@ -68,7 +68,7 @@ class Profile extends Component{
 
   render(){
     return(
-      <View style={{flex:1, alignItems:'center'}}>
+      <View style={{flex: 1, alignItems: 'center'}}>
         <Image
           style={{width: 100, height: 100, borderRadius: 50, padding: 8,
             borderColor: 'lightgrey', borderWidth: 1, backgroundColor: 'lightgrey'}}
@@ -113,7 +113,7 @@ class ClassInfoCard extends Component{
     let googleClassroom;
     if (this.state.isLoading) {
       googleClassroom = (
-        <View style={{ justifyContent: 'center', padding: 32 }}>
+        <View style={{justifyContent: 'center', padding: 32}}>
           <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
         </View>
       );
@@ -131,7 +131,7 @@ class ClassInfoCard extends Component{
           <Text>{this.state.counselor}</Text>
           <Text>반/분반: {this.state.class}</Text>
         </View>
-        <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>Google Classroom</Text>
+        <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>Google Classroom</Text>
         <CardView elevate={true} style={{margin: 8}} actionLabel='Google Classroom 으로 이동 >'
           onPress={()=>{
             Linking.openURL('https://classroom.google.com');
@@ -180,7 +180,7 @@ class OtpCard extends Component{
   render(){
     return(
       <View>
-        <Text style={{ fontSize: 20, marginTop: 16, marginLeft: 16 }}>OTP 코드</Text>
+        <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>OTP 코드</Text>
         <CardView actionLabel='터치하여 복사하기' elevate={true} style={{margin: 8}}
           onPress={()=>{
             Clipboard.setString(this.state.otpCode);

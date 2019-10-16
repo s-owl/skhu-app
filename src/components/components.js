@@ -1,11 +1,11 @@
 
-import React, { Component } from 'react'; //default
+import React, {Component} from 'react'; 
 import {
   StyleSheet, View, Modal, KeyboardAvoidingView,
-  SafeAreaView, Text, ScrollView //사용되는 친구들
+  SafeAreaView, Text, ScrollView 
 } from 'react-native';
 import Touchable from './touchable';
-import { LinearGradient } from 'expo-linear-gradient';
+import {LinearGradient} from 'expo-linear-gradient';
 import BuildConfigs from '../config';
 
 
@@ -40,14 +40,14 @@ class BottomModal extends Component{
         visible={this.props.visible}
         onRequestClose={this.props.onRequestClose}>
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <SafeAreaView style={{flexDirection: 'column', flex:1, justifyContent:'flex-end'}}
-            forceInset={{ vertical: 'always', horizontal: 'never' }}>
+          <SafeAreaView style={{flexDirection: 'column', flex: 1, justifyContent: 'flex-end'}}
+            forceInset={{vertical: 'always', horizontal: 'never'}}>
 
             <LinearGradient
               colors={['transparent', 'rgba(0,0,0,0.8)']}
               style={{
                 height: '100%',
-                justifyContent:'flex-end'
+                justifyContent: 'flex-end'
               }}>
               <KeyboardAvoidingView behavior="padding" enabled>
                 <CardItem isHeader={true}>
@@ -56,11 +56,11 @@ class BottomModal extends Component{
                 <View style={[{backgroundColor: 'white'}, this.props.style]}>
                   {this.props.children}
                 </View>
-                <View style={{flex:0, flexDirection: 'row', backgroundColor: 'white',
-                  height:50, width:'100%'}}>
+                <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
+                  height: 50, width: '100%'}}>
                   {this.props.buttons.map((item, index)=>{
                     return(
-                      <CardItem key={index} style={{flex:1, alignItems:'center'}} onPress={item.onPress}>
+                      <CardItem key={index} style={{flex: 1, alignItems: 'center'}} onPress={item.onPress}>
                         <Text>{item.label}</Text>
                       </CardItem>
                     );
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderBottomWidth: 0,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 2,

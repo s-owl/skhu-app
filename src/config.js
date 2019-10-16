@@ -1,4 +1,4 @@
-import { OPENWEATHERMAP_API_KEY, SENTRY_DSN } from 'react-native-dotenv';
+import {OPENWEATHERMAP_API_KEY, SENTRY_DSN} from 'react-native-dotenv';
 
 export default class BuildConfigs{
     // TODO: local 서버 돌리는 법을 몰라서 일단 이렇게 개발
@@ -7,5 +7,5 @@ export default class BuildConfigs{
     static OPENWEATHERMAP_API_KEY = OPENWEATHERMAP_API_KEY; // OpenWeatherMap API KEY
     static SENTRY_DSN = SENTRY_DSN;
     static primaryColor = '#569f59';
-    static OtaDeployedAt = '2019.09.16';
+    static OtaDeployedAt = '2019.10.16';
 }

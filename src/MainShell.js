@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Text, View, StatusBar, Platform } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import React, {Component} from 'react';
+import {Text, View, StatusBar, Platform} from 'react-native';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Touchable from './components/touchable';
 import Main from './Main';
 import Menu from './Menu';
@@ -20,7 +20,7 @@ import Subjects from './screens/subjects';
 import About from './screens/about';
 import Meal from './screens/meal';
 import searchCondition from './screens/searchCondition';
-import { MaterialIcons } from '@expo/vector-icons';
+import {MaterialIcons} from '@expo/vector-icons';
 import BuildConfigs from './config';
 import NoticeScreen from './screens/notice';
 import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
@@ -36,7 +36,7 @@ const HomeStack = createStackNavigator(
     Credits: Credits,
     Timetable: StudentTimetable,
     SyllabusDetails: SyllabusDetails,
-    NoticeScreen :NoticeScreen,
+    NoticeScreen: NoticeScreen,
     Meal: Meal,
     Authinfo: Authinfo
   },
@@ -91,10 +91,10 @@ const TabNavigator = createBottomTabNavigator(
     Menu: MenuStack,
   },
   {
-    defaultNavigationOptions: ({ navigation }) => ({
+    defaultNavigationOptions: ({navigation}) => ({
       tabBarButtonComponent: Touchable,
-      tabBarIcon: ({ focused, tintColor }) => {
-        const { routeName } = navigation.state;
+      tabBarIcon: ({focused, tintColor}) => {
+        const {routeName} = navigation.state;
         let iconName, label;
         switch(routeName){
         case 'Home': iconName = 'home'; label = '홈'; break;
@@ -121,8 +121,8 @@ const TabNavigator = createBottomTabNavigator(
 const AppContainer = createAppContainer(TabNavigator);
 
 export default class MainShell extends Component {
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-      const { params } = navigation.state;
+    static navigationOptions = ({navigation, navigationOptions}) => {
+      const {params} = navigation.state;
 
       return {
         header: null // 헤더 비활성화

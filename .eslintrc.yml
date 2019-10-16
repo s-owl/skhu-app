@@ -2,6 +2,7 @@ env:
   browser: true
   es6: true
   jest: true
+  react-native/react-native: true
 extends: 'eslint:recommended'
 parser: babel-eslint
 parserOptions:
@@ -29,3 +30,16 @@ rules:
     - warn
   no-unused-vars:
     - warn
+  comma-spacing:
+    - error
+    - after: true
+  key-spacing:
+    - error
+    - afterColon: true
+  react/jsx-uses-react:
+    - error
+  react/jsx-uses-vars:
+    - error
+  object-curly-spacing:
+    - error
+    - never
