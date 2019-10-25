@@ -71,6 +71,12 @@ export class HelpModal extends Component{
             await WebBrowser.openBrowserAsync('http://sid.skhu.ac.kr/SID02/SID0201');
           }}
         ]
+        },
+        {title: '앱 정보', data: [
+          {label: '앱 정보', icon: 'information', onPress: ()=>{
+            this.props.navigation.navigate('About');
+          }},
+        ]
         }
       ];
     }
