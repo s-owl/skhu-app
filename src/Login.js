@@ -173,31 +173,46 @@ export default class Login extends Component {
         this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
         this.setState({isLoading: false, enableHelp: true});
       }else{
-        let response = await ForestApi.login(id, pw);
-        if(response.ok){
-          let data = await response.json();
-          
+        let samLogin = ForestApi.login(id, pw, 'credentialNew');
+        let forestLogin = ForestApi.login(id, pw, 'credentialOld');
+        
+        let forestLoginRes = await forestLogin;
+        if(forestLoginRes.ok){
+          let data = await forestLoginRes.json();
           await ChunkSecureStore.setItemAsync('CredentialOld', data['credential-old']);
-          await ChunkSecureStore.setItemAsync('CredentialNew', data['credential-new']);
-          await ChunkSecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
-          // await SecureStore.setItemAsync('CredentialOld', data['credential-old']);
-          // await SecureStore.setItemAsync('CredentialNew', data['credential-new']);
-          // await SecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
-          await SecureStore.setItemAsync('userid', id);
-          await SecureStore.setItemAsync('userpw', pw);
-          await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
-
-          this.setState({isLoading: false});
-          NavigationService.reset('Main');
-        }else if(response.status == 400){
+        }else if(forestLoginRes.status == 400){
           this.setState({isLoading: false, enableHelp: true});
           this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
-        }else if(response.status == 401){
+        }else if(forestLoginRes.status == 401){
           this.setState({isLoading: false, enableHelp: true});
-          let msg = await response.text();
+          let msg = await forestLoginRes.text();
           this.errorModal.current.showError(this.errorModal.current.CommonErrors.loginError, msg);
         }else{
           this.setState({isLoading: false, enableHelp: true});
+        }
+
+        let samLoginRes = await samLogin;
+        if(samLoginRes.ok){
+          let data = await samLoginRes.json();
+          await ChunkSecureStore.setItemAsync('CredentialNew', data['credential-new']);
+          await ChunkSecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
+        }else if(samLoginRes.status == 400){
+          this.setState({isLoading: false, enableHelp: true});
+          this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
+        }else if(samLoginRes.status == 401){
+          this.setState({isLoading: false, enableHelp: true});
+          let msg = await samLoginRes.text();
+          this.errorModal.current.showError(this.errorModal.current.CommonErrors.loginError, msg);
+        }else{
+          this.setState({isLoading: false, enableHelp: true});
+        }
+
+        if(forestLoginRes.ok && samLoginRes.ok){
+          await SecureStore.setItemAsync('userid', id);
+          await SecureStore.setItemAsync('userpw', pw);
+          await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
+          this.setState({isLoading: false});
+          NavigationService.reset('Main');
         }
       }
     }catch(err){
