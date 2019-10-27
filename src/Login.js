@@ -191,6 +191,10 @@ export default class Login extends Component {
           this.setState({isLoading: false, enableHelp: true});
         }
 
+        if(forestLoginRes.status != 200) {
+          return;
+        }
+
         let samLoginRes = await samLogin;
         let samData = await samLoginRes.json();
         if(samLoginRes.ok){
