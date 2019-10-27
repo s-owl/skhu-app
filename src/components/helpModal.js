@@ -4,6 +4,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
 import {InfoModal} from './infoModal';
 import * as WebBrowser from 'expo-web-browser';
+import NavigationService from '../tools/NavigationService';
 
 export class HelpModal extends Component{
   setVisible(visible) {
@@ -74,7 +75,7 @@ export class HelpModal extends Component{
         },
         {title: '앱 정보', data: [
           {label: '앱 정보', icon: 'information', onPress: ()=>{
-            this.props.navigation.navigate('About');
+            NavigationService.navigate('About');
           }},
         ]
         }
