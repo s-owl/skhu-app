@@ -205,7 +205,7 @@ export default class Login extends Component {
           this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
         }else if(samLoginRes.status == 401){
           this.setState({isLoading: false, enableHelp: true});
-          let msg = await samData['error'];
+          let msg = samData['error'];
           this.errorModal.current.showError(this.errorModal.current.CommonErrors.loginError, msg);
         }else{
           this.setState({isLoading: false, enableHelp: true});
