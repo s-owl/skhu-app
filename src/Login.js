@@ -177,31 +177,31 @@ export default class Login extends Component {
         let forestLogin = ForestApi.login(id, pw, 'credentialOld');
         
         let forestLoginRes = await forestLogin;
+        let forestData = await forestLoginRes.json();
         if(forestLoginRes.ok){
-          let data = await forestLoginRes.json();
-          await ChunkSecureStore.setItemAsync('CredentialOld', data['credential-old']);
+          await ChunkSecureStore.setItemAsync('CredentialOld', forestData['credential-old']);
         }else if(forestLoginRes.status == 400){
           this.setState({isLoading: false, enableHelp: true});
           this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
         }else if(forestLoginRes.status == 401){
           this.setState({isLoading: false, enableHelp: true});
-          let msg = await forestLoginRes.text();
+          let msg = forestData['error'];
           this.errorModal.current.showError(this.errorModal.current.CommonErrors.loginError, msg);
         }else{
           this.setState({isLoading: false, enableHelp: true});
         }
 
         let samLoginRes = await samLogin;
+        let samData = await samLoginRes.json();
         if(samLoginRes.ok){
-          let data = await samLoginRes.json();
-          await ChunkSecureStore.setItemAsync('CredentialNew', data['credential-new']);
-          await ChunkSecureStore.setItemAsync('CredentialNewToken', data['credential-new-token']);
+          await ChunkSecureStore.setItemAsync('CredentialNew', samData['credential-new']);
+          await ChunkSecureStore.setItemAsync('CredentialNewToken', samData['credential-new-token']);
         }else if(samLoginRes.status == 400){
           this.setState({isLoading: false, enableHelp: true});
           this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
         }else if(samLoginRes.status == 401){
           this.setState({isLoading: false, enableHelp: true});
-          let msg = await samLoginRes.text();
+          let msg = await samData['error'];
           this.errorModal.current.showError(this.errorModal.current.CommonErrors.loginError, msg);
         }else{
           this.setState({isLoading: false, enableHelp: true});
