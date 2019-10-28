@@ -35,6 +35,14 @@ export default class About extends Component{
       });
     }
 
+    // 해당 컴포넌트가 화면에서 사라질 때 작동할 것들
+    componentWillUnmount() {
+      const onBack = this.props.navigation.getParam('onBack');
+      if (onBack) {
+        onBack();
+      }
+    }
+
     render(){
       let modal = this.state.modal;
       return(

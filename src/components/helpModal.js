@@ -75,7 +75,11 @@ export class HelpModal extends Component{
         },
         {title: '앱 정보', data: [
           {label: '앱 정보', icon: 'information', onPress: ()=>{
-            NavigationService.navigate('About');
+            let restoreModal = ()=>{
+              this.setVisible(true);
+            };
+            this.setVisible(false);
+            NavigationService.navigate('About', {onBack: restoreModal});
           }},
         ]
         }
