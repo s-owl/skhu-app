@@ -4,6 +4,7 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
 import {InfoModal} from './infoModal';
 import * as WebBrowser from 'expo-web-browser';
+import NavigationService from '../tools/NavigationService';
 
 export class HelpModal extends Component{
   setVisible(visible) {
@@ -70,6 +71,16 @@ export class HelpModal extends Component{
           {label: '비밀번호 복구', icon: 'textbox-password', onPress: async ()=>{
             await WebBrowser.openBrowserAsync('http://sid.skhu.ac.kr/SID02/SID0201');
           }}
+        ]
+        },
+        {title: '앱 정보', data: [
+          {label: '앱 정보', icon: 'information', onPress: ()=>{
+            let restoreModal = ()=>{
+              this.setVisible(true);
+            };
+            this.setVisible(false);
+            NavigationService.navigate('About', {onBack: restoreModal});
+          }},
         ]
         }
       ];
