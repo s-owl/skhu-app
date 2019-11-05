@@ -7,6 +7,7 @@ import SearchBar, {createSearchCondition} from '../components/searchBar';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
+import {ThemeText} from '../components/components';
 
 // 에러 표시
 function errorMessage() {
@@ -220,13 +221,13 @@ export default class Subjects extends Component{
       );
     }else{
       return(
-        <View style={{backgroundColor: 'white'}}>
+        <View>
           <SearchBar
             dataType={this.dataType}
             initParam={this.initParam}
             onChange={this.handleCondition.bind(this)}
           />
-          <FlatList style={{backgroundColor: 'white'}}
+          <FlatList
             ref="itemList"
             data={display.get('result')}
             ListFooterComponent={()=>(
@@ -249,11 +250,11 @@ export default class Subjects extends Component{
                   year: condition.get('year')
                 });
               }}>
-                <Text style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</Text>
-                <Text>{item.type}, {item.grade} 학년, {item.score}학점 | {item.professor}</Text>
-                <Text>학년제한: {item.grade_limit}, 학과제한: {item.major_limit}, 신청/정원: {item.available}</Text>
-                <Text>{item.time}</Text>
-                <Text>{item.note}</Text>
+                <ThemeText style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</ThemeText>
+                <ThemeText>{item.type}, {item.grade} 학년, {item.score}학점 | {item.professor}</ThemeText>
+                <ThemeText>학년제한: {item.grade_limit}, 학과제한: {item.major_limit}, 신청/정원: {item.available}</ThemeText>
+                <ThemeText>{item.time}</ThemeText>
+                <ThemeText>{item.note}</ThemeText>
               </ListItem>
             }
           />
