@@ -7,7 +7,7 @@ import {
 import Touchable from './touchable';
 import {LinearGradient} from 'expo-linear-gradient';
 import BuildConfigs from '../config';
-import {Appearance, AppearanceProvider, useColorScheme} from 'react-native-appearance';
+import {useColorScheme} from 'react-native-appearance';
 
 function ThemeText(props){
   let colorScheme = useColorScheme();

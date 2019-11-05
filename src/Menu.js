@@ -3,12 +3,14 @@ import {
   Alert, Text, SafeAreaView, SectionList, Linking, AsyncStorage
 } from 'react-native';
 import ListItem from './components/listitem';
+import {ThemeText} from './components/components';
 import NavigationService from './tools/NavigationService';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import DBHelper from './tools/dbhelper';
 import SnackBar from 'react-native-snackbar-component';
 import {HelpModal} from './components/helpModal';
+import {Appearance} from 'react-native-appearance';
 
 export default class Menu extends Component {
 static navigationOptions = ({navigation, navigationOptions}) => {
@@ -32,16 +34,16 @@ showSnackbar(msg){
 render() {
   return(
     <SafeAreaView>
-      <SectionList style={{height: '100%', backgroundColor: 'white'}}
+      <SectionList style={{height: '100%'}}
         renderItem={({item, index, section}) => (
           <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
-            <MaterialCommunityIcons name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
-            <Text style={{flex: 1}}>{item.label}</Text>
+            <MaterialCommunityIcons color={Appearance.getColorScheme()? 'white' : 'black'}name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
+            <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
           </ListItem>
         )}
         renderSectionHeader={({section: {title}}) => (
           <ListItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
-            <Text style={{fontWeight: 'bold'}}>{title}</Text>
+            <ThemeText style={{fontWeight: 'bold'}}>{title}</ThemeText>
           </ListItem>
         )}
         sections={[
@@ -54,7 +56,7 @@ render() {
             {label: '강의계획서 조회', icon: 'clipboard-text', onPress: ()=>{
               this.props.navigation.navigate('Syllabus');
             }},
-            {label: '학과/학부별 개설과목 조회', icon: 'format-list-bulleted' , onPress: ()=>{
+            {label: '학과/학부별 개설과목 조회', icon: 'format-list-bulleted', onPress: ()=>{
               this.props.navigation.navigate('Subjects');
             }},
             {label: '학점세이브 조회', icon: 'archive', onPress: ()=>{
@@ -73,7 +75,7 @@ render() {
             }}
           ]},
           {title: '성적 및 장학 관리', data: [
-            {label: '장학 내역 조회', icon: 'school' , onPress: ()=>{
+            {label: '장학 내역 조회', icon: 'school', onPress: ()=>{
               this.props.navigation.navigate('ScholarshipHistory');
             }},
             {label: '학내 제출용 성적증명서', icon: 'certificate', onPress: ()=>{

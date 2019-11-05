@@ -3,25 +3,30 @@ import {
   StyleSheet, View
 } from 'react-native';
 import Touchable from './touchable';
+import {useColorScheme} from 'react-native-appearance';
 
 
-export default class ListItem extends Component{
-  render(){
-    const itemStyle = this.props.isHeader ? styles.ListItemHeader : styles.ListItem;
-    if(this.props.onPress != undefined){
-      return(
-        <Touchable onPress={this.props.onPress}
-          style={[itemStyle, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
-          {this.props.children}
-        </Touchable>
-      );
-    }else{
-      return(
-        <View style={[itemStyle, this.props.style, (this.props.elevate)? {elevation: 1}:{}]}>
-          {this.props.children}
-        </View>
-      );
-    }
+export default function ListItem(props){
+  let itemStyle;
+  let scheme = useColorScheme();
+  if(props.isHeader){
+    itemStyle = (scheme==='dark')? styles.DarkListItemHeader : styles.ListItemHeader;
+  }else{
+    itemStyle = (scheme==='dark')? styles.DarkListItem : styles.ListItem;
+  }
+  if(props.onPress != undefined){
+    return(
+      <Touchable onPress={props.onPress}
+        style={[itemStyle, props.style, (props.elevate)? {elevation: 1}:{}]}>
+        {props.children}
+      </Touchable>
+    );
+  }else{
+    return(
+      <View style={[itemStyle, props.style, (props.elevate)? {elevation: 1}:{}]}>
+        {props.children}
+      </View>
+    );
   }
 }
 
@@ -31,6 +36,10 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: 'white',
   },
+  DarkListItem: {
+    padding: 16,
+    backgroundColor: 'black',
+  },
   ListItemHeader: {
     padding: 16,
     paddingBottom: 8,
@@ -38,6 +47,14 @@ const styles = StyleSheet.create({
     borderTopColor: 'lightgrey',
     borderTopWidth: 1,
     backgroundColor: 'white',
+  },
+  DarkListItemHeader: {
+    padding: 16,
+    paddingBottom: 8,
+    paddingTop: 24,
+    borderTopColor: 'lightgrey',
+    borderTopWidth: 1,
+    backgroundColor: 'black',
   }
 });
   
