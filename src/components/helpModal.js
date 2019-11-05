@@ -5,6 +5,8 @@ import ListItem from './listitem';
 import {InfoModal} from './infoModal';
 import * as WebBrowser from 'expo-web-browser';
 import NavigationService from '../tools/NavigationService';
+import {Appearance} from 'react-native-appearance';
+import {ThemeText} from './components';
 
 export class HelpModal extends Component{
   setVisible(visible) {
@@ -85,6 +87,7 @@ export class HelpModal extends Component{
         }
       ];
     }
+    const textColor = Appearance.getColorScheme() === 'dark'? 'white' : 'black';
     return(
       <InfoModal
         visible={this.state.visible}
@@ -96,13 +99,13 @@ export class HelpModal extends Component{
         <SectionList style={{height: '100%'}}
           renderItem={({item, index, section}) => (
             <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
-              <MaterialCommunityIcons name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
-              <Text style={{flex: 1}}>{item.label}</Text>
+              <MaterialCommunityIcons color={textColor} name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
+              <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
             </ListItem>
           )}
           renderSectionHeader={({section: {title}}) => (
             <ListItem style={{flex: 0, flexDirection: 'row'}}>
-              <Text style={{fontWeight: 'bold'}}>{title}</Text>
+              <ThemeText style={{fontWeight: 'bold'}}>{title}</ThemeText>
             </ListItem>
           )}
           sections={sections}
