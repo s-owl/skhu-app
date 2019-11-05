@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {Modal, Text, View, StyleSheet, Platform} from 'react-native';
+import {Modal, View, StyleSheet, Platform} from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
 import Touchable from './touchable';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
-
+import {Appearance} from 'react-native-appearance';
+import {ThemeText} from './components';
 
 const initState = {
   visible: false,
@@ -153,46 +154,48 @@ export default class LocalAuth extends Component {
     }
   }
   render(){
+    const textColor = Appearance.getColorScheme() === 'dark'? 'white':'black';
+    const bgColor = Appearance.getColorScheme() === 'dark'? 'black':'white';
     return(
       <Modal
         animationType="fade"
         visible={this.state.visible}>
-        <View style={{paddingTop: 30, padding: 16, flex: 1}}>
+        <View style={{paddingTop: 30, padding: 16, flex: 1, backgroundColor: bgColor}}>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <MaterialIcons name={this.state.icon} size={32} style={{padding: 16}}/>
-            <Text>{this.state.msg}</Text>
-            <Text style={{fontSize: 32}}>{this.state.display}</Text>
+            <MaterialIcons color={textColor} name={this.state.icon} size={32} style={{padding: 16}}/>
+            <ThemeText>{this.state.msg}</ThemeText>
+            <ThemeText style={{fontSize: 32}}>{this.state.display}</ThemeText>
           </View>
           <View style={{flex: 3, justifyContent: 'flex-end'}}>
             <View style={styles.digitRow}>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(1)}><Text style={{fontSize: 24}}>1</Text></Touchable>
+                onPress={()=>this.inputDigit(1)}><ThemeText style={{fontSize: 24}}>1</ThemeText></Touchable>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(2)}><Text style={{fontSize: 24}}>2</Text></Touchable>
+                onPress={()=>this.inputDigit(2)}><ThemeText style={{fontSize: 24}}>2</ThemeText></Touchable>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(3)}><Text style={{fontSize: 24}}>3</Text></Touchable>
+                onPress={()=>this.inputDigit(3)}><ThemeText style={{fontSize: 24}}>3</ThemeText></Touchable>
             </View>
             <View style={styles.digitRow}>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(4)}><Text style={{fontSize: 24}}>4</Text></Touchable>
+                onPress={()=>this.inputDigit(4)}><ThemeText style={{fontSize: 24}}>4</ThemeText></Touchable>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(5)}><Text style={{fontSize: 24}}>5</Text></Touchable>
+                onPress={()=>this.inputDigit(5)}><ThemeText style={{fontSize: 24}}>5</ThemeText></Touchable>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(6)}><Text style={{fontSize: 24}}>6</Text></Touchable>
+                onPress={()=>this.inputDigit(6)}><ThemeText style={{fontSize: 24}}>6</ThemeText></Touchable>
             </View>
             <View style={styles.digitRow}>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(7)}><Text style={{fontSize: 24}}>7</Text></Touchable>
+                onPress={()=>this.inputDigit(7)}><ThemeText style={{fontSize: 24}}>7</ThemeText></Touchable>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(8)}><Text style={{fontSize: 24}}>8</Text></Touchable>
+                onPress={()=>this.inputDigit(8)}><ThemeText style={{fontSize: 24}}>8</ThemeText></Touchable>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(9)}><Text style={{fontSize: 24}}>9</Text></Touchable>
+                onPress={()=>this.inputDigit(9)}><ThemeText style={{fontSize: 24}}>9</ThemeText></Touchable>
             </View>
             <View style={styles.digitRow}>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(0)}><Text style={{fontSize: 24}}>0</Text></Touchable>
+                onPress={()=>this.inputDigit(0)}><ThemeText style={{fontSize: 24}}>0</ThemeText></Touchable>
               <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit('<')}><Text style={{fontSize: 24}}>{'<'}</Text></Touchable>
+                onPress={()=>this.inputDigit('<')}><ThemeText style={{fontSize: 24}}>{'<'}</ThemeText></Touchable>
             </View>
             <View style={styles.digitRow}>
               <ListItem style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} onPress={async ()=>{
@@ -201,7 +204,7 @@ export default class LocalAuth extends Component {
                   await LocalAuthentication.cancelAuthenticate();
                 }
               }}>
-                <Text>취소</Text>
+                <ThemeText>취소</ThemeText>
               </ListItem>
             </View>
           </View>
