@@ -13,6 +13,7 @@ import FetchHelper from './tools/fetchHelper';
 import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons'; 
 import Touchable from './components/touchable';
 import LocalAuth from './components/localauth';
+import {Appearance, AppearanceProvider, useColorScheme} from 'react-native-appearance';
 
 export default class Main extends Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -126,23 +127,22 @@ class ProfileButton extends Component{
   }
 }
 
-class ShortcutButton extends Component{
-  render(){
-  // let colorScheme = useColorScheme();
-    let colorScheme = 'dark';
-    const textColor = (colorScheme==='dark')? 'white' : 'black';
-    return(
-      <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
-        onPress={this.props.onPress}>
-        <MaterialIcons name={this.props.icon} size={32} color={textColor}
-          style={{borderRadius: 24,
-            borderColor: 'lightgrey',
-            borderWidth: 1,
-            padding: 8}} />
-        <ThemeText style={{padding: 8}}>{this.props.label}</ThemeText>
-      </Touchable>
-    );
-  }
+function ShortcutButton(props){
+  let colorScheme = useColorScheme();
+  // let colorScheme = 'dark';
+  const textColor = (colorScheme==='dark')? 'white' : 'black';
+  return(
+    <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
+      onPress={props.onPress}>
+      <MaterialIcons name={props.icon} size={32} color={textColor}
+        style={{borderRadius: 24,
+          borderColor: 'lightgrey',
+          borderWidth: 1,
+          padding: 8}} />
+      <ThemeText style={{padding: 8}}>{props.label}</ThemeText>
+    </Touchable>
+  );
+  
 }
 
 class NextClassInfo extends Component {

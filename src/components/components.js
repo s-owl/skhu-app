@@ -10,15 +10,15 @@ import BuildConfigs from '../config';
 import {Appearance, AppearanceProvider, useColorScheme} from 'react-native-appearance';
 
 function ThemeText(props){
-  // let colorScheme = useColorScheme();
-  let colorScheme = 'dark';
+  let colorScheme = useColorScheme();
+  // let colorScheme = 'dark';
   const textColor = (colorScheme==='dark')? 'white' : 'black';
   return(<Text style={[{color: textColor}, props.style]}>{props.children}</Text>);
 }
 
 function CardView(props){
-  // let colorScheme = useColorScheme();
-  let colorScheme = 'dark';
+  let colorScheme = useColorScheme();
+  // let colorScheme = 'dark';
   let cardViewStyle;
   if(props.outlined){
     if(colorScheme === 'dark'){

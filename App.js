@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppearanceProvider} from 'react-native-appearance';
+import {AppearanceProvider, useColorScheme} from 'react-native-appearance';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import NavigationService from './src/tools/NavigationService';
@@ -32,15 +32,17 @@ Sentry.init({
   debug: true
 });
 
-export default class App extends Component {
-  render() {
-    return (
-      <AppearanceProvider>
-        <AppContainer ref={(navRef)=>{
+export default function App(){
+  let colorScheme = useColorScheme();
+  return (
+    <AppearanceProvider>
+      <AppContainer 
+        theme={colorScheme}
+        ref={(navRef)=>{
           NavigationService.setTopLevelNavigator(navRef);
         }}/>
-      </AppearanceProvider>
-    );
-  }
+    </AppearanceProvider>
+  );
+  
 }
 

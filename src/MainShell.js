@@ -27,6 +27,8 @@ import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
 import {Settings, PinRecovery, ChangePin} from './screens/settings';
+import {Appearance, AppearanceProvider, useColorScheme} from 'react-native-appearance';
+
 
 const HomeStack = createStackNavigator(
   {
@@ -102,6 +104,7 @@ const TabNavigator = createBottomTabNavigator(
         }
         // You can return any component that you like here! We usually use an
         // icon component from react-native-vector-icons
+        let bgColor = Appearance.getColorScheme() === 'dark'? '#202020': 'white';
         return (
           <View>
             <MaterialIcons name={iconName} size={25} color={tintColor} />
@@ -129,7 +132,7 @@ export default class MainShell extends Component {
       };
     };
     render() {
-      return <AppContainer/>;
+      return <AppContainer theme={Appearance.getColorScheme()}/>;
     }
     componentDidMount(){
       if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
