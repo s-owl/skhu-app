@@ -3,6 +3,7 @@ import ListItem from '../components/listitem';
 import {View, Text, FlatList, ActivityIndicator} from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
+import {ThemeText} from '../components/components';
 
 
 export default class ScholarshipHistory extends Component{
@@ -40,14 +41,14 @@ export default class ScholarshipHistory extends Component{
         );
       }else{
         return(
-          <FlatList style={{backgroundColor: 'white'}}
+          <FlatList
             data={this.state.history}
             renderItem={({item})=>(
               <ListItem>
-                <Text>{item.year}년 {item.grade}학년 {item.semester}</Text>
-                <Text style={{fontWeight: 'bold'}}>{item.scholarship_name} - {item.order}</Text>
-                <Text>입학장학 {item.amount_entrance}원, 수업장학 {item.amount_class}원 {item.benefit_type}</Text>
-                <Text>{item.note}</Text>
+                <ThemeText>{item.year}년 {item.grade}학년 {item.semester}</ThemeText>
+                <ThemeText style={{fontWeight: 'bold'}}>{item.scholarship_name} - {item.order}</ThemeText>
+                <ThemeText>입학장학 {item.amount_entrance}원, 수업장학 {item.amount_class}원 {item.benefit_type}</ThemeText>
+                <ThemeText>{item.note}</ThemeText>
               </ListItem>
             )}
           />
