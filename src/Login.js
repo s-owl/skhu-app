@@ -10,14 +10,13 @@ import ChunkSecureStore from './tools/chunkSecureStore';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'react-native-snackbar-component';
-import {CardView} from './components/components';
+import {CardView, ThemeText} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
 import {ErrorModal} from './components/errorModal';
 import {HelpModal} from './components/helpModal';
 import moment from 'moment';
-
-
+import {Appearance} from 'react-native-appearance';
 
 export default class Login extends Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -76,7 +75,7 @@ export default class Login extends Component {
     }else{
       logInContainer = (
         <View>
-          <Text style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</Text>
+          <ThemeText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemeText>
           <TextInput style={ styles.login_input } placeholder='아이디(학번) 입력'
             underlineColorAndroid="transparent"
             returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
@@ -100,7 +99,7 @@ export default class Login extends Component {
             this.runLogInProcess(id, pw);
           }} style={{backgroundColor: '#569f59', justifyContent: 'center', flexDirection: 'row'}}>
             <MaterialCommunityIcons name={'login'} size={16} color={'white'} style={{marginRight: 8}}/>
-            <Text style={{color: 'white'}}>Log In</Text>
+            <ThemeText style={{color: 'white'}}>Log In</ThemeText>
           </CardView>
         </View>
       );
@@ -115,17 +114,19 @@ export default class Login extends Component {
           }
         }}>
           <View style={ styles.footer }>
-            <Text>여기를 눌러 도움 얻기</Text>
-            <Text>(C)2018-Present Sleepy OWL</Text>
-            <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
+            <ThemeText>여기를 눌러 도움 얻기</ThemeText>
+            <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
+            <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}}
+              source={ require('../assets/imgs/Sowl_Logo.png') }/>
           </View>
         </Touchable>
       );
     }else{
       helpButton = (
         <View style={ styles.footer }>
-          <Text>(C)2018-Present Sleepy OWL</Text>
-          <Image style={{width: 60, height: 60}} source={ require('../assets/imgs/Sowl_Logo.png') }/>
+          <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
+          <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}} 
+            source={ require('../assets/imgs/Sowl_Logo.png') }/>
         </View>
       );
     }
@@ -231,8 +232,6 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    // flexDirection: 'column',
   },
   title_container: {
     flex: 1,
@@ -248,17 +247,17 @@ const styles = StyleSheet.create({
   },
   login_container: {
     flex: 1,
-    backgroundColor: 'white',
     marginLeft: 20,
     marginRight: 20,
     paddingBottom: 140
   },
   login_input: {
     height: 50,
-    backgroundColor: 'rgba(220, 220, 220, 0.8)',
+    backgroundColor: Appearance.getColorScheme() === 'dark'? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
     marginBottom: 15,
     paddingHorizontal: 20,
-    borderRadius: 10
+    borderRadius: 10,
+    color: Appearance.getColorScheme() === 'dark'? 'white':'black',
   },
   button_container: {
     height: 60,

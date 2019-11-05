@@ -27,7 +27,7 @@ import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
 import {Settings, PinRecovery, ChangePin} from './screens/settings';
-import {Appearance, AppearanceProvider, useColorScheme} from 'react-native-appearance';
+import {Appearance} from 'react-native-appearance';
 
 
 const HomeStack = createStackNavigator(
