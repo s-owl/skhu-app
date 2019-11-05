@@ -3,7 +3,7 @@ import {
   Text, View, Image, Platform, AsyncStorage,
   ScrollView, SafeAreaView, ActivityIndicator, 
 } from 'react-native';
-import {CardView} from './components/components';
+import {CardView, ThemeText} from './components/components';
 import ForestApi from './tools/apis';
 import SummaryWidget from './components/summaryWidget';
 import BuildConfigs from './config';
@@ -32,8 +32,11 @@ export default class Main extends Component {
   }
   render() {
     const topMargin = (Platform.OS == 'ios')? 20 : 50;
+    // let colorScheme = useColorScheme();
+    let colorScheme = 'dark';
+    const backgroundColor = (colorScheme==='dark')? 'black' : 'whitesmoke';
     return (
-      <SafeAreaView style={{backgroundColor: 'whitesmoke'}}>
+      <SafeAreaView style={{backgroundColor: backgroundColor}}>
         <ScrollView>
           <View style={{marginTop: topMargin, padding: 16}}>
             <SummaryWidget />
@@ -50,15 +53,15 @@ export default class Main extends Component {
               <ProfileButton onPress={() => this.localAuth.current.startAuth()}/>
             </View>
 
-            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>다음 강의</Text>
+            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>다음 강의</ThemeText>
             <NextClassInfo dbHelper={this.db} onPress={() => {
               this.props.navigation.navigate('Timetable');
             }} />
-            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학사 일정</Text>
+            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학사 일정</ThemeText>
             <MonthlySchedule onPress={() => {
               this.props.navigation.navigate('Schedules');
             }} />
-            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학식</Text>
+            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학식</ThemeText>
             <Meal onPress={() => {
               this.props.navigation.navigate('Meal');
             }} />
@@ -117,7 +120,7 @@ class ProfileButton extends Component{
           source={this.state.image}
           onError={(error)=>console.log(error)}
         />
-        <Text style={{padding: 8}}>{this.state.name}</Text>
+        <ThemeText style={{padding: 8}}>{this.state.name}</ThemeText>
       </Touchable>
     );
   }
@@ -125,15 +128,18 @@ class ProfileButton extends Component{
 
 class ShortcutButton extends Component{
   render(){
+  // let colorScheme = useColorScheme();
+    let colorScheme = 'dark';
+    const textColor = (colorScheme==='dark')? 'white' : 'black';
     return(
       <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
         onPress={this.props.onPress}>
-        <MaterialIcons name={this.props.icon} size={32}
+        <MaterialIcons name={this.props.icon} size={32} color={textColor}
           style={{borderRadius: 24,
             borderColor: 'lightgrey',
             borderWidth: 1,
             padding: 8}} />
-        <Text style={{padding: 8}}>{this.props.label}</Text>
+        <ThemeText style={{padding: 8}}>{this.props.label}</ThemeText>
       </Touchable>
     );
   }
@@ -183,9 +189,9 @@ class NextClassInfo extends Component {
     } else {
       content = (
         <View>
-          <Text style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</Text>
-          <Text style={{fontSize: 20}}>{this.state.time}</Text>
-          <Text>{this.state.attendance}</Text>
+          <ThemeText style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</ThemeText>
+          <ThemeText style={{fontSize: 20}}>{this.state.time}</ThemeText>
+          <ThemeText>{this.state.attendance}</ThemeText>
         </View>
       );
     }
@@ -240,8 +246,8 @@ class MonthlySchedule extends Component {
       content = (
         <View>
           <View style={{flexDirection: 'row'}}>
-            <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
-            <Text style={{flex: 1}}>{this.state.contents}</Text>
+            <ThemeText style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</ThemeText>
+            <ThemeText style={{flex: 1}}>{this.state.contents}</ThemeText>
           </View>
         </View>
       );
@@ -289,25 +295,28 @@ class Meal extends Component {
       );
     }
     else {
+      // let colorScheme = useColorScheme();
+      let colorScheme = 'dark';
+      const textColor = (colorScheme==='dark')? 'white' : 'black';
       content = (
         <View>
           <View style={{flexDirection: 'row'}}>
-            <MaterialCommunityIcons name="rice" size={20}/>
-            <Text style={{marginStart: 5}}>{meal.day} 식단</Text>
+            <MaterialCommunityIcons name="rice" color={textColor} size={20}/>
+            <ThemeText style={{marginStart: 5}}>{meal.day} 식단</ThemeText>
           </View>
           <View style={{flexDirection: 'column', marginTop: 10}}>
             <View style={{flexDirection: 'row'}}>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>학식</Text>
-                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.a.diet}</Text>
+                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>학식</ThemeText>
+                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.a.diet}</ThemeText>
               </CardView>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>일품</Text>
-                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.b.diet}</Text>
+                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>일품</ThemeText>
+                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.b.diet}</ThemeText>
               </CardView>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>석식</Text>
-                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.dinner.a.diet}</Text>
+                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>석식</ThemeText>
+                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.dinner.a.diet}</ThemeText>
               </CardView>
             </View>
           </View>

@@ -3,6 +3,7 @@ import {
   View, Text
 } from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {ThemeText} from './components';
 
 class WeatherUtils{
   static fetchWeatherData(lat, lon, unit, appid){
@@ -49,33 +50,36 @@ class WeatherUtils{
   }
 
   static getIconForCode(code, size=10){
+    // let colorScheme = useColorScheme();
+    let colorScheme = 'dark';
+    const textColor = (colorScheme==='dark')? 'white' : 'black';
     if(code>=200 && code<300){
-      return(<MaterialCommunityIcons size={size} name="weather-lightning"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-lightning"/>);
     }else if(code>=300 && code<400){
-      return(<MaterialCommunityIcons size={size} name="weather-pouring"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-pouring"/>);
     }else if(code>=500 && code<=504){
-      return(<MaterialCommunityIcons size={size} name="weather-rainy"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-rainy"/>);
     }else if(code==511){
-      return(<MaterialCommunityIcons size={size} name="weather-snowy-rainy"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-snowy-rainy"/>);
     }else if(code>511 && code<600){
-      return(<MaterialCommunityIcons size={size} name="weather-pouring"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-pouring"/>);
     }else if(code>=600 && code<700){
-      return(<MaterialCommunityIcons size={size} name="weather-snowy"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-snowy"/>);
     }else if(code>=700 && code<800){
-      return(<MaterialCommunityIcons size={size} name="weather-fog"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-fog"/>);
     }else if(code==800){
       let hour = new Date().getHours();
       if(hour>=5 && hour<18){
-        return(<MaterialCommunityIcons size={size} name="weather-sunny"/>);
+        return(<MaterialCommunityIcons color={textColor} size={size} name="weather-sunny"/>);
       }else{
-        return(<MaterialCommunityIcons size={size} name="weather-night"/>);
+        return(<MaterialCommunityIcons color={textColor} size={size} name="weather-night"/>);
       }
     }else if(code==801){
-      return(<MaterialCommunityIcons size={size} name="weather-partlycloudy"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-partlycloudy"/>);
     }else if(code>801 && code<=804){
-      return(<MaterialCommunityIcons size={size} name="weather-cloudy"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-cloudy"/>);
     }else{
-      return(<MaterialCommunityIcons size={size} name="weather-sunny"/>);
+      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-sunny"/>);
     }
   }
 }
@@ -128,8 +132,8 @@ class SmallWeatherWidget extends Component{
       <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', padding: 8}}>
         {this.state.current.icon}
         <View style={{flexDirection: 'column', flex: 0, alignItems: 'center'}}>
-          <Text style={{fontSize: 10, marginLeft: 4}}>{this.state.current.name}</Text>
-          <Text style={{fontSize: 10, marginLeft: 4}}>{this.state.current.temp}°</Text>
+          <ThemeText style={{fontSize: 10, marginLeft: 4}}>{this.state.current.name}</ThemeText>
+          <ThemeText style={{fontSize: 10, marginLeft: 4}}>{this.state.current.temp}°</ThemeText>
         </View>
       </View>
     );
