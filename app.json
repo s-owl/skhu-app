@@ -32,6 +32,7 @@
       "buildNumber": "0.3.1",
       "icon": "./assets/imgs/ios.png",
       "supportsTablet": true,
+      "userInterfaceStyle": "automatic",
       "infoPlist": {
         "NSFaceIDUsageDescription": "민감한 개인정보나 본인 인증 관련 기능 사용 전 인증을 하기 위해 사용됩니다.\n To authenticate before accessing personal data or personal authentication relates features",
         "NSLocationWhenInUseUsageDescription": "현재 위치 정보를 얻어 해당 위치의 날씨 정보를 표시하기 위해 사용됩나다.\n To provide weather informations for your current location.",

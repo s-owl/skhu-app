@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {AppearanceProvider} from 'react-native-appearance';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import NavigationService from './src/tools/NavigationService';
@@ -35,9 +35,11 @@ Sentry.init({
 export default class App extends Component {
   render() {
     return (
-      <AppContainer ref={(navRef)=>{
-        NavigationService.setTopLevelNavigator(navRef);
-      }}/>
+      <AppearanceProvider>
+        <AppContainer ref={(navRef)=>{
+          NavigationService.setTopLevelNavigator(navRef);
+        }}/>
+      </AppearanceProvider>
     );
   }
 }
