@@ -13,7 +13,7 @@ import FetchHelper from './tools/fetchHelper';
 import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons'; 
 import Touchable from './components/touchable';
 import LocalAuth from './components/localauth';
-import {Appearance, AppearanceProvider, useColorScheme} from 'react-native-appearance';
+import {Appearance, useColorScheme} from 'react-native-appearance';
 
 export default class Main extends Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -33,8 +33,7 @@ export default class Main extends Component {
   }
   render() {
     const topMargin = (Platform.OS == 'ios')? 20 : 50;
-    // let colorScheme = useColorScheme();
-    let colorScheme = 'dark';
+    let colorScheme = Appearance.getColorScheme();
     const backgroundColor = (colorScheme==='dark')? 'black' : 'whitesmoke';
     return (
       <SafeAreaView style={{backgroundColor: backgroundColor}}>
@@ -129,7 +128,6 @@ class ProfileButton extends Component{
 
 function ShortcutButton(props){
   let colorScheme = useColorScheme();
-  // let colorScheme = 'dark';
   const textColor = (colorScheme==='dark')? 'white' : 'black';
   return(
     <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
@@ -295,8 +293,7 @@ class Meal extends Component {
       );
     }
     else {
-      // let colorScheme = useColorScheme();
-      let colorScheme = 'dark';
+      let colorScheme = Appearance.getColorScheme();
       const textColor = (colorScheme==='dark')? 'white' : 'black';
       content = (
         <View>

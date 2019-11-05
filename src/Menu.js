@@ -37,7 +37,7 @@ render() {
       <SectionList style={{height: '100%'}}
         renderItem={({item, index, section}) => (
           <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
-            <MaterialCommunityIcons color={Appearance.getColorScheme()? 'white' : 'black'}name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
+            <MaterialCommunityIcons color={Appearance.getColorScheme()==='dark'? 'white' : 'black'}name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
             <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
           </ListItem>
         )}
