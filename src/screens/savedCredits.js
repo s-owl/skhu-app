@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import ListItem from '../components/listitem';
-import {View, Text, FlatList, ActivityIndicator} from 'react-native';
+import {View, FlatList, ActivityIndicator} from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
+import {ThemeText} from '../components/components';
 
 
 export default class SavedCredits extends Component{
@@ -48,46 +49,46 @@ export default class SavedCredits extends Component{
         );
       }else{
         return(
-          <FlatList style={{backgroundColor: 'white'}}
+          <FlatList
             ListHeaderComponent={()=>(
               <View>
                 <ListItem isHeader={true}>
-                  <Text>학점세이브 상태</Text>
+                  <ThemeText>학점세이브 상태</ThemeText>
                 </ListItem>
                 <ListItem style={{flex: 1, flexDirection: 'row'}}>
                   <View style={{flex: 1}}>
-                    <Text style={{fontWeight: 'bold'}}>누적학점</Text>
-                    <Text>{this.state.status.accrued}</Text>
+                    <ThemeText style={{fontWeight: 'bold'}}>누적학점</ThemeText>
+                    <ThemeText>{this.state.status.accrued}</ThemeText>
                   </View>
                   <View style={{flex: 1}}>
-                    <Text style={{fontWeight: 'bold'}}>누적학점 기준(누적시기)</Text>
-                    <Text>{this.state.status.accrued_criteria}</Text>
+                    <ThemeText style={{fontWeight: 'bold'}}>누적학점 기준(누적시기)</ThemeText>
+                    <ThemeText>{this.state.status.accrued_criteria}</ThemeText>
                   </View>
                 </ListItem>
                 <ListItem style={{flex: 1, flexDirection: 'row'}}>
                   <View style={{flex: 1}}>
-                    <Text style={{fontWeight: 'bold'}}>사용학점</Text>
-                    <Text>{this.state.status.used}</Text>
+                    <ThemeText style={{fontWeight: 'bold'}}>사용학점</ThemeText>
+                    <ThemeText>{this.state.status.used}</ThemeText>
                   </View>
                   <View style={{flex: 2}}>
-                    <Text style={{fontWeight: 'bold'}}>사용학점 기준(사용시기)</Text>
-                    <Text>{this.state.status.used_criteria}</Text>
+                    <ThemeText style={{fontWeight: 'bold'}}>사용학점 기준(사용시기)</ThemeText>
+                    <ThemeText>{this.state.status.used_criteria}</ThemeText>
                   </View>
                   <View style={{flex: 1}}>
-                    <Text style={{fontWeight: 'bold'}}>사용 가능 학점</Text>
-                    <Text>{this.state.status.available}</Text>
+                    <ThemeText style={{fontWeight: 'bold'}}>사용 가능 학점</ThemeText>
+                    <ThemeText>{this.state.status.available}</ThemeText>
                   </View>
                 </ListItem>
                 <ListItem isHeader={true}>
-                  <Text>학점 세이브 상세사항</Text>
+                  <ThemeText>학점 세이브 상세사항</ThemeText>
                 </ListItem>
               </View>
             )}
             data={this.state.details}
             renderItem={({item})=>(
               <ListItem>
-                <Text style={{fontWeight: 'bold'}}>{item.year}년 {item.semester}</Text>
-                <Text>세이브 학점: {item.saved}, 사용 학점: {item.used}</Text>
+                <ThemeText style={{fontWeight: 'bold'}}>{item.year}년 {item.semester}</ThemeText>
+                <ThemeText>세이브 학점: {item.saved}, 사용 학점: {item.used}</ThemeText>
               </ListItem>
             )}
           />
