@@ -7,6 +7,7 @@ import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
 import {Map} from 'immutable';
+import {ThemeText} from '../components/components';
 
 
 export class ProfessorTimetable extends Component{
@@ -43,7 +44,7 @@ export class ProfessorTimetable extends Component{
     }else if(this.state.timetable.length <= 0){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
-          <Text>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</Text>
+          <ThemeText>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</ThemeText>
         </View>
       );
     }else{
@@ -244,13 +245,13 @@ export class SearchProfessors extends Component{
     const condition = this.getCondition();
 
     return(
-      <View style={{backgroundColor: 'white'}}>
+      <View>
         <SearchBar
           dataType={this.dataType}
           initParam={this.initParam}
           onChange={this.handleCondition.bind(this)} 
         />
-        <FlatList style={{backgroundColor: 'white'}}
+        <FlatList
           ref="itemList"
           data={display.get('result')}
           ListFooterComponent={()=>(
@@ -273,8 +274,8 @@ export class SearchProfessors extends Component{
                 professorId: item.professorId
               });
             }}>
-              <Text style={{fontWeight: 'bold'}}>{item.professorName}({item.position})</Text>
-              <Text>{item.department} | {item.state} | {item.professorId}</Text>
+              <ThemeText style={{fontWeight: 'bold'}}>{item.professorName}({item.position})</ThemeText>
+              <ThemeText>{item.department} | {item.state} | {item.professorId}</ThemeText>
             </ListItem>
           }
         />

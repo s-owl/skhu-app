@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
 import ListItem from '../components/listitem';
+import {ThemeText} from '../components/components';
 import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
 import BuildConfigs from '../config';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
@@ -43,7 +44,7 @@ export class LectureRoomTimetable extends Component{
     }else if(this.state.timetable.length <= 0){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
-          <Text>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</Text>
+          <ThemeText>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</ThemeText>
         </View>
       );
     }else{
@@ -249,13 +250,13 @@ export class SearchLectureRooms extends Component{
     const condition = this.getCondition();
 
     return(
-      <View style={{backgroundColor: 'white'}}>
+      <View>
         <SearchBar
           dataType={this.dataType}
           initParam={this.initParam}
           onChange={this.handleCondition.bind(this)} 
         />
-        <FlatList style={{backgroundColor: 'white'}}
+        <FlatList
           ref="itemList"
           data={display.get('result')}
           ListFooterComponent={()=>(
@@ -278,8 +279,8 @@ export class SearchLectureRooms extends Component{
                 roomNumber: item.roomNumber
               });
             }}>
-              <Text style={{fontWeight: 'bold'}}>{item.roomNumber} - {item.roomName}</Text>
-              <Text>{item.capacity}명 수용가능</Text>
+              <ThemeText style={{fontWeight: 'bold'}}>{item.roomNumber} - {item.roomName}</ThemeText>
+              <ThemeText>{item.capacity}명 수용가능</ThemeText>
             </ListItem>
           }
         />

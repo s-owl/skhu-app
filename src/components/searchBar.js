@@ -5,8 +5,10 @@ import {
 } from 'react-native';
 import {Map, List} from 'immutable';
 import {MaterialIcons} from '@expo/vector-icons';
-
+import {ThemeText} from './components';
 import ListItem from './listitem';
+import {Appearance} from 'react-native-appearance';
+
 
 // 픽커와 형식 간의 정렬을 통일하기 위한 함수
 export function SortByCodes(pickerValues) {
@@ -101,7 +103,7 @@ class SearchBar extends Component {
               onConfirm: this.handleCondition.bind(this)
             });
           }}>
-          <Text style={{flex: 1}}>
+          <ThemeText style={{flex: 1}}>
             {this.getCondition()
               .map((value, key) => {
                 if (typeof value == 'string') {
@@ -114,8 +116,9 @@ class SearchBar extends Component {
               })
               .toList()
               .toJS().join(', ')}
-          </Text>
-          <MaterialIcons name="search" size={20} style={{flex: 0}}/>
+          </ThemeText>
+          <MaterialIcons name="search" size={20} style={{flex: 0}}
+            color={Appearance.getColorScheme()==='dark'?'white':'black'}/>
         </ListItem>
       </View>);
   }

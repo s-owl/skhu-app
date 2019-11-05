@@ -5,6 +5,8 @@ import DateTools from '../tools/datetools';
 import moment from 'moment';
 import {InfoModal} from './infoModal';
 import ListItem from './listitem';
+import {ThemeText} from './components';
+import {Appearance} from 'react-native-appearance';
 
 const timeTemplate = 'HH:mm:ss';
 
@@ -130,16 +132,17 @@ class Timetable extends Component {
 
   render() {
     return (
-      <ScrollView style={{backgroundColor: 'white'}}>
+      <ScrollView>
         <View style={{flex: 1, flexDirection: 'row'}}>
           {this.props.timetable.map((item, i)=>{
             return(
               <View style={{flex: 1}}>
-                <View style={{height: item.height, backgroundColor: 'white', padding: 2}}>
-                  <Text style={{color: 'black'}}>{DateTools.dayOfWeekNumToStr(i)}</Text>
+                <View style={{height: item.height, padding: 2}}>
+                  <ThemeText style={{color: 'black'}}>{DateTools.dayOfWeekNumToStr(i)}</ThemeText>
                 </View>
                 {item.map((subject, j)=>{
-                  let bgColor = subject.isEmptyCell ? 'rgba(0, 0, 0, 0)' : 'silver';
+                  let bgColor = subject.isEmptyCell ? 
+                    'rgba(0, 0, 0, 0)' : (Appearance.getColorScheme()==='dark'? '#2a2a2a':'silver');
                   if(subject.isEmptyCell){
                     return(
                       <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}
@@ -166,10 +169,10 @@ class Timetable extends Component {
                             classChooser: true});
                         }}>
                         <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}>
-                          <Text style={{color: 'black', fontSize: 12}}>{subject.name[0]}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{subject.time}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{subject.room[0]}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{more}</Text>
+                          <ThemeText style={{fontSize: 12}}>{subject.name[0]}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{subject.time}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{subject.room[0]}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{more}</ThemeText>
                         </View>
                       </TouchableHighlight>
                     );
@@ -185,9 +188,9 @@ class Timetable extends Component {
                           });
                         }}>
                         <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}>
-                          <Text style={{color: 'black', fontSize: 12}}>{subject.name}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{subject.time}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{subject.room}</Text>
+                          <ThemeText style={{fontSize: 12}}>{subject.name}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{subject.time}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{subject.room}</ThemeText>
                         </View>
                       </TouchableHighlight>
                     );
@@ -205,9 +208,9 @@ class Timetable extends Component {
               {label: '닫기', onPress: ()=>this.setState({classChooser: false})}
             ]}>
             <ListItem style={{alignItems: 'center'}}>
-              <Text>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</Text>
+              <ThemeText>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</ThemeText>
             </ListItem>
-            <FlatList style={{backgroundColor: 'white'}}
+            <FlatList
               data={this.state.overlappedClasses}
               ListFooterComponent={()=>(
                 <ListItem style={{height: 50}}/>
@@ -222,8 +225,8 @@ class Timetable extends Component {
                   });
                   this.setState({classChooser: false});
                 }}>
-                  <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
-                  <Text>{item.code}</Text>
+                  <ThemeText style={{fontWeight: 'bold'}}>{item.name}</ThemeText>
+                  <ThemeText>{item.code}</ThemeText>
                 </ListItem>
               }
             />
