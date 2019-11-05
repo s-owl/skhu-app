@@ -11,14 +11,12 @@ import {useColorScheme} from 'react-native-appearance';
 
 function ThemeText(props){
   let colorScheme = useColorScheme();
-  // let colorScheme = 'dark';
   const textColor = (colorScheme==='dark')? 'white' : 'black';
   return(<Text style={[{color: textColor}, props.style]}>{props.children}</Text>);
 }
 
 function CardView(props){
   let colorScheme = useColorScheme();
-  // let colorScheme = 'dark';
   let cardViewStyle;
   if(props.outlined){
     if(colorScheme === 'dark'){
@@ -124,7 +122,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 8,
     marginBottom: 8,
-    backgroundColor: '#202020',
+    backgroundColor: '#2a2a2a',
     color: 'white'
   },
   outlinedCardView: {
@@ -143,7 +141,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 8,
     marginBottom: 8,
-    backgroundColor: '#202020',
+    backgroundColor: '#2a2a2a',
     color: 'white'
   },
   actionsLabel: {
