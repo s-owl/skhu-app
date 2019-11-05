@@ -4,6 +4,8 @@ import {ScrollView, SafeAreaView, View, Text, ActivityIndicator, FlatList} from 
 import FetchHelper from '../tools/fetchHelper';
 import BuildConfigs from '../config';
 import {MaterialCommunityIcons} from '@expo/vector-icons';  //아이콘임포트
+import {Appearance} from 'react-native-appearance';
+import {ThemeText} from '../components/components';
 
 
 export default class Meal extends Component {
@@ -46,28 +48,30 @@ export default class Meal extends Component {
     }
     else {
       return (
-        <SafeAreaView style={{backgroundColor: 'whitesmoke'}}>
+        <SafeAreaView
+          style={{backgroundColor: Appearance.getColorScheme()==='dark'?'black':'whitesmoke'}}>
           <ScrollView>
             <FlatList
               data={meals}
               renderItem={({item}) => (
                 <View style={{flexDirection: 'column', padding: 16}}>
                   <View style={{flexDirection: 'row', marginBottom: 5}}>
-                    <MaterialCommunityIcons name="rice" size={20}/>
-                    <Text style={{marginStart: 5}}>{item.day} 식단</Text>
+                    <MaterialCommunityIcons name="rice" size={20}
+                      color={Appearance.getColorScheme()==='dark'?'white':'black'}/>
+                    <ThemeText style={{marginStart: 5}}>{item.day} 식단</ThemeText>
                   </View>
                   <View style={{flexDirection: 'row'}}>
-                    <CardView style={{backgroundColor: 'white', margin: 5, flex: 1}}>
-                      <Text style={{fontWeight: 'bold', fontSize: 16}}>학식</Text>
-                      <Text style={{marginBottom: 10, marginTop: 5}}>{item.lunch.a.diet}</Text>
+                    <CardView style={{margin: 5, flex: 1}}>
+                      <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>학식</ThemeText>
+                      <ThemeText style={{marginBottom: 10, marginTop: 5}}>{item.lunch.a.diet}</ThemeText>
                     </CardView>
-                    <CardView style={{backgroundColor: 'white', margin: 5, flex: 1}}>
-                      <Text style={{fontWeight: 'bold', fontSize: 16}}>일품</Text>
-                      <Text style={{marginBottom: 10, marginTop: 5}}>{item.lunch.b.diet}</Text>
+                    <CardView style={{margin: 5, flex: 1}}>
+                      <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>일품</ThemeText>
+                      <ThemeText style={{marginBottom: 10, marginTop: 5}}>{item.lunch.b.diet}</ThemeText>
                     </CardView>
-                    <CardView style={{backgroundColor: 'white', margin: 5, flex: 1}}>
-                      <Text style={{fontWeight: 'bold', fontSize: 16}}>석식</Text>
-                      <Text style={{marginBottom: 10, marginTop: 5}}>{item.dinner.a.diet}</Text>
+                    <CardView style={{margin: 5, flex: 1}}>
+                      <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>석식</ThemeText>
+                      <ThemeText style={{marginBottom: 10, marginTop: 5}}>{item.dinner.a.diet}</ThemeText>
                     </CardView>
                   </View>
                 </View>
