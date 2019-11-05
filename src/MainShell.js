@@ -48,7 +48,7 @@ const HomeStack = createStackNavigator(
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: 'black'
+        color: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
       },
     },
   }
@@ -81,7 +81,7 @@ const MenuStack = createStackNavigator(
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: 'black'
+        color: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
       },
     },
   }
@@ -104,7 +104,6 @@ const TabNavigator = createBottomTabNavigator(
         }
         // You can return any component that you like here! We usually use an
         // icon component from react-native-vector-icons
-        let bgColor = Appearance.getColorScheme() === 'dark'? '#202020': 'white';
         return (
           <View>
             <MaterialIcons name={iconName} size={25} color={tintColor} />
