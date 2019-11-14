@@ -2,7 +2,7 @@
 import React, {Component} from 'react'; 
 import {
   StyleSheet, View, Modal, KeyboardAvoidingView,
-  SafeAreaView, Text, ScrollView 
+  SafeAreaView, Text, ScrollView
 } from 'react-native';
 import Touchable from './touchable';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -13,6 +13,32 @@ function ThemeText(props){
   let colorScheme = useColorScheme();
   const textColor = (colorScheme==='dark')? 'white' : 'black';
   return(<Text style={[{color: textColor}, props.style]}>{props.children}</Text>);
+}
+
+function ThemeBackground(props){
+  let colorScheme = useColorScheme();
+  let backgroundColor = (colorScheme==='dark')? 'black' :
+    (props.hasCardViews? 'whitesmoke' : 'white');
+  switch(props.viewType){
+  case 'view':
+    return(
+      <ScrollView style={[{backgroundColor: backgroundColor}, props.style]}>
+        {props.children}
+      </ScrollView>
+    );
+  case 'scrollView':  
+    return(
+      <View style={[{backgroundColor: backgroundColor}, props.style]}>
+        {props.children}
+      </View>
+    );
+  case 'safeAreaView':  
+    return(
+      <SafeAreaView style={[{backgroundColor: backgroundColor}, props.style]}>
+        {props.children}
+      </SafeAreaView>
+    );
+  }
 }
 
 function CardView(props){
@@ -150,5 +176,5 @@ const styles = StyleSheet.create({
 });
 
 export{
-  CardView, BottomModal, ThemeText
+  CardView, BottomModal, ThemeText, ThemeBackground
 };
