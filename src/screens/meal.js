@@ -5,7 +5,7 @@ import FetchHelper from '../tools/fetchHelper';
 import BuildConfigs from '../config';
 import {MaterialCommunityIcons} from '@expo/vector-icons';  //아이콘임포트
 import {Appearance} from 'react-native-appearance';
-import {ThemeText} from '../components/components';
+import {ThemeText, ThemeBackground} from '../components/components';
 
 
 export default class Meal extends Component {
@@ -48,8 +48,7 @@ export default class Meal extends Component {
     }
     else {
       return (
-        <SafeAreaView
-          style={{backgroundColor: Appearance.getColorScheme()==='dark'?'black':'whitesmoke'}}>
+        <ThemeBackground type="safeAreaView" hasCardViews={true}>
           <ScrollView>
             <FlatList
               data={meals}
@@ -78,7 +77,7 @@ export default class Meal extends Component {
               )}
             />
           </ScrollView>
-        </SafeAreaView>
+        </ThemeBackground>
       );
     }
   }

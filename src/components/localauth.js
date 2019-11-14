@@ -6,7 +6,7 @@ import Touchable from './touchable';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
 import {Appearance} from 'react-native-appearance';
-import {ThemeText} from './components';
+import {ThemeText, ThemeBackground} from './components';
 
 const initState = {
   visible: false,
@@ -155,12 +155,11 @@ export default class LocalAuth extends Component {
   }
   render(){
     const textColor = Appearance.getColorScheme() === 'dark'? 'white':'black';
-    const bgColor = Appearance.getColorScheme() === 'dark'? 'black':'white';
     return(
       <Modal
         animationType="fade"
         visible={this.state.visible}>
-        <View style={{paddingTop: 30, padding: 16, flex: 1, backgroundColor: bgColor}}>
+        <ThemeBackground type="view" style={{paddingTop: 30, padding: 16, flex: 1}}>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <MaterialIcons color={textColor} name={this.state.icon} size={32} style={{padding: 16}}/>
             <ThemeText>{this.state.msg}</ThemeText>
@@ -208,7 +207,7 @@ export default class LocalAuth extends Component {
               </ListItem>
             </View>
           </View>
-        </View>
+        </ThemeBackground>
       </Modal>
     );
   }

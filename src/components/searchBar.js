@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import {withNavigation} from 'react-navigation';
-import {
-  View, Text
-} from 'react-native';
 import {Map, List} from 'immutable';
 import {MaterialIcons} from '@expo/vector-icons';
-import {ThemeText} from './components';
+import {ThemeText, ThemeBackground} from './components';
 import ListItem from './listitem';
 import {Appearance} from 'react-native-appearance';
 
@@ -93,7 +90,7 @@ class SearchBar extends Component {
 
   render() {
     return(
-      <View style={{backgroundColor: 'white'}}>
+      <ThemeBackground type="view">
         <ListItem style={{flex: 0, flexDirection: 'row'}}
           elevate={true}
           onPress={()=>{
@@ -120,7 +117,7 @@ class SearchBar extends Component {
           <MaterialIcons name="search" size={20} style={{flex: 0}}
             color={Appearance.getColorScheme()==='dark'?'white':'black'}/>
         </ListItem>
-      </View>);
+      </ThemeBackground>);
   }
 }
 

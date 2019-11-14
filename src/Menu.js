@@ -33,7 +33,7 @@ showSnackbar(msg){
 }
 render() {
   return(
-    <SafeAreaView>
+    <ThemeBackground type="safeAreaView">
       <SectionList style={{height: '100%'}}
         renderItem={({item, index, section}) => (
           <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
@@ -122,7 +122,7 @@ render() {
       />
       <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
       <HelpModal ref={this.helpModal}/>
-    </SafeAreaView>
+    </ThemeBackground>
   );
 }
 }

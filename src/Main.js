@@ -3,7 +3,7 @@ import {
   Text, View, Image, Platform, AsyncStorage,
   ScrollView, SafeAreaView, ActivityIndicator, 
 } from 'react-native';
-import {CardView, ThemeText} from './components/components';
+import {CardView, ThemeText, ThemeBackground} from './components/components';
 import ForestApi from './tools/apis';
 import SummaryWidget from './components/summaryWidget';
 import BuildConfigs from './config';
@@ -33,10 +33,8 @@ export default class Main extends Component {
   }
   render() {
     const topMargin = (Platform.OS == 'ios')? 20 : 50;
-    let colorScheme = Appearance.getColorScheme();
-    const backgroundColor = (colorScheme==='dark')? 'black' : 'whitesmoke';
     return (
-      <SafeAreaView style={{backgroundColor: backgroundColor}}>
+      <ThemeBackground type="safeArewView">
         <ScrollView>
           <View style={{marginTop: topMargin, padding: 16}}>
             <SummaryWidget />
@@ -70,7 +68,7 @@ export default class Main extends Component {
           <LocalAuth ref={this.localAuth} 
             onAuthSuccess={()=>this.props.navigation.navigate('Authinfo')}/>
         </ScrollView>
-      </SafeAreaView>
+      </ThemeBackground>
     );
   }
 }

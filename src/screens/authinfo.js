@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Image, Text, ActivityIndicator, Clipboard, Linking} from 'react-native';
-import {CardView, ThemeText} from '../components/components';
+import {CardView, ThemeText, ThemeBackground} from '../components/components';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -26,13 +26,12 @@ export default class Authinfo extends Component{
     };
 
     render(){
-      const backgroundColor = (Appearance.getColorScheme()==='dark')? 'black' : 'whitesmoke';
       return(
-        <ScrollView style={{padding: 8, backgroundColor: backgroundColor}}>
+        <ThemeBackground type="scrollView" hasCardViews={true}>
           <Profile style={{marginTop: 24}}/>
           <ClassInfoCard style={{padding: 8}}/>
           <OtpCard/>
-        </ScrollView>
+        </ThemeBackground>
       );
     }
 }

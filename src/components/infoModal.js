@@ -2,19 +2,18 @@ import React from 'react';
 import {Modal, Text, View, ScrollView} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
-import {ThemeText} from './components';
+import {ThemeText, ThemeBackground} from './components';
 import {useColorScheme} from 'react-native-appearance';
 
 export function InfoModal(props) {
   let textColor = useColorScheme() === 'dark' ? 'white' : 'black';
-  let bgColor = useColorScheme() === 'dark' ? 'black' : 'white';
 
   return(
     <View>
       <Modal
         animationType="slide"
         visible={props.visible}>
-        <View style={{paddingTop: 50, padding: 16, flex: 1, backgroundColor: bgColor}}>
+        <ThemeBackground type="view" style={{paddingTop: 50, padding: 16, flex: 1}}>
           <View style={{padding: 8, alignItems: 'center', flex: 0}}>
             <MaterialCommunityIcons color={textColor} name={props.icon} size={40} style={{padding: 8}}/>
             <ThemeText style={{fontWeight: 'bold', padding: 8, fontSize: 20}}>{props.title}</ThemeText>
@@ -32,7 +31,7 @@ export function InfoModal(props) {
               );
             })}
           </View>
-        </View>
+        </ThemeBackground>
       </Modal>
     </View>);
 }
