@@ -20,8 +20,15 @@ export class HelpModal extends Component{
     this.state = {
       visible: false,
       errorMsg: '',
-      isDuringLogin: false
+      isDuringLogin: false,
+      textColor: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
     };
+  }
+
+  componentDidMount(){
+    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
+    });
   }
 
   open(errorMsg='', isDuringLogin=false){
@@ -87,7 +94,7 @@ export class HelpModal extends Component{
         }
       ];
     }
-    const textColor = Appearance.getColorScheme() === 'dark'? 'white' : 'black';
+    
     return(
       <InfoModal
         visible={this.state.visible}
@@ -99,7 +106,7 @@ export class HelpModal extends Component{
         <SectionList style={{height: '100%'}}
           renderItem={({item, index, section}) => (
             <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
-              <MaterialCommunityIcons color={textColor} name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
+              <MaterialCommunityIcons color={this.state.textColor} name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
               <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
             </ListItem>
           )}

@@ -17,7 +17,8 @@ const initState = {
   display: '______',
   msg: '',
   pinRegistered: false,
-  icon: 'lock-outline'
+  icon: 'lock-outline',
+  textColor: Appearance.getColorScheme() === 'dark'? 'white':'black'
 };
 
 
@@ -25,6 +26,12 @@ export default class LocalAuth extends Component {
   constructor(props){
     super(props);
     this.state = initState;
+  }
+
+  componentDidMount(){
+    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
+    });
   }
 
   getDisplayString(len=0){
@@ -154,14 +161,13 @@ export default class LocalAuth extends Component {
     }
   }
   render(){
-    const textColor = Appearance.getColorScheme() === 'dark'? 'white':'black';
     return(
       <Modal
         animationType="fade"
         visible={this.state.visible}>
         <ThemeBackground type="view" style={{paddingTop: 30, padding: 16, flex: 1}}>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <MaterialIcons color={textColor} name={this.state.icon} size={32} style={{padding: 16}}/>
+            <MaterialIcons color={this.state.textColor} name={this.state.icon} size={32} style={{padding: 16}}/>
             <ThemeText>{this.state.msg}</ThemeText>
             <ThemeText style={{fontSize: 32}}>{this.state.display}</ThemeText>
           </View>

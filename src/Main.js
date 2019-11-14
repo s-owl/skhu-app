@@ -259,10 +259,14 @@ class MonthlySchedule extends Component {
 
 //메인 오늘학식
 class Meal extends Component {
-  state = {
-    meal: null,
-    isLoading: true
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      meal: null,
+      isLoading: true,
+      textColor: Appearance.getColorScheme()==='dark'? 'white' : 'black'
+    };
+  }
 
   componentDidMount() {
     FetchHelper.fetchMealsData('').then(meals => {
@@ -275,7 +279,11 @@ class Meal extends Component {
       console.log(meals.length);
       this.setState({
         meal: meals[day],
-        isLoading: false
+        isLoading: false,
+      });
+
+      this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+        this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
       });
     });
   }
@@ -289,14 +297,11 @@ class Meal extends Component {
           <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
         </View>
       );
-    }
-    else {
-      let colorScheme = Appearance.getColorScheme();
-      const textColor = (colorScheme==='dark')? 'white' : 'black';
+    }else {
       content = (
         <View>
           <View style={{flexDirection: 'row'}}>
-            <MaterialCommunityIcons name="rice" color={textColor} size={20}/>
+            <MaterialCommunityIcons name="rice" color={this.state.textColor} size={20}/>
             <ThemeText style={{marginStart: 5}}>{meal.day} 식단</ThemeText>
           </View>
           <View style={{flexDirection: 'column', marginTop: 10}}>

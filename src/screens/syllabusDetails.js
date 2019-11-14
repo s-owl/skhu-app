@@ -24,14 +24,17 @@ export default class SyllabusDetails extends Component{
       semesterCode: this.props.navigation.getParam('semesterCode', ''),
       year: this.props.navigation.getParam('year', ''),
       details: undefined,
-      isLoading: false
+      isLoading: false,
+      textColor: Appearance.getColorScheme() === 'dark'? 'white':'black'
     };
   }
   componentDidMount(){
     this.loadSearchResults();
+    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
+    });
   }
   render(){
-    const textColor = Appearance.getColorScheme() === 'dark'? 'white':'black';
     if(this.state.isLoading){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
@@ -81,7 +84,7 @@ export default class SyllabusDetails extends Component{
                   Linking.openURL(`tel:${details['전화번호']}`);
                 }
               }}>
-                <MaterialIcons color={textColor} name="call" size={20} style={{flex: 0}}/>
+                <MaterialIcons color={this.state.textColor} name="call" size={20} style={{flex: 0}}/>
                 <ThemeText>{details['전화번호']}</ThemeText>
               </ListItem>
               <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{
@@ -89,7 +92,7 @@ export default class SyllabusDetails extends Component{
                   Linking.openURL(`tel:${details['휴대전화번호']}`);
                 }
               }}>
-                <MaterialIcons color={textColor} name="smartphone" size={20} style={{flex: 0}}/>
+                <MaterialIcons color={this.state.textColor} name="smartphone" size={20} style={{flex: 0}}/>
                 <ThemeText>{details['휴대전화번호']}</ThemeText>
               </ListItem>
             </View>
@@ -99,7 +102,7 @@ export default class SyllabusDetails extends Component{
                   Linking.openURL(`mailto:${details['이메일']}`);
                 }
               }}>
-                <MaterialIcons color={textColor} name="email" size={20} style={{flex: 0}}/>
+                <MaterialIcons color={this.state.textColor} name="email" size={20} style={{flex: 0}}/>
                 <ThemeText>{details['이메일']}</ThemeText>
               </ListItem>
               <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{

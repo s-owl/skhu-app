@@ -74,8 +74,15 @@ class SearchBar extends Component {
 
     let init = initCondition(this.dataType, props.initParam);
     this.state = {
-      condition: init
+      condition: init,
+      textColor: Appearance.getColorScheme()==='dark'?'white':'black'
     };
+  }
+
+  componentDidMount(){
+    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
+    });
   }
 
   // 변경시 일어나는 행동을 정의
@@ -115,7 +122,7 @@ class SearchBar extends Component {
               .toJS().join(', ')}
           </ThemeText>
           <MaterialIcons name="search" size={20} style={{flex: 0}}
-            color={Appearance.getColorScheme()==='dark'?'white':'black'}/>
+            color={this.state.textColor}/>
         </ListItem>
       </ThemeBackground>);
   }
