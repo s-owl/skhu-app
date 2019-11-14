@@ -130,10 +130,21 @@ export default class MainShell extends Component {
         header: null // 헤더 비활성화
       };
     };
+
+    constructor(props){
+      super(props);
+      this.state = {
+        theme: Appearance.getColorScheme()
+      };
+    }
     render() {
-      return <AppContainer theme={Appearance.getColorScheme()}/>;
+      return <AppContainer theme={this.state.theme}/>;
     }
     componentDidMount(){
       if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
+      this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+        this.setState({theme: colorScheme});
+      });
     }
+
 }
