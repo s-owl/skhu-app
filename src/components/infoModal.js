@@ -13,7 +13,7 @@ export function InfoModal(props) {
       <Modal
         animationType="slide"
         visible={props.visible}>
-        <ThemeBackground type="view" style={{paddingTop: 50, padding: 16, flex: 1}}>
+        <ThemeBackground style={{paddingTop: 50, padding: 16, flex: 1}}>
           <View style={{padding: 8, alignItems: 'center', flex: 0}}>
             <MaterialCommunityIcons color={textColor} name={props.icon} size={40} style={{padding: 8}}/>
             <ThemeText style={{fontWeight: 'bold', padding: 8, fontSize: 20}}>{props.title}</ThemeText>

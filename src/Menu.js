@@ -41,7 +41,7 @@ export default class Menu extends Component {
   }
   render() {
     return(
-      <ThemeBackground type="safeAreaView">
+      <ThemeBackground viewType="safeAreaView">
         <SectionList style={{height: '100%'}}
           renderItem={({item, index, section}) => (
             <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>

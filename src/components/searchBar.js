@@ -97,7 +97,7 @@ class SearchBar extends Component {
 
   render() {
     return(
-      <ThemeBackground type="view">
+      <ThemeBackground>
         <ListItem style={{flex: 0, flexDirection: 'row'}}
           elevate={true}
           onPress={()=>{

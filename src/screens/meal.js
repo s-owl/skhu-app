@@ -48,7 +48,7 @@ export default class Meal extends Component {
     }
     else {
       return (
-        <ThemeBackground type="safeAreaView" hasCardViews={true}>
+        <ThemeBackground viewType="safeAreaView" hasCardViews={true}>
           <ScrollView>
             <FlatList
               data={meals}

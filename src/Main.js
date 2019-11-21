@@ -34,7 +34,7 @@ export default class Main extends Component {
   render() {
     const topMargin = (Platform.OS == 'ios')? 20 : 50;
     return (
-      <ThemeBackground type="safeArewView">
+      <ThemeBackground viewType="safeArewView">
         <ScrollView>
           <View style={{marginTop: topMargin, padding: 16}}>
             <SummaryWidget />

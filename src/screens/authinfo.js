@@ -27,7 +27,7 @@ export default class Authinfo extends Component{
 
     render(){
       return(
-        <ThemeBackground type="scrollView" hasCardViews={true}>
+        <ThemeBackground viewType="scrollView" hasCardViews={true}>
           <Profile style={{marginTop: 24}}/>
           <ClassInfoCard style={{padding: 8}}/>
           <OtpCard/>

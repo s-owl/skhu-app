@@ -20,12 +20,6 @@ function ThemeBackground(props){
   let backgroundColor = (colorScheme==='dark')? 'black' :
     (props.hasCardViews? 'whitesmoke' : 'white');
   switch(props.viewType){
-  case 'view':
-    return(
-      <ScrollView style={[{backgroundColor: backgroundColor}, props.style]}>
-        {props.children}
-      </ScrollView>
-    );
   case 'scrollView':  
     return(
       <View style={[{backgroundColor: backgroundColor}, props.style]}>
@@ -37,6 +31,12 @@ function ThemeBackground(props){
       <SafeAreaView style={[{backgroundColor: backgroundColor}, props.style]}>
         {props.children}
       </SafeAreaView>
+    );
+  default:
+    return(
+      <ScrollView style={[{backgroundColor: backgroundColor}, props.style]}>
+        {props.children}
+      </ScrollView>
     );
   }
 }

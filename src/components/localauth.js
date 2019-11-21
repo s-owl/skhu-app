@@ -165,7 +165,7 @@ export default class LocalAuth extends Component {
       <Modal
         animationType="fade"
         visible={this.state.visible}>
-        <ThemeBackground type="view" style={{paddingTop: 30, padding: 16, flex: 1}}>
+        <ThemeBackground style={{paddingTop: 30, padding: 16, flex: 1}}>
           <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <MaterialIcons color={this.state.textColor} name={this.state.icon} size={32} style={{padding: 16}}/>
             <ThemeText>{this.state.msg}</ThemeText>
