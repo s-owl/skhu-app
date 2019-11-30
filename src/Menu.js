@@ -3,7 +3,7 @@ import {
   Alert, SectionList, Linking, AsyncStorage
 } from 'react-native';
 import ListItem from './components/listitem';
-import {ThemeText} from './components/components';
+import {ThemeText,ThemeBackground} from './components/components';
 import NavigationService from './tools/NavigationService';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
