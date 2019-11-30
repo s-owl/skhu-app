@@ -22,7 +22,11 @@ export default class Menu extends Component {
   };
   constructor(props){
     super(props);
-    this.state = {msg: '', snackbar: false};
+    this.state = {
+      msg: '',
+      snackbar: false,
+      textColor: Appearance.getColorScheme()==='dark'? 'white' : 'black'
+    };
     this.helpModal = React.createRef();
   }
   componentDidMount(){
