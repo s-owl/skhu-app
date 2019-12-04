@@ -22,9 +22,9 @@ function ThemeBackground(props){
   switch(props.viewType){
   case 'scrollView':  
     return(
-      <View style={[{backgroundColor: backgroundColor}, props.style]}>
+      <ScrollView style={[{backgroundColor: backgroundColor}, props.style]}>
         {props.children}
-      </View>
+      </ScrollView>
     );
   case 'safeAreaView':  
     return(
@@ -34,10 +34,11 @@ function ThemeBackground(props){
     );
   default:
     return(
-      <ScrollView style={[{backgroundColor: backgroundColor}, props.style]}>
+      <View style={[{backgroundColor: backgroundColor}, props.style]}>
         {props.children}
-      </ScrollView>
+      </View>
     );
+   
   }
 }
 
