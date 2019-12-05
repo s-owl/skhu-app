@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import Constants from 'expo-constants';
-import {ScrollView, View, Text, Image, FlatList, Linking, SectionList} from 'react-native';
+import {ScrollView, View, Image, FlatList, Linking, SectionList} from 'react-native';
 import ListItem from '../components/listitem';
 import {InfoModal} from '../components/infoModal';
+import {ThemeText} from '../components/components';
 import {Map} from 'immutable';
 import * as WebBrowser from 'expo-web-browser';
 import LegalInfo from '../legal';
@@ -46,66 +47,66 @@ export default class About extends Component{
     render(){
       let modal = this.state.modal;
       return(
-        <ScrollView style={{backgroundColor: 'white'}}>
+        <ScrollView>
           <View style={{padding: 32, alignItems: 'center'}}>
             <Image style={{marginBottom: 16, width: 200, height: 200,
               borderColor: 'lightgrey', borderWidth: 1, borderRadius: 56}}
             source={ require('../../assets/imgs/icon.png') }/>
-            <Text style={{fontWeight: 'bold', fontSize: 36}}>{Constants.manifest.name}</Text>
-            <Text>{Constants.manifest.version}</Text>
-            <Text>OTA - {BuildConfigs.OtaDeployedAt}</Text>
+            <ThemeText style={{fontWeight: 'bold', fontSize: 36}}>{Constants.manifest.name}</ThemeText>
+            <ThemeText>{Constants.manifest.version}</ThemeText>
+            <ThemeText>OTA - {BuildConfigs.OtaDeployedAt}</ThemeText>
           </View>
           <ListItem isHeader={true}>
-            <Text style={{fontWeight: 'bold'}}>개발자 정보</Text>
+            <ThemeText style={{fontWeight: 'bold'}}>개발자 정보</ThemeText>
           </ListItem>
           <ListItem onPress={()=>{
             this.setModal('teamInfo', true);
           }}>
-            <Text>
+            <ThemeText>
             성공회대학교 S.OWL {Constants.manifest.name} 개발팀{'\n'}
             (눌러서 팀원 목록 보기)
-            </Text>
+            </ThemeText>
           </ListItem>
           <ListItem isHeader={true}>
-            <Text style={{fontWeight: 'bold'}}>웹사이트</Text>
+            <ThemeText style={{fontWeight: 'bold'}}>웹사이트</ThemeText>
           </ListItem>
           <ListItem onPress={()=>{
             Linking.openURL('https://www.facebook.com/SKHUsMobileApp/');
           }}>
-            <Text>Facebook Page</Text>
+            <ThemeText>Facebook Page</ThemeText>
           </ListItem>
           <ListItem onPress={()=>{
             Linking.openURL('https://skhus.sleepy-owl.com/');
           }}>
-            <Text>홈페이지</Text>
+            <ThemeText>홈페이지</ThemeText>
           </ListItem>
           <ListItem onPress={()=>{
             Linking.openURL('https://sleepy-owl.com/');
           }}>
-            <Text>성공회대 S.OWL(Sleepy OWL) 홈페이지</Text>
+            <ThemeText>성공회대 S.OWL(Sleepy OWL) 홈페이지</ThemeText>
           </ListItem>
 
           <ListItem isHeader={true}>
-            <Text style={{fontWeight: 'bold'}}>법적 고지사항</Text>
+            <ThemeText style={{fontWeight: 'bold'}}>법적 고지사항</ThemeText>
           </ListItem>
           <ListItem onPress={async()=>{
             await WebBrowser.openBrowserAsync('https://github.com/s-owl/skhus/wiki/PrivacyAndPermissions');
           }}>
-            <Text>개인정보취급방침, 사용되는 시스템 권한 안내</Text>
+            <ThemeText>개인정보취급방침, 사용되는 시스템 권한 안내</ThemeText>
           </ListItem>
           <ListItem onPress={()=>{
             this.setModal('oss', true);
           }}>
-            <Text>
+            <ThemeText>
             개발에 사용된 오픈소스 소프트웨어 정보{'\n'}
             (눌러서 목록 보기)
-            </Text>
+            </ThemeText>
           </ListItem>
           <ListItem onPress={()=>{
             this.setModal('legal', true);
           }}>
-            <Text>면책사항{'\n'}(눌러서 보거나 숨기기)
-            </Text>
+            <ThemeText>면책사항{'\n'}(눌러서 보거나 숨기기)
+            </ThemeText>
           </ListItem>
           <InfoModal visible={modal.get('teamInfo')}
             icon='account-group'
@@ -114,12 +115,12 @@ export default class About extends Component{
             <SectionList style={{height: '100%'}}
               renderItem={({item, index, section}) => (
                 <ListItem key={index} >
-                  <Text>{item}</Text>
+                  <ThemeText>{item}</ThemeText>
                 </ListItem>
               )}
               renderSectionHeader={({section: {period}}) => (
                 <ListItem style={{flex: 0, flexDirection: 'row'}}>
-                  <Text style={{fontWeight: 'bold'}}>{period}</Text>
+                  <ThemeText style={{fontWeight: 'bold'}}>{period}</ThemeText>
                 </ListItem>
               )}
               sections={LegalInfo.devlopers}
@@ -135,20 +136,20 @@ export default class About extends Component{
               renderItem={({item})=>(
                 <View key={item.index}>
                   <ListItem>
-                    <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
-                    <Text>by {item.author}</Text>
-                    <Text>Licensed under {item.license}</Text>
+                    <ThemeText style={{fontWeight: 'bold'}}>{item.name}</ThemeText>
+                    <ThemeText>by {item.author}</ThemeText>
+                    <ThemeText>Licensed under {item.license}</ThemeText>
                   </ListItem>
                   <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
                     <ListItem style={{flex: 1, alignItems: 'center'}} onPress={()=>{
                       Linking.openURL(item.url);
                     }}>
-                      <Text>Source Code</Text>
+                      <ThemeText>Source Code</ThemeText>
                     </ListItem>
                     <ListItem style={{flex: 1, alignItems: 'center'}} onPress={()=>{
                       Linking.openURL(item.licenseUrl);
                     }}>
-                      <Text>License Copy</Text>
+                      <ThemeText>License Copy</ThemeText>
                     </ListItem>
                   </View>
                 </View>
@@ -158,9 +159,9 @@ export default class About extends Component{
             icon='library-books'
             title='면책사항'
             buttons={[{label: '닫기', onPress: ()=>{this.setModal('legal', false);}}]}>
-            <Text>
+            <ThemeText>
                 본 앱은 성공회대학교 공식 인증 앱이 아니며, 사용 중 발생하는 모든 책임은 사용자 본인에게 있습니다.
-            </Text>
+            </ThemeText>
           </InfoModal>
         </ScrollView>
       );

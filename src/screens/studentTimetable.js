@@ -3,6 +3,7 @@ import {View, Text, ActivityIndicator} from 'react-native';
 import Timetable, {convertForTimetable} from '../components/Timetable';
 import DBHelper from '../tools/dbhelper';
 import BuildConfigs from '../config';
+import {ThemeText} from '../components/components';
 
 export default class StudentTimetable extends Component{
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -35,7 +36,7 @@ export default class StudentTimetable extends Component{
     }else if(this.state.timetable.length <= 0){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
-          <Text>시간표를 불러오지 못했거나, 수강한 강의가 없어 표시할 시간표 데이터가 없습니다.</Text>
+          <ThemeText>시간표를 불러오지 못했거나, 수강한 강의가 없어 표시할 시간표 데이터가 없습니다.</ThemeText>
         </View>
       );
     }else{

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {View, Image, Text, ActivityIndicator, Clipboard, Linking} from 'react-native';
-import {CardView} from '../components/components';
+import {CardView, ThemeText, ThemeBackground} from '../components/components';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import {ScrollView} from 'react-native-gesture-handler';
+import {Appearance} from 'react-native-appearance';
 
 
 export default class Authinfo extends Component{
@@ -13,7 +14,7 @@ export default class Authinfo extends Component{
       return {
         title: '',
         headerStyle: {
-          backgroundColor: 'whitesmoke',
+          backgroundColor: (Appearance.getColorScheme()==='dark')? 'black' : 'whitesmoke',
           elevation: 0,
           shadowOpacity: 0,
           shadowOffset: {
@@ -26,11 +27,11 @@ export default class Authinfo extends Component{
 
     render(){
       return(
-        <ScrollView style={{padding: 8, backgroundColor: 'whitesmoke'}}>
+        <ThemeBackground viewType="scrollView" hasCardViews={true}>
           <Profile style={{marginTop: 24}}/>
           <ClassInfoCard style={{padding: 8}}/>
           <OtpCard/>
-        </ScrollView>
+        </ThemeBackground>
       );
     }
 }
@@ -75,9 +76,9 @@ class Profile extends Component{
           source={this.state.image}
           onError={(error)=>console.log(error)}
         />
-        <Text style={{padding: 8, fontSize: 24}}>{this.state.name}({this.state.id})</Text>
-        <Text>{this.state.college} {this.state.department} {this.state.major}</Text>
-        <Text>{this.state.grade} {this.state.coursetype} {this.state.classtype} {this.state.state}</Text>
+        <ThemeText style={{padding: 8, fontSize: 24}}>{this.state.name}({this.state.id})</ThemeText>
+        <ThemeText>{this.state.college} {this.state.department} {this.state.major}</ThemeText>
+        <ThemeText>{this.state.grade} {this.state.coursetype} {this.state.classtype} {this.state.state}</ThemeText>
       </View>
     );
   }
@@ -120,18 +121,18 @@ class ClassInfoCard extends Component{
     } else {
       googleClassroom = (
         <View>
-          <Text  style={{fontSize: 20}}>{this.state.google}</Text>
-          <Text>Google Classroom 사용에 필요한 최초 로그인 정보입니다.</Text>
+          <ThemeText  style={{fontSize: 20}}>{this.state.google}</ThemeText>
+          <ThemeText>Google Classroom 사용에 필요한 최초 로그인 정보입니다.</ThemeText>
         </View>
       );
     }
     return(
       <View style={{marginTop: 8}}>
         <View style={{alignItems: 'center'}}>
-          <Text>{this.state.counselor}</Text>
-          <Text>반/분반: {this.state.class}</Text>
+          <ThemeText>{this.state.counselor}</ThemeText>
+          <ThemeText>반/분반: {this.state.class}</ThemeText>
         </View>
-        <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>Google Classroom</Text>
+        <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>Google Classroom</ThemeText>
         <CardView elevate={true} style={{margin: 8}} actionLabel='Google Classroom 으로 이동 >'
           onPress={()=>{
             Linking.openURL('https://classroom.google.com');
@@ -180,13 +181,13 @@ class OtpCard extends Component{
   render(){
     return(
       <View>
-        <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>OTP 코드</Text>
+        <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>OTP 코드</ThemeText>
         <CardView actionLabel='터치하여 복사하기' elevate={true} style={{margin: 8}}
           onPress={()=>{
             Clipboard.setString(this.state.otpCode);
           }}>
-          <Text style={{fontWeight: 'bold', fontSize: 32}}>{this.state.otpCode}</Text>
-          <Text>{this.state.timeLeft}초 후 코드가 변경됩니다.</Text>
+          <ThemeText style={{fontWeight: 'bold', fontSize: 32}}>{this.state.otpCode}</ThemeText>
+          <ThemeText>{this.state.timeLeft}초 후 코드가 변경됩니다.</ThemeText>
         </CardView>
       </View>
     );

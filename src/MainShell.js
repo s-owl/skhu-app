@@ -27,6 +27,8 @@ import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
 import {Settings, PinRecovery, ChangePin} from './screens/settings';
+import {Appearance} from 'react-native-appearance';
+
 
 const HomeStack = createStackNavigator(
   {
@@ -46,7 +48,7 @@ const HomeStack = createStackNavigator(
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: 'black'
+        color: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
       },
     },
   }
@@ -79,7 +81,7 @@ const MenuStack = createStackNavigator(
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: 'black'
+        color: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
       },
     },
   }
@@ -128,10 +130,21 @@ export default class MainShell extends Component {
         header: null // 헤더 비활성화
       };
     };
+
+    constructor(props){
+      super(props);
+      this.state = {
+        theme: Appearance.getColorScheme()
+      };
+    }
     render() {
-      return <AppContainer/>;
+      return <AppContainer theme={this.state.theme}/>;
     }
     componentDidMount(){
       if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
+      this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+        this.setState({theme: colorScheme});
+      });
     }
+
 }

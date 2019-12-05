@@ -3,15 +3,17 @@ import {
   View, TextInput, Text, ScrollView, KeyboardAvoidingView, Picker, StyleSheet
 } from 'react-native';
 import {List} from 'immutable';
-
+import {ThemeText} from '../components/components';
 import {SortByCodes} from '../components/searchBar';
 import ListItem from '../components/listitem';
+import {Appearance} from 'react-native-appearance';
 
 // 스타일 지정
 const styles = StyleSheet.create({
-  view: {flex: 1, backgroundColor: 'white', justifyContent: 'space-around'},
+  view: {flex: 1, justifyContent: 'space-around'},
   input: {
-    fontSize: 20
+    fontSize: 20,
+    color: Appearance.getColorScheme() === 'dark'? 'white':'black'
   },
   container: {flex: 1},
   picker: {
@@ -20,7 +22,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   item: {
-    height: 120
+    height: 120,
+    color: Appearance.getColorScheme() === 'dark'? 'white':'black'
   },
   buttonContainer: {
     flex: 0,
@@ -110,12 +113,12 @@ export default class searchCondition extends Component {
             <ListItem
               onPress={this.handleCancel}
               style={styles.buttons}>
-              <Text style={styles.text}>취소</Text>
+              <ThemeText style={styles.text}>취소</ThemeText>
             </ListItem>
             <ListItem
               onPress={this.handleConfirm}
               style={styles.buttons}>
-              <Text style={styles.text}>확인</Text>
+              <ThemeText style={styles.text}>확인</ThemeText>
             </ListItem>
           </View>
           <View style={{height: 50}} /> 
