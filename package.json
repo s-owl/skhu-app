@@ -21,6 +21,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "4.6.0",
     "abortcontroller-polyfill": "^1.4.0",
     "expo": "^36.0.0",
     "expo-asset": "~8.0.0",

@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {
   StyleSheet, Text, View, Image, TextInput,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
-  ActivityIndicator, NetInfo, Platform
+  ActivityIndicator, Platform
 } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
 import ChunkSecureStore from './tools/chunkSecureStore';
@@ -54,7 +55,7 @@ export default class Login extends Component {
     if(isLoggedOut){
       this.showSnackbar('로그아웃 되었습니다.');
     }
-    const connInfo = await NetInfo.getConnectionInfo();
+    const connInfo = await NetInfo.fetch();
     if(connInfo.type == 'none'){
       this.errorModal.current.showError(this.errorModal.current.CommonErrors.noNetwork);
     }else{
