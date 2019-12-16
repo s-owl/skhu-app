@@ -7276,10 +7276,9 @@ react-native-safe-area-view@^0.14.1, react-native-safe-area-view@^0.14.6:
   dependencies:
     debounce "^1.2.0"
 
-react-native-snackbar-component@^1.1.2:
+"react-native-snackbar-component@https://github.com/s-owl/React-Native-SnackBar-Component.git":
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/react-native-snackbar-component/-/react-native-snackbar-component-1.1.2.tgz#43cd20632cb6650c6031f06a3c55559c6ddee12b"
-  integrity sha512-AuiACKljhtj0OYKb8mVvT9ik4d53rZ1DecK1GZDHIuLp1t6+IDd5uhVTqjSYWa4Ou8NQDIAZvJo13092UWGK4A==
+  resolved "https://github.com/s-owl/React-Native-SnackBar-Component.git#129c9298b869a7708d24b21f45939e95ab8c1e9c"
   dependencies:
     prop-types "^15.6.0"
 
