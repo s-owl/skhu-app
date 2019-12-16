@@ -117,10 +117,10 @@ const LegalInfo = {
     },
     {
       name: 'react-native-snackbar-component',
-      author: 'SiDevesh',
-      url: 'https://github.com/SiDevesh/React-Native-SnackBar-Component',
+      author: 'S.OWL SKHU\\\'s team(Forked), SiDevesh(Original)',
+      url: 'https://github.com/s-owl/React-Native-SnackBar-Component',
       license: 'MIT License',
-      licenseUrl: 'https://github.com/SiDevesh/React-Native-SnackBar-Component/blob/master/LICENSE'
+      licenseUrl: 'https://github.com/s-owl/React-Native-SnackBar-Component/blob/master/LICENSE'
     },
     {
       name: 'Moment',
