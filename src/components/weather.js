@@ -106,8 +106,9 @@ class SmallWeatherWidget extends Component{
     this.updateData();
   }
 
-  componentWillReceiveProps(){
+  shouldComponentUpdate(){
     this.updateData();
+    return true;
   }
 
   async updateData(){
