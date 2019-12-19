@@ -48,7 +48,6 @@ const HomeStack = createStackNavigator(
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
       },
     },
   }
@@ -81,7 +80,6 @@ const MenuStack = createStackNavigator(
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
       },
     },
   }
