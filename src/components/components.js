@@ -2,12 +2,27 @@
 import React, {Component} from 'react'; 
 import {
   StyleSheet, View, Modal, KeyboardAvoidingView,
-  SafeAreaView, Text, ScrollView
+  SafeAreaView, TextInput, ScrollView, Picker, Text
 } from 'react-native';
 import Touchable from './touchable';
 import {LinearGradient} from 'expo-linear-gradient';
 import BuildConfigs from '../config';
 import {useColorScheme} from 'react-native-appearance';
+
+function ThemePicker(props){
+  let colorScheme = useColorScheme();
+  const textColor = (colorScheme==='dark')? 'white' : 'black';
+  return(
+    <Picker itemStyle={{color: textColor}} {...props}>
+      {props.children}
+    </Picker>);
+}
+
+function ThemeTextInput(props){
+  let colorScheme = useColorScheme();
+  const textColor = (colorScheme==='dark')? 'white' : 'black';
+  return(<TextInput style={[{color: textColor}, props.style]} {...props}/>);
+}
 
 function ThemeText(props){
   let colorScheme = useColorScheme();
@@ -177,5 +192,5 @@ const styles = StyleSheet.create({
 });
 
 export{
-  CardView, BottomModal, ThemeText, ThemeBackground
+  CardView, BottomModal, ThemeText, ThemeBackground, ThemeTextInput, ThemePicker
 };

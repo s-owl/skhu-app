@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import { 
-  Switch, Text, SafeAreaView, SectionList, AsyncStorage, Button, Platform,
-  TextInput, View, Alert, KeyboardAvoidingView, InputAccessoryView
+  Switch, SafeAreaView, SectionList, AsyncStorage, Button, Platform,
+  View, Alert, KeyboardAvoidingView, InputAccessoryView
 } from 'react-native';
 import ListItem from '../components/listitem';
 import * as SecureStore from 'expo-secure-store';
 import SnackBar from 'react-native-snackbar-component';
-import {ThemeText} from '../components/components';
+import {ThemeText, ThemeTextInput} from '../components/components';
 import {Appearance} from 'react-native-appearance';
 
 export class Settings extends Component {
@@ -168,21 +168,21 @@ export class PinRecovery extends Component{
       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <View style={{flex: 1}}>
           <ListItem>
-            <TextInput color={textColor} placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPin}
               onSubmitEditing={ () => this.newPinCheck.current.focus() }
               onChangeText={(value)=>this.setState({newPin: value})}
               inputAccessoryViewID={idToNewPinCheck}/>
           </ListItem>
           <ListItem>
-            <TextInput color={textColor} placeholder='새 PIN 확인(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='새 PIN 확인(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPinCheck}
               onSubmitEditing={ () => this.userpw.current.focus() }
               onChangeText={(value)=>this.setState({newPinCheck: value})}
               inputAccessoryViewID={idToUserpw}/>
           </ListItem>
           <ListItem>
-            <TextInput color={textColor} placeholder='로그인 비밀번호 입력'  returnkeyType='go'
+            <ThemeTextInput color={textColor} placeholder='로그인 비밀번호 입력'  returnkeyType='go'
               secureTextEntry={ true } autocorrect={ false } ref={this.userpw}
               onSubmitEditing={()=>this.recoverPin()}
               onChangeText={(value)=>this.setState({userpw: value})}
@@ -291,21 +291,21 @@ export class ChangePin extends Component{
       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <View style={{flex: 1}}>
           <ListItem>
-            <TextInput color={textColor} placeholder='기존 PIN 입력'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='기존 PIN 입력'  returnkeyType='next' keyboardType='number-pad'
               secureTextEntry={ true } autocorrect={ false } ref={this.currentPin}
               onSubmitEditing={ () => this.newPin.current.focus() } maxLength={6}
               onChangeText={(value)=>this.setState({currentPin: value})}
               inputAccessoryViewID={idToNewPin}/>
           </ListItem>
           <ListItem>
-            <TextInput color={textColor} placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPin}
               onSubmitEditing={ () => this.newPinCheck.current.focus() }
               onChangeText={(value)=>this.setState({newPin: value})}
               inputAccessoryViewID={idToNewPinCheck}/>
           </ListItem>
           <ListItem>
-            <TextInput color={textColor} placeholder='새 PIN 확인(6자)'  returnkeyType='go' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='새 PIN 확인(6자)'  returnkeyType='go' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPinCheck}
               onSubmitEditing={ () => this.changePin() }
               onChangeText={(value)=>this.setState({newPinCheck: value})}
