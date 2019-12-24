@@ -17,7 +17,7 @@ import Touchable from './components/touchable';
 import {ErrorModal} from './components/errorModal';
 import {HelpModal} from './components/helpModal';
 import moment from 'moment';
-import {useColorScheme} from 'react-native-appearance';
+import {Appearance} from 'react-native-appearance';
 
 export default class Login extends Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -228,20 +228,35 @@ export default class Login extends Component {
   }
 }
 
-function LoginInput(props){
-  const colorScheme = useColorScheme();
-  const bgColor = colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)';
-  const txtColor = colorScheme === 'dark' ? 'white':'black';
-  return (
-    <TextInput {...props} style={{
-      height: 50,
-      backgroundColor: bgColor,
-      marginBottom: 15,
-      paddingHorizontal: 20,
-      borderRadius: 10,
-      color: txtColor,
-    }}/>
-  );
+class LoginInput extends Component{
+  constructor(props){
+    super(props);
+    const colorScheme =  Appearance.getColorScheme();
+    this.state = {
+      bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
+      txtColor: colorScheme === 'dark' ? 'white':'black'
+    };
+  }
+  componentDidMount(){
+    Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({
+        bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
+        txtColor: colorScheme === 'dark' ? 'white':'black'
+      });
+    });
+  }
+  render(){
+    return(
+      <TextInput {...this.props} style={{
+        height: 50,
+        backgroundColor: this.state.bgColor,
+        marginBottom: 15,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        color: this.state.txtColor,
+      }}/>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
