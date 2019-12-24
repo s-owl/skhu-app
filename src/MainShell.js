@@ -45,6 +45,7 @@ const HomeStack = createStackNavigator(
   {
     initialRouteName: 'Home',
     defaultNavigationOptions: {
+      headerTruncatedBackTitle: '뒤로',
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
@@ -77,6 +78,7 @@ const MenuStack = createStackNavigator(
   {
     initialRouteName: 'Menu',
     defaultNavigationOptions: {
+      headerTruncatedBackTitle: '뒤로',
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
