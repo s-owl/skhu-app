@@ -22,7 +22,6 @@ import {Meal} from './screens/meal';
 import searchCondition from './screens/searchCondition';
 import {MaterialIcons} from '@expo/vector-icons';
 import BuildConfigs from './config';
-import NoticeScreen from './screens/notice';
 import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
@@ -38,7 +37,6 @@ const HomeStack = createStackNavigator(
     Credits: Credits,
     Timetable: StudentTimetable,
     SyllabusDetails: SyllabusDetails,
-    NoticeScreen: NoticeScreen,
     Meal: Meal,
     Authinfo: Authinfo
   },
