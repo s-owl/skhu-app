@@ -91,51 +91,6 @@ function CardView(props){
   }
 }
 
-class BottomModal extends Component{
-  render(){
-    return(
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.props.visible}
-        onRequestClose={this.props.onRequestClose}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <SafeAreaView style={{flexDirection: 'column', flex: 1, justifyContent: 'flex-end'}}
-            forceInset={{vertical: 'always', horizontal: 'never'}}>
-
-            <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.8)']}
-              style={{
-                height: '100%',
-                justifyContent: 'flex-end'
-              }}>
-              <KeyboardAvoidingView behavior="padding" enabled>
-                <CardItem isHeader={true}>
-                  <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
-                </CardItem>
-                <View style={[{backgroundColor: 'white'}, this.props.style]}>
-                  {this.props.children}
-                </View>
-                <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
-                  height: 50, width: '100%'}}>
-                  {this.props.buttons.map((item, index)=>{
-                    return(
-                      <CardItem key={index} style={{flex: 1, alignItems: 'center'}} onPress={item.onPress}>
-                        <Text>{item.label}</Text>
-                      </CardItem>
-                    );
-                  })}
-                </View>
-                <CardItem/>
-              </KeyboardAvoidingView>
-            </LinearGradient>
-          </SafeAreaView>
-        </ScrollView>
-      </Modal>
-    );
-  }
-}
-
 
 const styles = StyleSheet.create({
   cardView: {
@@ -192,5 +147,5 @@ const styles = StyleSheet.create({
 });
 
 export{
-  CardView, BottomModal, ThemeText, ThemeBackground, ThemeTextInput, ThemePicker
+  CardView, ThemeText, ThemeBackground, ThemeTextInput, ThemePicker
 };
