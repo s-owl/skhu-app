@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
-  Text, View, Image, Platform, AsyncStorage,
-  ScrollView, SafeAreaView, ActivityIndicator, 
+  View, Image, Platform, AsyncStorage,
+  ScrollView, ActivityIndicator, 
 } from 'react-native';
 import {CardView, ThemeText, ThemeBackground} from './components/components';
 import ForestApi from './tools/apis';
@@ -9,11 +9,11 @@ import SummaryWidget from './components/summaryWidget';
 import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
-import FetchHelper from './tools/fetchHelper';
-import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons'; 
+import {MaterialIcons} from '@expo/vector-icons'; 
 import Touchable from './components/touchable';
 import LocalAuth from './components/localauth';
-import {Appearance, useColorScheme} from 'react-native-appearance';
+import {useColorScheme} from 'react-native-appearance';
+import {MealCard} from './screens/meal';
 
 export default class Main extends Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -28,7 +28,6 @@ export default class Main extends Component {
     this.db = new DBHelper();
     this.db.fetchAttendance();
     this.db.fetchTimetable();
-    FetchHelper.fetchMealsUrl().then(url => this.setState({url}));
     this.localAuth = React.createRef();
   }
   render() {
@@ -60,7 +59,7 @@ export default class Main extends Component {
               this.props.navigation.navigate('Schedules');
             }} />
             <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학식</ThemeText>
-            <Meal onPress={() => {
+            <MealCard onPress={() => {
               this.props.navigation.navigate('Meal');
             }} />
 
@@ -253,82 +252,6 @@ class MonthlySchedule extends Component {
         actionLabel="학사 일정 더 보기 >">
         {content}
       </CardView>
-    );
-  }
-}
-
-//메인 오늘학식
-class Meal extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      meal: null,
-      isLoading: true,
-      textColor: Appearance.getColorScheme()==='dark'? 'white' : 'black'
-    };
-  }
-
-  componentDidMount() {
-    FetchHelper.fetchMealsData('').then(meals => {
-      
-      // TODO: 오늘 구하는 공식 들어가야함 일단은 첫번째 인덱스 배열 값 가져옴...
-
-      let day = new Date().getDay(); //0 : 일요일,  1: 월요일...
-      day = (day == 0 || day == 6) ? 4 : day - 1;
-
-      console.log(meals.length);
-      this.setState({
-        meal: meals[day],
-        isLoading: false,
-      });
-
-      this.subscription = Appearance.addChangeListener(({colorScheme}) => {
-        this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
-      });
-    });
-  }
-
-  render() {
-    let content;
-    const {isLoading, meal} = this.state;
-    if (isLoading || !meal) {
-      content = (
-        <View style={{justifyContent: 'center', padding: 32}}>
-          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
-        </View>
-      );
-    }else {
-      content = (
-        <View>
-          <View style={{flexDirection: 'row'}}>
-            <MaterialCommunityIcons name="rice" color={this.state.textColor} size={20}/>
-            <ThemeText style={{marginStart: 5}}>{meal.day} 식단</ThemeText>
-          </View>
-          <View style={{flexDirection: 'column', marginTop: 10}}>
-            <View style={{flexDirection: 'row'}}>
-              <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>학식</ThemeText>
-                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.a.diet}</ThemeText>
-              </CardView>
-              <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>일품</ThemeText>
-                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.b.diet}</ThemeText>
-              </CardView>
-              <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>석식</ThemeText>
-                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.dinner.a.diet}</ThemeText>
-              </CardView>
-            </View>
-          </View>
-        </View>
-      );
-    }
-    return (
-      <CardView onPress={this.props.onPress} elevate={true}
-        actionLabel="주간 식단 보기 >">
-        {content}
-      </CardView>
-
     );
   }
 }

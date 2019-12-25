@@ -18,7 +18,7 @@ import ScholarshipHistory from './screens/scholarshopHistory';
 import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
-import Meal from './screens/meal';
+import {Meal} from './screens/meal';
 import searchCondition from './screens/searchCondition';
 import {MaterialIcons} from '@expo/vector-icons';
 import BuildConfigs from './config';
