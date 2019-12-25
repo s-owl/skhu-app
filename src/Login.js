@@ -236,6 +236,7 @@ class LoginInput extends Component{
       bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
       txtColor: colorScheme === 'dark' ? 'white':'black'
     };
+    this.component = React.createRef();
   }
   componentDidMount(){
     Appearance.addChangeListener(({colorScheme}) => {
@@ -245,16 +246,21 @@ class LoginInput extends Component{
       });
     });
   }
+  focus(){
+    this.component.current.focus();
+  }
   render(){
     return(
-      <TextInput {...this.props} style={{
-        height: 50,
-        backgroundColor: this.state.bgColor,
-        marginBottom: 15,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        color: this.state.txtColor,
-      }}/>
+      <TextInput {...this.props} 
+        ref={this.component}
+        style={{
+          height: 50,
+          backgroundColor: this.state.bgColor,
+          marginBottom: 15,
+          paddingHorizontal: 20,
+          borderRadius: 10,
+          color: this.state.txtColor
+        }}/>
     );
   }
 }
