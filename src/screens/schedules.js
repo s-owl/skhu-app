@@ -44,7 +44,6 @@ class ScheduleComponent extends Component{
       'year': this.props.year,
       'month': this.props.month
     }), false);
-    console.log(schedule);
     if(schedule.ok){
       let data = await schedule.json();
       let dates = '', contents = '';
