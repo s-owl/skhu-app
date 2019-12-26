@@ -18,11 +18,10 @@ import ScholarshipHistory from './screens/scholarshopHistory';
 import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
-import Meal from './screens/meal';
+import {Meal} from './screens/meal';
 import searchCondition from './screens/searchCondition';
 import {MaterialIcons} from '@expo/vector-icons';
 import BuildConfigs from './config';
-import NoticeScreen from './screens/notice';
 import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
@@ -38,17 +37,16 @@ const HomeStack = createStackNavigator(
     Credits: Credits,
     Timetable: StudentTimetable,
     SyllabusDetails: SyllabusDetails,
-    NoticeScreen: NoticeScreen,
     Meal: Meal,
     Authinfo: Authinfo
   },
   {
     initialRouteName: 'Home',
     defaultNavigationOptions: {
+      headerTruncatedBackTitle: '뒤로',
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
       },
     },
   }
@@ -78,10 +76,10 @@ const MenuStack = createStackNavigator(
   {
     initialRouteName: 'Menu',
     defaultNavigationOptions: {
+      headerTruncatedBackTitle: '뒤로',
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: Appearance.getColorScheme() === 'dark'? 'white' : 'black'
       },
     },
   }

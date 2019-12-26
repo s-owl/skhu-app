@@ -13,7 +13,8 @@ class WeatherUtils{
           let data = await res.json();
           resolve({
             conditionCode: data.weather[0].id,
-            temp: data.main.temp
+            temp: data.main.temp,
+            name: data.name
           });
         }else{
           reject(res);
@@ -91,51 +92,49 @@ class SmallWeatherWidget extends Component{
     super(props);
     this.state = {
       today: new Date(),
-      current: {
-        name: '...',
-        conditionCode: 0,
-        temp: 0,
-        icon: (<MaterialCommunityIcons size={25} name="weather-snowy"/>)
-      }
+      name: '⌛',
+      conditionCode: 0,
+      temp: 0,
+      icon: 800
     };
   }
 
-  componentDidMount(){
-    //position.coords.longitude
-    //'37.48750', '126.82564'
-    this.updateData();
-  }
-
-  componentWillReceiveProps(){
-    this.updateData();
-  }
-
-  async updateData(){
+  async componentDidMount(){
+    let pos; 
     try{
-      let pos = (this.props.position) ? this.props.position : await WeatherUtils.whereAmI();
-      let name = await WeatherUtils.getGeoName(pos.latitude, pos.longitude);
+      pos = (this.props.position) ? this.props.position : await WeatherUtils.whereAmI();
       let weather = await WeatherUtils.fetchWeatherData(pos.latitude, pos.longitude,
         this.props.unit, this.props.appid);
+      let name = (this.props.name)? this.props.name : weather.name;
       this.setState({
-        current: {
-          name: (this.props.name)? this.props.name : name,
-          conditionCode: weather.conditionCode,
-          temp: weather.temp,
-          icon: (<WeatherIcon size={25} code={weather.conditionCode} />)
-        }
+        conditionCode: weather.conditionCode,
+        temp: weather.temp,
+        icon: weather.conditionCode,
+        name: name
       });
     }catch(err){
       console.log(err);
+    }
+    try{
+      if((!this.props.name) || this.props.name == ' '){
+        let name = await WeatherUtils.getGeoName(pos.latitude, pos.longitude);
+        this.setState({
+          name: name
+        });
+      }
+    }catch(e){
+      console.log(e);
+      console.log('Geoname failed');
     }
   }
 
   render(){
     return(
       <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', padding: 8}}>
-        {this.state.current.icon}
+        <WeatherIcon size={25} code={this.state.icon} />
         <View style={{flexDirection: 'column', flex: 0, alignItems: 'center'}}>
-          <ThemeText style={{fontSize: 10, marginLeft: 4}}>{this.state.current.name}</ThemeText>
-          <ThemeText style={{fontSize: 10, marginLeft: 4}}>{this.state.current.temp}°</ThemeText>
+          <ThemeText style={{fontSize: 10, marginLeft: 4}}>{this.state.name}</ThemeText>
+          <ThemeText style={{fontSize: 10, marginLeft: 4}}>{this.state.temp}°</ThemeText>
         </View>
       </View>
     );

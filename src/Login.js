@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput,
+  StyleSheet, View, Image, TextInput,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
-  ActivityIndicator, NetInfo, Platform
+  ActivityIndicator, Platform
 } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 import ForestApi from './tools/apis';
 import NavigationService from './tools/NavigationService';
 import ChunkSecureStore from './tools/chunkSecureStore';
@@ -54,7 +55,7 @@ export default class Login extends Component {
     if(isLoggedOut){
       this.showSnackbar('로그아웃 되었습니다.');
     }
-    const connInfo = await NetInfo.getConnectionInfo();
+    const connInfo = await NetInfo.fetch();
     if(connInfo.type == 'none'){
       this.errorModal.current.showError(this.errorModal.current.CommonErrors.noNetwork);
     }else{
@@ -76,12 +77,11 @@ export default class Login extends Component {
       logInContainer = (
         <View>
           <ThemeText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemeText>
-          <TextInput style={ styles.login_input } placeholder='아이디(학번) 입력'
+          <LoginInput placeholder='아이디(학번) 입력'
             underlineColorAndroid="transparent"
             returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
-            onChangeText={(text)=>{this.textInput.idInput = text;}} keyboardType='default'>
-          </TextInput>
-          <TextInput style={ styles.login_input } placeholder='비밀번호 입력' secureTextEntry={ true }
+            onChangeText={(text)=>{this.textInput.idInput = text;}} keyboardType='default'/>
+          <LoginInput placeholder='비밀번호 입력' secureTextEntry={ true }
             underlineColorAndroid="transparent"
             returnkeyType='go' ref={ 'password' }  autocorrect={ false }
             onSubmitEditing={ () => {
@@ -91,8 +91,7 @@ export default class Login extends Component {
             } }
             onChangeText={(text)=>{
               this.textInput.pwInput = text;
-            }}>
-          </TextInput>
+            }}/>
           <CardView elevate={true} onPress={()=>{
             let id = this.textInput.idInput.replace(/\s/g, '');
             let pw = this.textInput.pwInput.replace(/\s/g, '');
@@ -229,6 +228,43 @@ export default class Login extends Component {
   }
 }
 
+class LoginInput extends Component{
+  constructor(props){
+    super(props);
+    const colorScheme =  Appearance.getColorScheme();
+    this.state = {
+      bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
+      txtColor: colorScheme === 'dark' ? 'white':'black'
+    };
+    this.component = React.createRef();
+  }
+  componentDidMount(){
+    Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({
+        bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
+        txtColor: colorScheme === 'dark' ? 'white':'black'
+      });
+    });
+  }
+  focus(){
+    this.component.current.focus();
+  }
+  render(){
+    return(
+      <TextInput {...this.props} 
+        ref={this.component}
+        style={{
+          height: 50,
+          backgroundColor: this.state.bgColor,
+          marginBottom: 15,
+          paddingHorizontal: 20,
+          borderRadius: 10,
+          color: this.state.txtColor
+        }}/>
+    );
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -250,14 +286,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     paddingBottom: 140
-  },
-  login_input: {
-    height: 50,
-    backgroundColor: Appearance.getColorScheme() === 'dark'? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
-    marginBottom: 15,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    color: Appearance.getColorScheme() === 'dark'? 'white':'black',
   },
   button_container: {
     height: 60,

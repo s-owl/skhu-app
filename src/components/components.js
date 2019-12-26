@@ -2,12 +2,27 @@
 import React, {Component} from 'react'; 
 import {
   StyleSheet, View, Modal, KeyboardAvoidingView,
-  SafeAreaView, Text, ScrollView
+  SafeAreaView, TextInput, ScrollView, Picker, Text
 } from 'react-native';
 import Touchable from './touchable';
 import {LinearGradient} from 'expo-linear-gradient';
 import BuildConfigs from '../config';
 import {useColorScheme} from 'react-native-appearance';
+
+function ThemePicker(props){
+  let colorScheme = useColorScheme();
+  const textColor = (colorScheme==='dark')? 'white' : 'black';
+  return(
+    <Picker itemStyle={{color: textColor}} {...props}>
+      {props.children}
+    </Picker>);
+}
+
+function ThemeTextInput(props){
+  let colorScheme = useColorScheme();
+  const textColor = (colorScheme==='dark')? 'white' : 'black';
+  return(<TextInput style={[{color: textColor}, props.style]} {...props}/>);
+}
 
 function ThemeText(props){
   let colorScheme = useColorScheme();
@@ -76,51 +91,6 @@ function CardView(props){
   }
 }
 
-class BottomModal extends Component{
-  render(){
-    return(
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.props.visible}
-        onRequestClose={this.props.onRequestClose}>
-        <ScrollView contentContainerStyle={{flexGrow: 1}}>
-          <SafeAreaView style={{flexDirection: 'column', flex: 1, justifyContent: 'flex-end'}}
-            forceInset={{vertical: 'always', horizontal: 'never'}}>
-
-            <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.8)']}
-              style={{
-                height: '100%',
-                justifyContent: 'flex-end'
-              }}>
-              <KeyboardAvoidingView behavior="padding" enabled>
-                <CardItem isHeader={true}>
-                  <Text style={{fontWeight: 'bold'}}>{this.props.title}</Text>
-                </CardItem>
-                <View style={[{backgroundColor: 'white'}, this.props.style]}>
-                  {this.props.children}
-                </View>
-                <View style={{flex: 0, flexDirection: 'row', backgroundColor: 'white',
-                  height: 50, width: '100%'}}>
-                  {this.props.buttons.map((item, index)=>{
-                    return(
-                      <CardItem key={index} style={{flex: 1, alignItems: 'center'}} onPress={item.onPress}>
-                        <Text>{item.label}</Text>
-                      </CardItem>
-                    );
-                  })}
-                </View>
-                <CardItem/>
-              </KeyboardAvoidingView>
-            </LinearGradient>
-          </SafeAreaView>
-        </ScrollView>
-      </Modal>
-    );
-  }
-}
-
 
 const styles = StyleSheet.create({
   cardView: {
@@ -177,5 +147,5 @@ const styles = StyleSheet.create({
 });
 
 export{
-  CardView, BottomModal, ThemeText, ThemeBackground
+  CardView, ThemeText, ThemeBackground, ThemeTextInput, ThemePicker
 };
