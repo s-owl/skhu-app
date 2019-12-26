@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import { 
-  Switch, Text, SafeAreaView, SectionList, AsyncStorage, Button, Platform,
-  TextInput, View, Alert, KeyboardAvoidingView, InputAccessoryView
+  Switch, SafeAreaView, SectionList, AsyncStorage, Button, Platform,
+  View, Alert, KeyboardAvoidingView, InputAccessoryView
 } from 'react-native';
 import ListItem from '../components/listitem';
 import * as SecureStore from 'expo-secure-store';
 import SnackBar from 'react-native-snackbar-component';
-
+import {ThemeText, ThemeTextInput} from '../components/components';
+import {Appearance} from 'react-native-appearance';
 
 export class Settings extends Component {
 static navigationOptions = ({navigation, navigationOptions}) => {
@@ -54,14 +55,14 @@ componentDidMount(){
 render() {
   return(
     <SafeAreaView>
-      <SectionList style={{height: '100%', backgroundColor: 'white'}}
+      <SectionList style={{height: '100%'}}
         renderItem={({item, index, section}) => {
           switch(item.type){
           case 'nav':
             return(
               <ListItem key={index} onPress={()=>this.props.navigation.navigate(item.navigateTo)}
                 style={{flex: 0, flexDirection: 'row'}}>
-                <Text style={{flex: 1}}>{item.label}</Text>
+                <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
               </ListItem> 
             );
           case 'bool':
@@ -74,7 +75,7 @@ render() {
                 await AsyncStorage.setItem(item.name, value.toString());
               }}
               style={{flex: 0, flexDirection: 'row'}}>
-                <Text style={{flex: 1}}>{item.label}</Text>
+                <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
                 <Switch value={this.state[item.name]} onValueChange={
                   async (value)=>{
                     this.setState({
@@ -89,14 +90,14 @@ render() {
             return(
               <ListItem key={index}
                 style={{flex: 0, flexDirection: 'row'}}>
-                <Text style={{flex: 1}}>{item.label}</Text>
+                <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
               </ListItem> 
             );
           }
         }}
         renderSectionHeader={({section: {title}}) => (
           <ListItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
-            <Text style={{fontWeight: 'bold'}}>{title}</Text>
+            <ThemeText style={{fontWeight: 'bold'}}>{title}</ThemeText>
           </ListItem>
         )}
         sections={this.sectionData}
@@ -141,6 +142,7 @@ export class PinRecovery extends Component{
     const idToNewPinCheck = 'idToNewPinCheck';
     const idToUserpw = 'idToUserpw';
     const idRecover = 'idRecover';
+    const textColor = Appearance.getColorScheme() === 'dark' ? 'white' : 'black';
     let keyboardToolbar = (Platform.OS == 'ios') ? (
       <View>
         <InputAccessoryView nativeID={idToNewPinCheck}>
@@ -166,21 +168,21 @@ export class PinRecovery extends Component{
       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <View style={{flex: 1}}>
           <ListItem>
-            <TextInput placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPin}
               onSubmitEditing={ () => this.newPinCheck.current.focus() }
               onChangeText={(value)=>this.setState({newPin: value})}
               inputAccessoryViewID={idToNewPinCheck}/>
           </ListItem>
           <ListItem>
-            <TextInput placeholder='새 PIN 확인(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='새 PIN 확인(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPinCheck}
               onSubmitEditing={ () => this.userpw.current.focus() }
               onChangeText={(value)=>this.setState({newPinCheck: value})}
               inputAccessoryViewID={idToUserpw}/>
           </ListItem>
           <ListItem>
-            <TextInput placeholder='로그인 비밀번호 입력'  returnkeyType='go'
+            <ThemeTextInput color={textColor} placeholder='로그인 비밀번호 입력'  returnkeyType='go'
               secureTextEntry={ true } autocorrect={ false } ref={this.userpw}
               onSubmitEditing={()=>this.recoverPin()}
               onChangeText={(value)=>this.setState({userpw: value})}
@@ -191,11 +193,11 @@ export class PinRecovery extends Component{
           height: 50, width: '100%', marginBottom: 16}}>
           <ListItem style={{flex: 1, alignItems: 'center'}}
             onPress={()=>this.props.navigation.goBack()}>
-            <Text>취소</Text>
+            <ThemeText>취소</ThemeText>
           </ListItem>
           <ListItem style={{flex: 1, alignItems: 'center'}}
             onPress={()=>this.recoverPin()}>
-            <Text>복구</Text>
+            <ThemeText>복구</ThemeText>
           </ListItem>
         </View>
         <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
@@ -262,6 +264,7 @@ export class ChangePin extends Component{
     const idToNewPin = 'idToNewPin';
     const idToNewPinCheck = 'idToNewPinCheck';
     const idChange = 'idChange';
+    const textColor = Appearance.getColorScheme() === 'dark' ? 'white' : 'black';
 
     let keyboardToolbar = (Platform.OS == 'ios') ? (
       <View>
@@ -288,21 +291,21 @@ export class ChangePin extends Component{
       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <View style={{flex: 1}}>
           <ListItem>
-            <TextInput placeholder='기존 PIN 입력'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='기존 PIN 입력'  returnkeyType='next' keyboardType='number-pad'
               secureTextEntry={ true } autocorrect={ false } ref={this.currentPin}
               onSubmitEditing={ () => this.newPin.current.focus() } maxLength={6}
               onChangeText={(value)=>this.setState({currentPin: value})}
               inputAccessoryViewID={idToNewPin}/>
           </ListItem>
           <ListItem>
-            <TextInput placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPin}
               onSubmitEditing={ () => this.newPinCheck.current.focus() }
               onChangeText={(value)=>this.setState({newPin: value})}
               inputAccessoryViewID={idToNewPinCheck}/>
           </ListItem>
           <ListItem>
-            <TextInput placeholder='새 PIN 확인(6자)'  returnkeyType='go' keyboardType='number-pad'
+            <ThemeTextInput color={textColor} placeholder='새 PIN 확인(6자)'  returnkeyType='go' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPinCheck}
               onSubmitEditing={ () => this.changePin() }
               onChangeText={(value)=>this.setState({newPinCheck: value})}
@@ -313,11 +316,11 @@ export class ChangePin extends Component{
           height: 50, width: '100%', marginBottom: 16}}>
           <ListItem style={{flex: 1, alignItems: 'center'}}
             onPress={()=>this.props.navigation.goBack()}>
-            <Text>취소</Text>
+            <ThemeText>취소</ThemeText>
           </ListItem>
           <ListItem style={{flex: 1, alignItems: 'center'}}
             onPress={()=>this.changePin()}>
-            <Text>복구</Text>
+            <ThemeText>복구</ThemeText>
           </ListItem>
         </View>
         <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>

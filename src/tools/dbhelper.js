@@ -1,5 +1,5 @@
 
-import {SQLite} from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite';
 import ForestApi from './apis';
 import DateTools from './datetools';
 export default class DBHelper{

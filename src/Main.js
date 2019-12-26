@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import {
-  Text, View, Image, Platform, AsyncStorage,
-  ScrollView, SafeAreaView, ActivityIndicator, 
+  View, Image, Platform, AsyncStorage,
+  ScrollView, ActivityIndicator, 
 } from 'react-native';
-import {CardView} from './components/components';
+import {CardView, ThemeText, ThemeBackground} from './components/components';
 import ForestApi from './tools/apis';
 import SummaryWidget from './components/summaryWidget';
 import BuildConfigs from './config';
 import DateTools from './tools/datetools';
 import DBHelper from './tools/dbhelper';
-import FetchHelper from './tools/fetchHelper';
-import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons'; 
+import {MaterialIcons} from '@expo/vector-icons'; 
 import Touchable from './components/touchable';
 import LocalAuth from './components/localauth';
+import {useColorScheme} from 'react-native-appearance';
+import {MealCard} from './screens/meal';
 
 export default class Main extends Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -27,13 +28,12 @@ export default class Main extends Component {
     this.db = new DBHelper();
     this.db.fetchAttendance();
     this.db.fetchTimetable();
-    FetchHelper.fetchMealsUrl().then(url => this.setState({url}));
     this.localAuth = React.createRef();
   }
   render() {
     const topMargin = (Platform.OS == 'ios')? 20 : 50;
     return (
-      <SafeAreaView style={{backgroundColor: 'whitesmoke'}}>
+      <ThemeBackground viewType="safeArewView" hasCardViews={true}>
         <ScrollView>
           <View style={{marginTop: topMargin, padding: 16}}>
             <SummaryWidget />
@@ -50,16 +50,16 @@ export default class Main extends Component {
               <ProfileButton onPress={() => this.localAuth.current.startAuth()}/>
             </View>
 
-            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>다음 강의</Text>
+            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>다음 강의</ThemeText>
             <NextClassInfo dbHelper={this.db} onPress={() => {
               this.props.navigation.navigate('Timetable');
             }} />
-            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학사 일정</Text>
+            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학사 일정</ThemeText>
             <MonthlySchedule onPress={() => {
               this.props.navigation.navigate('Schedules');
             }} />
-            <Text style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학식</Text>
-            <Meal onPress={() => {
+            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학식</ThemeText>
+            <MealCard onPress={() => {
               this.props.navigation.navigate('Meal');
             }} />
 
@@ -67,7 +67,7 @@ export default class Main extends Component {
           <LocalAuth ref={this.localAuth} 
             onAuthSuccess={()=>this.props.navigation.navigate('Authinfo')}/>
         </ScrollView>
-      </SafeAreaView>
+      </ThemeBackground>
     );
   }
 }
@@ -117,26 +117,27 @@ class ProfileButton extends Component{
           source={this.state.image}
           onError={(error)=>console.log(error)}
         />
-        <Text style={{padding: 8}}>{this.state.name}</Text>
+        <ThemeText style={{padding: 8}}>{this.state.name}</ThemeText>
       </Touchable>
     );
   }
 }
 
-class ShortcutButton extends Component{
-  render(){
-    return(
-      <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
-        onPress={this.props.onPress}>
-        <MaterialIcons name={this.props.icon} size={32}
-          style={{borderRadius: 24,
-            borderColor: 'lightgrey',
-            borderWidth: 1,
-            padding: 8}} />
-        <Text style={{padding: 8}}>{this.props.label}</Text>
-      </Touchable>
-    );
-  }
+function ShortcutButton(props){
+  let colorScheme = useColorScheme();
+  const textColor = (colorScheme==='dark')? 'white' : 'black';
+  return(
+    <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
+      onPress={props.onPress}>
+      <MaterialIcons name={props.icon} size={32} color={textColor}
+        style={{borderRadius: 24,
+          borderColor: 'lightgrey',
+          borderWidth: 1,
+          padding: 8}} />
+      <ThemeText style={{padding: 8}}>{props.label}</ThemeText>
+    </Touchable>
+  );
+  
 }
 
 class NextClassInfo extends Component {
@@ -183,9 +184,9 @@ class NextClassInfo extends Component {
     } else {
       content = (
         <View>
-          <Text style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</Text>
-          <Text style={{fontSize: 20}}>{this.state.time}</Text>
-          <Text>{this.state.attendance}</Text>
+          <ThemeText style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</ThemeText>
+          <ThemeText style={{fontSize: 20}}>{this.state.time}</ThemeText>
+          <ThemeText>{this.state.attendance}</ThemeText>
         </View>
       );
     }
@@ -240,8 +241,8 @@ class MonthlySchedule extends Component {
       content = (
         <View>
           <View style={{flexDirection: 'row'}}>
-            <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
-            <Text style={{flex: 1}}>{this.state.contents}</Text>
+            <ThemeText style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</ThemeText>
+            <ThemeText style={{flex: 1}}>{this.state.contents}</ThemeText>
           </View>
         </View>
       );
@@ -251,75 +252,6 @@ class MonthlySchedule extends Component {
         actionLabel="학사 일정 더 보기 >">
         {content}
       </CardView>
-    );
-  }
-}
-
-//메인 오늘학식
-class Meal extends Component {
-  state = {
-    meal: null,
-    isLoading: true
-  };
-
-  componentDidMount() {
-    FetchHelper.fetchMealsData('').then(meals => {
-      
-      // TODO: 오늘 구하는 공식 들어가야함 일단은 첫번째 인덱스 배열 값 가져옴...
-
-      let day = new Date().getDay(); //0 : 일요일,  1: 월요일...
-      day = (day == 0 || day == 6) ? 4 : day - 1;
-
-      console.log(meals.length);
-      this.setState({
-        meal: meals[day],
-        isLoading: false
-      });
-    });
-  }
-
-  render() {
-    let content;
-    const {isLoading, meal} = this.state;
-    if (isLoading || !meal) {
-      content = (
-        <View style={{justifyContent: 'center', padding: 32}}>
-          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
-        </View>
-      );
-    }
-    else {
-      content = (
-        <View>
-          <View style={{flexDirection: 'row'}}>
-            <MaterialCommunityIcons name="rice" size={20}/>
-            <Text style={{marginStart: 5}}>{meal.day} 식단</Text>
-          </View>
-          <View style={{flexDirection: 'column', marginTop: 10}}>
-            <View style={{flexDirection: 'row'}}>
-              <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>학식</Text>
-                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.a.diet}</Text>
-              </CardView>
-              <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>일품</Text>
-                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.b.diet}</Text>
-              </CardView>
-              <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <Text style={{fontWeight: 'bold', fontSize: 16}}>석식</Text>
-                <Text style={{marginBottom: 10, marginTop: 5}}>{meal.dinner.a.diet}</Text>
-              </CardView>
-            </View>
-          </View>
-        </View>
-      );
-    }
-    return (
-      <CardView onPress={this.props.onPress} elevate={true}
-        actionLabel="주간 식단 보기 >">
-        {content}
-      </CardView>
-
     );
   }
 }

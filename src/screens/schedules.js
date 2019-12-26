@@ -4,6 +4,7 @@ import {ScrollView, View, Text, ActivityIndicator} from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import moment from 'moment';
+import {ThemeText} from '../components/components';
 
 
 export default class Schedules extends Component{
@@ -19,7 +20,7 @@ export default class Schedules extends Component{
     }
     render(){
       return(
-        <ScrollView style={{height: '100%', backgroundColor: 'white'}}>
+        <ScrollView style={{height: '100%'}}>
           <ScheduleComponent year={moment().year()} month={moment().month()+1}/>
           <ScheduleComponent year={moment().add(1, 'months').year()} month={moment().add(1, 'months').month()+1}/>
           <ScheduleComponent year={moment().add(2, 'months').year()} month={moment().add(2, 'months').month()+1}/>
@@ -43,7 +44,6 @@ class ScheduleComponent extends Component{
       'year': this.props.year,
       'month': this.props.month
     }), false);
-    console.log(schedule);
     if(schedule.ok){
       let data = await schedule.json();
       let dates = '', contents = '';
@@ -69,15 +69,15 @@ class ScheduleComponent extends Component{
     }else{
       content = (
         <View style={{flexDirection: 'row'}}>
-          <Text style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</Text>
-          <Text style={{flex: 1}}>{this.state.contents}</Text>
+          <ThemeText style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</ThemeText>
+          <ThemeText style={{flex: 1}}>{this.state.contents}</ThemeText>
         </View>
       );
     }
     return(
       <View>
         <ListItem isHeader={true}>
-          <Text>{this.props.year}{'.'}{this.props.month}</Text>
+          <ThemeText>{this.props.year}{'.'}{this.props.month}</ThemeText>
         </ListItem>
         <ListItem>
           {content}

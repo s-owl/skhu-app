@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {withNavigation} from 'react-navigation';
-import {
-  View, Text
-} from 'react-native';
 import {Map, List} from 'immutable';
 import {MaterialIcons} from '@expo/vector-icons';
-
+import {ThemeText, ThemeBackground} from './components';
 import ListItem from './listitem';
+import {Appearance} from 'react-native-appearance';
+
 
 // 픽커와 형식 간의 정렬을 통일하기 위한 함수
 export function SortByCodes(pickerValues) {
@@ -75,8 +74,15 @@ class SearchBar extends Component {
 
     let init = initCondition(this.dataType, props.initParam);
     this.state = {
-      condition: init
+      condition: init,
+      textColor: Appearance.getColorScheme()==='dark'?'white':'black'
     };
+  }
+
+  componentDidMount(){
+    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
+    });
   }
 
   // 변경시 일어나는 행동을 정의
@@ -91,7 +97,7 @@ class SearchBar extends Component {
 
   render() {
     return(
-      <View style={{backgroundColor: 'white'}}>
+      <ThemeBackground>
         <ListItem style={{flex: 0, flexDirection: 'row'}}
           elevate={true}
           onPress={()=>{
@@ -101,7 +107,7 @@ class SearchBar extends Component {
               onConfirm: this.handleCondition.bind(this)
             });
           }}>
-          <Text style={{flex: 1}}>
+          <ThemeText style={{flex: 1}}>
             {this.getCondition()
               .map((value, key) => {
                 if (typeof value == 'string') {
@@ -114,10 +120,11 @@ class SearchBar extends Component {
               })
               .toList()
               .toJS().join(', ')}
-          </Text>
-          <MaterialIcons name="search" size={20} style={{flex: 0}}/>
+          </ThemeText>
+          <MaterialIcons name="search" size={20} style={{flex: 0}}
+            color={this.state.textColor}/>
         </ListItem>
-      </View>);
+      </ThemeBackground>);
   }
 }
 

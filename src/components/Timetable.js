@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import {View, ScrollView, Text, TouchableHighlight, FlatList} from 'react-native';
+import {View, ScrollView, TouchableHighlight, FlatList} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import DateTools from '../tools/datetools';
 import moment from 'moment';
 import {InfoModal} from './infoModal';
 import ListItem from './listitem';
+import {ThemeText} from './components';
+import {Appearance} from 'react-native-appearance';
+import {useColorScheme} from 'react-native-appearance';
 
 const timeTemplate = 'HH:mm:ss';
 
@@ -130,19 +133,18 @@ class Timetable extends Component {
 
   render() {
     return (
-      <ScrollView style={{backgroundColor: 'white'}}>
+      <ScrollView>
         <View style={{flex: 1, flexDirection: 'row'}}>
           {this.props.timetable.map((item, i)=>{
             return(
               <View style={{flex: 1}}>
-                <View style={{height: item.height, backgroundColor: 'white', padding: 2}}>
-                  <Text style={{color: 'black'}}>{DateTools.dayOfWeekNumToStr(i)}</Text>
+                <View style={{height: item.height, padding: 2}}>
+                  <ThemeText>{DateTools.dayOfWeekNumToStr(i)}</ThemeText>
                 </View>
                 {item.map((subject, j)=>{
-                  let bgColor = subject.isEmptyCell ? 'rgba(0, 0, 0, 0)' : 'silver';
                   if(subject.isEmptyCell){
                     return(
-                      <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}
+                      <View style={{height: subject.height, backgroundColor: 'rgba(0, 0, 0, 0)', padding: 2}}
                         key={`subject_${i}_${j}`}>
                       </View>
                     );
@@ -150,7 +152,7 @@ class Timetable extends Component {
                     && Array.isArray(subject.syllabus.code)){
                     let more = `및 ${subject.name.length -1}개의 강의`;
                     return(
-                      <TouchableHighlight style={{}}
+                      <TouchableHighlight
                         key={`subject_${i}_${j}`} onPress={()=>{
                           let overlapped = [];
                           for(let o=0; o<subject.name.length; o++){
@@ -165,17 +167,18 @@ class Timetable extends Component {
                             overlappedClasses: overlapped,
                             classChooser: true});
                         }}>
-                        <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}>
-                          <Text style={{color: 'black', fontSize: 12}}>{subject.name[0]}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{subject.time}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{subject.room[0]}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{more}</Text>
-                        </View>
+                        <ClassItem style={{height: subject.height, padding: 2}}
+                          hasCardViews={true}>
+                          <ThemeText style={{fontSize: 12}}>{subject.name[0]}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{subject.time}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{subject.room[0]}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{more}</ThemeText>
+                        </ClassItem>
                       </TouchableHighlight>
                     );
                   }else{
                     return(
-                      <TouchableHighlight style={{}}
+                      <TouchableHighlight
                         key={`subject_${i}_${j}`} onPress={()=>{
                           this.props.navigation.navigate('SyllabusDetails', {
                             subjectCode: subject.syllabus.code.split('-')[0],
@@ -184,11 +187,12 @@ class Timetable extends Component {
                             year: subject.syllabus.year
                           });
                         }}>
-                        <View style={{height: subject.height, backgroundColor: bgColor, padding: 2}}>
-                          <Text style={{color: 'black', fontSize: 12}}>{subject.name}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{subject.time}</Text>
-                          <Text style={{color: 'black', fontSize: 8}}>{subject.room}</Text>
-                        </View>
+                        <ClassItem style={{height: subject.height, padding: 2}}
+                          hasCardViews={true}>
+                          <ThemeText style={{fontSize: 12}}>{subject.name}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{subject.time}</ThemeText>
+                          <ThemeText style={{fontSize: 8}}>{subject.room}</ThemeText>
+                        </ClassItem>
                       </TouchableHighlight>
                     );
                   }
@@ -205,9 +209,9 @@ class Timetable extends Component {
               {label: '닫기', onPress: ()=>this.setState({classChooser: false})}
             ]}>
             <ListItem style={{alignItems: 'center'}}>
-              <Text>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</Text>
+              <ThemeText>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</ThemeText>
             </ListItem>
-            <FlatList style={{backgroundColor: 'white'}}
+            <FlatList
               data={this.state.overlappedClasses}
               ListFooterComponent={()=>(
                 <ListItem style={{height: 50}}/>
@@ -222,8 +226,8 @@ class Timetable extends Component {
                   });
                   this.setState({classChooser: false});
                 }}>
-                  <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
-                  <Text>{item.code}</Text>
+                  <ThemeText style={{fontWeight: 'bold'}}>{item.name}</ThemeText>
+                  <ThemeText>{item.code}</ThemeText>
                 </ListItem>
               }
             />
@@ -234,3 +238,13 @@ class Timetable extends Component {
 }
 
 export default withNavigation(Timetable);
+
+function ClassItem(props){
+  let colorScheme = useColorScheme();
+  let backgroundColor = (colorScheme==='dark')? '#2a2a2a':'silver';
+  return(
+    <View style={[{backgroundColor: backgroundColor}, props.style]}>
+      {props.children}
+    </View>
+  );
+}

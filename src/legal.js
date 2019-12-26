@@ -1,7 +1,15 @@
 const LegalInfo = {
   devlopers: [
     {
-      period: '2019.07 ~ ',
+      period: '2019.10 ~',
+      data: [
+        '강세운(201814002, tpdns9032100@gmail.com)\n앱, 백엔드 개발, 서버 관리',
+        '한영빈(201632034, sukso96100@gmail.com)\n앱, 백엔드 개발',
+        '한나라(201633036, nr970810@gmail.com)\n프로젝트 지원 및 계약 등 총괄',
+      ]
+    },
+    {
+      period: '2019.07 ~ 2019.10',
       data: [
         '한영빈(201632034, sukso96100@gmail.com)\n앱, 백엔드 개발',
         '강세운(201814002, tpdns9032100@gmail.com)\n앱, 백엔드 개발, 서버 관리',
@@ -109,10 +117,10 @@ const LegalInfo = {
     },
     {
       name: 'react-native-snackbar-component',
-      author: 'SiDevesh',
-      url: 'https://github.com/SiDevesh/React-Native-SnackBar-Component',
+      author: 'S.OWL SKHU\\\'s team(Forked), SiDevesh(Original)',
+      url: 'https://github.com/s-owl/React-Native-SnackBar-Component',
       license: 'MIT License',
-      licenseUrl: 'https://github.com/SiDevesh/React-Native-SnackBar-Component/blob/master/LICENSE'
+      licenseUrl: 'https://github.com/s-owl/React-Native-SnackBar-Component/blob/master/LICENSE'
     },
     {
       name: 'Moment',

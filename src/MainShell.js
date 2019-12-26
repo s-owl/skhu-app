@@ -18,15 +18,16 @@ import ScholarshipHistory from './screens/scholarshopHistory';
 import GradeCert from './screens/gradeCert';
 import Subjects from './screens/subjects';
 import About from './screens/about';
-import Meal from './screens/meal';
+import {Meal} from './screens/meal';
 import searchCondition from './screens/searchCondition';
 import {MaterialIcons} from '@expo/vector-icons';
 import BuildConfigs from './config';
-import NoticeScreen from './screens/notice';
 import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable';
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
 import {Settings, PinRecovery, ChangePin} from './screens/settings';
+import {Appearance} from 'react-native-appearance';
+
 
 const HomeStack = createStackNavigator(
   {
@@ -36,17 +37,16 @@ const HomeStack = createStackNavigator(
     Credits: Credits,
     Timetable: StudentTimetable,
     SyllabusDetails: SyllabusDetails,
-    NoticeScreen: NoticeScreen,
     Meal: Meal,
     Authinfo: Authinfo
   },
   {
     initialRouteName: 'Home',
     defaultNavigationOptions: {
+      headerTruncatedBackTitle: '뒤로',
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: 'black'
       },
     },
   }
@@ -76,10 +76,10 @@ const MenuStack = createStackNavigator(
   {
     initialRouteName: 'Menu',
     defaultNavigationOptions: {
+      headerTruncatedBackTitle: '뒤로',
       headerTintColor: BuildConfigs.primaryColor,
       headerTitleStyle: {
         fontWeight: 'bold',
-        color: 'black'
       },
     },
   }
@@ -128,10 +128,21 @@ export default class MainShell extends Component {
         header: null // 헤더 비활성화
       };
     };
+
+    constructor(props){
+      super(props);
+      this.state = {
+        theme: Appearance.getColorScheme()
+      };
+    }
     render() {
-      return <AppContainer/>;
+      return <AppContainer theme={this.state.theme}/>;
     }
     componentDidMount(){
       if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
+      this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+        this.setState({theme: colorScheme});
+      });
     }
+
 }

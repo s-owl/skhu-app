@@ -4,14 +4,17 @@
     "description": "The Essential App for Sungkonghoe University students.",
     "slug": "skhus-app",
     "privacy": "public",
-    "sdkVersion": "34.0.0",
-    "platforms": ["ios", "android"],
-    "version": "0.3.1",
+    "sdkVersion": "36.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "0.5.0",
     "orientation": "portrait",
     "icon": "./assets/imgs/icon.png",
     "primaryColor": "#ffffff",
     "assetBundlePatterns": [
-      "assets/imgs/*"
+      "**/*"
     ],
     "hooks": {
       "postPublish": [
@@ -26,18 +29,17 @@
     },
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
-      "buildNumber": "0.3.1",
+      "buildNumber": "0.5.0",
       "icon": "./assets/imgs/ios.png",
       "supportsTablet": true,
-      "infoPlist":{
-        "NSFaceIDUsageDescription": 
-        "민감한 개인정보나 본인 인증 관련 기능 사용 전 인증을 하기 위해 사용됩니다.\n To authenticate before accessing personal data or personal authentication relates features",
-        "NSLocationWhenInUseUsageDescription":
-        "현재 위치 정보를 얻어 해당 위치의 날씨 정보를 표시하기 위해 사용됩나다.\n To provide weather informations for your current location.",
-        "NSAppTransportSecurity":{
-          "NSAllowsArbitraryLoads":false,
-          "NSExceptionDomains":{
-            "sam.skhu.ac.kr":{
+      "userInterfaceStyle": "automatic",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "민감한 개인정보나 본인 인증 관련 기능 사용 전 인증을 하기 위해 사용됩니다.\n To authenticate before accessing personal data or personal authentication relates features",
+        "NSLocationWhenInUseUsageDescription": "현재 위치 정보를 얻어 해당 위치의 날씨 정보를 표시하기 위해 사용됩나다.\n To provide weather informations for your current location.",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": false,
+          "NSExceptionDomains": {
+            "sam.skhu.ac.kr": {
               "NSIncludesSubdomains": false,
               "NSExceptionAllowsInsecureHTTPLoads": true
             }
@@ -46,10 +48,10 @@
       }
     },
     "android": {
-      "versionCode": 15,
+      "versionCode": 17,
       "package": "com.sowl.skhus",
-      "adaptiveIcon":{
-        "foregroundImage":"./assets/imgs/androidAdaptive.png"
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/imgs/androidAdaptive.png"
       },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
@@ -67,10 +69,6 @@
     "updates": {
       "fallbackToCacheTimeout": 0,
       "enabled": true
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ]
-
+    }
   }
 }

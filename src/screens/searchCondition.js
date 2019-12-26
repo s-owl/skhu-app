@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import {
-  View, TextInput, Text, ScrollView, KeyboardAvoidingView, Picker, StyleSheet
+  View, ScrollView, KeyboardAvoidingView, StyleSheet
 } from 'react-native';
 import {List} from 'immutable';
-
+import {ThemeText, ThemeTextInput, ThemePicker} from '../components/components';
 import {SortByCodes} from '../components/searchBar';
 import ListItem from '../components/listitem';
 
 // 스타일 지정
 const styles = StyleSheet.create({
-  view: {flex: 1, backgroundColor: 'white', justifyContent: 'space-around'},
+  view: {flex: 1, justifyContent: 'space-around'},
   input: {
-    fontSize: 20
+    fontSize: 20,
   },
   container: {flex: 1},
   picker: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   item: {
-    height: 120
+    height: 120,
   },
   buttonContainer: {
     flex: 0,
@@ -83,25 +83,24 @@ export default class searchCondition extends Component {
                     const itemType = item[1];
 
                     if (typeof itemType == 'string') {
-                      return(<TextInput placeholder={itemType}
+                      return(<ThemeTextInput placeholder={itemType}
                         onChangeText=
                           {(value)=>this.setCondition(itemKey, value)}
                         defaultValue={this.state.condition.get(itemKey)}
                         style={styles.input }/>);
                     } else if (typeof itemType == 'object') {
-                      return(<Picker
+                      return(<ThemePicker
                         onValueChange={(value, _)=>this.setCondition(itemKey, value)}
                         selectedValue={this.state.condition.get(itemKey)}
-                        style={styles.picker}
-                        itemStyle={styles.item}>
+                        style={styles.picker}>
                         {List(SortByCodes(itemType.values).keys())
                           .toJS()
                           .map((value, index)=>{
                             return(
-                              <Picker.Item
+                              <ThemePicker.Item
                                 label={value} value={index} />);
                           })}
-                      </Picker>);
+                      </ThemePicker>);
                     }})()}
                 </ListItem>)
               )
@@ -110,12 +109,12 @@ export default class searchCondition extends Component {
             <ListItem
               onPress={this.handleCancel}
               style={styles.buttons}>
-              <Text style={styles.text}>취소</Text>
+              <ThemeText style={styles.text}>취소</ThemeText>
             </ListItem>
             <ListItem
               onPress={this.handleConfirm}
               style={styles.buttons}>
-              <Text style={styles.text}>확인</Text>
+              <ThemeText style={styles.text}>확인</ThemeText>
             </ListItem>
           </View>
           <View style={{height: 50}} /> 

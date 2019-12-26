@@ -3,6 +3,7 @@ import {Text, View, Clipboard} from 'react-native';
 import {HelpModal} from './helpModal';
 import NavigationService from '../tools/NavigationService';
 import {InfoModal} from './infoModal';
+import {ThemeText} from './components';
 
 export class ErrorModal extends Component{
   setVisible(visible) {
@@ -134,7 +135,7 @@ export class ErrorModal extends Component{
           title={this.state.title}
           icon={this.state.icon}
           buttons={this.state.buttons}>
-          <Text>{this.state.desc}</Text>
+          <ThemeText>{this.state.desc}</ThemeText>
         </InfoModal>
         <HelpModal onClose={this.afterCloseHelp.bind(this)} ref={this.helpModal}/>
       </View>
