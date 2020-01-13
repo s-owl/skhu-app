@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, Clipboard} from 'react-native';
 import {HelpModal} from './helpModal';
-import NavigationService from '../tools/NavigationService';
 import {InfoModal} from './infoModal';
 import {ThemeText} from './components';
 
@@ -27,7 +26,7 @@ export class ErrorModal extends Component{
       desc: '본 앱을 사용하려면, 네트워크 연결이 필요합니다. 네트워크 연결을 설정한 후 앱을 다시 실행하세요.',
       buttons: [
         {label: '다시 시도', onPress: ()=>{
-          NavigationService.reset('Login');
+          this.props.navigation.navigate('AuthStack');
         }},
         {label: '도움 받기', onPress: ()=>{
           this.closeErrorModal();
@@ -45,7 +44,7 @@ export class ErrorModal extends Component{
         + '비밀번호 변경에 문제가 있는 경우 성공회대학교 전자계산소에 문의하시기 바랍니다.',
       buttons: [
         {label: '다시 시도', onPress: ()=>{
-          NavigationService.reset('Login');
+          this.props.navigation.navigate('AuthStack');
         }},
         {label: '도움 받기', onPress: ()=>{
           this.closeErrorModal();
@@ -85,7 +84,7 @@ export class ErrorModal extends Component{
         + '추가정보:\n',
       buttons: [
         {label: '다시 시도', onPress: ()=>{
-          NavigationService.reset('Login');
+          this.props.navigation.navigate('AuthStack');
         }},
         {label: '오류 정보 복사', onPress: ()=>{
           Clipboard.setString(this.state.desc);
