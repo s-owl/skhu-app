@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {AppearanceProvider, useColorScheme} from 'react-native-appearance';
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import NavigationService from './src/tools/NavigationService';
 import BuildConfigs from './src/config';
 
 import Login from './src/Login';
@@ -13,9 +12,8 @@ import * as Sentry from 'sentry-expo';
 import {Asset} from 'expo-asset';
 Asset;
 
-const RootStack = createStackNavigator(
+const AuthStack = createStackNavigator(
   {
-    Main: MainShell,
     Login: Login,
     About: About
   },
@@ -24,7 +22,17 @@ const RootStack = createStackNavigator(
   }
 );
 
-const AppContainer = createAppContainer(RootStack);
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      MainStack: MainShell,
+      AuthStack: AuthStack,
+    },
+    {
+      initialRouteName: 'AuthStack',
+    }
+  )
+);
 
 Sentry.init({
   dsn: BuildConfigs.SENTRY_DSN,
@@ -37,10 +45,7 @@ export default function App(){
   return (
     <AppearanceProvider>
       <AppContainer 
-        theme={colorScheme}
-        ref={(navRef)=>{
-          NavigationService.setTopLevelNavigator(navRef);
-        }}/>
+        theme={colorScheme}/>
     </AppearanceProvider>
   );
   

@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import ForestApi from './tools/apis';
-import NavigationService from './tools/NavigationService';
 import ChunkSecureStore from './tools/chunkSecureStore';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
@@ -157,7 +156,7 @@ export default class Login extends Component {
         sessionUpdatedAt = moment.utc(sessionUpdatedAt);
         const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('60', 'minutes'));
         if(!loginRequired){
-          NavigationService.reset('Main');
+          this.props.navigation.navigate('MainStack');
           return;
         }
       }
@@ -216,7 +215,7 @@ export default class Login extends Component {
           await SecureStore.setItemAsync('userpw', pw);
           await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
           this.setState({isLoading: false});
-          NavigationService.reset('Main');
+          this.props.navigation.navigate('MainStack');
         }
       }
     }catch(err){
