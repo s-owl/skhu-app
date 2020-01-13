@@ -121,11 +121,7 @@ export default class Menu extends Component {
                       await AsyncStorage.clear();
                       const db = new DBHelper();
                       await db.dropAllTables();
-                      this.props.navigation.navigate('AuthStack', {}, {
-                        type: 'Navigate',
-                        routeName: 'Login',
-                        params: {loggedOut: true}
-                      });
+                      this.props.navigation.navigate('AuthStack');
                     }},
                   ],
                   {cancelable: false}

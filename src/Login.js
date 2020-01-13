@@ -50,10 +50,6 @@ export default class Login extends Component {
   }
   async componentDidMount() {
     if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
-    const isLoggedOut = this.props.navigation.getParam('loggedOut', false);
-    if(isLoggedOut){
-      this.showSnackbar('로그아웃 되었습니다.');
-    }
     const connInfo = await NetInfo.fetch();
     if(connInfo.type == 'none'){
       this.errorModal.current.showError(this.errorModal.current.CommonErrors.noNetwork);
