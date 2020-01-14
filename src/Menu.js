@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import ListItem from './components/listitem';
 import {ThemeText, ThemeBackground} from './components/components';
-import NavigationService from './tools/NavigationService';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import DBHelper from './tools/dbhelper';
@@ -122,7 +121,7 @@ export default class Menu extends Component {
                       await AsyncStorage.clear();
                       const db = new DBHelper();
                       await db.dropAllTables();
-                      NavigationService.reset('Login', {loggedOut: true});
+                      this.props.navigation.navigate('AuthStack');
                     }},
                   ],
                   {cancelable: false}

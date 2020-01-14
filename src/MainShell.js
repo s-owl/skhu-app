@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Text, View, StatusBar, Platform} from 'react-native';
+import React from 'react';
+import {Text, View} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
@@ -26,7 +26,6 @@ import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
 import {Settings, PinRecovery, ChangePin} from './screens/settings';
-import {Appearance} from 'react-native-appearance';
 
 
 const HomeStack = createStackNavigator(
@@ -85,7 +84,7 @@ const MenuStack = createStackNavigator(
   }
 );
 
-const TabNavigator = createBottomTabNavigator(
+const MainShell = createBottomTabNavigator(
   {
     Home: HomeStack,
     Menu: MenuStack,
@@ -117,32 +116,4 @@ const TabNavigator = createBottomTabNavigator(
     },
   }
 );
-
-const AppContainer = createAppContainer(TabNavigator);
-
-export default class MainShell extends Component {
-    static navigationOptions = ({navigation, navigationOptions}) => {
-      const {params} = navigation.state;
-
-      return {
-        header: null // 헤더 비활성화
-      };
-    };
-
-    constructor(props){
-      super(props);
-      this.state = {
-        theme: Appearance.getColorScheme()
-      };
-    }
-    render() {
-      return <AppContainer theme={this.state.theme}/>;
-    }
-    componentDidMount(){
-      if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
-      this.subscription = Appearance.addChangeListener(({colorScheme}) => {
-        this.setState({theme: colorScheme});
-      });
-    }
-
-}
+export default MainShell;

@@ -4,7 +4,6 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
 import {InfoModal} from './infoModal';
 import * as WebBrowser from 'expo-web-browser';
-import NavigationService from '../tools/NavigationService';
 import {Appearance} from 'react-native-appearance';
 import {ThemeText} from './components';
 
@@ -88,7 +87,7 @@ export class HelpModal extends Component{
               this.setVisible(true);
             };
             this.setVisible(false);
-            NavigationService.navigate('About', {onBack: restoreModal});
+            this.props.navigation.navigate('About', {onBack: restoreModal});
           }},
         ]
         }
