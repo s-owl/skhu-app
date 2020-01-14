@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {
   StyleSheet, View, Image, TextInput,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
@@ -18,133 +18,27 @@ import {HelpModal} from './components/helpModal';
 import moment from 'moment';
 import {Appearance} from 'react-native-appearance';
 
-export default class Login extends Component {
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
+export default function Login(props){
+  let [isLoading, setLoading] = useState(false);
+  let [enableHelp, toggleHelp] = useState(true);
+  let [msg, setMsg] = useState('');
+  let [snackBar, toggleSnackBar] = useState(false);
+  let [username, setUsername] = useState('');
+  let [password, setPassword] = useState('');
+  let errorModal = React.createRef();
+  let helpModal = React.createRef();
+  let pwInput = React.createRef();
 
-    return {
-      header: null // 헤더 비활성화
-    };
-  };
-  constructor(props){
-    super(props);
-    this.state = {
-      isLoading: false,
-      showHelp: false,
-      enableHelp: true,
-      msg: '',
-      snackbar: false
-    };
-    this.textInput = {
-      idInput: '',
-      pwInput: ''
-    };
-    this.errorModal = React.createRef();
-    this.helpModal = React.createRef();
-  }
-  showSnackbar(msg){
-    this.setState({msg: msg, snackbar: true});
+  const showSnackbar = (msg) => {
+    setMsg(msg);
+    toggleSnackBar(true);
     setTimeout(()=>{
-      this.setState({msg: '', snackbar: false});
+      setMsg('');
+      toggleSnackBar(false);
     }, 3000);
-  }
-  async componentDidMount() {
-    if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
-    const connInfo = await NetInfo.fetch();
-    if(connInfo.type == 'none'){
-      this.errorModal.current.showError(this.errorModal.current.CommonErrors.noNetwork);
-    }else{
-      let id = await SecureStore.getItemAsync('userid');
-      let pw = await SecureStore.getItemAsync('userpw');
-      if(id !== null && pw !== null){
-        this.runLogInProcess(id, pw);
-      }
-    }
-  }
+  };
 
-  render() {
-    let logInContainer;
-    if(this.state.isLoading){
-      logInContainer = (
-        <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
-      );
-    }else{
-      logInContainer = (
-        <View>
-          <ThemeText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemeText>
-          <LoginInput placeholder='아이디(학번) 입력'
-            underlineColorAndroid="transparent" autoCompleteType='username'
-            returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
-            onChangeText={(text)=>{this.textInput.idInput = text;}} keyboardType='default'/>
-          <LoginInput placeholder='비밀번호 입력' secureTextEntry={ true }
-            underlineColorAndroid="transparent" autoCompleteType='password'
-            returnkeyType='go' ref={ 'password' }  autocorrect={ false }
-            onSubmitEditing={ () => {
-              let id = this.textInput.idInput.replace(/\s/g, '');
-              let pw = this.textInput.pwInput.replace(/\s/g, '');
-              this.runLogInProcess(id, pw);
-            } }
-            onChangeText={(text)=>{
-              this.textInput.pwInput = text;
-            }}/>
-          <CardView elevate={true} onPress={()=>{
-            let id = this.textInput.idInput.replace(/\s/g, '');
-            let pw = this.textInput.pwInput.replace(/\s/g, '');
-            this.runLogInProcess(id, pw);
-          }} style={{backgroundColor: '#569f59', justifyContent: 'center', flexDirection: 'row'}}>
-            <MaterialCommunityIcons name={'login'} size={16} color={'white'} style={{marginRight: 8}}/>
-            <ThemeText style={{color: 'white'}}>Log In</ThemeText>
-          </CardView>
-        </View>
-      );
-    }
-
-    let helpButton;
-    if(this.state.enableHelp){
-      helpButton = (
-        <Touchable onPress={()=>{
-          if(!this.state.isLoading){
-            this.helpModal.current.open(undefined, true);
-          }
-        }}>
-          <View style={ styles.footer }>
-            <ThemeText>여기를 눌러 도움 얻기</ThemeText>
-            <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
-            <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}}
-              source={ require('../assets/imgs/Sowl_Logo.png') }/>
-          </View>
-        </Touchable>
-      );
-    }else{
-      helpButton = (
-        <View style={ styles.footer }>
-          <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
-          <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}} 
-            source={ require('../assets/imgs/Sowl_Logo.png') }/>
-        </View>
-      );
-    }
-
-    return (
-      <SafeAreaView style={ styles.container }>
-        <KeyboardAvoidingView  style={ styles.container } behavior="padding" enabled>
-          <View style={ styles.container }>
-            <View style={ styles.title_container }>
-              <Image source={ require('../assets/imgs/icon.png') } style={{width: 150, height: 150}}/>
-            </View>
-            <View style={ styles.login_container }>
-              {logInContainer}
-              {helpButton}
-            </View>
-          </View>
-          <SnackBar visible={this.state.snackbar} textMessage={this.state.msg}/>
-          <ErrorModal ref={this.errorModal}/>
-          <HelpModal ref={this.helpModal}/>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    );
-  }
-  async runLogInProcess(id, pw){
+  const runLogInProcess = async(id, pw) => {
     console.log('Logging in...');
     try{
       let sessionUpdatedAt = await SecureStore.getItemAsync('sessionUpdatedAt');
@@ -152,7 +46,7 @@ export default class Login extends Component {
         sessionUpdatedAt = moment.utc(sessionUpdatedAt);
         const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('60', 'minutes'));
         if(!loginRequired){
-          this.props.navigation.navigate('MainStack');
+          props.navigation.navigate('MainStack');
           return;
         }
       }
@@ -160,13 +54,16 @@ export default class Login extends Component {
       console.error(err);
     }
     try{
-      this.setState({isLoading: true, enableHelp: false});
+      setLoading(true);
+      toggleHelp(false);
       if(id.length <= 0 || pw.length <= 0){
-        this.showSnackbar('학번 또는 비밀번호가 입력되지 않았습니다.');
-        this.setState({isLoading: false, enableHelp: true});
+        showSnackbar('학번 또는 비밀번호가 입력되지 않았습니다.');
+        setLoading(false);
+        toggleHelp(true);
       }else if(pw.length < 8){
-        this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
-        this.setState({isLoading: false, enableHelp: true});
+        errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
+        setLoading(false);
+        toggleHelp(true);
       }else{
         let samLogin = ForestApi.login(id, pw, 'credentialNew');
         let forestLogin = ForestApi.login(id, pw, 'credentialOld');
@@ -176,14 +73,17 @@ export default class Login extends Component {
         if(forestLoginRes.ok){
           await ChunkSecureStore.setItemAsync('CredentialOld', forestData['credential-old']);
         }else if(forestLoginRes.status == 400){
-          this.setState({isLoading: false, enableHelp: true});
-          this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
+          setLoading(false);
+          toggleHelp(true);
+          errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
         }else if(forestLoginRes.status == 401){
-          this.setState({isLoading: false, enableHelp: true});
+          setLoading(false);
+          toggleHelp(true);
           let msg = forestData['error'];
-          this.errorModal.current.showError(this.errorModal.current.CommonErrors.loginError, msg);
+          errorModal.current.showError(errorModal.current.CommonErrors.loginError, msg);
         }else{
-          this.setState({isLoading: false, enableHelp: true});
+          setLoading(false);
+          toggleHelp(true);
         }
 
         if(forestLoginRes.status != 200) {
@@ -196,32 +96,136 @@ export default class Login extends Component {
           await ChunkSecureStore.setItemAsync('CredentialNew', samData['credential-new']);
           await ChunkSecureStore.setItemAsync('CredentialNewToken', samData['credential-new-token']);
         }else if(samLoginRes.status == 400){
-          this.setState({isLoading: false, enableHelp: true});
-          this.errorModal.current.showError(this.errorModal.current.CommonErrors.wrongLogin);
+          setLoading(false);
+          toggleHelp(true);
+          errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
         }else if(samLoginRes.status == 401){
-          this.setState({isLoading: false, enableHelp: true});
+          setLoading(false);
+          toggleHelp(true);
           let msg = samData['error'];
-          this.errorModal.current.showError(this.errorModal.current.CommonErrors.loginError, msg);
+          errorModal.current.showError(errorModal.current.CommonErrors.loginError, msg);
         }else{
-          this.setState({isLoading: false, enableHelp: true});
+          setLoading(false);
+          toggleHelp(true);
         }
 
         if(forestLoginRes.ok && samLoginRes.ok){
           await SecureStore.setItemAsync('userid', id);
           await SecureStore.setItemAsync('userpw', pw);
           await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
-          this.setState({isLoading: false});
-          this.props.navigation.navigate('MainStack');
+          setLoading(false);
+          props.navigation.navigate('MainStack');
         }
       }
     }catch(err){
-      this.setState({isLoading: false, enableHelp: true});
-      this.errorModal.current.showError(this.errorModal.current.CommonErrors.netError, 
+      setLoading(false);
+      toggleHelp(true);
+      errorModal.current.showError(errorModal.current.CommonErrors.netError, 
         `${err}\n${err.message}\n${err.stack}`);
       console.log(err);
     }
+  };
+
+  useEffect(() => {
+    async function runAsync(){
+      if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
+      const connInfo = await NetInfo.fetch();
+      if(connInfo.type == 'none'){
+        errorModal.current.showError(errorModal.current.CommonErrors.noNetwork);
+      }else{
+        let id = await SecureStore.getItemAsync('userid');
+        let pw = await SecureStore.getItemAsync('userpw');
+        if(id !== null && pw !== null){
+          runLogInProcess(id, pw);
+        }
+      }
+    }
+    runAsync();
+  }, []);
+
+  let logInContainer;
+  if(isLoading){
+    logInContainer = (
+      <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
+    );
+  }else{
+    logInContainer = (
+      <View>
+        <ThemeText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemeText>
+        <LoginInput placeholder='아이디(학번) 입력'
+          underlineColorAndroid="transparent" autoCompleteType='username'
+          returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => pwInput.current.focus() }
+          onChangeText={(text)=>setUsername(text)} keyboardType='default'/>
+        <LoginInput placeholder='비밀번호 입력' secureTextEntry={ true }
+          underlineColorAndroid="transparent" autoCompleteType='password'
+          returnkeyType='go' ref={pwInput}  autocorrect={ false }
+          onSubmitEditing={ () => {
+            let id = username.replace(/\s/g, '');
+            let pw = password.replace(/\s/g, '');
+            runLogInProcess(id, pw);
+          } }
+          onChangeText={(text)=>setPassword(text)}/>
+        <CardView elevate={true} onPress={()=>{
+          let id = username.replace(/\s/g, '');
+          let pw = password.replace(/\s/g, '');
+          runLogInProcess(id, pw);
+        }} style={{backgroundColor: '#569f59', justifyContent: 'center', flexDirection: 'row'}}>
+          <MaterialCommunityIcons name={'login'} size={16} color={'white'} style={{marginRight: 8}}/>
+          <ThemeText style={{color: 'white'}}>Log In</ThemeText>
+        </CardView>
+      </View>
+    );
   }
+
+  let helpButton;
+  if(enableHelp){
+    helpButton = (
+      <Touchable onPress={()=>{
+        if(!isLoading){
+          helpModal.current.open(undefined, true);
+        }
+      }}>
+        <View style={ styles.footer }>
+          <ThemeText>여기를 눌러 도움 얻기</ThemeText>
+          <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
+          <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}}
+            source={ require('../assets/imgs/Sowl_Logo.png') }/>
+        </View>
+      </Touchable>
+    );
+  }else{
+    helpButton = (
+      <View style={ styles.footer }>
+        <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
+        <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}} 
+          source={ require('../assets/imgs/Sowl_Logo.png') }/>
+      </View>
+    );
+  }
+
+  return (
+    <SafeAreaView style={ styles.container }>
+      <KeyboardAvoidingView  style={ styles.container } behavior="padding" enabled>
+        <View style={ styles.container }>
+          <View style={ styles.title_container }>
+            <Image source={ require('../assets/imgs/icon.png') } style={{width: 150, height: 150}}/>
+          </View>
+          <View style={ styles.login_container }>
+            {logInContainer}
+            {helpButton}
+          </View>
+        </View>
+        <SnackBar visible={snackBar} textMessage={msg}/>
+        <ErrorModal ref={errorModal} navigation={props.navigation}/>
+        <HelpModal ref={helpModal} navigation={props.navigation}/>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
 }
+
+Login.navigationOptions = {
+  header: null
+};
 
 class LoginInput extends Component{
   constructor(props){
