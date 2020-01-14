@@ -73,11 +73,11 @@ export default class Login extends Component {
         <View>
           <ThemeText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemeText>
           <LoginInput placeholder='아이디(학번) 입력'
-            underlineColorAndroid="transparent"
+            underlineColorAndroid="transparent" autoCompleteType='username'
             returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => this.refs.password.focus() }
             onChangeText={(text)=>{this.textInput.idInput = text;}} keyboardType='default'/>
           <LoginInput placeholder='비밀번호 입력' secureTextEntry={ true }
-            underlineColorAndroid="transparent"
+            underlineColorAndroid="transparent" autoCompleteType='password'
             returnkeyType='go' ref={ 'password' }  autocorrect={ false }
             onSubmitEditing={ () => {
               let id = this.textInput.idInput.replace(/\s/g, '');
