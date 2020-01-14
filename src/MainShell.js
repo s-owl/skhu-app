@@ -84,7 +84,7 @@ const MenuStack = createStackNavigator(
   }
 );
 
-const TabNavigator = createBottomTabNavigator(
+const MainShell = createBottomTabNavigator(
   {
     Home: HomeStack,
     Menu: MenuStack,
@@ -116,6 +116,4 @@ const TabNavigator = createBottomTabNavigator(
     },
   }
 );
-
-const MainShell = createAppContainer(TabNavigator);
 export default MainShell;
