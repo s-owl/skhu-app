@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {Component, useState, useEffect, useRef} from 'react';
 import {
   StyleSheet, View, Image, TextInput,
   StatusBar, SafeAreaView, KeyboardAvoidingView,
@@ -25,9 +25,9 @@ export default function Login(props){
   let [snackBar, toggleSnackBar] = useState(false);
   let [username, setUsername] = useState('');
   let [password, setPassword] = useState('');
-  let errorModal = React.createRef();
-  let helpModal = React.createRef();
-  let pwInput = React.createRef();
+  let errorModal = useRef();
+  let helpModal = useRef();
+  let pwInput = useRef();
 
   const showSnackbar = (msg) => {
     setMsg(msg);
