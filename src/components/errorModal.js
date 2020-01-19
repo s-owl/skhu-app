@@ -26,7 +26,8 @@ export class ErrorModal extends Component{
       desc: '본 앱을 사용하려면, 네트워크 연결이 필요합니다. 네트워크 연결을 설정한 후 앱을 다시 실행하세요.',
       buttons: [
         {label: '다시 시도', onPress: ()=>{
-          this.props.navigation.navigate('AuthStack');
+          this.closeErrorModal();
+          this.props.navigation.navigate('Login');
         }},
         {label: '도움 받기', onPress: ()=>{
           this.closeErrorModal();
@@ -44,7 +45,8 @@ export class ErrorModal extends Component{
         + '비밀번호 변경에 문제가 있는 경우 성공회대학교 전자계산소에 문의하시기 바랍니다.',
       buttons: [
         {label: '다시 시도', onPress: ()=>{
-          this.props.navigation.navigate('AuthStack');
+          this.closeErrorModal();
+          this.props.navigation.navigate('Login');
         }},
         {label: '도움 받기', onPress: ()=>{
           this.closeErrorModal();
@@ -84,7 +86,8 @@ export class ErrorModal extends Component{
         + '추가정보:\n',
       buttons: [
         {label: '다시 시도', onPress: ()=>{
-          this.props.navigation.navigate('AuthStack');
+          this.closeErrorModal();
+          this.props.navigation.navigate('Login');
         }},
         {label: '오류 정보 복사', onPress: ()=>{
           Clipboard.setString(this.state.desc);
@@ -136,7 +139,8 @@ export class ErrorModal extends Component{
           buttons={this.state.buttons}>
           <ThemeText>{this.state.desc}</ThemeText>
         </InfoModal>
-        <HelpModal onClose={this.afterCloseHelp.bind(this)} ref={this.helpModal}/>
+        <HelpModal onClose={this.afterCloseHelp.bind(this)} ref={this.helpModal}
+          navigation={this.props.navigation}/>
       </View>
     );
   }
