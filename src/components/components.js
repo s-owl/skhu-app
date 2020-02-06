@@ -5,9 +5,8 @@ import {
   SafeAreaView, TextInput, ScrollView, Picker, Text
 } from 'react-native';
 import Touchable from './touchable';
-import {LinearGradient} from 'expo-linear-gradient';
 import BuildConfigs from '../config';
-import {useColorScheme} from 'react-native-appearance';
+import {useColorScheme, Appearance} from 'react-native-appearance';
 
 function ThemePicker(props){
   let colorScheme = useColorScheme();
@@ -18,10 +17,28 @@ function ThemePicker(props){
     </Picker>);
 }
 
-function ThemeTextInput(props){
-  let colorScheme = useColorScheme();
-  const textColor = (colorScheme==='dark')? 'white' : 'black';
-  return(<TextInput style={[{color: textColor}, props.style]} {...props}/>);
+class ThemeTextInput extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      textColor: Appearance.getColorScheme() === 'dark' ? 'white' : 'black'
+    };
+    this.component = React.createRef();
+  }
+  componentDidMount(){
+    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
+      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
+    });
+  }
+  focus(){
+    this.component.current.focus();
+  }
+  render(){
+    return(
+      <TextInput style={[{color: this.state.textColor}, this.props.style]}
+        ref={this.component} {...this.props}/>
+    );
+  }
 }
 
 function ThemeText(props){

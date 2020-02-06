@@ -7,7 +7,6 @@ import ListItem from '../components/listitem';
 import * as SecureStore from 'expo-secure-store';
 import SnackBar from 'react-native-snackbar-component';
 import {ThemeText, ThemeTextInput} from '../components/components';
-import {Appearance} from 'react-native-appearance';
 
 export class Settings extends Component {
 static navigationOptions = ({navigation, navigationOptions}) => {
@@ -116,6 +115,7 @@ export class PinRecovery extends Component{
       title: 'PIN 복구',
     };
   };
+
   constructor(props){
     super(props);
     this.state = {
@@ -125,7 +125,6 @@ export class PinRecovery extends Component{
       msg: '',
       snackbar: false
     };
-
     this.newPin = React.createRef();
     this.newPinCheck = React.createRef();
     this.userpw = React.createRef();
@@ -142,7 +141,6 @@ export class PinRecovery extends Component{
     const idToNewPinCheck = 'idToNewPinCheck';
     const idToUserpw = 'idToUserpw';
     const idRecover = 'idRecover';
-    const textColor = Appearance.getColorScheme() === 'dark' ? 'white' : 'black';
     let keyboardToolbar = (Platform.OS == 'ios') ? (
       <View>
         <InputAccessoryView nativeID={idToNewPinCheck}>
@@ -168,21 +166,21 @@ export class PinRecovery extends Component{
       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <View style={{flex: 1}}>
           <ListItem>
-            <ThemeTextInput color={textColor} placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPin}
               onSubmitEditing={ () => this.newPinCheck.current.focus() }
               onChangeText={(value)=>this.setState({newPin: value})}
               inputAccessoryViewID={idToNewPinCheck}/>
           </ListItem>
           <ListItem>
-            <ThemeTextInput color={textColor} placeholder='새 PIN 확인(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput placeholder='새 PIN 확인(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPinCheck}
               onSubmitEditing={ () => this.userpw.current.focus() }
               onChangeText={(value)=>this.setState({newPinCheck: value})}
               inputAccessoryViewID={idToUserpw}/>
           </ListItem>
           <ListItem>
-            <ThemeTextInput color={textColor} placeholder='로그인 비밀번호 입력'  returnkeyType='go'
+            <ThemeTextInput placeholder='로그인 비밀번호 입력'  returnkeyType='go'
               secureTextEntry={ true } autocorrect={ false } ref={this.userpw}
               onSubmitEditing={()=>this.recoverPin()}
               onChangeText={(value)=>this.setState({userpw: value})}
@@ -264,7 +262,6 @@ export class ChangePin extends Component{
     const idToNewPin = 'idToNewPin';
     const idToNewPinCheck = 'idToNewPinCheck';
     const idChange = 'idChange';
-    const textColor = Appearance.getColorScheme() === 'dark' ? 'white' : 'black';
 
     let keyboardToolbar = (Platform.OS == 'ios') ? (
       <View>
@@ -291,21 +288,21 @@ export class ChangePin extends Component{
       <KeyboardAvoidingView behavior="padding" enabled style={{flex: 1}}>
         <View style={{flex: 1}}>
           <ListItem>
-            <ThemeTextInput color={textColor} placeholder='기존 PIN 입력'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput placeholder='기존 PIN 입력'  returnkeyType='next' keyboardType='number-pad'
               secureTextEntry={ true } autocorrect={ false } ref={this.currentPin}
               onSubmitEditing={ () => this.newPin.current.focus() } maxLength={6}
               onChangeText={(value)=>this.setState({currentPin: value})}
               inputAccessoryViewID={idToNewPin}/>
           </ListItem>
           <ListItem>
-            <ThemeTextInput color={textColor} placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
+            <ThemeTextInput placeholder='새 PIN 입력(6자)'  returnkeyType='next' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPin}
               onSubmitEditing={ () => this.newPinCheck.current.focus() }
               onChangeText={(value)=>this.setState({newPin: value})}
               inputAccessoryViewID={idToNewPinCheck}/>
           </ListItem>
           <ListItem>
-            <ThemeTextInput color={textColor} placeholder='새 PIN 확인(6자)'  returnkeyType='go' keyboardType='number-pad'
+            <ThemeTextInput placeholder='새 PIN 확인(6자)'  returnkeyType='go' keyboardType='number-pad'
               maxLength={6} secureTextEntry={ true } autocorrect={ false } ref={this.newPinCheck}
               onSubmitEditing={ () => this.changePin() }
               onChangeText={(value)=>this.setState({newPinCheck: value})}
