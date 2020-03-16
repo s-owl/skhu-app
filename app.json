@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "0.5.0",
+    "version": "0.5.1",
     "orientation": "portrait",
     "icon": "./assets/imgs/icon.png",
     "primaryColor": "#ffffff",
@@ -29,7 +29,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.sowl.skhus",
-      "buildNumber": "0.5.0",
+      "buildNumber": "0.5.1",
       "icon": "./assets/imgs/ios.png",
       "supportsTablet": true,
       "userInterfaceStyle": "automatic",
@@ -48,7 +48,7 @@
       }
     },
     "android": {
-      "versionCode": 17,
+      "versionCode": 18,
       "package": "com.sowl.skhus",
       "adaptiveIcon": {
         "foregroundImage": "./assets/imgs/androidAdaptive.png"
