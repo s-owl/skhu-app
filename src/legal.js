@@ -81,7 +81,10 @@ const LegalInfo = {
   ],
   oss: [
     {
-      name: 'Expo SDK',
+      name: 'Expo SDK \
+      (expo, expo-asset, expo-constants, expo-linear-gradient, \
+        expo-local-authentication, expo-print, expo-secure-store, \
+        expo-sqlite, expo-web-browser',
       author: 'Expo',
       url: 'https://github.com/expo/expo-sdk',
       license: 'BSD 3-clause license',
@@ -135,6 +138,55 @@ const LegalInfo = {
       url: 'https://github.com/immutable-js/immutable-js',
       license: 'MIT License',
       licenseUrl: 'https://github.com/immutable-js/immutable-js/blob/master/LICENSE'
+    },
+    {
+      name: 'Sentry Expo',
+      author: 'Expo',
+      url: 'https://github.com/expo/sentry-expo',
+      license: 'MIT License',
+      licenseUrl: 'https://github.com/expo/sentry-expo'
+    },
+    {
+      name: '@react-native-community/netinfo',
+      author: 'React Native Community',
+      url: 'https://github.com/react-native-community/react-native-netinfo',
+      license: 'MIT License',
+      licenseUrl: 'https://github.com/react-native-community/react-native-netinfo/blob/master/LICENSE'
+    },
+    {
+      name: 'AbortController polyfill for abortable fetch()',
+      author: 'molsson',
+      url: 'https://github.com/mo/abortcontroller-polyfill',
+      license: 'MIT License',
+      licenseUrl: 'https://github.com/mo/abortcontroller-polyfill/blob/master/LICENSE'
+    },
+    {
+      name: 'react-native-dotenv',
+      author: 'David Chang',
+      url: 'https://github.com/zetachang/react-native-dotenv',
+      license: 'MIT License',
+      licenseUrl: 'https://github.com/zetachang/react-native-dotenv/blob/master/LICENSE'
+    },
+    {
+      name: 'react-native-appearance',
+      author: 'Expo',
+      url: 'https://github.com/expo/react-native-appearance',
+      license: 'MIT License',
+      licenseUrl: 'https://github.com/expo/react-native-appearance/blob/master/LICENSE'
+    },
+    {
+      name: 'react-native-gesture-handler',
+      author: 'Software Mansion',
+      url: 'https://github.com/software-mansion/react-native-gesture-handler',
+      license: 'MIT License',
+      licenseUrl: 'https://github.com/software-mansion/react-native-gesture-handler/blob/master/LICENSE'
+    },
+    {
+      name: 'React Native Reanimated',
+      author: 'Software Mansion',
+      url: 'https://github.com/software-mansion/react-native-reanimated',
+      license: 'MIT License',
+      licenseUrl: 'https://github.com/software-mansion/react-native-reanimated/blob/master/LICENSE'
     }
   ]};
 
