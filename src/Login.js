@@ -17,6 +17,7 @@ import {ErrorModal} from './components/errorModal';
 import {HelpModal} from './components/helpModal';
 import moment from 'moment';
 import {Appearance} from 'react-native-appearance';
+import {CommonActions} from '@react-navigation/native';
 
 export default function Login(props){
   let [isLoading, setLoading] = useState(false);
@@ -46,7 +47,14 @@ export default function Login(props){
         sessionUpdatedAt = moment.utc(sessionUpdatedAt);
         const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('60', 'minutes'));
         if(!loginRequired){
-          props.navigation.reset('MainStack');
+          props.navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {name: 'MainStack'}
+              ]
+            })
+          );
           return;
         }
       }
@@ -114,7 +122,14 @@ export default function Login(props){
           await SecureStore.setItemAsync('userpw', pw);
           await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
           setLoading(false);
-          props.navigation.reset('MainStack');
+          props.navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {name: 'MainStack'}
+              ]
+            })
+          );
         }
       }
     }catch(err){

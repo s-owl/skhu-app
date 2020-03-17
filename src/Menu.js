@@ -10,6 +10,7 @@ import DBHelper from './tools/dbhelper';
 import SnackBar from 'react-native-snackbar-component';
 import {HelpModal} from './components/helpModal';
 import {Appearance} from 'react-native-appearance';
+import {CommonActions} from '@react-navigation/native';
 
 export default class Menu extends Component {
   static navigationOptions = ({navigation, navigationOptions}) => {
@@ -121,7 +122,14 @@ export default class Menu extends Component {
                       await AsyncStorage.clear();
                       const db = new DBHelper();
                       await db.dropAllTables();
-                      this.props.navigation.navigate('AuthStack');
+                      this.props.navigation.dispatch(
+                        CommonActions.reset({
+                          index: 0,
+                          routes: [
+                            {name: 'AuthStack'}
+                          ]
+                        })
+                      );
                     }},
                   ],
                   {cancelable: false}
