@@ -8,32 +8,16 @@ import {Appearance} from 'react-native-appearance';
 
 
 export default class Authinfo extends Component{
-    static navigationOptions = ({navigation, navigationOptions}) => {
-      const {params} = navigation.state;
-        
-      return {
-        title: '',
-        headerStyle: {
-          backgroundColor: (Appearance.getColorScheme()==='dark')? 'black' : 'whitesmoke',
-          elevation: 0,
-          shadowOpacity: 0,
-          shadowOffset: {
-            height: 0,
-          },
-          shadowRadius: 0,
-        }
-      };
-    };
-
-    render(){
-      return(
-        <ThemeBackground viewType="scrollView" hasCardViews={true}>
-          <Profile style={{marginTop: 24}}/>
-          <ClassInfoCard style={{padding: 8}}/>
-          <OtpCard/>
-        </ThemeBackground>
-      );
-    }
+  render(){
+    return(
+      <ThemeBackground viewType="scrollView"
+        hasCardViews={true} style={{paddingTop: 80}}>
+        <Profile style={{marginTop: 24}}/>
+        <ClassInfoCard style={{padding: 8}}/>
+        <OtpCard/>
+      </ThemeBackground>
+    );
+  }
 }
 
 class Profile extends Component{

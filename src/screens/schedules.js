@@ -8,25 +8,18 @@ import {ThemeText} from '../components/components';
 
 
 export default class Schedules extends Component{
-    static navigationOptions = ({navigation, navigationOptions}) => {
-      const {params} = navigation.state;
-          
-      return {
-        title: '학사 일정',
-      };
-    };
-    constructor(props){
-      super(props);
-    }
-    render(){
-      return(
-        <ScrollView style={{height: '100%'}}>
-          <ScheduleComponent year={moment().year()} month={moment().month()+1}/>
-          <ScheduleComponent year={moment().add(1, 'months').year()} month={moment().add(1, 'months').month()+1}/>
-          <ScheduleComponent year={moment().add(2, 'months').year()} month={moment().add(2, 'months').month()+1}/>
-        </ScrollView>
-      );
-    }
+  constructor(props){
+    super(props);
+  }
+  render(){
+    return(
+      <ScrollView style={{height: '100%'}}>
+        <ScheduleComponent year={moment().year()} month={moment().month()+1}/>
+        <ScheduleComponent year={moment().add(1, 'months').year()} month={moment().add(1, 'months').month()+1}/>
+        <ScheduleComponent year={moment().add(2, 'months').year()} month={moment().add(2, 'months').month()+1}/>
+      </ScrollView>
+    );
+  }
 }
 
 class ScheduleComponent extends Component{

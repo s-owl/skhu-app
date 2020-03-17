@@ -11,13 +11,6 @@ import {ThemeText} from '../components/components';
 
 
 export class ProfessorTimetable extends Component{
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-        
-    return {
-      title: '교원별 시간표',
-    };
-  };
   constructor(props){
     super(props);
     this.state = {

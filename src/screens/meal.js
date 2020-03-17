@@ -9,14 +9,6 @@ import ForestApi from '../tools/apis';
 
 
 export class Meal extends Component {
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-
-    return {
-      title: '주간 식단',
-    };
-  };
-
   constructor(props) {
     super(props);
     this.state = {

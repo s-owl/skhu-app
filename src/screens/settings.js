@@ -9,102 +9,95 @@ import SnackBar from 'react-native-snackbar-component';
 import {ThemeText, ThemeTextInput} from '../components/components';
 
 export class Settings extends Component {
-static navigationOptions = ({navigation, navigationOptions}) => {
-  const {params} = navigation.state;
+  constructor(props){
+    super(props);
+    this.state = {};
+    this.sectionData = [
+      {title: 'PIN 관리', data: [
+        {label: 'PIN 변경', type: 'nav', name: 'changePin', navigateTo: 'ChangePin'},
+        {label: 'PIN 복구', type: 'nav', name: 'recoverPin', navigateTo: 'PinRecovery'}
+      ]},
+      {title: '기타', data: [
+        {label: '홈 화면에서 프로필 사진 숨김', type: 'bool', name: 'hideProfile', default: true},
+      ]},
+    ];
+  }
 
-  return {
-    title: '설정',
-  };
-};
-constructor(props){
-  super(props);
-  this.state = {};
-  this.sectionData = [
-    {title: 'PIN 관리', data: [
-      {label: 'PIN 변경', type: 'nav', name: 'changePin', navigateTo: 'ChangePin'},
-      {label: 'PIN 복구', type: 'nav', name: 'recoverPin', navigateTo: 'PinRecovery'}
-    ]},
-    {title: '기타', data: [
-      {label: '홈 화면에서 프로필 사진 숨김', type: 'bool', name: 'hideProfile', default: true},
-    ]},
-  ];
-}
-
-componentDidMount(){
-  this.sectionData.forEach((item)=>{
-    item.data.forEach(async (subitem)=>{
-      if(subitem.type == 'bool'){
-        let savedValue = await AsyncStorage.getItem(subitem.name);
-        console.log(JSON.stringify(subitem));
-        if(savedValue == null || savedValue == undefined){
-          this.setState({
-            ...this.state,
-            [subitem.name]: subitem.default
-          });
-        }else{
-          this.setState({
-            ...this.state,
-            [subitem.name]: JSON.parse(savedValue)
-          });
-        }
-      }
-    });
-  });
-}
-render() {
-  return(
-    <SafeAreaView>
-      <SectionList style={{height: '100%'}}
-        renderItem={({item, index, section}) => {
-          switch(item.type){
-          case 'nav':
-            return(
-              <ListItem key={index} onPress={()=>this.props.navigation.navigate(item.navigateTo)}
-                style={{flex: 0, flexDirection: 'row'}}>
-                <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
-              </ListItem> 
-            );
-          case 'bool':
-            return(
-              <ListItem key={index} onPress={async ()=>{
-                const value = !this.state[item.name];
-                this.setState({
-                  [item.name]: value
-                });
-                await AsyncStorage.setItem(item.name, value.toString());
-              }}
-              style={{flex: 0, flexDirection: 'row'}}>
-                <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
-                <Switch value={this.state[item.name]} onValueChange={
-                  async (value)=>{
-                    this.setState({
-                      [item.name]: value
-                    });
-                    await AsyncStorage.setItem(item.name, value.toString());
-                  }
-                }/>
-              </ListItem> 
-            );
-          default:
-            return(
-              <ListItem key={index}
-                style={{flex: 0, flexDirection: 'row'}}>
-                <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
-              </ListItem> 
-            );
+  componentDidMount(){
+    this.sectionData.forEach((item)=>{
+      item.data.forEach(async (subitem)=>{
+        if(subitem.type == 'bool'){
+          let savedValue = await AsyncStorage.getItem(subitem.name);
+          console.log(JSON.stringify(subitem));
+          if(savedValue == null || savedValue == undefined){
+            this.setState({
+              ...this.state,
+              [subitem.name]: subitem.default
+            });
+          }else{
+            this.setState({
+              ...this.state,
+              [subitem.name]: JSON.parse(savedValue)
+            });
           }
-        }}
-        renderSectionHeader={({section: {title}}) => (
-          <ListItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
-            <ThemeText style={{fontWeight: 'bold'}}>{title}</ThemeText>
-          </ListItem>
-        )}
-        sections={this.sectionData}
-        keyExtractor={(item, index) => item + index}
-      />
-    </SafeAreaView>
-  );
-}
+        }
+      });
+    });
+  }
+  render() {
+    return(
+      <SafeAreaView>
+        <SectionList style={{height: '100%'}}
+          renderItem={({item, index, section}) => {
+            switch(item.type){
+            case 'nav':
+              return(
+                <ListItem key={index} onPress={()=>this.props.navigation.navigate(item.navigateTo)}
+                  style={{flex: 0, flexDirection: 'row'}}>
+                  <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
+                </ListItem> 
+              );
+            case 'bool':
+              return(
+                <ListItem key={index} onPress={async ()=>{
+                  const value = !this.state[item.name];
+                  this.setState({
+                    [item.name]: value
+                  });
+                  await AsyncStorage.setItem(item.name, value.toString());
+                }}
+                style={{flex: 0, flexDirection: 'row'}}>
+                  <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
+                  <Switch value={this.state[item.name]} onValueChange={
+                    async (value)=>{
+                      this.setState({
+                        [item.name]: value
+                      });
+                      await AsyncStorage.setItem(item.name, value.toString());
+                    }
+                  }/>
+                </ListItem> 
+              );
+            default:
+              return(
+                <ListItem key={index}
+                  style={{flex: 0, flexDirection: 'row'}}>
+                  <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
+                </ListItem> 
+              );
+            }
+          }}
+          renderSectionHeader={({section: {title}}) => (
+            <ListItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
+              <ThemeText style={{fontWeight: 'bold'}}>{title}</ThemeText>
+            </ListItem>
+          )}
+          sections={this.sectionData}
+          keyExtractor={(item, index) => item + index}
+        />
+      </SafeAreaView>
+    );
+  }
 }
 
 export class PinRecovery extends Component{

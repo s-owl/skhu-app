@@ -16,13 +16,6 @@ import {useColorScheme} from 'react-native-appearance';
 import {MealCard} from './screens/meal';
 
 export default class Main extends Component {
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-    return {
-      title: '홈',
-      header: null // 헤더 비활성화
-    };
-  };
   constructor(props) {
     super(props);
     this.db = new DBHelper();

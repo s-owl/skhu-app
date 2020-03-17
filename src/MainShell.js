@@ -40,14 +40,14 @@ function HomeStack(){
           fontWeight: 'bold',
         },
       }}>
-      <HStack.Screen name="Home" component={Main}/>
-      <HStack.Screen name="Attendance" component={AttendanceScreen}/>
-      <HStack.Screen name="Schedules" component={Schedules}/>
-      <HStack.Screen name="Credits" component={Credits}/>
-      <HStack.Screen name="Timetable" component={StudentTimetable}/>
-      <HStack.Screen name="SyllabusDetails" component={SyllabusDetails}/>
-      <HStack.Screen name="Meal" component={Meal}/>
-      <HStack.Screen name="Authinfo" component={Authinfo}/>
+      <HStack.Screen name="Home" component={Main} options={{headerShown: false}}/>
+      <HStack.Screen name="Attendance" component={AttendanceScreen} options={{title: '나의 출결 현황'}}/>
+      <HStack.Screen name="Schedules" component={Schedules} options={{title: '학사 일정'}}/>
+      <HStack.Screen name="Credits" component={Credits} options={{title: '현재 이수 학점'}}/>
+      <HStack.Screen name="Timetable" component={StudentTimetable} options={{title: '시간표'}}/>
+      <HStack.Screen name="SyllabusDetails" component={SyllabusDetails} options={{title: '강의계획서 상세'}}/>
+      <HStack.Screen name="Meal" component={Meal} options={{title: '주간 식단'}}/>
+      <HStack.Screen name="Authinfo" component={Authinfo} options={{headerShown: false}}/>
     </HStack.Navigator>
   );
 }
@@ -62,24 +62,24 @@ function MenuStack(){
           fontWeight: 'bold',
         },
       }}>
-      <MStack.Screen name="Menu" component={Menu}/>
-      <MStack.Screen name="Counsel" component={CounselHistory}/>
-      <MStack.Screen name="Syllabus" component={Syllabus}/>
-      <MStack.Screen name="SyllabusDetails" component={SyllabusDetails}/>
-      <MStack.Screen name="SavedCredits" component={SavedCredits}/>
-      <MStack.Screen name="ScholarshipHistory" component={ScholarshipHistory}/>
-      <MStack.Screen name="GradeCert" component={GradeCert}/>
-      <MStack.Screen name="Subjects" component={Subjects}/>
-      <MStack.Screen name="About" component={About}/>
-      <MStack.Screen name="Meal" component={Meal}/>
-      <MStack.Screen name="searchCondition" component={searchCondition}/>
-      <MStack.Screen name="ProfessorTimetable" component={ProfessorTimetable}/>
-      <MStack.Screen name="SearchProfessors" component={SearchProfessors}/>
-      <MStack.Screen name="LectureRoomTimetable" component={LectureRoomTimetable}/>
-      <MStack.Screen name="SearchLectureRooms" component={SearchLectureRooms}/>
-      <MStack.Screen name="Settings" component={Settings}/>
-      <MStack.Screen name="PinRecovery" component={PinRecovery}/>
-      <MStack.Screen name="ChangePin" component={ChangePin}/>
+      <MStack.Screen name="Menu" component={Menu} options={{title: '메뉴'}}/>
+      <MStack.Screen name="Counsel" component={CounselHistory} options={{title: '나의 상담 이력'}}/>
+      <MStack.Screen name="Syllabus" component={Syllabus} options={{title: '강의계획서 조회'}}/>
+      <MStack.Screen name="SyllabusDetails" component={SyllabusDetails} options={{title: '강의계획서 상세'}}/>
+      <MStack.Screen name="SavedCredits" component={SavedCredits} options={{title: '학점세이브 조회'}}/>
+      <MStack.Screen name="ScholarshipHistory" component={ScholarshipHistory} options={{title: '장학 내역 조회'}}/>
+      <MStack.Screen name="GradeCert" component={GradeCert} options={{title: '학내 제출용 성적증명서'}}/>
+      <MStack.Screen name="Subjects" component={Subjects} options={{title: '학과/학부별 개설과목 조회'}}/>
+      <MStack.Screen name="About" component={About} options={{title: '앱 정보'}}/>
+      <MStack.Screen name="Meal" component={Meal} options={{title: '학식'}}/>
+      <MStack.Screen name="searchCondition" component={searchCondition} options={{title: '검색 조건'}}/>
+      <MStack.Screen name="ProfessorTimetable" component={ProfessorTimetable} options={{title: '교원별 시간표'}}/>
+      <MStack.Screen name="SearchProfessors" component={SearchProfessors} options={{title: '교원 검색(교원별 시간표)'}}/>
+      <MStack.Screen name="LectureRoomTimetable" component={LectureRoomTimetable} options={{title: '강의실별 시간표'}}/>
+      <MStack.Screen name="SearchLectureRooms" component={SearchLectureRooms} options={{title: '강의실 검색(강의실별 시간표)'}}/>
+      <MStack.Screen name="Settings" component={Settings} options={{title: '앱 설정'}}/>
+      <MStack.Screen name="PinRecovery" component={PinRecovery} options={{title: 'PIN 복구'}}/>
+      <MStack.Screen name="ChangePin" component={ChangePin} options={{title: 'PIN 변경'}}/>
     </MStack.Navigator>
   );
 }

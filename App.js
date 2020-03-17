@@ -15,7 +15,7 @@ Asset;
 const Stack = createStackNavigator();
 function AuthStack(){
   return(
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Login" headerMode="none">
       <Stack.Screen name="Login" component={Login}/>
       <Stack.Screen name="About" component={About}/>
     </Stack.Navigator>
@@ -33,7 +33,7 @@ export default function App(){
   return (
     <AppearanceProvider>
       <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack.Navigator initialRouteName="AuthStack">
+        <Stack.Navigator initialRouteName="AuthStack" headerMode="none">
           <Stack.Screen name="AuthStack" component={AuthStack}/>
           <Stack.Screen name="MainStack" component={MainShell}/>
         </Stack.Navigator>

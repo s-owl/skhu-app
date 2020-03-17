@@ -11,13 +11,6 @@ import {Map} from 'immutable';
 
 
 export class LectureRoomTimetable extends Component{
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-        
-    return {
-      title: '강의실별 시간표',
-    };
-  };
   constructor(props){
     super(props);
     this.state = {
@@ -95,15 +88,6 @@ export class LectureRoomTimetable extends Component{
 
 
 export class SearchLectureRooms extends Component{
-  // 상단에 이름 출력
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-
-    return {
-      title: '강의실 검색(강의실별 시간표)',
-    };
-  };
-
   constructor(props){
     super(props);
     const today = new Date();

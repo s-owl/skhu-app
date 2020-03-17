@@ -6,13 +6,6 @@ import BuildConfigs from '../config';
 import {ThemeText} from '../components/components';
 
 export default class StudentTimetable extends Component{
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-        
-    return {
-      title: '시간표',
-    };
-  };
   constructor(props){
     super(props);
     this.state = {

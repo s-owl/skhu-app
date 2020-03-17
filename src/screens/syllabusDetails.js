@@ -9,13 +9,6 @@ import {ThemeText} from '../components/components';
 import {Appearance} from 'react-native-appearance';
 
 export default class SyllabusDetails extends Component{
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-      
-    return {
-      title: '강의계획서 상세',
-    };
-  };
   constructor(props){
     super(props);
     this.state = {

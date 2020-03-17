@@ -10,15 +10,6 @@ import {ThemeText} from '../components/components';
 
 // 강의계획서 목록 조회
 export default class Syllabus extends Component{
-  // 상단에 이름 출력
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-
-    return {
-      title: '강의계획서 조회',
-    };
-  };
-
   // 초기화
   constructor(props){
     super(props);

@@ -34,15 +34,6 @@ const styles = StyleSheet.create({
 
 // 검색 조건 스크린 클래스
 export default class searchCondition extends Component {
-  // 제목 표시
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-      
-    return {
-      title: '검색 조건',
-    };
-  };
-
   // 초기화
   constructor(props) {
     super(props);

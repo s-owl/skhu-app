@@ -71,14 +71,6 @@ function getResultInSearchData(searchData) {
 }
 
 export default class Subjects extends Component{
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-      
-    return {
-      title: '학과/학부별 개설과목 조회',
-    };
-  };
-
   // 초기화
   constructor(props){
     super(props);
