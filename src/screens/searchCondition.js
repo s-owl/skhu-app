@@ -40,9 +40,10 @@ export default class searchCondition extends Component {
     // 스크린 간의 통신을 위한 네비게이션
     const {navigation} = props;
     // 필요한 변수 가져오기
-    this.dataType = navigation.getParam('dataType', {});
+    const {dataType, condition, onConfirm} = this.props.route.params;
+    this.dataType = dataType;
     this.state = {
-      condition: navigation.getParam('condition', {})
+      condition: condition
     };
 
     // setter 생성
@@ -52,7 +53,7 @@ export default class searchCondition extends Component {
 
     // 프로시져 지정
     this.handleConfirm = ()=>{
-      navigation.getParam('onConfirm')(this.state.condition);
+      onConfirm(this.state.condition);
       this.props.navigation.goBack();
     };
     this.handleCancel = ()=>this.props.navigation.goBack();

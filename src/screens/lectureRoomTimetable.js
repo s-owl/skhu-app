@@ -13,11 +13,12 @@ import {Map} from 'immutable';
 export class LectureRoomTimetable extends Component{
   constructor(props){
     super(props);
+    const {semesterCode, year, roomName, roomNumber} = this.props.route.params;
     this.state = {
-      semesterCode: this.props.navigation.getParam('semesterCode', ''),
-      year: this.props.navigation.getParam('year', ''),
-      roomName: this.props.navigation.getParam('roomName', ''),
-      roomNumber: this.props.navigation.getParam('roomNumber', ''),
+      semesterCode: semesterCode,
+      year: year,
+      roomName: roomName,
+      roomNumber: roomNumber,
       timetable: [],
       isLoading: false
     };

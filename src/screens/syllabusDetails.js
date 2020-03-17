@@ -11,11 +11,12 @@ import {Appearance} from 'react-native-appearance';
 export default class SyllabusDetails extends Component{
   constructor(props){
     super(props);
+    const {subjectCode, classCode, semesterCode, year} = this.props.route.params;
     this.state = {
-      subjectCode: this.props.navigation.getParam('subjectCode', ''),
-      classCode: this.props.navigation.getParam('classCode', ''),
-      semesterCode: this.props.navigation.getParam('semesterCode', ''),
-      year: this.props.navigation.getParam('year', ''),
+      subjectCode: subjectCode,
+      classCode: classCode,
+      semesterCode: semesterCode,
+      year: year,
       details: undefined,
       isLoading: false,
       textColor: Appearance.getColorScheme() === 'dark'? 'white':'black'

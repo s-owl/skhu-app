@@ -13,11 +13,12 @@ import {ThemeText} from '../components/components';
 export class ProfessorTimetable extends Component{
   constructor(props){
     super(props);
+    const {semesterCode, year, roomName, roomNumber} = this.props.route.params;
     this.state = {
-      semesterCode: this.props.navigation.getParam('semesterCode', ''),
-      year: this.props.navigation.getParam('year', ''),
-      professorName: this.props.navigation.getParam('professorName', ''),
-      professorId: this.props.navigation.getParam('professorId', ''),
+      semesterCode: semesterCode,
+      year: year,
+      roomName: roomName,
+      roomNumber: roomNumber,
       timetable: [],
       isLoading: false
     };
