@@ -1,7 +1,7 @@
 import React from 'react';
 import {AppearanceProvider, useColorScheme} from 'react-native-appearance';
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import {NavigationContainer, DefaultTheme, DarkTheme} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import BuildConfigs from './src/config';
 
 import Login from './src/Login';
@@ -12,27 +12,15 @@ import * as Sentry from 'sentry-expo';
 import {Asset} from 'expo-asset';
 Asset;
 
-const AuthStack = createStackNavigator(
-  {
-    Login: Login,
-    About: About
-  },
-  {
-    initialRouteName: 'Login',
-  }
-);
-
-const AppContainer = createAppContainer(
-  createSwitchNavigator(
-    {
-      MainStack: MainShell,
-      AuthStack: AuthStack,
-    },
-    {
-      initialRouteName: 'AuthStack',
-    }
-  )
-);
+const Stack = createStackNavigator();
+function AuthStack(){
+  return(
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen name="Login" component={Login}/>
+      <Stack.Screen name="About" component={About}/>
+    </Stack.Navigator>
+  );
+}
 
 Sentry.init({
   dsn: BuildConfigs.SENTRY_DSN,
@@ -41,11 +29,15 @@ Sentry.init({
 });
 
 export default function App(){
-  let colorScheme = useColorScheme();
+  const scheme = useColorScheme();
   return (
     <AppearanceProvider>
-      <AppContainer 
-        theme={colorScheme}/>
+      <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack.Navigator initialRouteName="AuthStack">
+          <Stack.Screen name="AuthStack" component={AuthStack}/>
+          <Stack.Screen name="MainStack" component={MainShell}/>
+        </Stack.Navigator>
+      </NavigationContainer>
     </AppearanceProvider>
   );
   

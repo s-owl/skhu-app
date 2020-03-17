@@ -1,8 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Touchable from './components/touchable';
 import Main from './Main';
 import Menu from './Menu';
@@ -27,93 +26,92 @@ import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTim
 import Authinfo from './screens/authinfo';
 import {Settings, PinRecovery, ChangePin} from './screens/settings';
 
+const HStack = createStackNavigator();
+const MStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
-const HomeStack = createStackNavigator(
-  {
-    Home: Main,
-    Attendance: AttendanceScreen,
-    Schedules: Schedules,
-    Credits: Credits,
-    Timetable: StudentTimetable,
-    SyllabusDetails: SyllabusDetails,
-    Meal: Meal,
-    Authinfo: Authinfo
-  },
-  {
-    initialRouteName: 'Home',
-    defaultNavigationOptions: {
-      headerTruncatedBackTitle: '뒤로',
-      headerTintColor: BuildConfigs.primaryColor,
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    },
-  }
-);
+function HomeStack(){
+  return(
+    <HStack.Navigator initialRouteName="Home"
+      screenOptions={{
+        headerTruncatedBackTitle: '뒤로',
+        headerTintColor: BuildConfigs.primaryColor,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
+      <HStack.Screen name="Home" component={Main}/>
+      <HStack.Screen name="Attendance" component={AttendanceScreen}/>
+      <HStack.Screen name="Schedules" component={Schedules}/>
+      <HStack.Screen name="Credits" component={Credits}/>
+      <HStack.Screen name="Timetable" component={StudentTimetable}/>
+      <HStack.Screen name="SyllabusDetails" component={SyllabusDetails}/>
+      <HStack.Screen name="Meal" component={Meal}/>
+      <HStack.Screen name="Authinfo" component={Authinfo}/>
+    </HStack.Navigator>
+  );
+}
 
-const MenuStack = createStackNavigator(
-  {
-    Menu: Menu,
-    Counsel: CounselHistory,
-    Syllabus: Syllabus,
-    SyllabusDetails: SyllabusDetails,
-    SavedCredits: SavedCredits,
-    ScholarshipHistory: ScholarshipHistory,
-    GradeCert: GradeCert,
-    Subjects: Subjects,
-    About: About,
-    Meal: Meal,
-    searchCondition: searchCondition,
-    ProfessorTimetable: ProfessorTimetable,
-    SearchProfessors: SearchProfessors,
-    LectureRoomTimetable: LectureRoomTimetable,
-    SearchLectureRooms: SearchLectureRooms,
-    Settings: Settings,
-    PinRecovery: PinRecovery,
-    ChangePin: ChangePin
-  },
-  {
-    initialRouteName: 'Menu',
-    defaultNavigationOptions: {
-      headerTruncatedBackTitle: '뒤로',
-      headerTintColor: BuildConfigs.primaryColor,
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    },
-  }
-);
+function MenuStack(){
+  return(
+    <MStack.Navigator initialRouteName="Menu"
+      screenOptions={{
+        headerTruncatedBackTitle: '뒤로',
+        headerTintColor: BuildConfigs.primaryColor,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
+      <MStack.Screen name="Menu" component={Menu}/>
+      <MStack.Screen name="Counsel" component={CounselHistory}/>
+      <MStack.Screen name="Syllabus" component={Syllabus}/>
+      <MStack.Screen name="SyllabusDetails" component={SyllabusDetails}/>
+      <MStack.Screen name="SavedCredits" component={SavedCredits}/>
+      <MStack.Screen name="ScholarshipHistory" component={ScholarshipHistory}/>
+      <MStack.Screen name="GradeCert" component={GradeCert}/>
+      <MStack.Screen name="Subjects" component={Subjects}/>
+      <MStack.Screen name="About" component={About}/>
+      <MStack.Screen name="Meal" component={Meal}/>
+      <MStack.Screen name="searchCondition" component={searchCondition}/>
+      <MStack.Screen name="ProfessorTimetable" component={ProfessorTimetable}/>
+      <MStack.Screen name="SearchProfessors" component={SearchProfessors}/>
+      <MStack.Screen name="LectureRoomTimetable" component={LectureRoomTimetable}/>
+      <MStack.Screen name="SearchLectureRooms" component={SearchLectureRooms}/>
+      <MStack.Screen name="Settings" component={Settings}/>
+      <MStack.Screen name="PinRecovery" component={PinRecovery}/>
+      <MStack.Screen name="ChangePin" component={ChangePin}/>
+    </MStack.Navigator>
+  );
+}
 
-const MainShell = createBottomTabNavigator(
-  {
-    Home: HomeStack,
-    Menu: MenuStack,
-  },
-  {
-    defaultNavigationOptions: ({navigation}) => ({
-      tabBarButtonComponent: Touchable,
-      tabBarIcon: ({focused, tintColor}) => {
-        const {routeName} = navigation.state;
-        let iconName, label;
-        switch(routeName){
-        case 'Home': iconName = 'home'; label = '홈'; break;
-        case 'Menu': iconName = 'menu'; label = '메뉴'; break;
-        }
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
-        return (
-          <View>
-            <MaterialIcons name={iconName} size={25} color={tintColor} />
-            <Text style={{color: tintColor, textAlign: 'center'}}>{label}</Text>
-          </View>
-        );
-      },
-    }),
-    tabBarOptions: {
-      activeTintColor: '#569f59',
-      inactiveTintColor: 'gray',
-      showLabel: false
-    },
-  }
-);
-export default MainShell;
+export default function MainShell(){
+  return(
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarButtonComponent: Touchable,
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName, label;
+          switch(route.name){
+          case 'Home': iconName = 'home'; label = '홈'; break;
+          case 'Menu': iconName = 'menu'; label = '메뉴'; break;
+          }
+          // You can return any component that you like here! We usually use an
+          // icon component from react-native-vector-icons
+          return (
+            <View>
+              <MaterialIcons name={iconName} size={25} color={color} />
+              <Text style={{color: color, textAlign: 'center'}}>{label}</Text>
+            </View>
+          );
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: '#569f59',
+        inactiveTintColor: 'gray',
+        showLabel: false
+      }}>
+      <Tab.Screen name="Home" component={HomeStack}/>
+      <Tab.Screen name="Menu" component={MenuStack}/>
+    </Tab.Navigator>
+  );
+}

@@ -46,7 +46,7 @@ export default function Login(props){
         sessionUpdatedAt = moment.utc(sessionUpdatedAt);
         const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('60', 'minutes'));
         if(!loginRequired){
-          props.navigation.navigate('MainStack');
+          props.navigation.reset('MainStack');
           return;
         }
       }
@@ -114,7 +114,7 @@ export default function Login(props){
           await SecureStore.setItemAsync('userpw', pw);
           await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
           setLoading(false);
-          props.navigation.navigate('MainStack');
+          props.navigation.reset('MainStack');
         }
       }
     }catch(err){
