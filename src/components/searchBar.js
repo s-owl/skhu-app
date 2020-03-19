@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {withNavigation} from 'react-navigation';
 import {Map, List} from 'immutable';
 import {MaterialIcons} from '@expo/vector-icons';
-import {ThemeText, ThemeBackground} from './components';
+import {ThemedText, ThemeBackground} from './components';
 import ListItem from './listitem';
 import {Appearance} from 'react-native-appearance';
 
@@ -107,7 +107,7 @@ class SearchBar extends Component {
               onConfirm: this.handleCondition.bind(this)
             });
           }}>
-          <ThemeText style={{flex: 1}}>
+          <ThemedText style={{flex: 1}}>
             {this.getCondition()
               .map((value, key) => {
                 if (typeof value == 'string') {
@@ -120,7 +120,7 @@ class SearchBar extends Component {
               })
               .toList()
               .toJS().join(', ')}
-          </ThemeText>
+          </ThemedText>
           <MaterialIcons name="search" size={20} style={{flex: 0}}
             color={this.state.textColor}/>
         </ListItem>

@@ -5,7 +5,7 @@ import ForestApi from '../tools/apis';
 import Printer from '../tools/printer';
 import {MaterialHeaderButtons} from '../components/headerButtons';
 import BuildConfigs from '../config';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 
 export default function GradeCert(props){
 
@@ -57,17 +57,17 @@ export default function GradeCert(props){
         ListHeaderComponent={()=>(
           <View>
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>학생 정보</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>학생 정보</ThemedText>
             </ListItem>
             <ListItem>
               {userinfo.map(((item, index)=>{
                 return(
-                  <ThemeText key={`info${index}`}>{item.name}: {item.value}</ThemeText>
+                  <ThemedText key={`info${index}`}>{item.name}: {item.value}</ThemedText>
                 );
               }))}
             </ListItem>
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>성적 내역 상세</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>성적 내역 상세</ThemedText>
             </ListItem>
           </View>
         )}
@@ -75,33 +75,33 @@ export default function GradeCert(props){
         data={details}
         renderItem={({item}, index)=>(
           <ListItem style={{flex: 0, flexDirection: 'row'}} key={`details${index}`}>
-            <ThemeText style={{flex: 2}}>{item.year}{'\n'}{item.semester}</ThemeText>
+            <ThemedText style={{flex: 2}}>{item.year}{'\n'}{item.semester}</ThemedText>
             <View style={{flex: 4}}>
-              <ThemeText style={{fontWeight: 'bold'}}>{item.subject}</ThemeText>
-              <ThemeText>{item.code}</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>{item.subject}</ThemedText>
+              <ThemedText>{item.code}</ThemedText>
             </View>
-            <ThemeText style={{flex: 1}}>{item.type}</ThemeText>
-            <ThemeText style={{flex: 1}}>{item.credit}</ThemeText>
-            <ThemeText style={{flex: 1}}>{item.grade}</ThemeText>
+            <ThemedText style={{flex: 1}}>{item.type}</ThemedText>
+            <ThemedText style={{flex: 1}}>{item.credit}</ThemedText>
+            <ThemedText style={{flex: 1}}>{item.grade}</ThemedText>
           </ListItem>
         )}
         ListFooterComponent={()=>(
           <View>
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>요약</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>요약</ThemedText>
             </ListItem>
             <ListItem style={{flex: 0, flexDirection: 'row', flexWrap: 'wrap'}}>
               {summary.map(((item, index)=>{
                 return(
                   <View style={{padding: 2}} key={`summ${index}`}>
-                    <ThemeText style={{fontWeight: 'bold'}}>{item.type}</ThemeText>
-                    <ThemeText>{item.credit}</ThemeText>
+                    <ThemedText style={{fontWeight: 'bold'}}>{item.type}</ThemedText>
+                    <ThemedText>{item.credit}</ThemedText>
                   </View>
                 );
               }))}
             </ListItem>
             <ListItem>
-              <ThemeText style={{fontWeight: 'bold'}}>{date}</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>{date}</ThemedText>
             </ListItem>
           </View>
         )}

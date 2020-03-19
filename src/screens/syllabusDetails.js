@@ -5,7 +5,7 @@ import {MaterialIcons} from '@expo/vector-icons';
 import {Linking} from 'expo';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 import {Appearance} from 'react-native-appearance';
 
 export default class SyllabusDetails extends Component{
@@ -49,28 +49,28 @@ export default class SyllabusDetails extends Component{
         return(
           <ScrollView>
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>강의 정보</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>강의 정보</ThemedText>
             </ListItem>
             <ListItem>
-              <ThemeText style={{padding: 2}}>{details.Yy}-{details.HaggiNm}</ThemeText>
-              <ThemeText style={{fontWeight: 'bold'}}>
+              <ThemedText style={{padding: 2}}>{details.Yy}-{details.HaggiNm}</ThemedText>
+              <ThemedText style={{fontWeight: 'bold'}}>
                 {details.GwamogKorNm}({details.GwamogCd}-{details.Bunban})
-              </ThemeText>
-              <ThemeText style={{padding: 2}}>과목영역: {details.YeongyeogGbNm} | 이수구분: {details.IsuGbNm}</ThemeText>
-              <ThemeText style={{padding: 2}}>
+              </ThemedText>
+              <ThemedText style={{padding: 2}}>과목영역: {details.YeongyeogGbNm} | 이수구분: {details.IsuGbNm}</ThemedText>
+              <ThemedText style={{padding: 2}}>
                   총학점수: {details.Hagjeom} | 이론/실습: {details.IronSisu}/{details.SilseubSisu} | 성적부여방식: {details.SeongjeogGbNm}
-              </ThemeText>
-              <ThemeText style={{padding: 2}}>수강대상: {details['수강가능학년']}</ThemeText>
-              <ThemeText style={{padding: 2}}>강의실/수업시간:{'\n'}{details.Times}</ThemeText>
+              </ThemedText>
+              <ThemedText style={{padding: 2}}>수강대상: {details['수강가능학년']}</ThemedText>
+              <ThemedText style={{padding: 2}}>강의실/수업시간:{'\n'}{details.Times}</ThemedText>
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>담당교수 정보</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>담당교수 정보</ThemedText>
             </ListItem>
             <ListItem>
-              <ThemeText style={{fontWeight: 'bold'}}>
+              <ThemedText style={{fontWeight: 'bold'}}>
                 {details.ProfKorNm}
-              </ThemeText>
+              </ThemedText>
             </ListItem>
             <View style={{flex: 0, flexDirection: 'row', height: 50, width: '100%'}}>
               <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{
@@ -79,7 +79,7 @@ export default class SyllabusDetails extends Component{
                 }
               }}>
                 <MaterialIcons color={this.state.textColor} name="call" size={20} style={{flex: 0}}/>
-                <ThemeText>{details['전화번호']}</ThemeText>
+                <ThemedText>{details['전화번호']}</ThemedText>
               </ListItem>
               <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{
                 if(details['휴대전화번호']!=undefined && details['휴대전화번호']!=''){
@@ -87,7 +87,7 @@ export default class SyllabusDetails extends Component{
                 }
               }}>
                 <MaterialIcons color={this.state.textColor} name="smartphone" size={20} style={{flex: 0}}/>
-                <ThemeText>{details['휴대전화번호']}</ThemeText>
+                <ThemedText>{details['휴대전화번호']}</ThemedText>
               </ListItem>
             </View>
             <View style={{flex: 0, flexDirection: 'row', height: 50, width: '100%'}}>
@@ -97,7 +97,7 @@ export default class SyllabusDetails extends Component{
                 }
               }}>
                 <MaterialIcons color={this.state.textColor} name="email" size={20} style={{flex: 0}}/>
-                <ThemeText>{details['이메일']}</ThemeText>
+                <ThemedText>{details['이메일']}</ThemedText>
               </ListItem>
               <ListItem style={{flex: 1, flexDirection: 'row'}} onPress={()=>{
                 if(details['홈페이지']!=undefined && details['홈페이지']!=''){
@@ -105,110 +105,110 @@ export default class SyllabusDetails extends Component{
                 }
               }}>
                 <MaterialIcons name="link" size={20} style={{flex: 0}}/>
-                <ThemeText>{details['홈페이지']}</ThemeText>
+                <ThemedText>{details['홈페이지']}</ThemedText>
               </ListItem>
             </View>
             <ListItem>
-              <ThemeText style={{fontWeight: 'bold'}}>상담 가능시간</ThemeText>
-              <ThemeText>{details['상담가능시간']}</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>상담 가능시간</ThemedText>
+              <ThemedText>{details['상담가능시간']}</ThemedText>
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>교과목 개요</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>교과목 개요</ThemedText>
             </ListItem>
             <ListItem>
-              <ThemeText>
+              <ThemedText>
                 {details['교과목개요']}
-              </ThemeText>
+              </ThemedText>
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>선수 과목과 수강 요건</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>선수 과목과 수강 요건</ThemedText>
             </ListItem>
             <ListItem>
-              <ThemeText>{details['선수과목']}</ThemeText>
+              <ThemedText>{details['선수과목']}</ThemedText>
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>개발가능 역량</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>개발가능 역량</ThemedText>
             </ListItem>
             <ListItem>
               {abilityList.map((item, index)=>{
                 return item.C > 0? 
-                  (<ThemeText key={index}>{item.H1} -> {item.H2} -> {item.T}</ThemeText>):(<View key={index}></View>);
+                  (<ThemedText key={index}>{item.H1} -> {item.H2} -> {item.T}</ThemedText>):(<View key={index}></View>);
               })}
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>학습내용</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>학습내용</ThemedText>
             </ListItem>
             <ListItem>
-              <ThemeText>{details['수업내용']}</ThemeText>
+              <ThemedText>{details['수업내용']}</ThemedText>
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>학습목표</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>학습목표</ThemedText>
             </ListItem>
             <ListItem>
-              <ThemeText>{details['학습목표']}</ThemeText>
+              <ThemedText>{details['학습목표']}</ThemedText>
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>수업 진행 방법</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>수업 진행 방법</ThemedText>
             </ListItem>
             <ListItem>
-              <ThemeText>{details['수업진행방법']}</ThemeText>
+              <ThemedText>{details['수업진행방법']}</ThemedText>
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>교재와 참고문헌</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>교재와 참고문헌</ThemedText>
             </ListItem>
             <ListItem>
               {references.map((item, index)=>{
                 return (
-                  <ThemeText key={index} style={{paddingBottom: 2}}>
+                  <ThemedText key={index} style={{paddingBottom: 2}}>
                     {item['제목']}({item['저자']} 저자, {item['출판연도']}년 {item['출판사']} 출판)
                     {'\n'}{item['비고']}
-                  </ThemeText>
+                  </ThemedText>
                 );
               })}
-              <ThemeText style={{paddingTop: 2, paddingBottom: 2}}>{details['교재와참고문헌']}</ThemeText>
+              <ThemedText style={{paddingTop: 2, paddingBottom: 2}}>{details['교재와참고문헌']}</ThemedText>
             </ListItem>
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>주별 학습목표와 학습내용</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>주별 학습목표와 학습내용</ThemedText>
             </ListItem>
             {weeklyPlan.map((item, index)=>{
               return (
                 <ListItem key={index}>
                   <View style={{flex: 0, flexDirection: 'row'}}>
-                    <ThemeText style={{flex: 1, fontWeight: 'bold', padding: 2}}>{item.K}회차</ThemeText>
-                    <ThemeText style={{flex: 4, padding: 2}}>{item.C1}</ThemeText>
-                    <ThemeText style={{flex: 2, padding: 2}}>{item.C2}</ThemeText>
+                    <ThemedText style={{flex: 1, fontWeight: 'bold', padding: 2}}>{item.K}회차</ThemedText>
+                    <ThemedText style={{flex: 4, padding: 2}}>{item.C1}</ThemedText>
+                    <ThemedText style={{flex: 2, padding: 2}}>{item.C2}</ThemedText>
                   </View>
-                  <ThemeText style={{padding: 2}}>준비사항: {item.C3}</ThemeText>
+                  <ThemedText style={{padding: 2}}>준비사항: {item.C3}</ThemedText>
                 </ListItem>
               );
             })}
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>평가방법</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>평가방법</ThemedText>
             </ListItem>
             {evalMethod.map((item, index)=>{
               return (
                 <ListItem key={index}>
-                  <ThemeText style={{fontWeight: 'bold', padding: 2}}>{item['평가항목']}({item['비율']}%)</ThemeText>
-                  <ThemeText style={{padding: 2}}>평가방식: {item['평가방식']}</ThemeText>
-                  <ThemeText style={{padding: 2}}>학습방법: {item['학습방법']}</ThemeText>
+                  <ThemedText style={{fontWeight: 'bold', padding: 2}}>{item['평가항목']}({item['비율']}%)</ThemedText>
+                  <ThemedText style={{padding: 2}}>평가방식: {item['평가방식']}</ThemedText>
+                  <ThemedText style={{padding: 2}}>학습방법: {item['학습방법']}</ThemedText>
                 </ListItem>
               );
             })}
 
             <ListItem isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>참고사항</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>참고사항</ThemedText>
             </ListItem>
             <ListItem>
-              <ThemeText>{details['참고사항']}</ThemeText>
+              <ThemedText>{details['참고사항']}</ThemedText>
             </ListItem>
           </ScrollView>
         );

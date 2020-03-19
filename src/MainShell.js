@@ -25,17 +25,19 @@ import {ProfessorTimetable, SearchProfessors} from './screens/professorTimetable
 import {LectureRoomTimetable, SearchLectureRooms} from './screens/lectureRoomTimetable';
 import Authinfo from './screens/authinfo';
 import {Settings, PinRecovery, ChangePin} from './screens/settings';
+import {useTheme} from '@react-navigation/native';
 
 const HStack = createStackNavigator();
 const MStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomeStack(){
+  const {colors} = useTheme();
   return(
     <HStack.Navigator initialRouteName="Home"
       screenOptions={{
         headerTruncatedBackTitle: '뒤로',
-        headerTintColor: BuildConfigs.primaryColor,
+        headerTintColor: colors.primary,
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -53,11 +55,12 @@ function HomeStack(){
 }
 
 function MenuStack(){
+  const {colors} = useTheme();
   return(
     <MStack.Navigator initialRouteName="Menu"
       screenOptions={{
         headerTruncatedBackTitle: '뒤로',
-        headerTintColor: BuildConfigs.primaryColor,
+        headerTintColor: colors.primary,
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -85,6 +88,7 @@ function MenuStack(){
 }
 
 export default function MainShell(){
+  const {colors} = useTheme();
   return(
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -106,7 +110,7 @@ export default function MainShell(){
         },
       })}
       tabBarOptions={{
-        activeTintColor: '#569f59',
+        activeTintColor: colors.primary,
         inactiveTintColor: 'gray',
         showLabel: false
       }}>

@@ -4,7 +4,7 @@ import {ScrollView, View, ActivityIndicator, FlatList} from 'react-native';
 import BuildConfigs from '../config';
 import {MaterialCommunityIcons} from '@expo/vector-icons';  //아이콘임포트
 import {Appearance} from 'react-native-appearance';
-import {ThemeText, ThemeBackground} from '../components/components';
+import {ThemedText, ThemeBackground} from '../components/components';
 import ForestApi from '../tools/apis';
 
 
@@ -66,20 +66,20 @@ export class Meal extends Component {
                   <View style={{flexDirection: 'row', marginBottom: 5}}>
                     <MaterialCommunityIcons name="rice" size={20}
                       color={Appearance.getColorScheme()==='dark'?'white':'black'}/>
-                    <ThemeText style={{marginStart: 5}}>{item.day} 식단</ThemeText>
+                    <ThemedText style={{marginStart: 5}}>{item.day} 식단</ThemedText>
                   </View>
                   <View style={{flexDirection: 'row'}}>
                     <CardView style={{margin: 5, flex: 1}}>
-                      <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>학식</ThemeText>
-                      <ThemeText style={{marginBottom: 10, marginTop: 5}}>{item.lunch.a.diet}</ThemeText>
+                      <ThemedText style={{fontWeight: 'bold', fontSize: 16}}>학식</ThemedText>
+                      <ThemedText style={{marginBottom: 10, marginTop: 5}}>{item.lunch.a.diet}</ThemedText>
                     </CardView>
                     <CardView style={{margin: 5, flex: 1}}>
-                      <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>일품</ThemeText>
-                      <ThemeText style={{marginBottom: 10, marginTop: 5}}>{item.lunch.b.diet}</ThemeText>
+                      <ThemedText style={{fontWeight: 'bold', fontSize: 16}}>일품</ThemedText>
+                      <ThemedText style={{marginBottom: 10, marginTop: 5}}>{item.lunch.b.diet}</ThemedText>
                     </CardView>
                     <CardView style={{margin: 5, flex: 1}}>
-                      <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>석식</ThemeText>
-                      <ThemeText style={{marginBottom: 10, marginTop: 5}}>{item.dinner.a.diet}</ThemeText>
+                      <ThemedText style={{fontWeight: 'bold', fontSize: 16}}>석식</ThemedText>
+                      <ThemedText style={{marginBottom: 10, marginTop: 5}}>{item.dinner.a.diet}</ThemedText>
                     </CardView>
                   </View>
                 </View>
@@ -131,21 +131,21 @@ export class MealCard extends Component {
         <View>
           <View style={{flexDirection: 'row'}}>
             <MaterialCommunityIcons name="rice" color={this.state.textColor} size={20}/>
-            <ThemeText style={{marginStart: 5}}>{meal.day} 식단</ThemeText>
+            <ThemedText style={{marginStart: 5}}>{meal.day} 식단</ThemedText>
           </View>
           <View style={{flexDirection: 'column', marginTop: 10}}>
             <View style={{flexDirection: 'row'}}>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>학식</ThemeText>
-                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.a.diet}</ThemeText>
+                <ThemedText style={{fontWeight: 'bold', fontSize: 16}}>학식</ThemedText>
+                <ThemedText style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.a.diet}</ThemedText>
               </CardView>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>일품</ThemeText>
-                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.b.diet}</ThemeText>
+                <ThemedText style={{fontWeight: 'bold', fontSize: 16}}>일품</ThemedText>
+                <ThemedText style={{marginBottom: 10, marginTop: 5}}>{meal.lunch.b.diet}</ThemedText>
               </CardView>
               <CardView outlined={true} style={{margin: 5, flex: 1}}>
-                <ThemeText style={{fontWeight: 'bold', fontSize: 16}}>석식</ThemeText>
-                <ThemeText style={{marginBottom: 10, marginTop: 5}}>{meal.dinner.a.diet}</ThemeText>
+                <ThemedText style={{fontWeight: 'bold', fontSize: 16}}>석식</ThemedText>
+                <ThemedText style={{marginBottom: 10, marginTop: 5}}>{meal.dinner.a.diet}</ThemedText>
               </CardView>
             </View>
           </View>

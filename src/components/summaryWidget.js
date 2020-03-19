@@ -4,7 +4,7 @@ import DBHelper from '../tools/dbhelper';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import {SmallWeatherWidget} from './weather';
-import {ThemeText} from './components';
+import {ThemedText} from './components';
 
  
 export default class SummaryWidget extends Component{
@@ -73,7 +73,7 @@ export default class SummaryWidget extends Component{
       <View style={{flexDirection: 'column', flex: 0, width: '100%',
         padding: 8, justifyContent: 'center', marginTop: 8}}>
         <View style={{flexDirection: 'row', flex: 0, width: '100%', justifyContent: 'center'}}>
-          <ThemeText style={{fontSize: 24}}>{this.state.msg}</ThemeText>
+          <ThemedText style={{fontSize: 24}}>{this.state.msg}</ThemedText>
         </View>
         <View style={{flexDirection: 'row', marginTop: 8, flex: 0, width: '100%', justifyContent: 'center'}}>
           <SmallWeatherWidget

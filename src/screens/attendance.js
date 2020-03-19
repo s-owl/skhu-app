@@ -3,7 +3,7 @@ import {View, FlatList, Text, ActivityIndicator} from 'react-native';
 import ListItem from '../components/listitem';
 import DBHelper from '../tools/dbhelper';
 import BuildConfigs from '../config';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 
 export default class AttendanceScreen extends Component{
   constructor(props){
@@ -36,7 +36,7 @@ export default class AttendanceScreen extends Component{
     }else if(this.state.data.length <= 1){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
-          <ThemeText>출결현황을 불러오지 못했거나, 수강한 강의가 없어 표시할 출결현황 데이터가 없습니다.</ThemeText>
+          <ThemedText>출결현황을 불러오지 못했거나, 수강한 강의가 없어 표시할 출결현황 데이터가 없습니다.</ThemedText>
         </View>
       );
     }else{
@@ -47,13 +47,13 @@ export default class AttendanceScreen extends Component{
             keyExtractor={(item, index) => index}
             renderItem={({item})=>
               <ListItem style={{flex: 1, flexDirection: 'row'}}>
-                <ThemeText style={{flex: 1}}>{item.lecture_name}</ThemeText>
-                <ThemeText style={{width: 30, textAlign: 'center'}}>{item.attend}</ThemeText>
-                <ThemeText style={{width: 30, textAlign: 'center'}}>{item.late}</ThemeText>
-                <ThemeText style={{width: 30, textAlign: 'center'}}>{item.absence}</ThemeText>
-                <ThemeText style={{width: 30, textAlign: 'center'}}>{item.approved}</ThemeText>
-                <ThemeText style={{width: 30, textAlign: 'center'}}>{item.menstrual}</ThemeText>
-                <ThemeText style={{width: 30, textAlign: 'center'}}>{item.early}</ThemeText>
+                <ThemedText style={{flex: 1}}>{item.lecture_name}</ThemedText>
+                <ThemedText style={{width: 30, textAlign: 'center'}}>{item.attend}</ThemedText>
+                <ThemedText style={{width: 30, textAlign: 'center'}}>{item.late}</ThemedText>
+                <ThemedText style={{width: 30, textAlign: 'center'}}>{item.absence}</ThemedText>
+                <ThemedText style={{width: 30, textAlign: 'center'}}>{item.approved}</ThemedText>
+                <ThemedText style={{width: 30, textAlign: 'center'}}>{item.menstrual}</ThemedText>
+                <ThemedText style={{width: 30, textAlign: 'center'}}>{item.early}</ThemedText>
               </ListItem>
             }/>
         </View>

@@ -10,7 +10,7 @@ import ChunkSecureStore from './tools/chunkSecureStore';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'react-native-snackbar-component';
-import {CardView, ThemeText} from './components/components';
+import {CardView, ThemedText} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
 import {ErrorModal} from './components/errorModal';
@@ -166,7 +166,7 @@ export default function Login(props){
   }else{
     logInContainer = (
       <View>
-        <ThemeText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemeText>
+        <ThemedText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemedText>
         <LoginInput placeholder='아이디(학번) 입력'
           underlineColorAndroid="transparent" autoCompleteType='username'
           returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => pwInput.current.focus() }
@@ -186,7 +186,7 @@ export default function Login(props){
           runLogInProcess(id, pw);
         }} style={{backgroundColor: '#569f59', justifyContent: 'center', flexDirection: 'row'}}>
           <MaterialCommunityIcons name={'login'} size={16} color={'white'} style={{marginRight: 8}}/>
-          <ThemeText style={{color: 'white'}}>Log In</ThemeText>
+          <ThemedText style={{color: 'white'}}>Log In</ThemedText>
         </CardView>
       </View>
     );
@@ -201,8 +201,8 @@ export default function Login(props){
         }
       }}>
         <View style={ styles.footer }>
-          <ThemeText>여기를 눌러 도움 얻기</ThemeText>
-          <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
+          <ThemedText>여기를 눌러 도움 얻기</ThemedText>
+          <ThemedText>(C)2018-Present Sleepy OWL</ThemedText>
           <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}}
             source={ require('../assets/imgs/Sowl_Logo.png') }/>
         </View>
@@ -211,7 +211,7 @@ export default function Login(props){
   }else{
     helpButton = (
       <View style={ styles.footer }>
-        <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
+        <ThemedText>(C)2018-Present Sleepy OWL</ThemedText>
         <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}} 
           source={ require('../assets/imgs/Sowl_Logo.png') }/>
       </View>

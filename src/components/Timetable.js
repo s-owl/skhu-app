@@ -5,7 +5,7 @@ import DateTools from '../tools/datetools';
 import moment from 'moment';
 import {InfoModal} from './infoModal';
 import ListItem from './listitem';
-import {ThemeText} from './components';
+import {ThemedText} from './components';
 import {Appearance} from 'react-native-appearance';
 import {useColorScheme} from 'react-native-appearance';
 
@@ -139,7 +139,7 @@ class Timetable extends Component {
             return(
               <View style={{flex: 1}}>
                 <View style={{height: item.height, padding: 2}}>
-                  <ThemeText>{DateTools.dayOfWeekNumToStr(i)}</ThemeText>
+                  <ThemedText>{DateTools.dayOfWeekNumToStr(i)}</ThemedText>
                 </View>
                 {item.map((subject, j)=>{
                   if(subject.isEmptyCell){
@@ -169,10 +169,10 @@ class Timetable extends Component {
                         }}>
                         <ClassItem style={{height: subject.height, padding: 2}}
                           hasCardViews={true}>
-                          <ThemeText style={{fontSize: 12}}>{subject.name[0]}</ThemeText>
-                          <ThemeText style={{fontSize: 8}}>{subject.time}</ThemeText>
-                          <ThemeText style={{fontSize: 8}}>{subject.room[0]}</ThemeText>
-                          <ThemeText style={{fontSize: 8}}>{more}</ThemeText>
+                          <ThemedText style={{fontSize: 12}}>{subject.name[0]}</ThemedText>
+                          <ThemedText style={{fontSize: 8}}>{subject.time}</ThemedText>
+                          <ThemedText style={{fontSize: 8}}>{subject.room[0]}</ThemedText>
+                          <ThemedText style={{fontSize: 8}}>{more}</ThemedText>
                         </ClassItem>
                       </TouchableHighlight>
                     );
@@ -189,9 +189,9 @@ class Timetable extends Component {
                         }}>
                         <ClassItem style={{height: subject.height, padding: 2}}
                           hasCardViews={true}>
-                          <ThemeText style={{fontSize: 12}}>{subject.name}</ThemeText>
-                          <ThemeText style={{fontSize: 8}}>{subject.time}</ThemeText>
-                          <ThemeText style={{fontSize: 8}}>{subject.room}</ThemeText>
+                          <ThemedText style={{fontSize: 12}}>{subject.name}</ThemedText>
+                          <ThemedText style={{fontSize: 8}}>{subject.time}</ThemedText>
+                          <ThemedText style={{fontSize: 8}}>{subject.room}</ThemedText>
                         </ClassItem>
                       </TouchableHighlight>
                     );
@@ -209,7 +209,7 @@ class Timetable extends Component {
               {label: '닫기', onPress: ()=>this.setState({classChooser: false})}
             ]}>
             <ListItem style={{alignItems: 'center'}}>
-              <ThemeText>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</ThemeText>
+              <ThemedText>{this.state.overlappedClasses.length}개의 강의가 같은 시간에 있습니다.</ThemedText>
             </ListItem>
             <FlatList
               data={this.state.overlappedClasses}
@@ -226,8 +226,8 @@ class Timetable extends Component {
                   });
                   this.setState({classChooser: false});
                 }}>
-                  <ThemeText style={{fontWeight: 'bold'}}>{item.name}</ThemeText>
-                  <ThemeText>{item.code}</ThemeText>
+                  <ThemedText style={{fontWeight: 'bold'}}>{item.name}</ThemedText>
+                  <ThemedText>{item.code}</ThemedText>
                 </ListItem>
               }
             />

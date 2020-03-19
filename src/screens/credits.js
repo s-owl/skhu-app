@@ -3,7 +3,7 @@ import {View, FlatList, Text, ActivityIndicator} from 'react-native';
 import ListItem from '../components/listitem';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 
 export default class Credits extends Component{
   constructor(props){
@@ -47,9 +47,9 @@ export default class Credits extends Component{
             keyExtractor={(item, index) => index}
             ListFooterComponent={()=>(
               <ListItem>
-                <ThemeText style={{fontWeight: 'bold', textAlign: 'center'}}>
+                <ThemedText style={{fontWeight: 'bold', textAlign: 'center'}}>
                   {this.state.summary}
-                </ThemeText>
+                </ThemedText>
               </ListItem>
             )}
             renderItem={({item})=>
@@ -57,8 +57,8 @@ export default class Credits extends Component{
                 {item.map((subItem, index)=>{
                   return(
                     <View style={{flex: 1}}>
-                      <ThemeText style={{fontWeight: 'bold',  textAlign: 'center'}}>{subItem.type}</ThemeText>
-                      <ThemeText style={{textAlign: 'center'}}>{subItem.earned}</ThemeText>
+                      <ThemedText style={{fontWeight: 'bold',  textAlign: 'center'}}>{subItem.type}</ThemedText>
+                      <ThemedText style={{textAlign: 'center'}}>{subItem.earned}</ThemedText>
                     </View>
                   );
                 })}

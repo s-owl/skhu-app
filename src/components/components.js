@@ -1,94 +1,81 @@
 
 import React, {Component} from 'react'; 
 import {
-  StyleSheet, View, Modal, KeyboardAvoidingView,
-  SafeAreaView, TextInput, ScrollView, Picker, Text
+  StyleSheet, View, TextInput, Picker, Text
 } from 'react-native';
 import Touchable from './touchable';
 import BuildConfigs from '../config';
-import {useColorScheme, Appearance} from 'react-native-appearance';
+import {useTheme} from '@react-navigation/native';
+import {withThemeAndRef} from './themes';
 
-function ThemePicker(props){
-  let colorScheme = useColorScheme();
-  const textColor = (colorScheme==='dark')? 'white' : 'black';
+export function ThemedPicker(props){
+  const {colors} = useTheme();
   return(
-    <Picker itemStyle={{color: textColor}} {...props}>
+    <Picker itemStyle={{color: colors.text}} {...props}>
       {props.children}
     </Picker>);
 }
 
-class ThemeTextInput extends Component{
+class ThemeTxtInput extends Component{
   constructor(props){
     super(props);
-    this.state = {
-      textColor: Appearance.getColorScheme() === 'dark' ? 'white' : 'black'
-    };
     this.component = React.createRef();
-  }
-  componentDidMount(){
-    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
-      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
-    });
   }
   focus(){
     this.component.current.focus();
   }
   render(){
     return(
-      <TextInput style={[{color: this.state.textColor}, this.props.style]}
+      <TextInput style={[{color: this.props.color.text}, this.props.style]}
         ref={this.component} {...this.props}/>
     );
   }
 }
 
-function ThemeText(props){
-  let colorScheme = useColorScheme();
-  const textColor = (colorScheme==='dark')? 'white' : 'black';
-  return(<Text style={[{color: textColor}, props.style]}>{props.children}</Text>);
+export const ThemedTextInput = withThemeAndRef(ThemeTxtInput);
+
+export function ThemedText(props){
+  const {colors} = useTheme();
+  return(<Text style={[{color: colors.text}, props.style]}>{props.children}</Text>);
 }
 
-function ThemeBackground(props){
-  let colorScheme = useColorScheme();
-  let backgroundColor = (colorScheme==='dark')? 'black' :
-    (props.hasCardViews? 'whitesmoke' : 'white');
-  switch(props.viewType){
-  case 'scrollView':  
-    return(
-      <ScrollView style={[{backgroundColor: backgroundColor}, props.style]}>
-        {props.children}
-      </ScrollView>
-    );
-  case 'safeAreaView':  
-    return(
-      <SafeAreaView style={[{backgroundColor: backgroundColor}, props.style]}>
-        {props.children}
-      </SafeAreaView>
-    );
-  default:
-    return(
-      <View style={[{backgroundColor: backgroundColor}, props.style]}>
-        {props.children}
-      </View>
-    );
-   
-  }
-}
+export function CardView(props){
+  const {colors} = useTheme();
+  const styles = StyleSheet.create({
+    cardView: {
+      borderRadius: 16,
+      borderColor: '#ddd',
+      borderBottomWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.2,
+      shadowRadius: 5,
+      elevation: 2,
+      padding: 16,
+      marginTop: 8,
+      marginBottom: 8,
+      backgroundColor: colors.card,
+    },
+    outlinedCardView: {
+      borderRadius: 16,
+      borderColor: 'lightgrey',
+      borderWidth: 1,
+      padding: 16,
+      marginTop: 8,
+      marginBottom: 8,
+      backgroundColor: colors.card,
+    },
+    actionsLabel: {
+      color: colors.primary
+    }
+  });
+  
 
-function CardView(props){
-  let colorScheme = useColorScheme();
   let cardViewStyle;
   if(props.outlined){
-    if(colorScheme === 'dark'){
-      cardViewStyle = styles.darkOutlinedCardView;
-    }else{
-      cardViewStyle = styles.outlinedCardView;
-    }
+    cardViewStyle = styles.outlinedCardView;
   }else{
-    if(colorScheme === 'dark'){
-      cardViewStyle = styles.darkCardView;
-    }else{
-      cardViewStyle = styles.cardView;
-    }
+    cardViewStyle = styles.cardView;
   }
   if(props.onPress != undefined){
     return(
@@ -107,62 +94,3 @@ function CardView(props){
     );
   }
 }
-
-
-const styles = StyleSheet.create({
-  cardView: {
-    borderRadius: 16,
-    borderColor: '#ddd',
-    borderBottomWidth: 0,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 2,
-    padding: 16,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: 'white',
-  },
-  darkCardView: {
-    borderRadius: 16,
-    borderColor: '#ddd',
-    borderBottomWidth: 0,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 2,
-    padding: 16,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: '#2a2a2a',
-    color: 'white'
-  },
-  outlinedCardView: {
-    borderRadius: 16,
-    borderColor: 'lightgrey',
-    borderWidth: 1,
-    padding: 16,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: 'white',
-  },
-  darkOutlinedCardView: {
-    borderRadius: 16,
-    borderColor: 'lightgrey',
-    borderWidth: 1,
-    padding: 16,
-    marginTop: 8,
-    marginBottom: 8,
-    backgroundColor: '#2a2a2a',
-    color: 'white'
-  },
-  actionsLabel: {
-    color: BuildConfigs.primaryColor
-  }
-});
-
-export{
-  CardView, ThemeText, ThemeBackground, ThemeTextInput, ThemePicker
-};

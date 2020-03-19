@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Text, View, Clipboard} from 'react-native';
+import {View, Clipboard} from 'react-native';
 import {HelpModal} from './helpModal';
 import {InfoModal} from './infoModal';
-import {ThemeText} from './components';
+import {ThemedText} from './components';
 
 export class ErrorModal extends Component{
   setVisible(visible) {
@@ -137,7 +137,7 @@ export class ErrorModal extends Component{
           title={this.state.title}
           icon={this.state.icon}
           buttons={this.state.buttons}>
-          <ThemeText>{this.state.desc}</ThemeText>
+          <ThemedText>{this.state.desc}</ThemedText>
         </InfoModal>
         <HelpModal onClose={this.afterCloseHelp.bind(this)} ref={this.helpModal}
           navigation={this.props.navigation}/>

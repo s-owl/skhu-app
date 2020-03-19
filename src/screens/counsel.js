@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {SectionList, Text, ActivityIndicator, View} from 'react-native';
 import ListItem from '../components/listitem';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 
@@ -72,14 +72,14 @@ export default class CounselHistory extends Component{
         <SectionList style={{height: '100%'}}
           renderItem={({item, index, section}) => (
             <ListItem key={index} style={{flex: 0, flexDirection: 'row'}}>
-              <ThemeText style={{flex: 2, textAlign: 'center'}}>{item.timestamp}</ThemeText>
-              <ThemeText style={{flex: 1, textAlign: 'center'}}>{item.counselor}</ThemeText>
-              <ThemeText style={{flex: 1, textAlign: 'center'}}>{item.countOrType}</ThemeText>
+              <ThemedText style={{flex: 2, textAlign: 'center'}}>{item.timestamp}</ThemedText>
+              <ThemedText style={{flex: 1, textAlign: 'center'}}>{item.counselor}</ThemedText>
+              <ThemedText style={{flex: 1, textAlign: 'center'}}>{item.countOrType}</ThemedText>
             </ListItem>
           )}
           renderSectionHeader={({section: {title}}) => (
             <ListItem style={{flex: 0, flexDirection: 'row'}} isHeader={true}>
-              <ThemeText style={{fontWeight: 'bold'}}>{title}</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>{title}</ThemedText>
             </ListItem>
           )}
           sections={[

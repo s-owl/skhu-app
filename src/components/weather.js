@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import {ThemeText} from './components';
+import {ThemedText} from './components';
 import {useColorScheme} from 'react-native-appearance';
 
 class WeatherUtils{
@@ -133,8 +133,8 @@ class SmallWeatherWidget extends Component{
       <View style={{flexDirection: 'row', flex: 0, alignItems: 'center', padding: 8}}>
         <WeatherIcon size={25} code={this.state.icon} />
         <View style={{flexDirection: 'column', flex: 0, alignItems: 'center'}}>
-          <ThemeText style={{fontSize: 10, marginLeft: 4}}>{this.state.name}</ThemeText>
-          <ThemeText style={{fontSize: 10, marginLeft: 4}}>{this.state.temp}°</ThemeText>
+          <ThemedText style={{fontSize: 10, marginLeft: 4}}>{this.state.name}</ThemedText>
+          <ThemedText style={{fontSize: 10, marginLeft: 4}}>{this.state.temp}°</ThemedText>
         </View>
       </View>
     );

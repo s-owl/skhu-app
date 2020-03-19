@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Image, Text, ActivityIndicator, Clipboard, Linking} from 'react-native';
-import {CardView, ThemeText, ThemeBackground} from '../components/components';
+import {CardView, ThemedText, ThemeBackground} from '../components/components';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -60,9 +60,9 @@ class Profile extends Component{
           source={this.state.image}
           onError={(error)=>console.log(error)}
         />
-        <ThemeText style={{padding: 8, fontSize: 24}}>{this.state.name}({this.state.id})</ThemeText>
-        <ThemeText>{this.state.college} {this.state.department} {this.state.major}</ThemeText>
-        <ThemeText>{this.state.grade} {this.state.coursetype} {this.state.classtype} {this.state.state}</ThemeText>
+        <ThemedText style={{padding: 8, fontSize: 24}}>{this.state.name}({this.state.id})</ThemedText>
+        <ThemedText>{this.state.college} {this.state.department} {this.state.major}</ThemedText>
+        <ThemedText>{this.state.grade} {this.state.coursetype} {this.state.classtype} {this.state.state}</ThemedText>
       </View>
     );
   }
@@ -105,18 +105,18 @@ class ClassInfoCard extends Component{
     } else {
       googleClassroom = (
         <View>
-          <ThemeText  style={{fontSize: 20}}>{this.state.google}</ThemeText>
-          <ThemeText>Google Classroom 사용에 필요한 최초 로그인 정보입니다.</ThemeText>
+          <ThemedText  style={{fontSize: 20}}>{this.state.google}</ThemedText>
+          <ThemedText>Google Classroom 사용에 필요한 최초 로그인 정보입니다.</ThemedText>
         </View>
       );
     }
     return(
       <View style={{marginTop: 8}}>
         <View style={{alignItems: 'center'}}>
-          <ThemeText>{this.state.counselor}</ThemeText>
-          <ThemeText>반/분반: {this.state.class}</ThemeText>
+          <ThemedText>{this.state.counselor}</ThemedText>
+          <ThemedText>반/분반: {this.state.class}</ThemedText>
         </View>
-        <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>Google Classroom</ThemeText>
+        <ThemedText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>Google Classroom</ThemedText>
         <CardView elevate={true} style={{margin: 8}} actionLabel='Google Classroom 으로 이동 >'
           onPress={()=>{
             Linking.openURL('https://classroom.google.com');
@@ -165,13 +165,13 @@ class OtpCard extends Component{
   render(){
     return(
       <View>
-        <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>OTP 코드</ThemeText>
+        <ThemedText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>OTP 코드</ThemedText>
         <CardView actionLabel='터치하여 복사하기' elevate={true} style={{margin: 8}}
           onPress={()=>{
             Clipboard.setString(this.state.otpCode);
           }}>
-          <ThemeText style={{fontWeight: 'bold', fontSize: 32}}>{this.state.otpCode}</ThemeText>
-          <ThemeText>{this.state.timeLeft}초 후 코드가 변경됩니다.</ThemeText>
+          <ThemedText style={{fontWeight: 'bold', fontSize: 32}}>{this.state.otpCode}</ThemedText>
+          <ThemedText>{this.state.timeLeft}초 후 코드가 변경됩니다.</ThemedText>
         </CardView>
       </View>
     );

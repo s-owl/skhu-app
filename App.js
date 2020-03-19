@@ -1,8 +1,9 @@
 import React from 'react';
 import {AppearanceProvider, useColorScheme} from 'react-native-appearance';
-import {NavigationContainer, DefaultTheme, DarkTheme} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import BuildConfigs from './src/config';
+import {SKHUsDarkTheme, SKHUsLightTheme} from './src/components/themes';
 
 import Login from './src/Login';
 import MainShell from './src/MainShell';
@@ -32,7 +33,7 @@ export default function App(){
   const scheme = useColorScheme();
   return (
     <AppearanceProvider>
-      <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <NavigationContainer theme={scheme === 'dark' ? SKHUsDarkTheme : SKHUsLightTheme}>
         <Stack.Navigator initialRouteName="AuthStack" headerMode="none">
           <Stack.Screen name="AuthStack" component={AuthStack}/>
           <Stack.Screen name="MainStack" component={MainShell}/>

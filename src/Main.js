@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import {
   View, Image, Platform, AsyncStorage,
-  ScrollView, ActivityIndicator, 
+  ScrollView, ActivityIndicator, SafeAreaView
 } from 'react-native';
-import {CardView, ThemeText, ThemeBackground} from './components/components';
+import {CardView, ThemedText} from './components/components';
 import ForestApi from './tools/apis';
 import SummaryWidget from './components/summaryWidget';
 import BuildConfigs from './config';
@@ -12,57 +12,55 @@ import DBHelper from './tools/dbhelper';
 import {MaterialIcons} from '@expo/vector-icons'; 
 import Touchable from './components/touchable';
 import LocalAuth from './components/localauth';
-import {useColorScheme} from 'react-native-appearance';
 import {MealCard} from './screens/meal';
+import {useTheme} from '@react-navigation/native';
 
-export default class Main extends Component {
-  constructor(props) {
-    super(props);
-    this.db = new DBHelper();
-    this.db.fetchAttendance();
-    this.db.fetchTimetable();
-    this.localAuth = React.createRef();
-  }
-  render() {
-    const topMargin = (Platform.OS == 'ios')? 20 : 50;
-    return (
-      <ThemeBackground viewType="safeArewView" hasCardViews={true}>
-        <ScrollView>
-          <View style={{marginTop: topMargin, padding: 16}}>
-            <SummaryWidget />
-            <View style={{flex: 0, flexDirection: 'row', width: '100%',
-              marginTop: 8, marginBottom: 8}}>
-              <ShortcutButton
-                icon="check-circle"
-                label="출결 현황"
-                onPress={() => this.props.navigation.navigate('Attendance')}/>
-              <ShortcutButton
-                icon="insert-chart"
-                label="이수 학점"
-                onPress={() => this.props.navigation.navigate('Credits')}/>
-              <ProfileButton onPress={() => this.localAuth.current.startAuth()}/>
-            </View>
+export default function Main(props){
+  let db = new DBHelper();
+  const [localAuth, setlocalAuth] = useState(false);
 
-            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>다음 강의</ThemeText>
-            <NextClassInfo dbHelper={this.db} onPress={() => {
-              this.props.navigation.navigate('Timetable');
-            }} />
-            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학사 일정</ThemeText>
-            <MonthlySchedule onPress={() => {
-              this.props.navigation.navigate('Schedules');
-            }} />
-            <ThemeText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학식</ThemeText>
-            <MealCard onPress={() => {
-              this.props.navigation.navigate('Meal');
-            }} />
-
+  useEffect(()=>{
+    db.fetchAttendance();
+    db.fetchTimetable();
+  }, []);
+  const topMargin = (Platform.OS == 'ios')? 20 : 50;
+  return (
+    <SafeAreaView>
+      <ScrollView>
+        <View style={{marginTop: topMargin, padding: 16}}>
+          <SummaryWidget />
+          <View style={{flex: 0, flexDirection: 'row', width: '100%',
+            marginTop: 8, marginBottom: 8}}>
+            <ShortcutButton
+              icon="check-circle"
+              label="출결 현황"
+              onPress={() => props.navigation.navigate('Attendance')}/>
+            <ShortcutButton
+              icon="insert-chart"
+              label="이수 학점"
+              onPress={() => props.navigation.navigate('Credits')}/>
+            <ProfileButton onPress={() => localAuth.current.startAuth()}/>
           </View>
-          <LocalAuth ref={this.localAuth} 
-            onAuthSuccess={()=>this.props.navigation.navigate('Authinfo')}/>
-        </ScrollView>
-      </ThemeBackground>
-    );
-  }
+
+          <ThemedText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>다음 강의</ThemedText>
+          <NextClassInfo dbHelper={this.db} onPress={() => {
+            props.navigation.navigate('Timetable');
+          }} />
+          <ThemedText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학사 일정</ThemedText>
+          <MonthlySchedule onPress={() => {
+            props.navigation.navigate('Schedules');
+          }} />
+          <ThemedText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학식</ThemedText>
+          <MealCard onPress={() => {
+            props.navigation.navigate('Meal');
+          }} />
+
+        </View>
+        <LocalAuth visible={localAuth} onClose={()=>setlocalAuth(false)}
+          onAuthSuccess={()=>props.navigation.navigate('Authinfo')}/>
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 class ProfileButton extends Component{
@@ -110,24 +108,23 @@ class ProfileButton extends Component{
           source={this.state.image}
           onError={(error)=>console.log(error)}
         />
-        <ThemeText style={{padding: 8}}>{this.state.name}</ThemeText>
+        <ThemedText style={{padding: 8}}>{this.state.name}</ThemedText>
       </Touchable>
     );
   }
 }
 
 function ShortcutButton(props){
-  let colorScheme = useColorScheme();
-  const textColor = (colorScheme==='dark')? 'white' : 'black';
+  const {colors} = useTheme();
   return(
     <Touchable borderless={true} style={{flex: 1, alignItems: 'center'}}
       onPress={props.onPress}>
-      <MaterialIcons name={props.icon} size={32} color={textColor}
+      <MaterialIcons name={props.icon} size={32} color={colors.text}
         style={{borderRadius: 24,
           borderColor: 'lightgrey',
           borderWidth: 1,
           padding: 8}} />
-      <ThemeText style={{padding: 8}}>{props.label}</ThemeText>
+      <ThemedText style={{padding: 8}}>{props.label}</ThemedText>
     </Touchable>
   );
   
@@ -177,9 +174,9 @@ class NextClassInfo extends Component {
     } else {
       content = (
         <View>
-          <ThemeText style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</ThemeText>
-          <ThemeText style={{fontSize: 20}}>{this.state.time}</ThemeText>
-          <ThemeText>{this.state.attendance}</ThemeText>
+          <ThemedText style={{fontSize: 25, fontWeight: 'bold'}}>{this.state.name}</ThemedText>
+          <ThemedText style={{fontSize: 20}}>{this.state.time}</ThemedText>
+          <ThemedText>{this.state.attendance}</ThemedText>
         </View>
       );
     }
@@ -234,8 +231,8 @@ class MonthlySchedule extends Component {
       content = (
         <View>
           <View style={{flexDirection: 'row'}}>
-            <ThemeText style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</ThemeText>
-            <ThemeText style={{flex: 1}}>{this.state.contents}</ThemeText>
+            <ThemedText style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</ThemedText>
+            <ThemedText style={{flex: 1}}>{this.state.contents}</ThemedText>
           </View>
         </View>
       );

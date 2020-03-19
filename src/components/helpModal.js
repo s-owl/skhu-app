@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Text, SectionList, Linking} from 'react-native';
+import {SectionList, Linking} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
 import {InfoModal} from './infoModal';
 import * as WebBrowser from 'expo-web-browser';
 import {Appearance} from 'react-native-appearance';
-import {ThemeText} from './components';
+import {ThemedText} from './components';
 
 export class HelpModal extends Component{
   setVisible(visible) {
@@ -106,12 +106,12 @@ export class HelpModal extends Component{
           renderItem={({item, index, section}) => (
             <ListItem key={index} onPress={item.onPress} style={{flex: 0, flexDirection: 'row'}}>
               <MaterialCommunityIcons color={this.state.textColor} name={item.icon} size={16} style={{flex: 0, marginRight: 8}}/>
-              <ThemeText style={{flex: 1}}>{item.label}</ThemeText>
+              <ThemedText style={{flex: 1}}>{item.label}</ThemedText>
             </ListItem>
           )}
           renderSectionHeader={({section: {title}}) => (
             <ListItem style={{flex: 0, flexDirection: 'row'}}>
-              <ThemeText style={{fontWeight: 'bold'}}>{title}</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>{title}</ThemedText>
             </ListItem>
           )}
           sections={sections}

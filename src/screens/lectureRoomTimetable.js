@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
 import ListItem from '../components/listitem';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
 import BuildConfigs from '../config';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
@@ -38,7 +38,7 @@ export class LectureRoomTimetable extends Component{
     }else if(this.state.timetable.length <= 0){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
-          <ThemeText>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</ThemeText>
+          <ThemedText>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</ThemedText>
         </View>
       );
     }else{
@@ -264,8 +264,8 @@ export class SearchLectureRooms extends Component{
                 roomNumber: item.roomNumber
               });
             }}>
-              <ThemeText style={{fontWeight: 'bold'}}>{item.roomNumber} - {item.roomName}</ThemeText>
-              <ThemeText>{item.capacity}명 수용가능</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>{item.roomNumber} - {item.roomName}</ThemedText>
+              <ThemedText>{item.capacity}명 수용가능</ThemedText>
             </ListItem>
           }
         />

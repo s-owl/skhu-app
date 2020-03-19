@@ -3,7 +3,7 @@ import {
   View, ScrollView, KeyboardAvoidingView, StyleSheet
 } from 'react-native';
 import {List} from 'immutable';
-import {ThemeText, ThemeTextInput, ThemePicker} from '../components/components';
+import {ThemedText, ThemedTextInput, ThemedPicker} from '../components/components';
 import {SortByCodes} from '../components/searchBar';
 import ListItem from '../components/listitem';
 
@@ -75,13 +75,13 @@ export default class searchCondition extends Component {
                     const itemType = item[1];
 
                     if (typeof itemType == 'string') {
-                      return(<ThemeTextInput placeholder={itemType}
+                      return(<ThemedTextInput placeholder={itemType}
                         onChangeText=
                           {(value)=>this.setCondition(itemKey, value)}
                         defaultValue={this.state.condition.get(itemKey)}
                         style={styles.input }/>);
                     } else if (typeof itemType == 'object') {
-                      return(<ThemePicker
+                      return(<ThemedPicker
                         onValueChange={(value, _)=>this.setCondition(itemKey, value)}
                         selectedValue={this.state.condition.get(itemKey)}
                         style={styles.picker}>
@@ -89,10 +89,10 @@ export default class searchCondition extends Component {
                           .toJS()
                           .map((value, index)=>{
                             return(
-                              <ThemePicker.Item
+                              <ThemedPicker.Item
                                 label={value} value={index} />);
                           })}
-                      </ThemePicker>);
+                      </ThemedPicker>);
                     }})()}
                 </ListItem>)
               )
@@ -101,12 +101,12 @@ export default class searchCondition extends Component {
             <ListItem
               onPress={this.handleCancel}
               style={styles.buttons}>
-              <ThemeText style={styles.text}>취소</ThemeText>
+              <ThemedText style={styles.text}>취소</ThemedText>
             </ListItem>
             <ListItem
               onPress={this.handleConfirm}
               style={styles.buttons}>
-              <ThemeText style={styles.text}>확인</ThemeText>
+              <ThemedText style={styles.text}>확인</ThemedText>
             </ListItem>
           </View>
           <View style={{height: 50}} /> 

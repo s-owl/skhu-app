@@ -1,222 +1,212 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Modal, View, StyleSheet, Platform} from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
 import Touchable from './touchable';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
-import {Appearance} from 'react-native-appearance';
-import {ThemeText, ThemeBackground} from './components';
+import {ThemeText} from './components';
+import {useTheme} from '@react-navigation/native';
 
-const initState = {
-  visible: false,
-  bioRegistered: false,
-  hasSensor: false,
-  pin: '',
-  pinCheck: '',
-  display: '______',
-  msg: '',
-  pinRegistered: false,
-  icon: 'lock-outline',
-  textColor: Appearance.getColorScheme() === 'dark'? 'white':'black'
-};
+export default function LocalAuth(props){
+  const {colors} = useTheme();
+  const [pin, setPin] = useState('');
+  const [pinCheck, setPinCheck] = useState('');
+  const [display, setDisplay] = useState('______');
+  const [msg, setMsg] = useState('');
+  const [pinRegistered, setPinRegistered] = useState(false);
+  const [icon, setIcon] = useState('lock-outline');
 
+  const resetStates = ()=>{
+    setPin('');
+    setPinCheck('');
+    setDisplay('______');
+    setMsg('');
+    setPinRegistered(false);
+    setIcon('lock-outline');
+  };
 
-export default class LocalAuth extends Component {
-  constructor(props){
-    super(props);
-    this.state = initState;
-  }
+  useEffect(()=>{
+    resetStates();
+  }, []);
 
-  componentDidMount(){
-    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
-      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
-    });
-  }
+  useEffect(()=>{
+    if(props.visible){
+      startAuth();
+    }else{
+      resetStates();
+      (async()=>{
+        if(Platform.OS == 'android'){
+          await LocalAuthentication.cancelAuthenticate();
+        }
+      })();
+    }
+  }, [props.visible]);
 
-  getDisplayString(len=0){
+  const getDisplayString = (len=0)=>{
     if(len >= 6){
       return '*'.repeat(6);
     }else{
       return '*'.repeat(len) + '_'.repeat(6-len);
     }
-  }
+  };
 
-  async bioAuth(){
+  const bioAuth = async()=>{
     const availableHws = await LocalAuthentication.supportedAuthenticationTypesAsync();
     const type = availableHws.includes(2) ? ['얼굴인식',  'face'] : ['지문인식', 'fingerprint'];
-    this.setState({msg: `${type[0]} 또는 6자리 PIN으로 인증하세요`, icon: type[1]});
+    setMsg(`${type[0]} 또는 6자리 PIN으로 인증하세요`);
+    setIcon(type[1]);
     const result = await LocalAuthentication.authenticateAsync({fallbackLabel: '', promptMessage: '계속하려면 인증이 필요합니다.'});
     if(result.success){
-      this.authSuccess();
+      authSuccess();
     }else if(result.error != 'user_cancel'){
       console.log(result.error);
-      this.setState({
-        msg: `${type[0]} 인증에 실패하였습니다.`,
-        pin: '',
-        pinCheck: '',
-        display: this.getDisplayString(),
-        icon: 'error-outline'});
+      setMsg(`${type[0]} 인증에 실패하였습니다.`);
+      setPin('');
+      setPinCheck('');
+      setDisplay(getDisplayString());
+      setIcon('error-outline');
       if(Platform.OS == 'android'){
         setTimeout(()=>{
-          this.bioAuth();
+          bioAuth();
         }, 1000);
       }
     }
-  } 
+  }; 
 
-  authSuccess(){
-    this.setState({
-      msg: '인증되었습니다.',
-      pin: '',
-      pinCheck: '',
-      display: this.getDisplayString(),
-      icon: 'lock-open'});
+  const authSuccess = async()=>{
+    setMsg('인증되었습니다.');
+    setPin('');
+    setPinCheck('');
+    setDisplay(getDisplayString());
+    setIcon('lock-open');
     setTimeout(async ()=>{
-      this.props.onAuthSuccess();
-      this.setState(initState);
+      props.onAuthSuccess();
+      props.onClose();
+      resetStates();
       if(Platform.OS == 'android'){
         await LocalAuthentication.cancelAuthenticate();
       }
     }, 500);
-  }
+  };
 
-  async startAuth(){
-    this.setState(initState);
+  const startAuth = async()=>{
+    resetStates();
     const pin = await SecureStore.getItemAsync('localAuthPin');
     const hasHw = await LocalAuthentication.hasHardwareAsync();
     const bioAuthRegistered = await LocalAuthentication.isEnrolledAsync();
-    this.setState({pinRegistered: typeof pin == 'string'});
-    if(this.state.pinRegistered){
+    setPinRegistered( typeof pin == 'string');
+    if(pinRegistered){
       if(hasHw && bioAuthRegistered){
-        this.bioAuth();
+        bioAuth();
       }else{
-        this.setState({msg: '등록한 6자리 PIN으로 인증하세요.'});
+        setMsg('등록한 6자리 PIN으로 인증하세요.');
       }
     }else{
-      this.setState({msg: '새로 등록할 6자리 PIN을 입력하세요.'});
+      setMsg('새로 등록할 6자리 PIN을 입력하세요.');
     }
-    this.setState({visible: true, bioRegistered: bioAuthRegistered});
-  }
+  };
 
   
-  async inputDigit(digit){
+  const inputDigit = async(digit)=>{
     let newPin;
-    if(digit == '<' && this.state.pin.length > 0){
-      newPin = this.state.pin.slice(0, -1);
-      this.setState({
-        pin: newPin,
-        display: this.getDisplayString(newPin.length)
-      }); 
-      
-    }else if(digit != '<' && this.state.pin.length < 6){
-      newPin = `${this.state.pin}${digit}`;
-      this.setState({
-        pin: newPin,
-        display: this.getDisplayString(newPin.length)
-      }); 
+    if(digit == '<' && pin.length > 0){
+      newPin = pin.slice(0, -1);
+      setPin(newPin),
+      setDisplay(getDisplayString(newPin.length));
+    }else if(digit != '<' && pin.length < 6){
+      newPin = `${pin}${digit}`;
+      setPin(newPin),
+      setDisplay(getDisplayString(newPin.length));
       if(newPin.length == 6){
-        if(this.state.pinRegistered){
+        if(pinRegistered){
           const pin = await SecureStore.getItemAsync('localAuthPin');
           if(newPin == pin){
-            this.authSuccess();
+            authSuccess();
           }else{
-            this.setState({
-              msg: '틀린 PIN 입니다.',
-              pin: '',
-              pinCheck: '',
-              display: this.getDisplayString(),
-              icon: 'error-outline'
-            });
+            setMsg('틀린 PIN 입니다.');
+            setPin('');
+            setPinCheck('');
+            setDisplay(getDisplayString());
+            setIcon('error-outline');
           }
         }else{
-          if(this.state.pinCheck.length == 0){
-            this.setState({
-              pin: '',
-              pinCheck: newPin,
-              display: this.getDisplayString(),
-              msg: '동일한 PIN을 다시 한번 입력하세요.'
-            });
-          }else if(this.state.pinCheck == newPin){
+          if(pinCheck.length == 0){
+            setMsg('동일한 PIN을 다시 한번 입력하세요.');
+            setPin('');
+            setPinCheck(newPin);
+            setDisplay(getDisplayString());
+          }else if(pinCheck == newPin){
             await SecureStore.setItemAsync('localAuthPin', newPin);
-            this.setState({
-              msg: '등록 완료. 방금 등록한 PIN 으로 인증하세요.',
-              pin: '',
-              pinCheck: '',
-              display: this.getDisplayString(),
-              pinRegistered: true
-            });
-          }else if(this.state.pinCheck != newPin){
-            this.setState({
-              msg: '틀렸습니다. 처음부터 다시 시작하세요.',
-              pin: '',
-              pinCheck: '',
-              display: this.getDisplayString(),
-              icon: 'error-outline'
-            });
-            setTimeout(()=>this.startAuth(), 500);
+            setMsg('등록 완료. 방금 등록한 PIN 으로 인증하세요.');
+            setPin('');
+            setPinCheck('');
+            setDisplay(getDisplayString());
+            setPinRegistered(true);
+          }else if(pinCheck != newPin){
+            setMsg('틀렸습니다. 처음부터 다시 시작하세요.');
+            setPin('');
+            setPinCheck('');
+            setDisplay(getDisplayString());
+            setIcon('error-outline');
+            setTimeout(()=>startAuth(), 500);
           }
         }
       }
     }
-  }
-  render(){
-    return(
-      <Modal
-        animationType="fade"
-        visible={this.state.visible}>
-        <ThemeBackground style={{paddingTop: 30, padding: 16, flex: 1}}>
-          <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <MaterialIcons color={this.state.textColor} name={this.state.icon} size={32} style={{padding: 16}}/>
-            <ThemeText>{this.state.msg}</ThemeText>
-            <ThemeText style={{fontSize: 32}}>{this.state.display}</ThemeText>
+  };
+  return(
+    <Modal
+      animationType="fade"
+      visible={props.visible}>
+      <View style={{paddingTop: 30, padding: 16, flex: 1, backgroundColor: colors.background}}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <MaterialIcons color={colors.text} name={icon} size={32} style={{padding: 16}}/>
+          <ThemeText>{msg}</ThemeText>
+          <ThemeText style={{fontSize: 32}}>{display}</ThemeText>
+        </View>
+        <View style={{flex: 3, justifyContent: 'flex-end'}}>
+          <View style={styles.digitRow}>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(1)}><ThemeText style={{fontSize: 24}}>1</ThemeText></Touchable>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(2)}><ThemeText style={{fontSize: 24}}>2</ThemeText></Touchable>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(3)}><ThemeText style={{fontSize: 24}}>3</ThemeText></Touchable>
           </View>
-          <View style={{flex: 3, justifyContent: 'flex-end'}}>
-            <View style={styles.digitRow}>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(1)}><ThemeText style={{fontSize: 24}}>1</ThemeText></Touchable>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(2)}><ThemeText style={{fontSize: 24}}>2</ThemeText></Touchable>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(3)}><ThemeText style={{fontSize: 24}}>3</ThemeText></Touchable>
-            </View>
-            <View style={styles.digitRow}>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(4)}><ThemeText style={{fontSize: 24}}>4</ThemeText></Touchable>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(5)}><ThemeText style={{fontSize: 24}}>5</ThemeText></Touchable>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(6)}><ThemeText style={{fontSize: 24}}>6</ThemeText></Touchable>
-            </View>
-            <View style={styles.digitRow}>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(7)}><ThemeText style={{fontSize: 24}}>7</ThemeText></Touchable>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(8)}><ThemeText style={{fontSize: 24}}>8</ThemeText></Touchable>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(9)}><ThemeText style={{fontSize: 24}}>9</ThemeText></Touchable>
-            </View>
-            <View style={styles.digitRow}>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit(0)}><ThemeText style={{fontSize: 24}}>0</ThemeText></Touchable>
-              <Touchable style={styles.digitButton} borderless={true}
-                onPress={()=>this.inputDigit('<')}><ThemeText style={{fontSize: 24}}>{'<'}</ThemeText></Touchable>
-            </View>
-            <View style={styles.digitRow}>
-              <ListItem style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} onPress={async ()=>{
-                this.setState(initState);
-                if(Platform.OS == 'android'){
-                  await LocalAuthentication.cancelAuthenticate();
-                }
-              }}>
-                <ThemeText>취소</ThemeText>
-              </ListItem>
-            </View>
+          <View style={styles.digitRow}>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(4)}><ThemeText style={{fontSize: 24}}>4</ThemeText></Touchable>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(5)}><ThemeText style={{fontSize: 24}}>5</ThemeText></Touchable>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(6)}><ThemeText style={{fontSize: 24}}>6</ThemeText></Touchable>
           </View>
-        </ThemeBackground>
-      </Modal>
-    );
-  }
+          <View style={styles.digitRow}>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(7)}><ThemeText style={{fontSize: 24}}>7</ThemeText></Touchable>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(8)}><ThemeText style={{fontSize: 24}}>8</ThemeText></Touchable>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(9)}><ThemeText style={{fontSize: 24}}>9</ThemeText></Touchable>
+          </View>
+          <View style={styles.digitRow}>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit(0)}><ThemeText style={{fontSize: 24}}>0</ThemeText></Touchable>
+            <Touchable style={styles.digitButton} borderless={true}
+              onPress={()=>inputDigit('<')}><ThemeText style={{fontSize: 24}}>{'<'}</ThemeText></Touchable>
+          </View>
+          <View style={styles.digitRow}>
+            <ListItem style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} onPress={async ()=>{
+              props.onClose();
+            }}>
+              <ThemeText>취소</ThemeText>
+            </ListItem>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -6,7 +6,7 @@ import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 
 // 강의계획서 목록 조회
 export default class Syllabus extends Component{
@@ -127,9 +127,9 @@ export default class Syllabus extends Component{
                 year: condition.get('year')
               });
             }}>
-              <ThemeText style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</ThemeText>
-              <ThemeText>{item.college} {item.major} | {item.professor}({item.professorNo})</ThemeText>
-              <ThemeText>작성여부: {item.availablity}</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</ThemedText>
+              <ThemedText>{item.college} {item.major} | {item.professor}({item.professorNo})</ThemedText>
+              <ThemedText>작성여부: {item.availablity}</ThemedText>
             </ListItem>
           }
         />
