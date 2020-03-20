@@ -34,15 +34,15 @@ export default function GradeCert(props){
     Printer.printGradeCert(userinfo, details, summary, date);
   };
 
-  useLayoutEffect((navigation, print) => {
-    navigation.setOptions({
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
       headerRight: () => (
         <MaterialHeaderButtons>
-          <MaterialHeaderButtons.Item title="인쇄" iconName="print" onPress={print} />
+          <MaterialHeaderButtons.Item title="인쇄" iconName="print" onPress={()=>print()} />
         </MaterialHeaderButtons>
       ),
     });
-  }, [props.navigation, print]);
+  }, [props.navigation]);
 
   
   if(isLoading){
