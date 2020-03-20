@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {ThemedText} from './components';
-import {useColorScheme} from 'react-native-appearance';
+import {useTheme} from '@react-navigation/native';
 
 class WeatherUtils{
   static fetchWeatherData(lat, lon, unit, appid){
@@ -53,37 +53,36 @@ class WeatherUtils{
 
 
 function WeatherIcon(props){
-  let colorScheme = useColorScheme();
-  const textColor = (colorScheme==='dark')? 'white' : 'black';
+  let {colors} = useTheme();
   const code = props.code;
   const size = (!props.size)? 10 : props.size;
   if(code>=200 && code<300){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-lightning"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-lightning"/>);
   }else if(code>=300 && code<400){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-pouring"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-pouring"/>);
   }else if(code>=500 && code<=504){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-rainy"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-rainy"/>);
   }else if(code==511){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-snowy-rainy"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-snowy-rainy"/>);
   }else if(code>511 && code<600){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-pouring"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-pouring"/>);
   }else if(code>=600 && code<700){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-snowy"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-snowy"/>);
   }else if(code>=700 && code<800){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-fog"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-fog"/>);
   }else if(code==800){
     let hour = new Date().getHours();
     if(hour>=5 && hour<18){
-      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-sunny"/>);
+      return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-sunny"/>);
     }else{
-      return(<MaterialCommunityIcons color={textColor} size={size} name="weather-night"/>);
+      return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-night"/>);
     }
   }else if(code==801){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-partlycloudy"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-partlycloudy"/>);
   }else if(code>801 && code<=804){
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-cloudy"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-cloudy"/>);
   }else{
-    return(<MaterialCommunityIcons color={textColor} size={size} name="weather-sunny"/>);
+    return(<MaterialCommunityIcons color={colors.text} size={size} name="weather-sunny"/>);
   }
 }
 

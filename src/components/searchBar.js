@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {withNavigation} from 'react-navigation';
 import {Map, List} from 'immutable';
 import {MaterialIcons} from '@expo/vector-icons';
-import {ThemedText, ThemeBackground} from './components';
+import {ThemedText} from './components';
 import ListItem from './listitem';
-import {Appearance} from 'react-native-appearance';
+import {useTheme, useNavigation} from '@react-navigation/native';
 
 
 // 픽커와 형식 간의 정렬을 통일하기 위한 함수
@@ -61,71 +61,54 @@ function translatePickerCondition(condition, dataType) {
   });
 }
 
-class SearchBar extends Component {
-  // 조건 getter
-  getCondition() {
-    return this.state.condition;
-  }
+export default function SearchBar(props){
+  const navigation = useNavigation();
+  const {colors} = useTheme();
+  let dataType = Map(props.dataType);
+  const [condition, setCondition] = useState(Map());
+  
+  useEffect(()=>{
+    let dataType = Map(props.dataType);
+    let init = initCondition(dataType, props.initParam);
+    setCondition(init);
+  }, []);
 
-  // 초기화
-  constructor(props) {
-    super(props);
-    this.dataType = Map(props.dataType);
-
-    let init = initCondition(this.dataType, props.initParam);
-    this.state = {
-      condition: init,
-      textColor: Appearance.getColorScheme()==='dark'?'white':'black'
-    };
-  }
-
-  componentDidMount(){
-    this.subscription = Appearance.addChangeListener(({colorScheme}) => {
-      this.setState({textColor: colorScheme==='dark'? 'white' : 'black'});
-    });
-  }
 
   // 변경시 일어나는 행동을 정의
-  handleCondition(condition) {
-    this.setState({
-      condition: condition
-    });
+  const handleCondition = (condition)=>{
+    setCondition(condition);
+    let newCondition = translatePickerCondition(condition, dataType);
+    props.onChange(newCondition);
+  };
 
-    let newCondition = translatePickerCondition(condition, this.dataType);
-    this.props.onChange(newCondition);
-  }
-
-  render() {
-    return(
-      <ThemeBackground>
-        <ListItem style={{flex: 0, flexDirection: 'row'}}
-          elevate={true}
-          onPress={()=>{
-            this.props.navigation.navigate('searchCondition', {
-              dataType: this.dataType,
-              condition: this.state.condition,
-              onConfirm: this.handleCondition.bind(this)
-            });
-          }}>
-          <ThemedText style={{flex: 1}}>
-            {this.getCondition()
-              .map((value, key) => {
-                if (typeof value == 'string') {
-                  return value;
-                } else if (typeof value == 'number') {
-                  return List(SortByCodes(this.dataType.getIn([key, 'values'])).keys())
-                    .get(value);
-                }
-                return '';
-              })
-              .toList()
-              .toJS().join(', ')}
-          </ThemedText>
-          <MaterialIcons name="search" size={20} style={{flex: 0}}
-            color={this.state.textColor}/>
-        </ListItem>
-      </ThemeBackground>);
-  }
+  return(
+    <View>
+      <ListItem style={{flex: 0, flexDirection: 'row'}}
+        elevate={true}
+        onPress={()=>{
+          navigation.navigate('searchCondition', {
+            dataType: dataType,
+            condition: condition,
+            onConfirm: handleCondition.bind(this)
+          });
+        }}>
+        <ThemedText style={{flex: 1}}>
+          {condition
+            .map((value, key) => {
+              if (typeof value == 'string') {
+                return value;
+              } else if (typeof value == 'number') {
+                return List(SortByCodes(dataType.getIn([key, 'values'])).keys())
+                  .get(value);
+              }
+              return '';
+            })
+            .toList()
+            .toJS().join(', ')}
+        </ThemedText>
+        <MaterialIcons name="search" size={20} style={{flex: 0}}
+          color={colors.text}/>
+      </ListItem>
+    </View>);
 }
 
-export default withNavigation(SearchBar);

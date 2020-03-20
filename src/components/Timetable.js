@@ -6,8 +6,7 @@ import moment from 'moment';
 import {InfoModal} from './infoModal';
 import ListItem from './listitem';
 import {ThemedText} from './components';
-import {Appearance} from 'react-native-appearance';
-import {useColorScheme} from 'react-native-appearance';
+import {useTheme} from '@react-navigation/native';
 
 const timeTemplate = 'HH:mm:ss';
 
@@ -240,10 +239,9 @@ class Timetable extends Component {
 export default withNavigation(Timetable);
 
 function ClassItem(props){
-  let colorScheme = useColorScheme();
-  let backgroundColor = (colorScheme==='dark')? '#2a2a2a':'silver';
+  const {colors} = useTheme();
   return(
-    <View style={[{backgroundColor: backgroundColor}, props.style]}>
+    <View style={[{backgroundColor: colors.backgroundWithCards}, props.style]}>
       {props.children}
     </View>
   );

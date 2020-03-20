@@ -4,7 +4,6 @@ import {
   StyleSheet, View, TextInput, Picker, Text
 } from 'react-native';
 import Touchable from './touchable';
-import BuildConfigs from '../config';
 import {useTheme} from '@react-navigation/native';
 import {withThemeAndRef} from './themes';
 

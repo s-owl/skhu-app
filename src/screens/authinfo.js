@@ -1,23 +1,21 @@
 import React, {Component} from 'react';
-import {View, Image, Text, ActivityIndicator, Clipboard, Linking} from 'react-native';
-import {CardView, ThemedText, ThemeBackground} from '../components/components';
+import {View, Image, ActivityIndicator, Clipboard, Linking} from 'react-native';
+import {CardView, ThemedText} from '../components/components';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import {ScrollView} from 'react-native-gesture-handler';
-import {Appearance} from 'react-native-appearance';
+import {useTheme} from '@react-navigation/native';
 
 
-export default class Authinfo extends Component{
-  render(){
-    return(
-      <ThemeBackground viewType="scrollView"
-        hasCardViews={true} style={{paddingTop: 80}}>
-        <Profile style={{marginTop: 24}}/>
-        <ClassInfoCard style={{padding: 8}}/>
-        <OtpCard/>
-      </ThemeBackground>
-    );
-  }
+export default function Authinfo(props){
+  const {colors} = useTheme();
+  return(
+    <ScrollView  style={{paddingTop: 80, backgroundColor: colors.backgroundWithCards}}>
+      <Profile style={{marginTop: 24}}/>
+      <ClassInfoCard style={{padding: 8}}/>
+      <OtpCard/>
+    </ScrollView>
+  );
 }
 
 class Profile extends Component{
