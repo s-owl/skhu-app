@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import { 
   Alert, SectionList, Linking, AsyncStorage, View
 } from 'react-native';
@@ -14,7 +14,7 @@ import {useTheme} from '@react-navigation/native';
 
 export default function Menu(props) {
   const {colors} = useTheme();
-  let helpModal = useRef();
+  let [helpModal, setHelpModal] = useState(false);
   const [msg, setMsg] = useState('');
   const [snackbar, setSnackbar] = useState(false);
 
@@ -85,7 +85,7 @@ export default function Menu(props) {
               props.navigation.navigate('Settings');
             }},
             {label: '도움 받기', icon: 'help-circle-outline', onPress: ()=>{
-              helpModal.current.open();
+              setHelpModal(true);
             }},
             {label: '로그아웃', icon: 'logout', onPress: ()=>{ 
               Alert.alert(
@@ -123,7 +123,7 @@ export default function Menu(props) {
         keyExtractor={(item, index) => item + index}
       />
       <SnackBar visible={snackbar} textMessage={msg}/>
-      <HelpModal ref={helpModal}/>
+      <HelpModal visible={helpModal} onClose={()=>setHelpModal(false)} isDuringLogin={false}/>
     </View>
   );
 }

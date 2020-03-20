@@ -13,7 +13,7 @@ import SnackBar from 'react-native-snackbar-component';
 import {CardView, ThemedText} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
-import {ErrorModal} from './components/errorModal';
+import {ErrorModal, CommonErrors} from './components/errorModal';
 import {HelpModal} from './components/helpModal';
 import moment from 'moment';
 import {Appearance} from 'react-native-appearance';
@@ -26,9 +26,12 @@ export default function Login(props){
   let [snackBar, toggleSnackBar] = useState(false);
   let [username, setUsername] = useState('');
   let [password, setPassword] = useState('');
-  let errorModal = useRef();
-  let helpModal = useRef();
+  let [helpModal, setHelpModal] = useState(false);
   let pwInput = useRef();
+
+  const [errorModal, setErrorModal] = useState(false);
+  const [errorObj, setErrorObj] = useState(CommonErrors.loginError);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const showSnackbar = (msg) => {
     setMsg(msg);
@@ -69,7 +72,8 @@ export default function Login(props){
         setLoading(false);
         toggleHelp(true);
       }else if(pw.length < 8){
-        errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
+        setErrorObj(CommonErrors.wrongLogin);
+        setErrorModal(true);
         setLoading(false);
         toggleHelp(true);
       }else{
@@ -83,12 +87,15 @@ export default function Login(props){
         }else if(forestLoginRes.status == 400){
           setLoading(false);
           toggleHelp(true);
-          errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
+          setErrorObj(CommonErrors.wrongLogin);
+          setErrorModal(true);
         }else if(forestLoginRes.status == 401){
           setLoading(false);
           toggleHelp(true);
           let msg = forestData['error'];
-          errorModal.current.showError(errorModal.current.CommonErrors.loginError, msg);
+          setErrorObj(CommonErrors.loginError);
+          setErrorMsg(msg);
+          setErrorModal(true);
         }else{
           setLoading(false);
           toggleHelp(true);
@@ -106,12 +113,15 @@ export default function Login(props){
         }else if(samLoginRes.status == 400){
           setLoading(false);
           toggleHelp(true);
-          errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
+          setErrorObj(CommonErrors.wrongLogin);
+          setErrorModal(true);
         }else if(samLoginRes.status == 401){
           setLoading(false);
           toggleHelp(true);
           let msg = samData['error'];
-          errorModal.current.showError(errorModal.current.CommonErrors.loginError, msg);
+          setErrorObj(CommonErrors.loginError);
+          setErrorMsg(msg);
+          setErrorModal(true);
         }else{
           setLoading(false);
           toggleHelp(true);
@@ -135,8 +145,9 @@ export default function Login(props){
     }catch(err){
       setLoading(false);
       toggleHelp(true);
-      errorModal.current.showError(errorModal.current.CommonErrors.netError, 
-        `${err}\n${err.message}\n${err.stack}`);
+      setErrorObj(CommonErrors.netError);
+      setErrorMsg(`${err}\n${err.message}\n${err.stack}`);
+      setErrorModal(true); 
       console.log(err);
     }
   };
@@ -146,7 +157,8 @@ export default function Login(props){
       if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
       const connInfo = await NetInfo.fetch();
       if(connInfo.type == 'none'){
-        errorModal.current.showError(errorModal.current.CommonErrors.noNetwork);
+        setErrorObj(CommonErrors.noNetwork);
+        setErrorModal(true);
       }else{
         let id = await SecureStore.getItemAsync('userid');
         let pw = await SecureStore.getItemAsync('userpw');
@@ -197,7 +209,7 @@ export default function Login(props){
     helpButton = (
       <Touchable onPress={()=>{
         if(!isLoading){
-          helpModal.current.open(undefined, true);
+          setHelpModal(true);
         }
       }}>
         <View style={ styles.footer }>
@@ -231,8 +243,10 @@ export default function Login(props){
           </View>
         </View>
         <SnackBar visible={snackBar} textMessage={msg}/>
-        <ErrorModal ref={errorModal} navigation={props.navigation}/>
-        <HelpModal ref={helpModal} navigation={props.navigation}/>
+        <ErrorModal visible={errorModal} navigation={props.navigation}
+          error={errorObj} errorMsg={errorMsg} onClose={()=>setErrorModal(false)}/>
+        <HelpModal visible={helpModal} navigation={props.navigation}
+          onClose={()=>setHelpModal(false)} isDuringLogin={true}/>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

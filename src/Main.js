@@ -18,6 +18,7 @@ import {useTheme} from '@react-navigation/native';
 export default function Main(props){
   let db = new DBHelper();
   const [localAuth, setlocalAuth] = useState(false);
+  const {colors} = useTheme();
 
   useEffect(()=>{
     db.fetchAttendance();
@@ -25,7 +26,7 @@ export default function Main(props){
   }, []);
   const topMargin = (Platform.OS == 'ios')? 20 : 50;
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: colors.backgroundWithCards}}>
       <ScrollView>
         <View style={{marginTop: topMargin, padding: 16}}>
           <SummaryWidget />
@@ -39,11 +40,11 @@ export default function Main(props){
               icon="insert-chart"
               label="이수 학점"
               onPress={() => props.navigation.navigate('Credits')}/>
-            <ProfileButton onPress={() => localAuth.current.startAuth()}/>
+            <ProfileButton onPress={() => setlocalAuth(true)}/>
           </View>
 
           <ThemedText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>다음 강의</ThemedText>
-          <NextClassInfo dbHelper={this.db} onPress={() => {
+          <NextClassInfo dbHelper={db} onPress={() => {
             props.navigation.navigate('Timetable');
           }} />
           <ThemedText style={{fontSize: 20, marginTop: 16, marginLeft: 16}}>학사 일정</ThemedText>

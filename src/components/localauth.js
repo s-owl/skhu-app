@@ -5,7 +5,7 @@ import ListItem from './listitem';
 import Touchable from './touchable';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
-import {ThemeText} from './components';
+import {ThemedText} from './components';
 import {useTheme} from '@react-navigation/native';
 
 export default function LocalAuth(props){
@@ -26,9 +26,9 @@ export default function LocalAuth(props){
     setIcon('lock-outline');
   };
 
-  useEffect(()=>{
-    resetStates();
-  }, []);
+  // useEffect(()=>{
+  //   resetStates();
+  // }, []);
 
   useEffect(()=>{
     if(props.visible){
@@ -95,8 +95,8 @@ export default function LocalAuth(props){
     const pin = await SecureStore.getItemAsync('localAuthPin');
     const hasHw = await LocalAuthentication.hasHardwareAsync();
     const bioAuthRegistered = await LocalAuthentication.isEnrolledAsync();
-    setPinRegistered( typeof pin == 'string');
-    if(pinRegistered){
+    setPinRegistered(typeof pin == 'string');
+    if(typeof pin == 'string'){
       if(hasHw && bioAuthRegistered){
         bioAuth();
       }else{
@@ -162,45 +162,45 @@ export default function LocalAuth(props){
       <View style={{paddingTop: 30, padding: 16, flex: 1, backgroundColor: colors.background}}>
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <MaterialIcons color={colors.text} name={icon} size={32} style={{padding: 16}}/>
-          <ThemeText>{msg}</ThemeText>
-          <ThemeText style={{fontSize: 32}}>{display}</ThemeText>
+          <ThemedText>{msg}</ThemedText>
+          <ThemedText style={{fontSize: 32}}>{display}</ThemedText>
         </View>
         <View style={{flex: 3, justifyContent: 'flex-end'}}>
           <View style={styles.digitRow}>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(1)}><ThemeText style={{fontSize: 24}}>1</ThemeText></Touchable>
+              onPress={()=>inputDigit(1)}><ThemedText style={{fontSize: 24}}>1</ThemedText></Touchable>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(2)}><ThemeText style={{fontSize: 24}}>2</ThemeText></Touchable>
+              onPress={()=>inputDigit(2)}><ThemedText style={{fontSize: 24}}>2</ThemedText></Touchable>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(3)}><ThemeText style={{fontSize: 24}}>3</ThemeText></Touchable>
+              onPress={()=>inputDigit(3)}><ThemedText style={{fontSize: 24}}>3</ThemedText></Touchable>
           </View>
           <View style={styles.digitRow}>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(4)}><ThemeText style={{fontSize: 24}}>4</ThemeText></Touchable>
+              onPress={()=>inputDigit(4)}><ThemedText style={{fontSize: 24}}>4</ThemedText></Touchable>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(5)}><ThemeText style={{fontSize: 24}}>5</ThemeText></Touchable>
+              onPress={()=>inputDigit(5)}><ThemedText style={{fontSize: 24}}>5</ThemedText></Touchable>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(6)}><ThemeText style={{fontSize: 24}}>6</ThemeText></Touchable>
+              onPress={()=>inputDigit(6)}><ThemedText style={{fontSize: 24}}>6</ThemedText></Touchable>
           </View>
           <View style={styles.digitRow}>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(7)}><ThemeText style={{fontSize: 24}}>7</ThemeText></Touchable>
+              onPress={()=>inputDigit(7)}><ThemedText style={{fontSize: 24}}>7</ThemedText></Touchable>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(8)}><ThemeText style={{fontSize: 24}}>8</ThemeText></Touchable>
+              onPress={()=>inputDigit(8)}><ThemedText style={{fontSize: 24}}>8</ThemedText></Touchable>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(9)}><ThemeText style={{fontSize: 24}}>9</ThemeText></Touchable>
+              onPress={()=>inputDigit(9)}><ThemedText style={{fontSize: 24}}>9</ThemedText></Touchable>
           </View>
           <View style={styles.digitRow}>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit(0)}><ThemeText style={{fontSize: 24}}>0</ThemeText></Touchable>
+              onPress={()=>inputDigit(0)}><ThemedText style={{fontSize: 24}}>0</ThemedText></Touchable>
             <Touchable style={styles.digitButton} borderless={true}
-              onPress={()=>inputDigit('<')}><ThemeText style={{fontSize: 24}}>{'<'}</ThemeText></Touchable>
+              onPress={()=>inputDigit('<')}><ThemedText style={{fontSize: 24}}>{'<'}</ThemedText></Touchable>
           </View>
           <View style={styles.digitRow}>
             <ListItem style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} onPress={async ()=>{
               props.onClose();
             }}>
-              <ThemeText>취소</ThemeText>
+              <ThemedText>취소</ThemedText>
             </ListItem>
           </View>
         </View>
