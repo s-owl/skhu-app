@@ -1,5 +1,15 @@
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {useTheme} from '@react-navigation/native';
+
+const baseStyles = StyleSheet.create({
+  loginInput: {
+    height: 50,
+    marginBottom: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  }
+});
 
 export const SKHUsLightTheme = {
   dark: false,
@@ -11,6 +21,12 @@ export const SKHUsLightTheme = {
     text: 'black',
     border: 'lightgrey',
   },
+  styles: StyleSheet.create({
+    loginInput: StyleSheet.flatten([{
+      backgroundColor: 'rgba(220, 220, 220, 0.8)',
+      color: 'black'
+    }, baseStyles.loginInput])
+  })
 };
 
 export const SKHUsDarkTheme = {
@@ -23,8 +39,13 @@ export const SKHUsDarkTheme = {
     text: 'white',
     border: '#2a2a2a',
   },
+  styles: StyleSheet.create({
+    loginInput: StyleSheet.flatten([{
+      backgroundColor: '#2a2a2a',
+      color: 'white'
+    }, baseStyles.loginInput])
+  })
 };
-
 
 export function withThemeAndRef(Component){
   return React.forwardRef((props, ref) => {

@@ -18,6 +18,7 @@ import {HelpModal} from './components/helpModal';
 import moment from 'moment';
 import {Appearance} from 'react-native-appearance';
 import {CommonActions} from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 
 export default function Login(props){
   let [isLoading, setLoading] = useState(false);
@@ -27,6 +28,7 @@ export default function Login(props){
   let [username, setUsername] = useState('');
   let [password, setPassword] = useState('');
   let [helpModal, setHelpModal] = useState(false);
+  const theme = useTheme();
   let pwInput = useRef();
 
   const [errorModal, setErrorModal] = useState(false);
@@ -179,11 +181,11 @@ export default function Login(props){
     logInContainer = (
       <View>
         <ThemedText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemedText>
-        <LoginInput placeholder='아이디(학번) 입력'
+        <TextInput style={theme.styles.loginInput} placeholder='아이디(학번) 입력'
           underlineColorAndroid="transparent" autoCompleteType='username'
           returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => pwInput.current.focus() }
           onChangeText={(text)=>setUsername(text)} keyboardType='default'/>
-        <LoginInput placeholder='비밀번호 입력' secureTextEntry={ true }
+        <TextInput style={theme.styles.loginInput} placeholder='비밀번호 입력' secureTextEntry={ true }
           underlineColorAndroid="transparent" autoCompleteType='password'
           returnkeyType='go' ref={pwInput}  autocorrect={ false }
           onSubmitEditing={ () => {
@@ -255,43 +257,6 @@ export default function Login(props){
 Login.navigationOptions = {
   header: null
 };
-
-class LoginInput extends Component{
-  constructor(props){
-    super(props);
-    const colorScheme =  Appearance.getColorScheme();
-    this.state = {
-      bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
-      txtColor: colorScheme === 'dark' ? 'white':'black'
-    };
-    this.component = React.createRef();
-  }
-  componentDidMount(){
-    Appearance.addChangeListener(({colorScheme}) => {
-      this.setState({
-        bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
-        txtColor: colorScheme === 'dark' ? 'white':'black'
-      });
-    });
-  }
-  focus(){
-    this.component.current.focus();
-  }
-  render(){
-    return(
-      <TextInput {...this.props} 
-        ref={this.component}
-        style={{
-          height: 50,
-          backgroundColor: this.state.bgColor,
-          marginBottom: 15,
-          paddingHorizontal: 20,
-          borderRadius: 10,
-          color: this.state.txtColor
-        }}/>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
