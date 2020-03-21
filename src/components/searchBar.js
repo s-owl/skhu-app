@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {withNavigation} from 'react-navigation';
+import {View} from 'react-native';
 import {Map, List} from 'immutable';
 import {MaterialIcons} from '@expo/vector-icons';
 import {ThemedText} from './components';
@@ -89,7 +89,7 @@ export default function SearchBar(props){
           navigation.navigate('searchCondition', {
             dataType: dataType,
             condition: condition,
-            onConfirm: handleCondition.bind(this)
+            onConfirm: handleCondition
           });
         }}>
         <ThemedText style={{flex: 1}}>
