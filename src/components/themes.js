@@ -20,6 +20,7 @@ export const SKHUsLightTheme = {
     card: 'white',
     text: 'black',
     border: 'lightgrey',
+    timeCard: 'lightgrey'
   },
   styles: StyleSheet.create({
     loginInput: StyleSheet.flatten([{
@@ -38,6 +39,7 @@ export const SKHUsDarkTheme = {
     card: '#2a2a2a',
     text: 'white',
     border: '#2a2a2a',
+    timeCard: '#2a2a2a'
   },
   styles: StyleSheet.create({
     loginInput: StyleSheet.flatten([{
