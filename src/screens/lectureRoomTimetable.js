@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
+import {RefreshControl, View, ActivityIndicator, Alert, FlatList} from 'react-native';
 import ListItem from '../components/listitem';
 import {ThemedText} from '../components/components';
 import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
@@ -43,7 +43,7 @@ export class LectureRoomTimetable extends Component{
       );
     }else{
       return(
-        <Timetable timetable={this.state.timetable} />
+        <Timetable timetable={this.state.timetable} navigation={this.props.navigation}/>
       );
     }
   }

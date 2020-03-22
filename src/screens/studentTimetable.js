@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import Timetable, {convertForTimetable} from '../components/Timetable';
 import DBHelper from '../tools/dbhelper';
 import BuildConfigs from '../config';
@@ -34,7 +34,7 @@ export default class StudentTimetable extends Component{
       );
     }else{
       return(
-        <Timetable timetable={this.state.timetable} />
+        <Timetable timetable={this.state.timetable} navigation={this.props.navigation}/>
       );
     }
   }

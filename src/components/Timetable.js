@@ -121,7 +121,7 @@ export function convertForTimetable(arr) {
   return displayData;
 }
 
-class Timetable extends Component {
+export default class Timetable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -236,12 +236,10 @@ class Timetable extends Component {
   }
 }
 
-export default withNavigation(Timetable);
-
 function ClassItem(props){
   const {colors} = useTheme();
   return(
-    <View style={[{backgroundColor: colors.backgroundWithCards}, props.style]}>
+    <View style={[{backgroundColor: colors.timeCard}, props.style]}>
       {props.children}
     </View>
   );

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
+import {RefreshControl, View, ActivityIndicator, Alert, FlatList} from 'react-native';
 import ListItem from '../components/listitem';
 import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
 import BuildConfigs from '../config';
@@ -43,7 +43,7 @@ export class ProfessorTimetable extends Component{
       );
     }else{
       return(
-        <Timetable timetable={this.state.timetable} />
+        <Timetable timetable={this.state.timetable} navigation={this.props.navigation}/>
       );
     }
   }
@@ -82,15 +82,6 @@ export class ProfessorTimetable extends Component{
 
 
 export class SearchProfessors extends Component{
-  // 상단에 이름 출력
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-
-    return {
-      title: '교원 검색(교원별 시간표)',
-    };
-  };
-
   constructor(props){
     super(props);
     const today = new Date();
