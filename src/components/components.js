@@ -1,37 +1,10 @@
 
-import React, {Component} from 'react'; 
+import React from 'react'; 
 import {
-  StyleSheet, View, TextInput, Picker, Text
+  StyleSheet, View, Text
 } from 'react-native';
 import Touchable from './touchable';
 import {useTheme} from '@react-navigation/native';
-import {withThemeAndRef} from './themes';
-
-export function ThemedPicker(props){
-  const {colors} = useTheme();
-  return(
-    <Picker itemStyle={{color: colors.text}} {...props}>
-      {props.children}
-    </Picker>);
-}
-
-class ThemeTxtInput extends Component{
-  constructor(props){
-    super(props);
-    this.component = React.createRef();
-  }
-  focus(){
-    this.component.current.focus();
-  }
-  render(){
-    return(
-      <TextInput style={[{color: this.props.color.text}, this.props.style]}
-        ref={this.component} {...this.props}/>
-    );
-  }
-}
-
-export const ThemedTextInput = withThemeAndRef(ThemeTxtInput);
 
 export function ThemedText(props){
   const {colors} = useTheme();
