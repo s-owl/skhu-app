@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-  View, ScrollView, KeyboardAvoidingView, StyleSheet, TextInput, Picker
+  View, ScrollView, KeyboardAvoidingView, StyleSheet, TextInput, Picker, Platform
 } from 'react-native';
 import {List} from 'immutable';
 import {ThemedText} from '../components/components';
@@ -25,7 +25,7 @@ function ThemedPicker(props){
 
 // 스타일 지정
 const styles = StyleSheet.create({
-  view: {flex: 1, justifyContent: 'space-around'},
+  view: {justifyContent: 'space-around'},
   input: {
     fontSize: 20,
   },
@@ -75,12 +75,14 @@ export default class searchCondition extends Component {
 
   render() {
     return(
-      <ScrollView keyboardShouldPersistTaps="always"
-        keyboardDismissMode="on-drag"
-        contentContainerStyle={styles.view}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior="padding">
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding">
+        <ScrollView keyboardShouldPersistTaps='always'
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={styles.view}
+          style={styles.container}>
+        
           {
             this.dataType.toArray()
               .map((item)=>(
@@ -113,21 +115,22 @@ export default class searchCondition extends Component {
                 </ListItem>)
               )
           }
-          <View style={styles.buttonContainer}>
-            <ListItem
-              onPress={this.handleCancel}
-              style={styles.buttons}>
-              <ThemedText style={styles.text}>취소</ThemedText>
-            </ListItem>
-            <ListItem
-              onPress={this.handleConfirm}
-              style={styles.buttons}>
-              <ThemedText style={styles.text}>확인</ThemedText>
-            </ListItem>
-          </View>
+          
           <View style={{height: 50}} /> 
-        </KeyboardAvoidingView>
-      </ScrollView>);
+        </ScrollView>
+        <View style={styles.buttonContainer}>
+          <ListItem
+            onPress={this.handleCancel}
+            style={styles.buttons}>
+            <ThemedText style={styles.text}>취소</ThemedText>
+          </ListItem>
+          <ListItem
+            onPress={this.handleConfirm}
+            style={styles.buttons}>
+            <ThemedText style={styles.text}>확인</ThemedText>
+          </ListItem>
+        </View>
+      </KeyboardAvoidingView>);
   }
 }
 
