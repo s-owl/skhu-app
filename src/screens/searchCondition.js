@@ -11,7 +11,7 @@ import {useTheme} from '@react-navigation/native';
 function ThemedTextInput(props){
   const {colors} = useTheme();
   return(
-    <TextInput style={[{color: colors.text}, props.style]} {...props}/>
+    <TextInput style={[{color: colors.text, fontSize: 20}, props.style]} {...props}/>
   );
 }
 
@@ -26,12 +26,9 @@ function ThemedPicker(props){
 // 스타일 지정
 const styles = StyleSheet.create({
   view: {justifyContent: 'space-around'},
-  input: {
-    fontSize: 20,
-  },
   container: {flex: 1},
   picker: {
-    height: 120,
+    height: Platform.OS == 'ios'? 120: 40,
     flex: 1,
     justifyContent: 'center'
   },
@@ -94,21 +91,23 @@ export default class searchCondition extends Component {
                     if (typeof itemType == 'string') {
                       return(<ThemedTextInput placeholder={itemType}
                         onChangeText={(value)=>this.setCondition(itemKey, value)}
-                        defaultValue={this.state.condition.get(itemKey)}
-                        style={styles.input}/>);
+                        defaultValue={this.state.condition.get(itemKey)}/>);
                     } else if (typeof itemType == 'object') {
-                      return(<ThemedPicker
-                        onValueChange={(value, _)=>this.setCondition(itemKey, value)}
-                        selectedValue={this.state.condition.get(itemKey)}
-                        style={styles.picker}>
-                        {List(SortByCodes(itemType.values).keys())
-                          .toJS()
-                          .map((value, index)=>{
-                            return(
-                              <Picker.Item
-                                label={value} value={index} />);
-                          })}
-                      </ThemedPicker>);
+                      return(
+                        <View style={{backgroundColor: Platform.OS == 'android'? 'white': 'rgba(0,0,0,0)'}}>
+                          <ThemedPicker
+                            onValueChange={(value, _)=>this.setCondition(itemKey, value)}
+                            selectedValue={this.state.condition.get(itemKey)}
+                            style={styles.picker}>
+                            {List(SortByCodes(itemType.values).keys())
+                              .toJS()
+                              .map((value, index)=>{
+                                return(
+                                  <Picker.Item
+                                    label={value} value={index} />);
+                              })}
+                          </ThemedPicker>
+                        </View>);
                     }else{
                       return(<View></View>);
                     }})()}
