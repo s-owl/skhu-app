@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
+import {RefreshControl, View, ActivityIndicator, Alert, FlatList} from 'react-native';
 import ListItem from '../components/listitem';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
 import BuildConfigs from '../config';
 import SearchBar, {createSearchCondition} from '../components/searchBar.js';
@@ -11,20 +11,14 @@ import {Map} from 'immutable';
 
 
 export class LectureRoomTimetable extends Component{
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-        
-    return {
-      title: '강의실별 시간표',
-    };
-  };
   constructor(props){
     super(props);
+    const {semesterCode, year, roomName, roomNumber} = this.props.route.params;
     this.state = {
-      semesterCode: this.props.navigation.getParam('semesterCode', ''),
-      year: this.props.navigation.getParam('year', ''),
-      roomName: this.props.navigation.getParam('roomName', ''),
-      roomNumber: this.props.navigation.getParam('roomNumber', ''),
+      semesterCode: semesterCode,
+      year: year,
+      roomName: roomName,
+      roomNumber: roomNumber,
       timetable: [],
       isLoading: false
     };
@@ -44,12 +38,12 @@ export class LectureRoomTimetable extends Component{
     }else if(this.state.timetable.length <= 0){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
-          <ThemeText>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</ThemeText>
+          <ThemedText>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</ThemedText>
         </View>
       );
     }else{
       return(
-        <Timetable timetable={this.state.timetable} />
+        <Timetable timetable={this.state.timetable} navigation={this.props.navigation}/>
       );
     }
   }
@@ -95,15 +89,6 @@ export class LectureRoomTimetable extends Component{
 
 
 export class SearchLectureRooms extends Component{
-  // 상단에 이름 출력
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-
-    return {
-      title: '강의실 검색(강의실별 시간표)',
-    };
-  };
-
   constructor(props){
     super(props);
     const today = new Date();
@@ -279,8 +264,8 @@ export class SearchLectureRooms extends Component{
                 roomNumber: item.roomNumber
               });
             }}>
-              <ThemeText style={{fontWeight: 'bold'}}>{item.roomNumber} - {item.roomName}</ThemeText>
-              <ThemeText>{item.capacity}명 수용가능</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>{item.roomNumber} - {item.roomName}</ThemedText>
+              <ThemedText>{item.capacity}명 수용가능</ThemedText>
             </ListItem>
           }
         />

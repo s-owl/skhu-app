@@ -4,29 +4,22 @@ import {ScrollView, View, Text, ActivityIndicator} from 'react-native';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import moment from 'moment';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 
 
 export default class Schedules extends Component{
-    static navigationOptions = ({navigation, navigationOptions}) => {
-      const {params} = navigation.state;
-          
-      return {
-        title: '학사 일정',
-      };
-    };
-    constructor(props){
-      super(props);
-    }
-    render(){
-      return(
-        <ScrollView style={{height: '100%'}}>
-          <ScheduleComponent year={moment().year()} month={moment().month()+1}/>
-          <ScheduleComponent year={moment().add(1, 'months').year()} month={moment().add(1, 'months').month()+1}/>
-          <ScheduleComponent year={moment().add(2, 'months').year()} month={moment().add(2, 'months').month()+1}/>
-        </ScrollView>
-      );
-    }
+  constructor(props){
+    super(props);
+  }
+  render(){
+    return(
+      <ScrollView style={{height: '100%'}}>
+        <ScheduleComponent year={moment().year()} month={moment().month()+1}/>
+        <ScheduleComponent year={moment().add(1, 'months').year()} month={moment().add(1, 'months').month()+1}/>
+        <ScheduleComponent year={moment().add(2, 'months').year()} month={moment().add(2, 'months').month()+1}/>
+      </ScrollView>
+    );
+  }
 }
 
 class ScheduleComponent extends Component{
@@ -69,15 +62,15 @@ class ScheduleComponent extends Component{
     }else{
       content = (
         <View style={{flexDirection: 'row'}}>
-          <ThemeText style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</ThemeText>
-          <ThemeText style={{flex: 1}}>{this.state.contents}</ThemeText>
+          <ThemedText style={{flex: 0, fontWeight: 'bold'}}>{this.state.dates}</ThemedText>
+          <ThemedText style={{flex: 1}}>{this.state.contents}</ThemedText>
         </View>
       );
     }
     return(
       <View>
         <ListItem isHeader={true}>
-          <ThemeText>{this.props.year}{'.'}{this.props.month}</ThemeText>
+          <ThemedText>{this.props.year}{'.'}{this.props.month}</ThemedText>
         </ListItem>
         <ListItem>
           {content}

@@ -1,21 +1,34 @@
 import React, {Component} from 'react';
 import {
-  View, ScrollView, KeyboardAvoidingView, StyleSheet
+  View, ScrollView, KeyboardAvoidingView, StyleSheet, TextInput, Picker, Platform
 } from 'react-native';
 import {List} from 'immutable';
-import {ThemeText, ThemeTextInput, ThemePicker} from '../components/components';
+import {ThemedText} from '../components/components';
 import {SortByCodes} from '../components/searchBar';
 import ListItem from '../components/listitem';
+import {useTheme} from '@react-navigation/native';
+
+function ThemedTextInput(props){
+  const {colors} = useTheme();
+  return(
+    <TextInput style={[{color: colors.text, fontSize: 20}, props.style]} {...props}/>
+  );
+}
+
+function ThemedPicker(props){
+  const {colors} = useTheme();
+  return(
+    <Picker itemStyle={{color: colors.text}} {...props}>
+      {props.children}
+    </Picker>);
+}
 
 // 스타일 지정
 const styles = StyleSheet.create({
-  view: {flex: 1, justifyContent: 'space-around'},
-  input: {
-    fontSize: 20,
-  },
+  view: {justifyContent: 'space-around'},
   container: {flex: 1},
   picker: {
-    height: 120,
+    height: Platform.OS == 'ios'? 120: 40,
     flex: 1,
     justifyContent: 'center'
   },
@@ -34,24 +47,14 @@ const styles = StyleSheet.create({
 
 // 검색 조건 스크린 클래스
 export default class searchCondition extends Component {
-  // 제목 표시
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-      
-    return {
-      title: '검색 조건',
-    };
-  };
-
   // 초기화
   constructor(props) {
     super(props);
-    // 스크린 간의 통신을 위한 네비게이션
-    const {navigation} = props;
     // 필요한 변수 가져오기
-    this.dataType = navigation.getParam('dataType', {});
+    const {dataType, condition, onConfirm} = props.route.params;
+    this.dataType = dataType;
     this.state = {
-      condition: navigation.getParam('condition', {})
+      condition: condition
     };
 
     // setter 생성
@@ -61,7 +64,7 @@ export default class searchCondition extends Component {
 
     // 프로시져 지정
     this.handleConfirm = ()=>{
-      navigation.getParam('onConfirm')(this.state.condition);
+      onConfirm(this.state.condition);
       this.props.navigation.goBack();
     };
     this.handleCancel = ()=>this.props.navigation.goBack();
@@ -69,11 +72,14 @@ export default class searchCondition extends Component {
 
   render() {
     return(
-      <ScrollView
-        contentContainerStyle={styles.view}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior="padding">
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding">
+        <ScrollView keyboardShouldPersistTaps='always'
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={styles.view}
+          style={styles.container}>
+        
           {
             this.dataType.toArray()
               .map((item)=>(
@@ -83,43 +89,47 @@ export default class searchCondition extends Component {
                     const itemType = item[1];
 
                     if (typeof itemType == 'string') {
-                      return(<ThemeTextInput placeholder={itemType}
-                        onChangeText=
-                          {(value)=>this.setCondition(itemKey, value)}
-                        defaultValue={this.state.condition.get(itemKey)}
-                        style={styles.input }/>);
+                      return(<ThemedTextInput placeholder={itemType}
+                        onChangeText={(value)=>this.setCondition(itemKey, value)}
+                        defaultValue={this.state.condition.get(itemKey)}/>);
                     } else if (typeof itemType == 'object') {
-                      return(<ThemePicker
-                        onValueChange={(value, _)=>this.setCondition(itemKey, value)}
-                        selectedValue={this.state.condition.get(itemKey)}
-                        style={styles.picker}>
-                        {List(SortByCodes(itemType.values).keys())
-                          .toJS()
-                          .map((value, index)=>{
-                            return(
-                              <ThemePicker.Item
-                                label={value} value={index} />);
-                          })}
-                      </ThemePicker>);
+                      return(
+                        <View style={{backgroundColor: Platform.OS == 'android'? 'white': 'rgba(0,0,0,0)'}}>
+                          <ThemedPicker
+                            onValueChange={(value, _)=>this.setCondition(itemKey, value)}
+                            selectedValue={this.state.condition.get(itemKey)}
+                            style={styles.picker}>
+                            {List(SortByCodes(itemType.values).keys())
+                              .toJS()
+                              .map((value, index)=>{
+                                return(
+                                  <Picker.Item
+                                    label={value} value={index} />);
+                              })}
+                          </ThemedPicker>
+                        </View>);
+                    }else{
+                      return(<View></View>);
                     }})()}
                 </ListItem>)
               )
           }
-          <View style={styles.buttonContainer}>
-            <ListItem
-              onPress={this.handleCancel}
-              style={styles.buttons}>
-              <ThemeText style={styles.text}>취소</ThemeText>
-            </ListItem>
-            <ListItem
-              onPress={this.handleConfirm}
-              style={styles.buttons}>
-              <ThemeText style={styles.text}>확인</ThemeText>
-            </ListItem>
-          </View>
+          
           <View style={{height: 50}} /> 
-        </KeyboardAvoidingView>
-      </ScrollView>);
+        </ScrollView>
+        <View style={styles.buttonContainer}>
+          <ListItem
+            onPress={this.handleCancel}
+            style={styles.buttons}>
+            <ThemedText style={styles.text}>취소</ThemedText>
+          </ListItem>
+          <ListItem
+            onPress={this.handleConfirm}
+            style={styles.buttons}>
+            <ThemedText style={styles.text}>확인</ThemedText>
+          </ListItem>
+        </View>
+      </KeyboardAvoidingView>);
   }
 }
 

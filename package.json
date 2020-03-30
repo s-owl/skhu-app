@@ -21,7 +21,11 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "0.1.5",
     "@react-native-community/netinfo": "4.6.0",
+    "@react-navigation/bottom-tabs": "^5.2.0",
+    "@react-navigation/native": "^5.0.10",
+    "@react-navigation/stack": "^5.2.0",
     "abortcontroller-polyfill": "^1.4.0",
     "expo": "^36.0.0",
     "expo-asset": "~8.0.0",
@@ -40,6 +44,8 @@
     "react-native-dotenv": "^0.2.0",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-reanimated": "~1.4.0",
+    "react-native-safe-area-context": "0.6.0",
+    "react-native-screens": "2.0.0-alpha.12",
     "react-native-snackbar-component": "https://github.com/s-owl/React-Native-SnackBar-Component.git",
     "react-navigation": "^4.0.10",
     "react-navigation-header-buttons": "^3.0.4",

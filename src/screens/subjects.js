@@ -7,7 +7,7 @@ import SearchBar, {createSearchCondition} from '../components/searchBar';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 
 // 에러 표시
 function errorMessage() {
@@ -71,14 +71,6 @@ function getResultInSearchData(searchData) {
 }
 
 export default class Subjects extends Component{
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-      
-    return {
-      title: '학과/학부별 개설과목 조회',
-    };
-  };
-
   // 초기화
   constructor(props){
     super(props);
@@ -250,11 +242,11 @@ export default class Subjects extends Component{
                   year: condition.get('year')
                 });
               }}>
-                <ThemeText style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</ThemeText>
-                <ThemeText>{item.type}, {item.grade} 학년, {item.score}학점 | {item.professor}</ThemeText>
-                <ThemeText>학년제한: {item.grade_limit}, 학과제한: {item.major_limit}, 신청/정원: {item.available}</ThemeText>
-                <ThemeText>{item.time}</ThemeText>
-                <ThemeText>{item.note}</ThemeText>
+                <ThemedText style={{fontWeight: 'bold'}}>{item.subject}({item.subjectCode}-{item.classCode})</ThemedText>
+                <ThemedText>{item.type}, {item.grade} 학년, {item.score}학점 | {item.professor}</ThemedText>
+                <ThemedText>학년제한: {item.grade_limit}, 학과제한: {item.major_limit}, 신청/정원: {item.available}</ThemedText>
+                <ThemedText>{item.time}</ThemedText>
+                <ThemedText>{item.note}</ThemedText>
               </ListItem>
             }
           />
