@@ -10,13 +10,15 @@ import ChunkSecureStore from './tools/chunkSecureStore';
 import * as SecureStore from 'expo-secure-store';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SnackBar from 'react-native-snackbar-component';
-import {CardView, ThemeText} from './components/components';
+import {CardView, ThemedText} from './components/components';
 import BuildConfigs from './config';
 import Touchable from './components/touchable';
-import {ErrorModal} from './components/errorModal';
+import {ErrorModal, CommonErrors} from './components/errorModal';
 import {HelpModal} from './components/helpModal';
 import moment from 'moment';
 import {Appearance} from 'react-native-appearance';
+import {CommonActions} from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 
 export default function Login(props){
   let [isLoading, setLoading] = useState(false);
@@ -25,9 +27,13 @@ export default function Login(props){
   let [snackBar, toggleSnackBar] = useState(false);
   let [username, setUsername] = useState('');
   let [password, setPassword] = useState('');
-  let errorModal = useRef();
-  let helpModal = useRef();
+  let [helpModal, setHelpModal] = useState(false);
+  const theme = useTheme();
   let pwInput = useRef();
+
+  const [errorModal, setErrorModal] = useState(false);
+  const [errorObj, setErrorObj] = useState(CommonErrors.loginError);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const showSnackbar = (msg) => {
     setMsg(msg);
@@ -46,7 +52,14 @@ export default function Login(props){
         sessionUpdatedAt = moment.utc(sessionUpdatedAt);
         const loginRequired = moment().utc().isAfter(sessionUpdatedAt.add('60', 'minutes'));
         if(!loginRequired){
-          props.navigation.navigate('MainStack');
+          props.navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {name: 'MainStack'}
+              ]
+            })
+          );
           return;
         }
       }
@@ -61,7 +74,8 @@ export default function Login(props){
         setLoading(false);
         toggleHelp(true);
       }else if(pw.length < 8){
-        errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
+        setErrorObj(CommonErrors.wrongLogin);
+        setErrorModal(true);
         setLoading(false);
         toggleHelp(true);
       }else{
@@ -75,12 +89,15 @@ export default function Login(props){
         }else if(forestLoginRes.status == 400){
           setLoading(false);
           toggleHelp(true);
-          errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
+          setErrorObj(CommonErrors.wrongLogin);
+          setErrorModal(true);
         }else if(forestLoginRes.status == 401){
           setLoading(false);
           toggleHelp(true);
           let msg = forestData['error'];
-          errorModal.current.showError(errorModal.current.CommonErrors.loginError, msg);
+          setErrorObj(CommonErrors.loginError);
+          setErrorMsg(msg);
+          setErrorModal(true);
         }else{
           setLoading(false);
           toggleHelp(true);
@@ -98,12 +115,15 @@ export default function Login(props){
         }else if(samLoginRes.status == 400){
           setLoading(false);
           toggleHelp(true);
-          errorModal.current.showError(errorModal.current.CommonErrors.wrongLogin);
+          setErrorObj(CommonErrors.wrongLogin);
+          setErrorModal(true);
         }else if(samLoginRes.status == 401){
           setLoading(false);
           toggleHelp(true);
           let msg = samData['error'];
-          errorModal.current.showError(errorModal.current.CommonErrors.loginError, msg);
+          setErrorObj(CommonErrors.loginError);
+          setErrorMsg(msg);
+          setErrorModal(true);
         }else{
           setLoading(false);
           toggleHelp(true);
@@ -114,14 +134,22 @@ export default function Login(props){
           await SecureStore.setItemAsync('userpw', pw);
           await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
           setLoading(false);
-          props.navigation.navigate('MainStack');
+          props.navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {name: 'MainStack'}
+              ]
+            })
+          );
         }
       }
     }catch(err){
       setLoading(false);
       toggleHelp(true);
-      errorModal.current.showError(errorModal.current.CommonErrors.netError, 
-        `${err}\n${err.message}\n${err.stack}`);
+      setErrorObj(CommonErrors.netError);
+      setErrorMsg(`${err}\n${err.message}\n${err.stack}`);
+      setErrorModal(true); 
       console.log(err);
     }
   };
@@ -131,7 +159,8 @@ export default function Login(props){
       if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
       const connInfo = await NetInfo.fetch();
       if(connInfo.type == 'none'){
-        errorModal.current.showError(errorModal.current.CommonErrors.noNetwork);
+        setErrorObj(CommonErrors.noNetwork);
+        setErrorModal(true);
       }else{
         let id = await SecureStore.getItemAsync('userid');
         let pw = await SecureStore.getItemAsync('userpw');
@@ -151,12 +180,12 @@ export default function Login(props){
   }else{
     logInContainer = (
       <View>
-        <ThemeText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemeText>
-        <LoginInput placeholder='아이디(학번) 입력'
+        <ThemedText style={ styles.info }>성공회대학교 종합정보시스템{'\n'}계정으로 로그인 하세요.</ThemedText>
+        <TextInput style={theme.styles.loginInput} placeholder='아이디(학번) 입력'
           underlineColorAndroid="transparent" autoCompleteType='username'
           returnKeyType='next' autocorrect={ false } onSubmitEditing={ () => pwInput.current.focus() }
           onChangeText={(text)=>setUsername(text)} keyboardType='default'/>
-        <LoginInput placeholder='비밀번호 입력' secureTextEntry={ true }
+        <TextInput style={theme.styles.loginInput} placeholder='비밀번호 입력' secureTextEntry={ true }
           underlineColorAndroid="transparent" autoCompleteType='password'
           returnkeyType='go' ref={pwInput}  autocorrect={ false }
           onSubmitEditing={ () => {
@@ -171,7 +200,7 @@ export default function Login(props){
           runLogInProcess(id, pw);
         }} style={{backgroundColor: '#569f59', justifyContent: 'center', flexDirection: 'row'}}>
           <MaterialCommunityIcons name={'login'} size={16} color={'white'} style={{marginRight: 8}}/>
-          <ThemeText style={{color: 'white'}}>Log In</ThemeText>
+          <ThemedText style={{color: 'white'}}>Log In</ThemedText>
         </CardView>
       </View>
     );
@@ -182,12 +211,12 @@ export default function Login(props){
     helpButton = (
       <Touchable onPress={()=>{
         if(!isLoading){
-          helpModal.current.open(undefined, true);
+          setHelpModal(true);
         }
       }}>
         <View style={ styles.footer }>
-          <ThemeText>여기를 눌러 도움 얻기</ThemeText>
-          <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
+          <ThemedText>여기를 눌러 도움 얻기</ThemedText>
+          <ThemedText>(C)2018-Present Sleepy OWL</ThemedText>
           <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}}
             source={ require('../assets/imgs/Sowl_Logo.png') }/>
         </View>
@@ -196,7 +225,7 @@ export default function Login(props){
   }else{
     helpButton = (
       <View style={ styles.footer }>
-        <ThemeText>(C)2018-Present Sleepy OWL</ThemeText>
+        <ThemedText>(C)2018-Present Sleepy OWL</ThemedText>
         <Image style={{width: 60, height: 60, backgroundColor: 'white', borderRadius: 30, margin: 8}} 
           source={ require('../assets/imgs/Sowl_Logo.png') }/>
       </View>
@@ -216,8 +245,10 @@ export default function Login(props){
           </View>
         </View>
         <SnackBar visible={snackBar} textMessage={msg}/>
-        <ErrorModal ref={errorModal} navigation={props.navigation}/>
-        <HelpModal ref={helpModal} navigation={props.navigation}/>
+        <ErrorModal visible={errorModal} navigation={props.navigation}
+          error={errorObj} errorMsg={errorMsg} onClose={()=>setErrorModal(false)}/>
+        <HelpModal visible={helpModal} navigation={props.navigation}
+          onClose={()=>setHelpModal(false)} isDuringLogin={true}/>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -226,43 +257,6 @@ export default function Login(props){
 Login.navigationOptions = {
   header: null
 };
-
-class LoginInput extends Component{
-  constructor(props){
-    super(props);
-    const colorScheme =  Appearance.getColorScheme();
-    this.state = {
-      bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
-      txtColor: colorScheme === 'dark' ? 'white':'black'
-    };
-    this.component = React.createRef();
-  }
-  componentDidMount(){
-    Appearance.addChangeListener(({colorScheme}) => {
-      this.setState({
-        bgColor: colorScheme === 'dark' ? '#2a2a2a':'rgba(220, 220, 220, 0.8)',
-        txtColor: colorScheme === 'dark' ? 'white':'black'
-      });
-    });
-  }
-  focus(){
-    this.component.current.focus();
-  }
-  render(){
-    return(
-      <TextInput {...this.props} 
-        ref={this.component}
-        style={{
-          height: 50,
-          backgroundColor: this.state.bgColor,
-          marginBottom: 15,
-          paddingHorizontal: 20,
-          borderRadius: 10,
-          color: this.state.txtColor
-        }}/>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   container: {

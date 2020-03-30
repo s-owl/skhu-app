@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {RefreshControl, View, Text, ActivityIndicator, Alert, FlatList} from 'react-native';
+import {RefreshControl, View, ActivityIndicator, Alert, FlatList} from 'react-native';
 import ListItem from '../components/listitem';
 import Timetable, {extractFromData, convertForTimetable} from '../components/Timetable';
 import BuildConfigs from '../config';
@@ -7,24 +7,18 @@ import SearchBar, {createSearchCondition} from '../components/searchBar.js';
 import DateTools, {SemesterCodes} from '../tools/datetools';
 import ForestApi from '../tools/apis';
 import {Map} from 'immutable';
-import {ThemeText} from '../components/components';
+import {ThemedText} from '../components/components';
 
 
 export class ProfessorTimetable extends Component{
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-        
-    return {
-      title: '교원별 시간표',
-    };
-  };
   constructor(props){
     super(props);
+    const {semesterCode, year, roomName, roomNumber} = this.props.route.params;
     this.state = {
-      semesterCode: this.props.navigation.getParam('semesterCode', ''),
-      year: this.props.navigation.getParam('year', ''),
-      professorName: this.props.navigation.getParam('professorName', ''),
-      professorId: this.props.navigation.getParam('professorId', ''),
+      semesterCode: semesterCode,
+      year: year,
+      roomName: roomName,
+      roomNumber: roomNumber,
       timetable: [],
       isLoading: false
     };
@@ -44,12 +38,12 @@ export class ProfessorTimetable extends Component{
     }else if(this.state.timetable.length <= 0){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
-          <ThemeText>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</ThemeText>
+          <ThemedText>시간표를 불러오지 못했거나, 표시할 시간표 데이터가 없습니다.</ThemedText>
         </View>
       );
     }else{
       return(
-        <Timetable timetable={this.state.timetable} />
+        <Timetable timetable={this.state.timetable} navigation={this.props.navigation}/>
       );
     }
   }
@@ -88,15 +82,6 @@ export class ProfessorTimetable extends Component{
 
 
 export class SearchProfessors extends Component{
-  // 상단에 이름 출력
-  static navigationOptions = ({navigation, navigationOptions}) => {
-    const {params} = navigation.state;
-
-    return {
-      title: '교원 검색(교원별 시간표)',
-    };
-  };
-
   constructor(props){
     super(props);
     const today = new Date();
@@ -274,8 +259,8 @@ export class SearchProfessors extends Component{
                 professorId: item.professorId
               });
             }}>
-              <ThemeText style={{fontWeight: 'bold'}}>{item.professorName}({item.position})</ThemeText>
-              <ThemeText>{item.department} | {item.state} | {item.professorId}</ThemeText>
+              <ThemedText style={{fontWeight: 'bold'}}>{item.professorName}({item.position})</ThemedText>
+              <ThemedText>{item.department} | {item.state} | {item.professorId}</ThemedText>
             </ListItem>
           }
         />

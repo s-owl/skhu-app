@@ -2,20 +2,20 @@ import React from 'react';
 import {Modal, View, ScrollView} from 'react-native';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ListItem from './listitem';
-import {ThemeText, ThemeBackground} from './components';
-import {useColorScheme} from 'react-native-appearance';
+import {ThemedText} from './components';
+import {useTheme} from '@react-navigation/native';
 
 export function InfoModal(props) {
-  let textColor = (useColorScheme() === 'dark') ? 'white' : 'black';
+  const {colors} = useTheme();
 
   return(
     <Modal
       animationType="slide"
       visible={props.visible}>
-      <ThemeBackground style={{paddingTop: 50, padding: 16, flex: 1}}>
+      <View style={{paddingTop: 50, padding: 16, flex: 1, backgroundColor: colors.background}}>
         <View style={{padding: 8, alignItems: 'center', flex: 0}}>
-          <MaterialCommunityIcons color={textColor} name={props.icon} size={40} style={{padding: 8}}/>
-          <ThemeText style={{fontWeight: 'bold', padding: 8, fontSize: 20}}>{props.title}</ThemeText>
+          <MaterialCommunityIcons color={colors.text} name={props.icon} size={40} style={{padding: 8}}/>
+          <ThemedText style={{fontWeight: 'bold', padding: 8, fontSize: 20}}>{props.title}</ThemedText>
         </View>
         <ScrollView style={{padding: 8, flex: 1}}>
           {props.children}
@@ -25,12 +25,13 @@ export function InfoModal(props) {
           {props.buttons.map((item, index)=>{
             return(
               <ListItem key={index} style={{flex: 1, alignItems: 'center'}} onPress={item.onPress}>
-                <ThemeText>{item.label}</ThemeText>
+                <ThemedText>{item.label}</ThemedText>
               </ListItem>
             );
           })}
         </View>
-      </ThemeBackground>
-    </Modal>);
+      </View>
+    </Modal>
+  );
 }
 
