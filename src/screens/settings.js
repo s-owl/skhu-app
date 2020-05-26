@@ -20,6 +20,7 @@ export class Settings extends Component {
       ]},
       {title: '기타', data: [
         {label: '홈 화면에서 프로필 사진 숨김', type: 'bool', name: 'hideProfile', default: true},
+        {label: '앱 업데이트 후 업데이트 내역 보여주기', type: 'bool', name: 'showWhatsNew', default: true}
       ]},
     ];
   }
