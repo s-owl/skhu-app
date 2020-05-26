@@ -8,6 +8,7 @@ import {Map} from 'immutable';
 import * as WebBrowser from 'expo-web-browser';
 import LegalInfo from '../legal';
 import BuildConfigs from '../config';
+import UpdateInfo from '../updateInfo';
 
 export default class About extends Component{
   constructor(props){
@@ -48,7 +49,7 @@ export default class About extends Component{
           source={ require('../../assets/imgs/icon.png') }/>
           <ThemedText style={{fontWeight: 'bold', fontSize: 36}}>{Constants.manifest.name}</ThemedText>
           <ThemedText>{Constants.manifest.version}</ThemedText>
-          <ThemedText>OTA - {BuildConfigs.OtaDeployedAt}</ThemedText>
+          <ThemedText>OTA - {UpdateInfo.OtaDeployedAt}</ThemedText>
         </View>
         <ListItem isHeader={true}>
           <ThemedText style={{fontWeight: 'bold'}}>개발자 정보</ThemedText>
