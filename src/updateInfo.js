@@ -7,8 +7,5 @@ export default class UpdateInfo{
     - 앱 업데이트 시 앱에서 업데이트 내역 보여주도록 구현
     `
     static AllReleaseUrl = 'https://github.com/s-owl/skhu-app/releases';
-    static ReleaseIdKey(){
-      return `${this.AppVersion}_${this.OtaDeployedAt}`;
-    }
-
+    static ReleaseIdKey =  `${this.AppVersion}_${this.OtaDeployedAt}`;
 }

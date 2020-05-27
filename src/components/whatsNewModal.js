@@ -40,7 +40,7 @@ export function WhatsNewModal(props){
   );
 }
 export async function shouldShowWhatsNew(){
-  const userConfig = await AsyncStorage.getItem('showWahtsNew');
+  const userConfig = await AsyncStorage.getItem('showWhatsNew');
   const alreadyShown = await AsyncStorage.getItem(UpdateInfo.ReleaseIdKey);
   let configValue = JSON.parse(userConfig);
   if(userConfig == null || userConfig == undefined){
@@ -49,7 +49,7 @@ export async function shouldShowWhatsNew(){
   if(configValue){
     let wasShown = JSON.parse(alreadyShown);
     if(alreadyShown == null || alreadyShown == undefined){
-      wasShown = true;
+      wasShown = false;
     }
     return !wasShown;
   }else{

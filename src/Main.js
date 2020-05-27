@@ -22,9 +22,11 @@ export default function Main(props){
   const {colors} = useTheme();
 
   useEffect(()=>{
-    if(shouldShowWhatsNew){
-      setWhatsNew(true);
-    }
+    (async()=>{
+      if(await shouldShowWhatsNew()){
+        setWhatsNew(true);
+      }
+    })();
     db.fetchAttendance();
     db.fetchTimetable();
   }, []);
