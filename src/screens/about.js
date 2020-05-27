@@ -7,8 +7,8 @@ import {ThemedText} from '../components/components';
 import {Map} from 'immutable';
 import * as WebBrowser from 'expo-web-browser';
 import LegalInfo from '../legal';
-import BuildConfigs from '../config';
 import UpdateInfo from '../updateInfo';
+import {WhatsNewModal} from '../components/whatsNewModal';
 
 export default class About extends Component{
   constructor(props){
@@ -18,6 +18,7 @@ export default class About extends Component{
         teamInfo: false,
         oss: false,
         legal: false,
+        whatsNew: false,
       })
     };
   }
@@ -48,8 +49,12 @@ export default class About extends Component{
             borderColor: 'lightgrey', borderWidth: 1, borderRadius: 56}}
           source={ require('../../assets/imgs/icon.png') }/>
           <ThemedText style={{fontWeight: 'bold', fontSize: 36}}>{Constants.manifest.name}</ThemedText>
-          <ThemedText>{Constants.manifest.version}</ThemedText>
-          <ThemedText>OTA - {UpdateInfo.OtaDeployedAt}</ThemedText>
+          <ListItem onPress={()=>{
+            this.setModal('whatsNew', true);
+          }} style={{alignItems: 'center'}}>
+            <ThemedText>{Constants.manifest.version} / OTA - {UpdateInfo.OtaDeployedAt}</ThemedText>
+            <ThemedText style={{fontWeight: 'bold'}}>업데이트 내역 보기</ThemedText>
+          </ListItem>
         </View>
         <ListItem isHeader={true}>
           <ThemedText style={{fontWeight: 'bold'}}>개발자 정보</ThemedText>
@@ -158,6 +163,8 @@ export default class About extends Component{
                 본 앱은 성공회대학교 공식 인증 앱이 아니며, 사용 중 발생하는 모든 책임은 사용자 본인에게 있습니다.
           </ThemedText>
         </InfoModal>
+        <WhatsNewModal visible={modal.get('whatsNew')}
+          onClose={()=>this.setModal('whatsNew', false)} isAuto={false}/>
       </ScrollView>
     );
   }
