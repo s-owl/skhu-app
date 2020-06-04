@@ -67,12 +67,12 @@ export async function shouldShowWhatsNew(){
   const userConfig = await AsyncStorage.getItem('showWhatsNew');
   const alreadyShown = await AsyncStorage.getItem(UpdateInfo.ReleaseIdKey);
   let configValue = JSON.parse(userConfig);
-  if(userConfig == null || userConfig == undefined){
+  if(userConfig == null){
     configValue = true;
   }
   if(configValue){
     let wasShown = JSON.parse(alreadyShown);
-    if(alreadyShown == null || alreadyShown == undefined){
+    if(alreadyShown == null){
       wasShown = false;
     }
     return !wasShown;
