@@ -16,6 +16,7 @@ export default function LocalAuth(props){
   const [msg, setMsg] = useState('');
   const [pinRegistered, setPinRegistered] = useState(false);
   const [icon, setIcon] = useState('lock-outline');
+  const [visible, setVisible] = useState(false);
 
   const resetStates = ()=>{
     setPin('');
@@ -24,11 +25,8 @@ export default function LocalAuth(props){
     setMsg('');
     setPinRegistered(false);
     setIcon('lock-outline');
+    setVisible(false);
   };
-
-  // useEffect(()=>{
-  //   resetStates();
-  // }, []);
 
   useEffect(()=>{
     if(props.visible){
@@ -52,29 +50,30 @@ export default function LocalAuth(props){
   };
 
   const bioAuth = async()=>{
-    const availableHws = await LocalAuthentication.supportedAuthenticationTypesAsync();
-    const type = availableHws.includes(2) ? ['얼굴인식',  'face'] : ['지문인식', 'fingerprint'];
-    setMsg(`${type[0]} 또는 6자리 PIN으로 인증하세요`);
-    setIcon(type[1]);
     const result = await LocalAuthentication.authenticateAsync({
       fallbackLabel: '',
       promptMessage: 'SKHU\'s 생체인증',
       disableDeviceFallback: true,
-      cancelLabel: '암호 사용'});
+      cancelLabel: 'PIN 으로 인증'});
+    console.log('AUTH ERR:'+result.error);
     if(result.success){
       authSuccess();
-    }else if(result.error != 'user_cancel'){
+    }else if(result.error == 'user_cancel'){
+      setVisible(true);
+      setMsg('6자리 PIN으로 인증하세요');
+      setPin('');
+      setPinCheck('');
+      setIcon('lock-outline');
+      setDisplay(getDisplayString());
+    }
+    else{
       console.log(result.error);
-      setMsg(`${type[0]} 인증에 실패하였습니다.`);
+      setVisible(true);
+      setMsg('생체인증 실패. 6자리 PIN으로 인증하세요');
       setPin('');
       setPinCheck('');
       setDisplay(getDisplayString());
       setIcon('error-outline');
-      if(Platform.OS == 'android'){
-        setTimeout(()=>{
-          bioAuth();
-        }, 1000);
-      }
     }
   }; 
 
@@ -104,9 +103,11 @@ export default function LocalAuth(props){
       if(hasHw && bioAuthRegistered){
         bioAuth();
       }else{
+        setVisible(true);
         setMsg('등록한 6자리 PIN으로 인증하세요.');
       }
     }else{
+      setVisible(true);
       setMsg('새로 등록할 6자리 PIN을 입력하세요.');
     }
   };
@@ -162,7 +163,7 @@ export default function LocalAuth(props){
   return(
     <Modal
       animationType="fade"
-      visible={props.visible}>
+      visible={visible}>
       <View style={{paddingTop: 30, padding: 16, flex: 1, backgroundColor: colors.background}}>
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <MaterialIcons color={colors.text} name={icon} size={32} style={{padding: 16}}/>
