@@ -28,7 +28,7 @@
     jobs:
       build:
         # Name the Job
-        name: Lint Code Base
+        name: 코드 검사
         # Set the agent to run on
         runs-on: ubuntu-latest
     
@@ -45,11 +45,20 @@
           ################################
           # Run Linter against code base #
           ################################
-          - name: Lint Code Base
+          - name: Super Linter 코드 검사 실행
             uses: docker://github/super-linter:v3
             env:
-              LINTER_RULES_PATH: ./
               VALIDATE_ALL_CODEBASE: false
               VALIDATE_YAML: true
               VALIDATE_JSON	: true
-              VALIDATE_JAVASCRIPT_ES: true
+              VALIDATE_JAVASCRIPT_ES: false
+
+          - name: ESLint 준비
+            uses: actions/setup-node@v2-beta
+            with:
+              node-version: '14'
+              
+          - name: ESLint 코드 검사 실행
+            run: |
+              yarn install
+              yarn run lint
