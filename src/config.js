@@ -7,5 +7,4 @@ export default class BuildConfigs{
     static OPENWEATHERMAP_API_KEY = OPENWEATHERMAP_API_KEY; // OpenWeatherMap API KEY
     static SENTRY_DSN = SENTRY_DSN;
     static primaryColor = '#569f59';
-    static OtaDeployedAt = '2020.03.30';
 }

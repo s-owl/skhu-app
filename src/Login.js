@@ -1,8 +1,7 @@
-import React, {Component, useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet, View, Image, TextInput,
-  StatusBar, SafeAreaView, KeyboardAvoidingView,
-  ActivityIndicator, Platform
+  SafeAreaView, KeyboardAvoidingView, ActivityIndicator
 } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import ForestApi from './tools/apis';
@@ -16,9 +15,9 @@ import Touchable from './components/touchable';
 import {ErrorModal, CommonErrors} from './components/errorModal';
 import {HelpModal} from './components/helpModal';
 import moment from 'moment';
-import {Appearance} from 'react-native-appearance';
 import {CommonActions} from '@react-navigation/native';
 import {useTheme} from '@react-navigation/native';
+import {StatusBar} from 'expo-status-bar';
 
 export default function Login(props){
   let [isLoading, setLoading] = useState(false);
@@ -156,7 +155,6 @@ export default function Login(props){
 
   useEffect(() => {
     async function runAsync(){
-      if(Platform.OS == 'ios') StatusBar.setBarStyle({barStyle: 'light-content'});
       const connInfo = await NetInfo.fetch();
       if(connInfo.type == 'none'){
         setErrorObj(CommonErrors.noNetwork);
@@ -250,6 +248,7 @@ export default function Login(props){
         <HelpModal visible={helpModal} navigation={props.navigation}
           onClose={()=>setHelpModal(false)} isDuringLogin={true}/>
       </KeyboardAvoidingView>
+      <StatusBar style="auto"/>
     </SafeAreaView>
   );
 }

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {View, ScrollView, TouchableHighlight, FlatList} from 'react-native';
-import {withNavigation} from 'react-navigation';
 import DateTools from '../tools/datetools';
 import moment from 'moment';
 import {InfoModal} from './infoModal';

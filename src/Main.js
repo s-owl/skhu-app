@@ -14,13 +14,19 @@ import Touchable from './components/touchable';
 import LocalAuth from './components/localauth';
 import {MealCard} from './screens/meal';
 import {useTheme} from '@react-navigation/native';
-
+import {WhatsNewModal, shouldShowWhatsNew} from './components/whatsNewModal';
 export default function Main(props){
   let db = new DBHelper();
   const [localAuth, setlocalAuth] = useState(false);
+  const [whatsNew, setWhatsNew] = useState(false);
   const {colors} = useTheme();
 
   useEffect(()=>{
+    (async()=>{
+      if(await shouldShowWhatsNew()){
+        setWhatsNew(true);
+      }
+    })();
     db.fetchAttendance();
     db.fetchTimetable();
   }, []);
@@ -59,6 +65,7 @@ export default function Main(props){
         </View>
         <LocalAuth visible={localAuth} onClose={()=>setlocalAuth(false)}
           onAuthSuccess={()=>props.navigation.navigate('Authinfo')}/>
+        <WhatsNewModal visible={whatsNew} onClose={()=>setWhatsNew(false)} isAuto={true}/>
       </ScrollView>
     </SafeAreaView>
   );

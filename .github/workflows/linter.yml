@@ -1,0 +1,61 @@
+---
+    ###########################
+    ###########################
+    ## Linter GitHub Actions ##
+    ###########################
+    ###########################
+    name: Lint Code Base
+    
+    #
+    # Documentation:
+    # https://help.github.com/en/articles/workflow-syntax-for-github-actions
+    #
+    
+    #############################
+    # Start the job on all push #
+    #############################
+    on:
+        push:
+          branches-ignore:
+            - 'master'
+    
+    ###############
+    # Set the Job #
+    ###############
+    jobs:
+      build:
+        # Name the Job
+        name: 코드 검사
+        # Set the agent to run on
+        runs-on: ubuntu-latest
+    
+        ##################
+        # Load all steps #
+        ##################
+        steps:
+          ##########################
+          # Checkout the code base #
+          ##########################
+          - name: Checkout Code
+            uses: actions/checkout@v2
+    
+          ################################
+          # Run Linter against code base #
+          ################################
+          - name: Super Linter 코드 검사 실행
+            uses: docker://github/super-linter:v3
+            env:
+              VALIDATE_ALL_CODEBASE: false
+              VALIDATE_YAML: true
+              VALIDATE_JSON	: true
+              VALIDATE_JAVASCRIPT_ES: false
+
+          - name: ESLint 준비
+            uses: actions/setup-node@v2-beta
+            with:
+              node-version: '14'
+
+          - name: ESLint 코드 검사 실행
+            run: |
+              yarn install
+              yarn run lint
