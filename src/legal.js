@@ -1,7 +1,16 @@
 const LegalInfo = {
   devlopers: [
     {
-      period: '2019.10 ~',
+      period: '2020.03 ~',
+      data: [
+        '강세운(201814002, tpdns9032100@gmail.com)\n앱, 백엔드 개발, 서버 관리',
+        '한영빈(201632034, sukso96100@gmail.com)\n앱, 백엔드 개발',
+        '송하은(202014027, jamy0225@naver.com)\n백엔드 개발',
+        '이승헌(201914120, dltmdgjs49@gmail.com)\n백엔드 개발',
+      ]
+    },
+    {
+      period: '2019.10 ~ 2020.03',
       data: [
         '강세운(201814002, tpdns9032100@gmail.com)\n앱, 백엔드 개발, 서버 관리',
         '한영빈(201632034, sukso96100@gmail.com)\n앱, 백엔드 개발',
