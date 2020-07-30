@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import BuildConfigs from './src/config';
 import {SKHUsDarkTheme, SKHUsLightTheme} from './src/components/themes';
+import {StatusBar} from 'expo-status-bar';
 
 import Login from './src/Login';
 import MainShell from './src/MainShell';
@@ -39,6 +40,7 @@ export default function App(){
           <Stack.Screen name="MainStack" component={MainShell}/>
         </Stack.Navigator>
       </NavigationContainer>
+      <StatusBar style="auto" />
     </AppearanceProvider>
   );
   

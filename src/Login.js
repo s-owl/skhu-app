@@ -17,7 +17,6 @@ import {HelpModal} from './components/helpModal';
 import moment from 'moment';
 import {CommonActions} from '@react-navigation/native';
 import {useTheme} from '@react-navigation/native';
-import {StatusBar} from 'expo-status-bar';
 
 export default function Login(props){
   let [isLoading, setLoading] = useState(false);
@@ -248,7 +247,6 @@ export default function Login(props){
         <HelpModal visible={helpModal} navigation={props.navigation}
           onClose={()=>setHelpModal(false)} isDuringLogin={true}/>
       </KeyboardAvoidingView>
-      <StatusBar style="auto"/>
     </SafeAreaView>
   );
 }
