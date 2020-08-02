@@ -45,7 +45,8 @@ export default function Main(props){
             <ShortcutButton
               icon="insert-chart"
               label="이수 학점"
-              onPress={() => props.navigation.navigate('Credits')}/>
+              // onPress={() => props.navigation.navigate('Credits')}
+              onPress={() => props.navigation.navigate('CreditsAndGrades')}/>
             <ProfileButton onPress={() => setlocalAuth(true)}/>
           </View>
 
