@@ -69,12 +69,9 @@ export default function Menu(props) {
               props.navigation.navigate('SearchLectureRooms');
             }}
           ]},
-          {title: '성적 및 장학 관리', data: [
+          {title: '장학 관리', data: [
             {label: '장학 내역 조회', icon: 'school', onPress: ()=>{
               props.navigation.navigate('ScholarshipHistory');
-            }},
-            {label: '학내 제출용 성적증명서', icon: 'certificate', onPress: ()=>{
-              props.navigation.navigate('GradeCert');
             }}
           ]},
           {title: '관리', data: [

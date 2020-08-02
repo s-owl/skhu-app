@@ -195,6 +195,11 @@ export function GradeChart(props){
             ))}
           </Collapsible>
         )}
+        ListFooterComponent={()=>(
+          <ListItem onPress={()=>props.navigation.navigate('GradeCert')}>
+            <ThemedText style={{fontWeight: 'bold'}}>학내 제출용 성적증명서 보기</ThemedText>
+            </ListItem>
+        )}
       />
     );
   }

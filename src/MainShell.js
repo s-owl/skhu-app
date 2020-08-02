@@ -49,6 +49,7 @@ function HomeStack(){
       <HStack.Screen name="Meal" component={Meal} options={{title: '주간 식단'}}/>
       <HStack.Screen name="Authinfo" component={Authinfo} options={{headerShown: false}}/>
       <HStack.Screen name="CreditsAndGrades" component={CreditsAndGrade} options={{title: '학점/성적'}}/>
+      <MStack.Screen name="GradeCert" component={GradeCert} options={{title: '학내 제출용 성적증명서'}}/>
     </HStack.Navigator>
   );
 }
@@ -70,7 +71,6 @@ function MenuStack(){
       <MStack.Screen name="SyllabusDetails" component={SyllabusDetails} options={{title: '강의계획서 상세'}}/>
       <MStack.Screen name="SavedCredits" component={SavedCredits} options={{title: '학점세이브 조회'}}/>
       <MStack.Screen name="ScholarshipHistory" component={ScholarshipHistory} options={{title: '장학 내역 조회'}}/>
-      <MStack.Screen name="GradeCert" component={GradeCert} options={{title: '학내 제출용 성적증명서'}}/>
       <MStack.Screen name="Subjects" component={Subjects} options={{title: '학과/학부별 개설과목 조회'}}/>
       <MStack.Screen name="About" component={About} options={{title: '앱 정보'}}/>
       <MStack.Screen name="Meal" component={Meal} options={{title: '학식'}}/>
