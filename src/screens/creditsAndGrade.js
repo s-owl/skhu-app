@@ -4,17 +4,17 @@ import ListItem from '../components/listitem';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
 import {ThemedText, Collapsible} from '../components/components';
-import {LineChart} from "react-native-chart-kit";
+import {LineChart} from 'react-native-chart-kit';
 import {useTheme} from '@react-navigation/native';
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
 
 export function CreditsAndGrade() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Credits" component={Credits} options={{title: "이수 학점"}}/>
+      <Tab.Screen name="Credits" component={Credits} options={{title: '이수 학점'}}/>
       <Tab.Screen name="GradeChart" component={GradeChart} options={{title: '성적 현황'}}/>
     </Tab.Navigator>
   );
@@ -92,17 +92,17 @@ export function GradeChart(props){
   const [details, setDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [chartData, setChartData] = useState({
-    labels: ["1","2","3","4","5"],
+    labels: ['1', '2', '3', '4', '5'],
     datasets: [
       {
-        data: [1,2,3,4,5],
+        data: [1, 2, 3, 4, 5],
         color: () => colors.primary, // optional
         strokeWidth: 2 // optional
       }
     ],
-    legend: ["평점"] // optional
+    legend: ['평점'] // optional
   });
-  const screenWidth = Dimensions.get("window").width * 0.95;
+  const screenWidth = Dimensions.get('window').width * 0.95;
   const chartConfig = {
     backgroundGradientFrom: colors.background,
     backgroundGradientTo: colors.background,
@@ -129,21 +129,21 @@ export function GradeChart(props){
               strokeWidth: 2 // optional
             }
           ],
-          legend: ["평점"] // optional
+          legend: ['평점'] // optional
         };
       
         for(const item of data.details){
-          if(item.subject.includes("백분율")){
+          if(item.subject.includes('백분율')){
             detailsData.push({
               title: item.subject,
               subjects: []
-            })
-          }else if(item.subject.includes("취득학점")){
+            });
+          }else if(item.subject.includes('취득학점')){
             detailsData.push({
               title: `${item.year}-${item.semester} | ${item.subject}`,
               subjects: groups
             });
-            let splited = item.subject.split(" ");
+            let splited = item.subject.split(' ');
             summaryData.labels.push(`${item.year}-${item.semester}`);
             summaryData.datasets[0].data.push(Number(splited[3]));
             groups = [];
@@ -198,7 +198,7 @@ export function GradeChart(props){
         ListFooterComponent={()=>(
           <ListItem onPress={()=>props.navigation.navigate('GradeCert')}>
             <ThemedText style={{fontWeight: 'bold'}}>학내 제출용 성적증명서 보기</ThemedText>
-            </ListItem>
+          </ListItem>
         )}
       />
     );

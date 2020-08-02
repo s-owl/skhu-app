@@ -6,7 +6,7 @@ import {
 import Touchable from './touchable';
 import {useTheme} from '@react-navigation/native';
 import ListItem from './listitem';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import {MaterialCommunityIcons} from '@expo/vector-icons'; 
 
 export function ThemedText(props){
   const {colors} = useTheme();
@@ -72,7 +72,7 @@ export function CardView(props){
 export function Collapsible(props){
   const [visible, setVisible] = useState(false);
   const {colors} = useTheme();
-  const iconName = visible? "chevron-up": "chevron-down";
+  const iconName = visible? 'chevron-up': 'chevron-down';
   const content = visible? (
     <View>
       {props.children}
@@ -80,9 +80,9 @@ export function Collapsible(props){
   ):(<View></View>);
   return(
     <View>
-      <ListItem onPress={()=>setVisible(!visible)} style={{flexDirection: "row"}}>
+      <ListItem onPress={()=>setVisible(!visible)} style={{flexDirection: 'row'}}>
         <ThemedText style={{flex: 1, padding: 4}}>
-        {props.title}
+          {props.title}
         </ThemedText>
         <MaterialCommunityIcons name={iconName}
           size={20} color={colors.text} style={{flex: 0}}/>
