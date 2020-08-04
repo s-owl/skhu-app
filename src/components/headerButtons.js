@@ -21,5 +21,5 @@ export function MaterialHeaderButtons(props) {
       {...props}
     />
   );
-};
+}
 export {Item} from 'react-navigation-header-buttons';
