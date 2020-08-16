@@ -77,57 +77,13 @@ export default function Login(props){
         setLoading(false);
         toggleHelp(true);
       }else{
-        let samLogin = ForestApi.login(id, pw, 'credentialNew');
-        let forestLogin = ForestApi.login(id, pw, 'credentialOld');
-        
-        let forestLoginRes = await forestLogin;
-        let forestData = await forestLoginRes.json();
-        if(forestLoginRes.ok){
-          await ChunkSecureStore.setItemAsync('CredentialOld', forestData['credential-old']);
-        }else if(forestLoginRes.status == 400){
-          setLoading(false);
-          toggleHelp(true);
-          setErrorObj(CommonErrors.wrongLogin);
-          setErrorModal(true);
-        }else if(forestLoginRes.status == 401){
-          setLoading(false);
-          toggleHelp(true);
-          let msg = forestData['error'];
-          setErrorObj(CommonErrors.loginError);
-          setErrorMsg(msg);
-          setErrorModal(true);
-        }else{
-          setLoading(false);
-          toggleHelp(true);
-        }
+        let loginRes = await ForestApi.login(id, pw);
+        let loginData = await loginRes.json();
+        if(loginRes.ok){
+          await ChunkSecureStore.setItemAsync('CredentialOld', loginData['credential-old']);
+          await ChunkSecureStore.setItemAsync('CredentialNew', loginData['credential-new']);
+          await ChunkSecureStore.setItemAsync('CredentialNewToken', loginData['credential-new-token']);
 
-        if(forestLoginRes.status != 200) {
-          return;
-        }
-
-        let samLoginRes = await samLogin;
-        let samData = await samLoginRes.json();
-        if(samLoginRes.ok){
-          await ChunkSecureStore.setItemAsync('CredentialNew', samData['credential-new']);
-          await ChunkSecureStore.setItemAsync('CredentialNewToken', samData['credential-new-token']);
-        }else if(samLoginRes.status == 400){
-          setLoading(false);
-          toggleHelp(true);
-          setErrorObj(CommonErrors.wrongLogin);
-          setErrorModal(true);
-        }else if(samLoginRes.status == 401){
-          setLoading(false);
-          toggleHelp(true);
-          let msg = samData['error'];
-          setErrorObj(CommonErrors.loginError);
-          setErrorMsg(msg);
-          setErrorModal(true);
-        }else{
-          setLoading(false);
-          toggleHelp(true);
-        }
-
-        if(forestLoginRes.ok && samLoginRes.ok){
           await SecureStore.setItemAsync('userid', id);
           await SecureStore.setItemAsync('userpw', pw);
           await SecureStore.setItemAsync('sessionUpdatedAt', moment().utc().format());
@@ -140,6 +96,21 @@ export default function Login(props){
               ]
             })
           );
+        }else if(loginRes.status == 400){
+          setLoading(false);
+          toggleHelp(true);
+          setErrorObj(CommonErrors.wrongLogin);
+          setErrorModal(true);
+        }else if(loginRes.status == 401){
+          setLoading(false);
+          toggleHelp(true);
+          let msg = loginData['error'];
+          setErrorObj(CommonErrors.loginError);
+          setErrorMsg(msg);
+          setErrorModal(true);
+        }else{
+          setLoading(false);
+          toggleHelp(true);
         }
       }
     }catch(err){
