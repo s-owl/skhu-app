@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
-import {View, FlatList, Dimensions, ActivityIndicator} from 'react-native';
+import {View, FlatList, Dimensions, ActivityIndicator, ScrollView} from 'react-native';
 import ListItem from '../components/listitem';
 import ForestApi from '../tools/apis';
 import BuildConfigs from '../config';
@@ -88,6 +88,7 @@ export class Credits extends Component{
 }
 
 export function GradeChart(props){
+  const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width * 0.95);
   const {colors} = useTheme();
   const [details, setDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -102,7 +103,6 @@ export function GradeChart(props){
     ],
     legend: ['평점'] // optional
   });
-  const screenWidth = Dimensions.get('window').width * 0.95;
   const chartConfig = {
     backgroundGradientFrom: colors.background,
     backgroundGradientTo: colors.background,
@@ -127,9 +127,19 @@ export function GradeChart(props){
               data: [],
               color: () => colors.primary, // optional
               strokeWidth: 2 // optional
+            },
+            {
+              data: [],
+              color: () => 'grey', // optional
+              strokeWidth: 1 // optional
+            },
+            {
+              data: [4.5],
+              color: () => '#00000000', // optional
+              strokeWidth: 0 // optional
             }
           ],
-          legend: ['평점'] // optional
+          legend: ['학기평점', '전체평점'] // optional
         };
       
         for(const item of data.details){
@@ -146,10 +156,21 @@ export function GradeChart(props){
             let splited = item.subject.split(' ');
             summaryData.labels.push(`${item.year}-${item.semester}`);
             summaryData.datasets[0].data.push(Number(splited[3]));
+
+            let totals = summaryData.datasets[1].data;
+            let totalAvr = totals.length > 0? 
+              (totals[totals.length-1]*totals.length + Number(splited[3]))/(totals.length+1)
+              : Number(splited[3]);
+            totals.push(totalAvr);
             groups = [];
           }else{
             groups.push(item);
           }
+        }
+
+        if(summaryData.datasets[0].data.length>5){
+          let rate = (((summaryData.datasets[0].data.length-5)*1.8)+10)/10;
+          setScreenWidth(Dimensions.get('window').width*rate);
         }
         
         setDetails(detailsData);
@@ -170,12 +191,16 @@ export function GradeChart(props){
       <FlatList style={{height: '100%'}}
         ListHeaderComponent={()=>(
           <View>
-            <LineChart
-              data={chartData}
-              width={screenWidth}
-              height={220}
-              chartConfig={chartConfig}
-            />
+            <ScrollView horizontal={true}>
+              <LineChart
+                data={chartData}
+                width={screenWidth}
+                height={220}
+                chartConfig={chartConfig}
+                fromZero={true}
+                segments={5}
+              />
+            </ScrollView>
           </View>
         )}
         
