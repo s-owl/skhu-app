@@ -1,6 +1,6 @@
 {
   "name": "skhuapp",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "devDependencies": {
     "babel-eslint": "^10.0.3",
