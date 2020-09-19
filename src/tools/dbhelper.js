@@ -1,13 +1,12 @@
-
 import * as SQLite from 'expo-sqlite';
 import ForestApi from './apis';
 import DateTools from './datetools';
-export default class DBHelper{
-  constructor(){
+export default class DBHelper {
+  constructor() {
     console.log('Init db connection');
     this.db = SQLite.openDatabase('db.db');
     console.log('creating attendance table');
-    this.db.transaction(tx => {
+    this.db.transaction((tx) => {
       tx.executeSql(
         `create table if not exists attendance(
           id varchar(12) primary key not null,
@@ -19,19 +18,20 @@ export default class DBHelper{
           menstrual integer not null,
           early integer not null,
           semester_code varchar(6) not null,
-          year integer not null);`, [],
-        (tx, result)=>{
+          year integer not null);`,
+        [],
+        (tx, result) => {
           console.log('done create attendance');
           console.log(result);
         },
-        (err)=>{
+        (err) => {
           console.log('Error while create attendance');
           console.log(err);
         }
       );
     });
     console.log('creating timetable table');
-    this.db.transaction(tx => {
+    this.db.transaction((tx) => {
       tx.executeSql(
         `create table if not exists timetable(
           id varchar(12) primary key not null,
@@ -43,99 +43,122 @@ export default class DBHelper{
           ends_at datetime not null,
           lecture_id varchar(12) not null,
           semester_code varchar(6) not null,
-          year integer not null);`, [],
-        (tx, result)=>{
+          year integer not null);`,
+        [],
+        (tx, result) => {
           console.log('done create timetable');
           console.log(result);
         },
-        (err)=>{
+        (err) => {
           console.log('Error while create timetable');
           console.log(err);
         }
       );
     });
   }
-  removeUnnecessaryData(){
-    return new Promise((resolve, reject)=>{
+  removeUnnecessaryData() {
+    return new Promise((resolve, reject) => {
       const today = new Date();
-      const semester = DateTools.getSemesterCode(today.getMonth()+1);
-      this.db.transaction(tx => {
+      const semester = DateTools.getSemesterCode(today.getMonth() + 1);
+      this.db.transaction((tx) => {
         tx.executeSql(
           'delete from attendance, timetable where semester_code is not ? and year is not ?;',
           [semester.code, today.getFullYear()],
-          (tx, result)=>{
+          (tx, result) => {
             resolve(result);
           },
-          (err)=>{reject(err);}
+          (err) => {
+            reject(err);
+          }
         );
-
       });
     });
   }
-  dropAllTables(){
-    return new Promise((resolve, reject)=>{
-      this.db.transaction(tx => {
+  dropAllTables() {
+    return new Promise((resolve, reject) => {
+      this.db.transaction((tx) => {
         tx.executeSql(
-          'drop table if exists attendance;', [],
-          (tx, result)=>{
+          'drop table if exists attendance;',
+          [],
+          (tx, result) => {
             tx.executeSql(
-              'drop table if exists timetable;', [],
-              (tx, result)=>{resolve(result);},
-              (err)=>{reject(err);}
+              'drop table if exists timetable;',
+              [],
+              (tx, result) => {
+                resolve(result);
+              },
+              (err) => {
+                reject(err);
+              }
             );
           },
-          (err)=>{reject(err);}
+          (err) => {
+            reject(err);
+          }
         );
-
       });
     });
   }
-  async fetchAttendance(){
+  async fetchAttendance() {
     console.log('fetching attendance');
     const today = new Date();
-    const semester = DateTools.getSemesterCode(today.getMonth()+1);
+    const semester = DateTools.getSemesterCode(today.getMonth() + 1);
     // const semester = DateTools.getSemesterCode(5);
-    let attendance = await ForestApi.post('/user/attendance',
-      JSON.stringify({'semester': semester.code}), true);
-    if(attendance.ok){
+    let attendance = await ForestApi.post(
+      '/user/attendance',
+      JSON.stringify({semester: semester.code}),
+      true
+    );
+    if (attendance.ok) {
       console.log('attendance');
       let data = await attendance.json();
 
       let aCurrent = await this.queryAttendance();
-      if(aCurrent){
-        for(let item of data.attendance){
-          let toRemoveIndex = aCurrent.findIndex(x => x.id == item.subject_code);
+      if (aCurrent) {
+        for (let item of data.attendance) {
+          let toRemoveIndex = aCurrent.findIndex(
+            (x) => x.id == item.subject_code
+          );
           aCurrent.splice(toRemoveIndex, 1);
         }
       }
-      this.db.transaction(tx =>{
-        for(let item of data.attendance){
+      this.db.transaction((tx) => {
+        for (let item of data.attendance) {
           tx.executeSql(
             'insert or replace into attendance values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-            [item.subject_code, item.subject, Number(item.attend), Number(item.late),
-              Number(item.absence), Number(item.approved), Number(item.menstrual), Number(item.early),
-              semester.code, today.getFullYear()],
-            (tx, result)=>{
+            [
+              item.subject_code,
+              item.subject,
+              Number(item.attend),
+              Number(item.late),
+              Number(item.absence),
+              Number(item.approved),
+              Number(item.menstrual),
+              Number(item.early),
+              semester.code,
+              today.getFullYear(),
+            ],
+            (tx, result) => {
               console.log('done insert attendance');
               console.log(result);
             },
-            (err)=>{
+            (err) => {
               console.log('error insert attendance');
               console.log(err);
             }
           );
         }
       });
-      this.db.transaction(tx =>{
-        for(let item of aCurrent){
+      this.db.transaction((tx) => {
+        for (let item of aCurrent) {
           tx.executeSql(
             'delete from attendance where id = ? and semester_code = ? and year = ?;',
             [item.id, semester.code, today.getFullYear()],
-            (tx, result)=>{
+            (tx, result) => {
               console.log('removed outdated attendance item');
               console.log(result);
             },
-            (err)=>{
+            (err) => {
               console.log('error delete attendance');
               console.log(err);
             }
@@ -144,88 +167,105 @@ export default class DBHelper{
       });
     }
   }
-  queryAttendance(){
-    return new Promise((resolve, reject)=>{
+  queryAttendance() {
+    return new Promise((resolve, reject) => {
       const today = new Date();
-      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      const semester = DateTools.getSemesterCode(today.getMonth() + 1);
       // const semester = DateTools.getSemesterCode(5);
-      this.db.transaction(tx =>
-        tx.executeSql('select * from attendance where semester_code = ? and year = ?',
+      this.db.transaction((tx) =>
+        tx.executeSql(
+          'select * from attendance where semester_code = ? and year = ?',
           [semester.code, today.getFullYear()],
-          (tx, result)=>{
+          (tx, result) => {
             resolve(result.rows._array);
           },
-          (err)=>{
+          (err) => {
             reject(err);
           }
         )
       );
-
     });
   }
-  async fetchTimetable(){
-    try{
+  async fetchTimetable() {
+    try {
       const today = new Date();
-      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      const semester = DateTools.getSemesterCode(today.getMonth() + 1);
       // const semester = DateTools.getSemesterCode(5);
 
-      let timetable = await ForestApi.postToSam('/SSE/SSEAD/SSEAD03_GetList',
+      let timetable = await ForestApi.postToSam(
+        '/SSE/SSEAD/SSEAD03_GetList',
         JSON.stringify({
-          'Yy': today.getFullYear(),
-          'Haggi': semester.code,
-          'HaggiNm': semester.name
-        }), false);
-      if(timetable != null){
+          Yy: today.getFullYear(),
+          Haggi: semester.code,
+          HaggiNm: semester.name,
+        }),
+        false
+      );
+      if (timetable != null) {
         console.log('timetable');
         // postToSam 형식 변경에 대한 임시방편
         let data = timetable;
 
-        let tCurrent = (await this.getTimetableData());
+        let tCurrent = await this.getTimetableData();
         let tcArr = tCurrent._array;
-        if(tCurrent.length > 0){
-          for(let item of data.DAT){
+        if (tCurrent.length > 0) {
+          for (let item of data.DAT) {
             const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
-            let toRemoveIndex = tcArr.findIndex(x => x.id.includes(`${item.GwamogCd}-${dayOfWeek}`));
+            let toRemoveIndex = tcArr.findIndex((x) =>
+              x.id.includes(`${item.GwamogCd}-${dayOfWeek}`)
+            );
             tcArr.splice(toRemoveIndex, 1);
           }
         }
         let dupCheck = {};
-        this.db.transaction(tx => {
+        this.db.transaction((tx) => {
           console.log('inserting new timetable data');
-          for(let item of data.DAT){
+          for (let item of data.DAT) {
             const dayOfWeek = DateTools.dayOfWeekStrToNum(item.YoilNm);
             console.log('inserting new timetable data');
-            if(dupCheck[`${item.GwamogCd}-${dayOfWeek}`]==undefined){
+            if (dupCheck[`${item.GwamogCd}-${dayOfWeek}`] == undefined) {
               dupCheck[`${item.GwamogCd}-${dayOfWeek}`] = 0;
-            }else{
+            } else {
               dupCheck[`${item.GwamogCd}-${dayOfWeek}`] += 1;
             }
             tx.executeSql(
               'insert or replace into timetable values(?, ?, ?, ?, ?, time(?), time(?), ?, ?, ?);',
-              [`${item.GwamogCd}-${dayOfWeek}-${dupCheck[`${item.GwamogCd}-${dayOfWeek}`]}`, item.GwamogKorNm, item.GyosuNm, item.HosilCd,
-                Number(dayOfWeek), item.FrTm, item.ToTm, `${item.GwamogCd}-${item.Bunban}`,
-                semester.code, today.getFullYear()],
-              (tx, result)=>{
+              [
+                `${item.GwamogCd}-${dayOfWeek}-${
+                  dupCheck[`${item.GwamogCd}-${dayOfWeek}`]
+                }`,
+                item.GwamogKorNm,
+                item.GyosuNm,
+                item.HosilCd,
+                Number(dayOfWeek),
+                item.FrTm,
+                item.ToTm,
+                `${item.GwamogCd}-${item.Bunban}`,
+                semester.code,
+                today.getFullYear(),
+              ],
+              (tx, result) => {
                 console.log('done insert timetable');
                 console.log(result);
               },
-              (err)=>{
+              (err) => {
                 console.log('Error while insert timetable');
                 console.log(err);
-              });
+              }
+            );
           }
         });
 
-        this.db.transaction(tx =>{
-          for(let item of tcArr){
+        this.db.transaction((tx) => {
+          for (let item of tcArr) {
             tx.executeSql(
               'delete from timetable where id = ? and semester_code = ? and year = ?;',
               [item.id, semester.code, today.getFullYear()],
-              (tx, result)=>{
+              (tx, result) => {
                 console.log('removed outdated timetable item');
                 console.log(result);
               },
-              (err)=>{
+              (err) => {
                 console.log('error delete timetable');
                 console.log(err);
               }
@@ -234,29 +274,28 @@ export default class DBHelper{
         });
       }
       console.log('done');
-    }catch(err){
+    } catch (err) {
       console.log('Error while fetching timetable');
       console.log(err);
     }
-
   }
 
-  getTodayClassCount(){
-    return new Promise((resolve, reject)=>{
+  getTodayClassCount() {
+    return new Promise((resolve, reject) => {
       const today = new Date();
-      const semester = DateTools.getSemesterCode(today.getMonth()+1);
-      this.db.transaction(tx => {
+      const semester = DateTools.getSemesterCode(today.getMonth() + 1);
+      this.db.transaction((tx) => {
         tx.executeSql(
           'select count(title) as classes from timetable where day = ? and semester_code = ?;',
           [today.getDay(), semester.code],
-          (tx, result)=>{
-            if(result.rows.length > 0){
+          (tx, result) => {
+            if (result.rows.length > 0) {
               resolve(result.rows.item(0));
-            }else{
+            } else {
               resolve(undefined);
             }
           },
-          (err)=>{
+          (err) => {
             reject(err);
           }
         );
@@ -264,12 +303,11 @@ export default class DBHelper{
     });
   }
 
-  getNextClassInfo(){
-    return new Promise((resolve, reject)=>{
+  getNextClassInfo() {
+    return new Promise((resolve, reject) => {
       const today = new Date();
-      const semester = DateTools.getSemesterCode(today.getMonth()+1);
-      // const semester = DateTools.getSemesterCode(5);
-      this.db.transaction(tx => {
+      const semester = DateTools.getSemesterCode(today.getMonth() + 1);
+      this.db.transaction((tx) => {
         tx.executeSql(
           `select t.title, t.room, t.day, t.starts_at, t.ends_at,
                a.attend, a.late, a.absence, a.approved, a.menstrual, a.early
@@ -277,17 +315,21 @@ export default class DBHelper{
            where t.lecture_id = a.id and t.day = ? and t.starts_at > ?
            and t.semester_code = ? and t.year = ?
            order by t.starts_at limit 1;`,
-          [today.getDay(), `${today.getHours()}:${today.getMinutes()}`,
-            semester.code, today.getFullYear()],
+          [
+            today.getDay(),
+            `${today.getHours()}:${today.getMinutes()}`,
+            semester.code,
+            today.getFullYear(),
+          ],
           // [1, `${'09'}:${today.getMinutes()}`],
-          (tx, result)=>{
-            if(result.rows.length > 0){
+          (tx, result) => {
+            if (result.rows.length > 0) {
               resolve(result.rows.item(0));
-            }else{
+            } else {
               resolve(undefined);
             }
           },
-          (err)=>{
+          (err) => {
             reject(err);
           }
         );
@@ -295,21 +337,53 @@ export default class DBHelper{
     });
   }
 
-  getTimetableData(){
-    return new Promise((resolve, reject)=>{
+  getNextClassWithoutAttendance() {
+    return new Promise((resolve, reject) => {
       const today = new Date();
-      const semester = DateTools.getSemesterCode(today.getMonth()+1);
+      const semester = DateTools.getSemesterCode(today.getMonth() + 1);
+      this.db.transaction((tx) => {
+        tx.executeSql(
+          `select title, room, day, starts_at, ends_at 
+               from timetable
+           where day = ? and starts_at > ? and semester_code = ? and year = ?
+           order by starts_at limit 1;`,
+          [
+            today.getDay(),
+            `${today.getHours()}:${today.getMinutes()}`,
+            semester.code,
+            today.getFullYear(),
+          ],
+          // [1, `${'09'}:${today.getMinutes()}`],
+          (tx, result) => {
+            if (result.rows.length > 0) {
+              resolve(result.rows.item(0));
+            } else {
+              resolve(undefined);
+            }
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+      });
+    });
+  }
+
+  getTimetableData() {
+    return new Promise((resolve, reject) => {
+      const today = new Date();
+      const semester = DateTools.getSemesterCode(today.getMonth() + 1);
       // const semester = DateTools.getSemesterCode(5);
-      this.db.transaction(tx => {
+      this.db.transaction((tx) => {
         tx.executeSql(
           `select * from timetable
            where semester_code = ? and year = ?
            order by day asc, starts_at asc;`,
           [semester.code, today.getFullYear()],
-          (tx, result)=>{
+          (tx, result) => {
             resolve(result.rows);
           },
-          (err)=>{
+          (err) => {
             reject(err);
           }
         );

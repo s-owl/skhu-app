@@ -36,7 +36,7 @@ export default class AttendanceScreen extends Component{
     }else if(this.state.data.length <= 1){
       return(
         <View style={{justifyContent: 'center', padding: 32}}>
-          <ThemedText>출결현황을 불러오지 못했거나, 수강한 강의가 없어 표시할 출결현황 데이터가 없습니다.</ThemedText>
+          <ThemedText>출결현황을 불러오지 못했거나, 수강한 강의가 없어 표시할 출결현황 데이터가 없습니다. 수강 강의가 있음에도 출결 조회가 불가능한 경우 LMS도 확인해 보세요.</ThemedText>
         </View>
       );
     }else{
