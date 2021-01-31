@@ -24,7 +24,7 @@ export default class ScheduleTable extends Component{
       let dates = [], contents = [];
       for(let item of data.schedules){
         dates.push(`${item.period}`);
-        contents.push(` | ${item.content}`);
+        contents.push(` ${item.content}`);
       }
       this.setState({
         dates: dates,
