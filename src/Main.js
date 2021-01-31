@@ -17,6 +17,7 @@ import DBHelper from './tools/dbhelper';
 import {MaterialIcons} from '@expo/vector-icons';
 import Touchable from './components/touchable';
 import LocalAuth from './components/localauth';
+import ScheduleTable from './components/scheduletable';
 import {MealCard} from './screens/meal';
 import {useTheme} from '@react-navigation/native';
 import {WhatsNewModal, shouldShowWhatsNew} from './components/whatsNewModal';
@@ -264,65 +265,20 @@ class NextClassInfo extends Component {
 class MonthlySchedule extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      dates: '',
-      contents: '',
-      isLoading: false,
-    };
   }
   async componentDidMount() {
-    this.setState({isLoading: true});
-    let today = new Date();
-    let schedule = await ForestApi.post(
-      '/life/schedules',
-      JSON.stringify({
-        year: today.getFullYear(),
-        month: today.getMonth() + 1,
-      }),
-      false
-    );
-    if (schedule.ok) {
-      let data = await schedule.json();
-      let dates = '',
-        contents = '';
-      for (let item of data.schedules) {
-        dates += `${item.period}\n`;
-        contents += ` | ${item.content}\n`;
-      }
-      this.setState({
-        dates: dates,
-        contents: contents,
-        isLoading: false,
-      });
-    }
   }
   render() {
-    let content;
-    if (this.state.isLoading) {
-      content = (
-        <View style={{justifyContent: 'center', padding: 32}}>
-          <ActivityIndicator size="large" color={BuildConfigs.primaryColor} />
-        </View>
-      );
-    } else {
-      content = (
-        <View>
-          <View style={{flexDirection: 'row'}}>
-            <ThemedText style={{flex: 0, fontWeight: 'bold'}}>
-              {this.state.dates}
-            </ThemedText>
-            <ThemedText style={{flex: 1}}>{this.state.contents}</ThemedText>
-          </View>
-        </View>
-      );
-    }
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
     return (
       <CardView
         onPress={this.props.onPress}
         elevate={true}
         actionLabel="학사 일정 더 보기 >"
       >
-        {content}
+        <ScheduleTable year={year} month={month} />
       </CardView>
     );
   }
